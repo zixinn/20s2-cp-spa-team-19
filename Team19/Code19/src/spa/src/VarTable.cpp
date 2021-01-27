@@ -4,9 +4,7 @@
 #include "VarTable.h"
 
 
-VarTable::VarTable() {
-
-}
+VarTable::VarTable() = default;
 
 int VarTable::getVarID(std::string varName) {
     if (varNameIDMap.find(varName) == varNameIDMap.end()) {
@@ -30,11 +28,11 @@ std::vector<std::string> const &VarTable::getAllVarNames() const {
 }
 
 std::vector<std::string> VarTable::convertVarIDsToNames(std::vector<int> varIDs) {
-    std::vector<std::string> varNames;
+    std::vector<std::string> result(getSize());
     for (int id : varIDs) {
-        varNames.push_back(getVarName(id));
+        result.push_back(getVarName(id));
     }
-    return varNames;
+    return result;
 }
 
 int VarTable::getSize() {
