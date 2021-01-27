@@ -1,0 +1,2 @@
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ar qc libspa.a  CMakeFiles/spa.dir/src/DesignExtractor.o CMakeFiles/spa.dir/src/Parser.o CMakeFiles/spa.dir/src/TNode.o CMakeFiles/spa.dir/src/PKB/ConstTable.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib libspa.a
