@@ -36,7 +36,7 @@ std::vector<std::string> const &ProcTable::getAllProcNames() const {
 }
 
 std::vector<std::string> ProcTable::convertProcIDsToNames(std::vector<int> procIDs) {
-    std::vector<std::string> result(getSize());
+    std::vector<std::string> result;
     for (int id : procIDs) {
         result.push_back(getProcName(id));
     }

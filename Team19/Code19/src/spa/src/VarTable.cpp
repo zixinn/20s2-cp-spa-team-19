@@ -28,7 +28,7 @@ std::vector<std::string> const &VarTable::getAllVarNames() const {
 }
 
 std::vector<std::string> VarTable::convertVarIDsToNames(std::vector<int> varIDs) {
-    std::vector<std::string> result(getSize());
+    std::vector<std::string> result;
     for (int id : varIDs) {
         result.push_back(getVarName(id));
     }
