@@ -13,8 +13,7 @@ public:
     // otherwise, return -1.
     int getVarID(std::string varName);
 
-    // Returns the varName corresponding to the varID if it exists.
-    // TODO otherwise
+    // Returns the varName corresponding to the varID if it exists. Throws out of index exception otherwise.
     std::string getVarName(int varID);
 
     // returns a const reference to the vector of all variable names stored.
