@@ -34,6 +34,7 @@ vector<string> split(string s, string delimiter) {
 bool checkName(string s) {
     bool isValid = false;
     if (isalpha(s[0])) {
+        isValid = true;
         for (int i = 1; i <= s.length() - 1; i++)
         {
             isValid = (isalnum(s[i]));
@@ -48,7 +49,7 @@ bool checkName(string s) {
 
 //  checks DIGIT +
 bool isNumber(string s) {
-    return !s.empty() && all_of(s.begin(), s.end(), isdigit);
+    return !s.empty() && all_of(s.begin(), s.end(), ::isdigit);
 }
 
 bool checkNameWithQuotes(string s) {
