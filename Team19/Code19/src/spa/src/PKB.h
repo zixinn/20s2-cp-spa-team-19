@@ -12,15 +12,10 @@ class TNode;
 
 class VarTable;  // no need to #include "VarTable.h" as all I need is pointer
 
-class ConstTable;
-
 class PKB {
 public:
 	static VarTable* varTable; 
 	static int setProcToAST(PROC p, TNode* r);
 	static TNode* getRootAST (PROC p);
-
-	// PKB Components for Program Data Entities
-	static ConstTable* constTable;
 
 };

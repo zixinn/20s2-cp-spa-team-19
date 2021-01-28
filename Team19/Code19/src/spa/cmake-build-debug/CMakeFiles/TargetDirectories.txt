@@ -1,3 +1,0 @@
-/Users/astrid/Documents/GitHub/20s2-cp-spa-team-19/Team19/Code19/src/spa/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/Users/astrid/Documents/GitHub/20s2-cp-spa-team-19/Team19/Code19/src/spa/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/astrid/Documents/GitHub/20s2-cp-spa-team-19/Team19/Code19/src/spa/cmake-build-debug/CMakeFiles/spa.dir
