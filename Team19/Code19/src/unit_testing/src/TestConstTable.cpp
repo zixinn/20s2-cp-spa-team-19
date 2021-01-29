@@ -15,10 +15,10 @@ ConstTable* setupTestTable() {
 
 TEST_CASE("storeConst Test") {
     ConstTable* constTable = new ConstTable();
-    REQUIRE(constTable->storeConst("1") == true);   // Constant not yet in table
-    REQUIRE(constTable->storeConst("1") == false);  // Constant already exists
-    REQUIRE(constTable->storeConst("236") == true);   // Constant not yet in table
-    REQUIRE(constTable->storeConst(to_string(INT_MAX)) == true);   // Constant not yet in table
+    REQUIRE(constTable->storeConst("1"));   // Constant not yet in table
+    REQUIRE_FALSE(constTable->storeConst("1"));  // Constant already exists
+    REQUIRE(constTable->storeConst("236"));   // Constant not yet in table
+    REQUIRE(constTable->storeConst(to_string(INT_MAX)));   // Constant not yet in table
     REQUIRE(constTable->getSize() == 3);
 
     // Invalid Inputs
@@ -26,7 +26,7 @@ TEST_CASE("storeConst Test") {
     REQUIRE_THROWS(constTable->storeConst("*"));
 }
 
-TEST_CASE("getSize Test") {
+TEST_CASE("getSize Test [ConstTable]") {
     ConstTable* constTable = setupTestTable();
     REQUIRE(constTable->getSize() == 5);
     constTable->storeConst("2");
@@ -35,9 +35,9 @@ TEST_CASE("getSize Test") {
 
 TEST_CASE("hasConst Test") {
     ConstTable* constTable = setupTestTable();
-    REQUIRE(constTable->hasConst("344") == true);
-    REQUIRE(constTable->hasConst("2") == false);
-    REQUIRE(constTable->hasConst("heej") == false);
+    REQUIRE(constTable->hasConst("344"));
+    REQUIRE_FALSE(constTable->hasConst("2"));
+    REQUIRE_FALSE(constTable->hasConst("heej"));
 
 }
 

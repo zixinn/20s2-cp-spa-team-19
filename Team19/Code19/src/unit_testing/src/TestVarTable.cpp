@@ -13,7 +13,7 @@ TEST_CASE("storeVarName Test") {
     REQUIRE(varTable->getSize() == 2);
 }
 
-TEST_CASE("getSize Test") {
+TEST_CASE("getSize Test [VarTable]") {
     VarTable* varTable = new VarTable();
     REQUIRE(varTable->getSize() == 0);
     varTable->storeVarName("a");

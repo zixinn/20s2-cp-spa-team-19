@@ -1,5 +1,3 @@
-#pragma once
-
 #include <iostream>
 #include "ProcTable.h"
 
@@ -17,14 +15,14 @@ STRING ProcTable::getProcName(ID procID) {
     try {
         return procNames.at(procID);
     } catch (std::out_of_range const& e) {
-        std::cout << "Index out of range: No procedure with ID " << procID << " in procNameIDMap." << std::endl;
+        std::cerr << "Index out of range: No procedure with ID " << procID << " in procNameIDMap." << std::endl;
         throw;
     }
 }
 
 pair<StmtNum, StmtNum> ProcTable::getProcRange(ID procID) {
     if (procStmtMap.find(procID) == procStmtMap.end()) {
-        std::cout << "Index out of range: No procedure with ID " << procID << " in procStmtMap." << std::endl;
+        std::cerr << "Index out of range: No procedure with ID " << procID << " in procStmtMap." << std::endl;
         throw std::out_of_range("ProcID not found in procStmtMap.");
     } else {
         return procStmtMap.find(procID)->second;

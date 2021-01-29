@@ -1,5 +1,3 @@
-#pragma once
-
 #include <iostream>
 #include "VarTable.h"
 
@@ -18,7 +16,7 @@ STRING VarTable::getVarName(ID varID) {
     try {
         return varNames.at(varID);
     } catch (std::out_of_range const& e) {
-        std::cout << "Index out of range: No variable with ID " << varID << " in VarNameIDMap." << std::endl;
+        std::cerr << "Index out of range: No variable with ID " << varID << " in VarNameIDMap." << std::endl;
         throw;
     }
 }
