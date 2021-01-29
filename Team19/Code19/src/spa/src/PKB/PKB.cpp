@@ -10,8 +10,8 @@ using namespace std;
 
 // Initialise PKB entity storage components
 ConstTable* PKB::constTable = new ConstTable();
-//VarTable* PKB::varTable = new VarTable();
-//ProcTable* PKB::procTable = new ProcTable();
+VarTable* PKB::varTable = new VarTable();
+ProcTable* PKB::procTable = new ProcTable();
 
 // Initialise PKB abstration storage components
 

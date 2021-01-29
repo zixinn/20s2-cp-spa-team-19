@@ -1,5 +1,4 @@
-#ifndef INC_20S2_CP_SPA_TEAM_19_ABSTRACTAPI_H
-#define INC_20S2_CP_SPA_TEAM_19_ABSTRACTAPI_H
+#pragma once
 
 #include <unordered_map>
 #include <vector>
@@ -13,5 +12,3 @@ typedef int ID;
 typedef int CONST;
 typedef std::string STRING;
 typedef std::vector<StmtNum> StmtNumLst;
-
-#endif //INC_20S2_CP_SPA_TEAM_19_ABSTRACTAPI_H

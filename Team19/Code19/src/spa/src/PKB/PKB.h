@@ -1,6 +1,8 @@
 #pragma once
 
 #include "ConstTable.h" // included as .cpp needs constructor
+#include "VarTable.h"
+#include "ProcTable.h"
 
 #include "../AbstractAPI.h"
 
@@ -19,8 +21,8 @@ public:
 
     // PKB Components for Program Data Entities
     static ConstTable* constTable;
-//    static VarTable* varTable;
-//    static ProcTable* procTable;
+    static VarTable* varTable;
+    static ProcTable* procTable;
 
 
 };

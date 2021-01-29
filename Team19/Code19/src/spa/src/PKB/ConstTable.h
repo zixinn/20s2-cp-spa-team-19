@@ -1,5 +1,4 @@
-#ifndef INC_20S2_CP_SPA_TEAM_19_CONSTTABLE_H
-#define INC_20S2_CP_SPA_TEAM_19_CONSTTABLE_H
+#pragma once
 
 #include "../AbstractAPI.h"
 
@@ -22,6 +21,3 @@ public:
 private:
     unordered_map<STRING, CONST> constMap;
 };
-
-
-#endif //INC_20S2_CP_SPA_TEAM_19_CONSTTABLE_H
