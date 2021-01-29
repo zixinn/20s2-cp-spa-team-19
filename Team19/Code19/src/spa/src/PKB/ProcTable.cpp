@@ -5,7 +5,7 @@
 
 ProcTable::ProcTable() = default;
 
-int ProcTable::getProcID(std::string procName) {
+ID ProcTable::getProcID(STRING procName) {
     if (procNameIDMap.find(procName) == procNameIDMap.end()) {
         return -1;
     } else {
@@ -13,7 +13,7 @@ int ProcTable::getProcID(std::string procName) {
     }
 }
 
-std::string ProcTable::getProcName(int procID) {
+STRING ProcTable::getProcName(ID procID) {
     try {
         return procNames.at(procID);
     } catch (std::out_of_range const& e) {
@@ -22,7 +22,7 @@ std::string ProcTable::getProcName(int procID) {
     }
 }
 
-std::pair<int, int> ProcTable::getProcRange(int procID) {
+pair<StmtNum, StmtNum> ProcTable::getProcRange(ID procID) {
     if (procStmtMap.find(procID) == procStmtMap.end()) {
         std::cout << "Index out of range: No procedure with ID " << procID << " in procStmtMap." << std::endl;
         throw std::out_of_range("ProcID not found in procStmtMap.");
@@ -31,11 +31,11 @@ std::pair<int, int> ProcTable::getProcRange(int procID) {
     }
 }
 
-std::vector<std::string> const &ProcTable::getAllProcNames() const {
+vector<STRING> const &ProcTable::getAllProcNames() const {
     return procNames;
 }
 
-std::vector<std::string> ProcTable::convertProcIDsToNames(std::vector<int> procIDs) {
+vector<STRING> ProcTable::convertProcIDsToNames(vector<ID> procIDs) {
     std::vector<std::string> result;
     for (int id : procIDs) {
         result.push_back(getProcName(id));
@@ -47,7 +47,7 @@ int ProcTable::getSize() {
     return procNames.size();
 }
 
-int ProcTable::storeProcName(std::string procName) {
+ID ProcTable::storeProcName(STRING procName) {
     if (hasProc(procName)) {
         return getProcID(procName);
     } else {
@@ -58,10 +58,10 @@ int ProcTable::storeProcName(std::string procName) {
     }
 }
 
-bool ProcTable::storeProcStmt(int procID, int startStmt, int endStmt) {
+bool ProcTable::storeProcStmt(ID procID, StmtNum startStmt, StmtNum endStmt) {
     return procStmtMap.insert({procID, std::make_pair(startStmt, endStmt)}).second;
 }
 
-bool ProcTable::hasProc(std::string procName) {
+bool ProcTable::hasProc(STRING procName) {
     return procNameIDMap.find(procName) != procNameIDMap.end();
 }

@@ -1,0 +1,11 @@
+.DS_Store
+Team19/.DS_Store
+Team19/Code19/.DS_Store
+Team19/Code19/.idea/
+Team19/Code19/cmake-build-debug/
+Team19/Tests19/analysis.xsl
+Team19/Tests19/out.xml
+/Team19/Code19/src/spa/cmake-build-debug/
+/Team19/Code19/src/unit_testing/cmake-build-debug/
+.idea/
+cmake-build-debug/CMakeFiles/clion-log.txt

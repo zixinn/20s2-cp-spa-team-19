@@ -1,4 +1,4 @@
-#include "VarTable.h"
+#include "PKB/VarTable.h"
 
 #include "catch.hpp"
 using namespace std;

@@ -6,7 +6,7 @@
 
 VarTable::VarTable() = default;
 
-int VarTable::getVarID(std::string varName) {
+ID VarTable::getVarID(STRING varName) {
     if (varNameIDMap.find(varName) == varNameIDMap.end()) {
         return -1;
     } else {
@@ -14,7 +14,7 @@ int VarTable::getVarID(std::string varName) {
     }
 }
 
-std::string VarTable::getVarName(int varID) {
+STRING VarTable::getVarName(ID varID) {
     try {
         return varNames.at(varID);
     } catch (std::out_of_range const& e) {
@@ -23,11 +23,11 @@ std::string VarTable::getVarName(int varID) {
     }
 }
 
-std::vector<std::string> const &VarTable::getAllVarNames() const {
+vector<STRING> const &VarTable::getAllVarNames() const {
     return varNames;
 }
 
-std::vector<std::string> VarTable::convertVarIDsToNames(std::vector<int> varIDs) {
+vector<STRING> VarTable::convertVarIDsToNames(vector<ID> varIDs) {
     std::vector<std::string> result;
     for (int id : varIDs) {
         result.push_back(getVarName(id));
@@ -39,7 +39,7 @@ int VarTable::getSize() {
     return varNames.size();
 }
 
-int VarTable::storeVarName(std::string varName) {
+ID VarTable::storeVarName(STRING varName) {
     if (hasVar(varName)) {
         return getVarID(varName);
     } else {
@@ -50,7 +50,7 @@ int VarTable::storeVarName(std::string varName) {
     }
 }
 
-bool VarTable::hasVar(std::string varName) {
+bool VarTable::hasVar(STRING varName) {
     return varNameIDMap.find(varName) != varNameIDMap.end();
 }
 

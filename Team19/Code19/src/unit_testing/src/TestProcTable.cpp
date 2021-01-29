@@ -1,4 +1,4 @@
-#include "ProcTable.h"
+#include "PKB/ProcTable.h"
 
 #include "catch.hpp"
 using namespace std;
