@@ -17,6 +17,10 @@ vector<string> Clause::getArgs() {
     return this->args;
 }
 
+bool operator==(const Clause& c1, const Clause& c2) {
+    return c1.rel == c2.rel && c1.args == c2.args;
+}
+
 Clause::~Clause() {
 
 }

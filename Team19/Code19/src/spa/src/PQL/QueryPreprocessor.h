@@ -18,7 +18,8 @@ public:
 private:
     unordered_map<string, string> declarations;
     string toSelect;
-    vector<Clause> clauses;
+    vector<Clause> suchThatClauses;
+    vector<Clause> patternClauses;
     bool isValid = true;
 
     unordered_set<string> designEntities;
