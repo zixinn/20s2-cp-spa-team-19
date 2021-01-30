@@ -13,6 +13,11 @@ vector<string> split(string s, string delimiter);
 
 bool checkName(string s);
 
-bool isNumber(string s);
+bool checkInteger(string s);
 
 bool checkNameWithQuotes(string s);
+
+bool checkExpression(string s);
+
+bool checkExpressionWithUnderscores(string s);
+
