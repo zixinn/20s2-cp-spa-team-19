@@ -13,6 +13,8 @@ public:
     string getRel();
     vector<string> getArgs();
 
+    friend bool operator==(const Clause& c1, const Clause& c2);
+
     ~Clause();
 
 private:
