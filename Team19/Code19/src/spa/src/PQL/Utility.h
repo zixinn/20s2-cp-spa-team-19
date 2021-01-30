@@ -21,3 +21,4 @@ bool checkExpression(string s);
 
 bool checkExpressionWithUnderscores(string s);
 
+//bool compareAst(AST* root1, AST* root2);

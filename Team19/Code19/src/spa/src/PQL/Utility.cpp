@@ -11,6 +11,7 @@ string trim(string s) {
 }
 
 // Split string s by the given delimiter and returns vector containing strings split
+// Strings in vector will be trimmed
 vector<string> split(string s, string delimiter) {
     size_t pos = 0;
     string token;
@@ -76,7 +77,37 @@ bool checkExpressionWithUnderscores(string s)​ {
     return isValid;
 }
 
-// compares two ASTs, returns true if AST node2 is a subexpression of AST node1 
-/*bool comparingAst(AST* node1, AST*, node2) {
+/* Pseudo code for comparing AST as SP hasn't finalise AST structure 
+// Compares two ASTs, returns true if AST1 == AST2 
+// This is a helper function for compareAst
+bool checkIfIdentical(AST* root1, AST*, root2) {
+    // base cases
+    if (root1 == NULL && root2 == NULL)
+        return true;
 
-}*/
+    if (root1 == NULL || root2 == NULL)
+        return false;
+
+    // Check if the data of both roots is same and data of left and right
+    // subtrees are also same 
+    return (root1->data == root2->data &&
+        checkIfIdentical(root1->left, root2->left) &&
+        checkIfIdentical(root1->right, root2->right));
+}
+
+// Compares two ASTs, returns true if AST2 is a subexpression of AST1
+bool compareAst(AST* root1, AST* root2) {
+    // base cases 
+    if (root1 == NULL || root2 == NULL)
+        return true;
+
+    // Check the tree with root as current node
+    if (areIdentical(T, S))
+        return true;
+
+    // If the tree with root as current node doesn't match then try left
+    // and right subtrees one by one 
+    return isSubtree(T->left, S) ||
+        isSubtree(T->right, S);
+}
+*/
