@@ -51,10 +51,10 @@ string QueryPreprocessor::getArgType(string synonym) {
         return UNDERSCORE;
     } else if (checkNameWithQuotes(synonym)) {
         return NAME;
-//    } else if (checkExpression(synonym)) {
-//        return EXPRESSION;
-//    } else if (checkExpressionWithUnderscores(synonym)) {
-//        return EXPRESSIONWITHUNDERSCORE;
+    } else if (checkExpression(synonym)) {
+        return EXPRESSION;
+    } else if (checkExpressionWithUnderscores(synonym)) {
+        return EXPRESSIONWITHUNDERSCORE;
     } else {
         return "";
     }
@@ -138,26 +138,25 @@ bool QueryPreprocessor::parseToSelect(string synonym) {
 
 bool QueryPreprocessor::parseSelect(string select) {
     vector<string> synonymsVector = split(select, " ");
-    if (select.find(" ") == string::npos ||
-        !parseToSelect(synonymsVector[1])) {
-        this->isValid = false;
-        return false;
+    parseToSelect(synonymsVector[0]);
+    if (select.find(" ") == string::npos) { // no such that or pattern clause 
+        return true;
     }
-    
+
     int suchThatPos = select.find("such that");
     int patternPos = select.find("pattern");
     string suchThat;
     string pattern;
     vector<string> clauses;
 
-    if (suchThatPos != string::npos) { 
+    if (suchThatPos != string::npos) {
         // if such that clause exists
         clauses = split(select, "such that");
         int endPosition = clauses[1].find(")");
         suchThat = clauses[1].substr(0, endPosition + 1);
         parseSuchThatClause(suchThat);
     }
-    if (patternPos != string::npos) { 
+    if (patternPos != string::npos) {
         // if pattern clause exists
         clauses = split(select, "pattern");
         int endPosition = clauses[1].find(")");
@@ -224,7 +223,6 @@ bool QueryPreprocessor::parsePatternClause(string clause) {
     string syn = trim(clause.substr(0, left));
     string firstArg = trim(clause.substr(left + 1, comma - left - 1));
     string secondArg = trim(clause.substr(comma + 1, right - comma - 1));
-
     if (!checkPatternClause(syn, { firstArg, secondArg })) {
         this->isValid = false;
         return false;
@@ -235,12 +233,12 @@ bool QueryPreprocessor::parsePatternClause(string clause) {
 }
 
 bool QueryPreprocessor::checkPatternClause(string rel, vector<string> args) {
-    if (getArgType(rel) != "assign") {
+    string argType = getArgType(rel);
+    if (argType != "assign") {
         this->isValid = false;
         return false;
     }
-
-    vector<unordered_set<string>> validArgType = this->validSuchThatArgType.find(rel)->second;
+    vector<unordered_set<string>> validArgType = this->validPatternArgType.find(argType)->second;
     for (int i = 0; i < 2; i++) {
         if (validArgType[i].find(getArgType(args[i])) == validArgType[i].end()) {
             this->isValid = false;
