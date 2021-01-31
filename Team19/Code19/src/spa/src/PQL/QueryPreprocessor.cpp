@@ -3,23 +3,6 @@
 #include "QueryPreprocessor.h"
 #include "Utility.h"
 
-#define PROCEDURE "procedure"
-#define STMTLST "stmtLst"
-#define STMT "stmt"
-#define READ "read"
-#define PRINT "print"
-#define ASSIGN "assign"
-#define CALL "call"
-#define WHILE "while"
-#define IF "if"
-#define VARIABLE "variable"
-#define CONSTANT "constant"
-#define INTEGER "integer"
-#define UNDERSCORE "underscore"
-#define NAME "name"
-#define EXPRESSION "expression"
-#define EXPRESSIONWITHUNDERSCORE "expressionwithunderscore"
-
 QueryPreprocessor::QueryPreprocessor() {
     designEntities = { PROCEDURE, STMTLST, STMT, READ, PRINT, ASSIGN, CALL, WHILE, IF, VARIABLE, CONSTANT };
     validSuchThatArgType["Follows"] = { { STMT, READ, PROCEDURE, ASSIGN, CALL, WHILE, IF, INTEGER, UNDERSCORE },
@@ -110,11 +93,7 @@ bool QueryPreprocessor::parseDeclaration(string designEntity, string synonyms) {
     }
     vector<string> synonymsVector = split(synonyms, ",");
     for (string synonym : synonymsVector) {
-        if (!checkName(synonym)) {
-            this->isValid = false;
-            return false;
-        }
-        if (checkSynonymDeclared(synonym)) {
+        if (checkSynonymDeclared(synonym) || !checkName(synonym)) {
             this->isValid = false;
             return false;
         }
@@ -127,46 +106,38 @@ bool QueryPreprocessor::checkDesignEntity(string designEntity) {
     return this->designEntities.find(designEntity) != this->designEntities.end();
 }
 
+bool QueryPreprocessor::parseSelect(string select) {
+    int suchThatPos = select.find(" such that ");
+    int patternPos = select.find(" pattern ");
+
+    if (suchThatPos == string::npos && patternPos == string::npos) { // no such that and pattern clause
+        return parseToSelect(select);
+    } else if (patternPos == string::npos) { // no pattern clause
+        return parseToSelect(trim(select.substr(0, suchThatPos)))
+                && parseSuchThatClause(trim(select.substr(suchThatPos + 11)));
+    } else if (suchThatPos == string::npos) { // no such that clause
+        return parseToSelect(trim(select.substr(0, patternPos)))
+               && parsePatternClause(trim(select.substr(patternPos + 9)));
+    } else { // both such that and pattern clause
+        int minPos = min(suchThatPos, patternPos);
+        if (suchThatPos < patternPos) { // such that before pattern
+            return parseToSelect(trim(select.substr(0, suchThatPos)))
+                   && parseSuchThatClause(trim(select.substr(suchThatPos + 11, patternPos - suchThatPos - 11)))
+                   && parsePatternClause(trim(select.substr(patternPos + 9)));
+        } else { // pattern before such that
+            return parseToSelect(trim(select.substr(0, patternPos)))
+                   && parsePatternClause(trim(select.substr(patternPos + 9, suchThatPos - patternPos - 9)))
+                   && parseSuchThatClause(trim(select.substr(suchThatPos + 11)));
+        }
+    }
+}
+
 bool QueryPreprocessor::parseToSelect(string synonym) {
     if (!checkSynonymDeclared(synonym) || !checkName(synonym)) {
         this->isValid = false;
         return false;
     }
     this->toSelect = synonym;
-    return true;
-}
-
-bool QueryPreprocessor::parseSelect(string select) {
-    vector<string> synonymsVector = split(select, " ");
-    parseToSelect(synonymsVector[0]);
-    if (select.find(" ") == string::npos) { // no such that or pattern clause 
-        return true;
-    }
-
-    int suchThatPos = select.find("such that");
-    int patternPos = select.find("pattern");
-    string suchThat;
-    string pattern;
-    vector<string> clauses;
-
-    if (suchThatPos != string::npos) {
-        // if such that clause exists
-        clauses = split(select, "such that");
-        int endPosition = clauses[1].find(")");
-        suchThat = clauses[1].substr(0, endPosition + 1);
-        parseSuchThatClause(suchThat);
-    }
-    if (patternPos != string::npos) {
-        // if pattern clause exists
-        clauses = split(select, "pattern");
-        int endPosition = clauses[1].find(")");
-        pattern = clauses[1].substr(0, endPosition + 1);
-        parsePatternClause(pattern);
-    }
-    if (suchThatPos == string::npos && patternPos == string::npos) {
-        // if there are no clauses in Select statement
-        return false;
-    }
     return true;
 }
 
@@ -232,8 +203,8 @@ bool QueryPreprocessor::parsePatternClause(string clause) {
     return true;
 }
 
-bool QueryPreprocessor::checkPatternClause(string rel, vector<string> args) {
-    string argType = getArgType(rel);
+bool QueryPreprocessor::checkPatternClause(string syn, vector<string> args) {
+    string argType = getArgType(syn);
     if (argType != "assign") {
         this->isValid = false;
         return false;

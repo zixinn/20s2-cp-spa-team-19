@@ -103,7 +103,7 @@ TEST_CASE("process valid query with such that clause") {
     unordered_map<string, string> declarations;
     declarations["a"] = "assign";
     declarations["w"] = "while";
-    Query expected = Query(declarations, "w", {c}, {}, true);
+    Query expected = Query(declarations, "w", { c }, {}, true);
     REQUIRE(actual == expected);
 }
 
@@ -114,7 +114,7 @@ TEST_CASE("process valid query with pattern clause") {
     Clause c = Clause("a", { "_", "\"count + 1\"" });
     unordered_map<string, string> declarations;
     declarations["a"] = "assign";
-    Query expected = Query(declarations, "a", {}, {c}, true);
+    Query expected = Query(declarations, "a", {}, { c }, true);
     REQUIRE(actual == expected);
 }
 

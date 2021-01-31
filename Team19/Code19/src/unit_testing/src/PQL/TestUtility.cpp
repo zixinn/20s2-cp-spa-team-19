@@ -76,6 +76,17 @@ TEST_CASE("checkName") {
     REQUIRE_FALSE(checkName("n@me"));
 }
 
+TEST_CASE("checkInteger") {
+    // valid
+    REQUIRE(checkInteger("123"));
+    REQUIRE(checkInteger("098"));
+
+    // invalid
+    REQUIRE_FALSE(checkInteger(" 45"));
+    REQUIRE_FALSE(checkInteger("76?"));
+    REQUIRE_FALSE(checkInteger("abc"));
+}
+
 TEST_CASE("checkNameWithQuotes") {
     // valid 
     REQUIRE(checkNameWithQuotes("\"name\""));
@@ -89,15 +100,9 @@ TEST_CASE("checkNameWithQuotes") {
     REQUIRE_FALSE(checkNameWithQuotes("\"my name\""));
     REQUIRE_FALSE(checkNameWithQuotes("\"name?\""));
     REQUIRE_FALSE(checkNameWithQuotes("\"n@me\""));
-}
 
-TEST_CASE("checkInteger") {
-    // valid
-    REQUIRE(checkInteger("123"));
-    REQUIRE(checkInteger("098"));
-
-    // invalid
-    REQUIRE_FALSE(checkInteger(" 45"));
-    REQUIRE_FALSE(checkInteger("76?"));
-    REQUIRE_FALSE(checkInteger("abc"));
+    REQUIRE_FALSE(checkNameWithQuotes("name"));
+    REQUIRE_FALSE(checkNameWithQuotes("\"NaMe"));
+    REQUIRE_FALSE(checkNameWithQuotes("N4m3\""));
+    REQUIRE_FALSE(checkNameWithQuotes("\"a\"\""));
 }

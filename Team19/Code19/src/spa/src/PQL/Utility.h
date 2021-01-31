@@ -1,9 +1,26 @@
 #pragma once
 
-#include <iostream> 
+#include <iostream>
 #include <vector>
 #include <algorithm>
-#include <string> 
+#include <string>
+
+#define PROCEDURE "procedure"
+#define STMTLST "stmtLst"
+#define STMT "stmt"
+#define READ "read"
+#define PRINT "print"
+#define ASSIGN "assign"
+#define CALL "call"
+#define WHILE "while"
+#define IF "if"
+#define VARIABLE "variable"
+#define CONSTANT "constant"
+#define INTEGER "integer"
+#define UNDERSCORE "underscore"
+#define NAME "name"
+#define EXPRESSION "expression"
+#define EXPRESSIONWITHUNDERSCORE "expressionwithunderscore"
 
 std::string trim(std::string s);
 

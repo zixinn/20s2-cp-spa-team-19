@@ -55,32 +55,37 @@ bool checkInteger(string s) {
 // Checks if name with quotes conforms to naming standards
 // Returns true if name is valid, false otherwise
 bool checkNameWithQuotes(string s) {
-    s.erase(s.find_last_not_of("\"") + 1);
-    s.erase(0, s.find_first_not_of("\""));
-    bool isValid = checkName(s);
-    return isValid;
+    if (s[0] != '\"' || s[s.length() - 1] != '\"') {
+        return false;
+    }
+    return checkName(trim(s.substr(1, s.length() - 2)));
 }
 
 // Check if expression is valid
 // Returns true if expression is valid, false otherwise
 bool checkExpression(string s) {
     // This is just a stub, SP will be implementing it
+    if (s[0] != '\"' || s[s.length() - 1] != '\"') {
+        return false;
+    }
+    string str = trim(s.substr(1, s.length() - 2));
+    // TODO
     return true;
 }
 
-// Check if expression with underscores is valid
+// Checks if expression with underscores is valid
 // Returns true if expression is valid, false otherwise
 bool checkExpressionWithUnderscores(string s) {
-    s.erase(s.find_last_not_of("_") + 1);
-    s.erase(0, s.find_first_not_of("_"));
-    bool isValid = checkExpression(s);
-    return isValid;
+    if (s[0] != '_' || s[s.length() - 1] != '_') {
+        return false;
+    }
+    return checkExpression(trim(s.substr(1, s.length() - 2)));
 }
 
-/* Pseudo code for comparing AST as SP hasn't finalise AST structure 
-// Compares two ASTs, returns true if AST1 == AST2 
+/* Pseudo code for comparing AST as SP hasn't finalise AST structure
+// Compares two ASTs, returns true if AST1 == AST2
 // This is a helper function for compareAst
-bool checkIfIdentical(AST* root1, AST*, root2) {
+bool areIdentical(AST* root1, AST*, root2) {
     // base cases
     if (root1 == NULL && root2 == NULL)
         return true;
@@ -89,25 +94,25 @@ bool checkIfIdentical(AST* root1, AST*, root2) {
         return false;
 
     // Check if the data of both roots is same and data of left and right
-    // subtrees are also same 
+    // subtrees are also same
     return (root1->data == root2->data &&
-        checkIfIdentical(root1->left, root2->left) &&
-        checkIfIdentical(root1->right, root2->right));
+        areIdentical(root1->left, root2->left) &&
+        areIdentical(root1->right, root2->right));
 }
 
 // Compares two ASTs, returns true if AST2 is a subexpression of AST1
-bool compareAst(AST* root1, AST* root2) {
-    // base cases 
+bool isSubtree(AST* root1, AST* root2) {
+    // base cases
     if (root1 == NULL || root2 == NULL)
         return true;
 
     // Check the tree with root as current node
-    if (areIdentical(T, S))
+    if (areIdentical(root1, root2))
         return true;
 
     // If the tree with root as current node doesn't match then try left
-    // and right subtrees one by one 
-    return isSubtree(T->left, S) ||
-        isSubtree(T->right, S);
+    // and right subtrees one by one
+    return isSubtree(root1->left, root2) ||
+        isSubtree(root1->right, root2);
 }
 */

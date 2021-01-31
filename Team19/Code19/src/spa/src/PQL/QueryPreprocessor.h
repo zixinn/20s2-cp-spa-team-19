@@ -40,5 +40,5 @@ private:
     bool checkSuchThatClause(string rel, vector<string> args);
 
     bool parsePatternClause(string clause);
-    bool checkPatternClause(string rel, vector<string> args);
+    bool checkPatternClause(string syn, vector<string> args);
 };
