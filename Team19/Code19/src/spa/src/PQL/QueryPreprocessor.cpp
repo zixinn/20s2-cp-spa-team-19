@@ -45,7 +45,7 @@ bool QueryPreprocessor::checkSynonymDeclared(string synonym) {
 string QueryPreprocessor::getArgType(string synonym) {
     if (checkSynonymDeclared(synonym)) {
         return this->declarations[synonym];
-    } else if (isNumber(synonym)) {
+    } else if (checkInteger(synonym)) {
         return INTEGER;
     } else if (synonym == "_") {
         return UNDERSCORE;
@@ -225,12 +225,12 @@ bool QueryPreprocessor::parsePatternClause(string clause) {
     string firstArg = trim(clause.substr(left + 1, comma - left - 1));
     string secondArg = trim(clause.substr(comma + 1, right - comma - 1));
 
-    if (!checkPatternClause(rel, { firstArg, secondArg })) {
+    if (!checkPatternClause(syn, { firstArg, secondArg })) {
         this->isValid = false;
         return false;
     }
 
-    this->patternClauses.push_back(Clause(rel, { firstArg, secondArg }));
+    this->patternClauses.push_back(Clause(syn, { firstArg, secondArg }));
     return true;
 }
 

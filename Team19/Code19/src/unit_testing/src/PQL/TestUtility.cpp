@@ -78,11 +78,11 @@ TEST_CASE("checkName") {
 
 TEST_CASE("isNumber") {
     // valid
-    REQUIRE(isNumber("123"));
-    REQUIRE(isNumber("098"));
+    REQUIRE(checkInteger("123"));
+    REQUIRE(checkInteger("098"));
 
     // invalid
-    REQUIRE_FALSE(isNumber(" 45"));
-    REQUIRE_FALSE(isNumber("76?"));
-    REQUIRE_FALSE(isNumber("abc"));
+    REQUIRE_FALSE(checkInteger(" 45"));
+    REQUIRE_FALSE(checkInteger("76?"));
+    REQUIRE_FALSE(checkInteger("abc"));
 }

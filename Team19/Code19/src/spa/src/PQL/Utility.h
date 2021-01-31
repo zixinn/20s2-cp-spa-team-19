@@ -5,20 +5,18 @@
 #include <algorithm>
 #include <string> 
 
-using namespace std;
+std::string trim(std::string s);
 
-string trim(string s);
+std::vector<std::string> split(std::string s, std::string delimiter);
 
-vector<string> split(string s, string delimiter);
+bool checkName(std::string s);
 
-bool checkName(string s);
+bool checkInteger(std::string s);
 
-bool checkInteger(string s);
+bool checkNameWithQuotes(std::string s);
 
-bool checkNameWithQuotes(string s);
+bool checkExpression(std::string s);
 
-bool checkExpression(string s);
-
-bool checkExpressionWithUnderscores(string s);
+bool checkExpressionWithUnderscores(std::string s);
 
 //bool compareAst(AST* root1, AST* root2);

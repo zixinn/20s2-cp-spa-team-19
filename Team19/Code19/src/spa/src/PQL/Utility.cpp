@@ -1,4 +1,4 @@
-﻿#include <Utility.h> 
+﻿#include "Utility.h" 
 
 using namespace std;
 
@@ -70,7 +70,7 @@ bool checkExpression(string s) {
 
 // Check if expression with underscores is valid
 // Returns true if expression is valid, false otherwise
-bool checkExpressionWithUnderscores(string s)​ {
+bool checkExpressionWithUnderscores(string s) {
     s.erase(s.find_last_not_of("_") + 1);
     s.erase(0, s.find_first_not_of("_"));
     bool isValid = checkExpression(s);
