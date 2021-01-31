@@ -1,4 +1,6 @@
 #include "TestWrapper.h"
+//#include "sp/Parser.h"
+
 
 // implementation code of WrapperFactory - do NOT modify the next 5 lines
 AbstractWrapper* WrapperFactory::wrapper = 0;
@@ -19,6 +21,10 @@ TestWrapper::TestWrapper() {
 void TestWrapper::parse(std::string filename) {
 	// call your parser to do the parsing
   // ...rest of your code...
+    //std::vector<string> stubTokens{ "procedure", "main", "{", "x", "=", "10", ";", "}", "EOF" };
+    //auto l = new LexerStub(stubTokens);     //new keyword gets me a ptr to LexerStub
+    //Parser p = Parser(l);
+
 }
 
 // method to evaluating a query

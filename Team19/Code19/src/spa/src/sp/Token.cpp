@@ -12,3 +12,10 @@ Token::TokenType Token::getType() {
 string Token::getLiteral() {
 	return this->literal;
 }
+
+bool Token::compare(Token* other) {
+	if (!other) {
+		throw "Token comparison fails";
+	}
+	return this->literal == other->literal && this->type == other->type;
+}

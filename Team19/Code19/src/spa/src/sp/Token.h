@@ -21,6 +21,7 @@ public:
 	
 	TokenType getType();
 	string getLiteral();
+	bool compare(Token* other);
 
 private:
 	TokenType type;
