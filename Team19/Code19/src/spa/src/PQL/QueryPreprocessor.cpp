@@ -2,7 +2,7 @@
 
 #include "QueryPreprocessor.h"
 #include "../AbstractAPI.h"
-#include "Utility.h"
+#include "../Utility.h"
 
 QueryPreprocessor::QueryPreprocessor() {
     designEntities = { PROCEDURE, STMTLST, STMT, READ, PRINT, ASSIGN, CALL, WHILE, IF, VARIABLE, CONSTANT };

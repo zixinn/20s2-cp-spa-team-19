@@ -1,4 +1,4 @@
-#include "PQL/Utility.h"
+#include "Utility.h"
 #include "catch.hpp"
 
 using namespace std;
