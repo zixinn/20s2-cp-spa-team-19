@@ -1,28 +1,29 @@
 #include "Lexer.h"
+#include "../Utility.h"
 
-#include <algorithm> // for all_of function
-
+//#include <algorithm> // for all_of function
+//
 //from pql/Utility
-bool checkName(string s) {
-	bool isValid = false;
-	if (isalpha(s[0])) {
-		isValid = true;
-		for (int i = 1; i <= s.length() - 1; i++)
-		{
-			isValid = (isalnum(s[i]));
-
-			if (!isValid) {
-				break;
-			}
-		}
-	}
-	return isValid;
-}
-
+//bool checkName(string s) {
+//	bool isValid = false;
+//	if (isalpha(s[0])) {
+//		isValid = true;
+//		for (int i = 1; i <= s.length() - 1; i++)
+//		{
+//			isValid = (isalnum(s[i]));
+//
+//			if (!isValid) {
+//				break;
+//			}
+//		}
+//	}
+//	return isValid;
+//}
+//
 //from pql/Utility
-bool isNumber(string s) {
-	return !s.empty() && all_of(s.begin(), s.end(), ::isdigit);
-}
+//bool checkInteger(string s) {
+//	return !s.empty() && all_of(s.begin(), s.end(), ::isdigit);
+//}
 
 bool Lexer::tokenise(string str, vector<Token>& result) {
 	
@@ -175,7 +176,7 @@ Token Lexer::makeNameConstKeyToken(string::iterator& it) {
 		return Token(Token::TokenType::ELSE, literal);
 	} else if (checkName(literal)) {
 		return Token(Token::TokenType::NAME, literal);
-	} else if (isNumber(literal)) {
+	} else if (checkInteger(literal)) {
 		return Token(Token::TokenType::CONST, literal);
 	} else {
 		return Token(Token::TokenType::ERROR, literal);

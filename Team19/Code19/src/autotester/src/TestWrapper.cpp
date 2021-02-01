@@ -1,6 +1,6 @@
 #include "TestWrapper.h"
-//#include "sp/Lexer.h"
-//#include "sp/Parser.h"
+//#include "SP/Lexer.h"
+//#include "SP/Parser.h"
 
 
 // implementation code of WrapperFactory - do NOT modify the next 5 lines

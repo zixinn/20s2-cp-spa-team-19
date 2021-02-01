@@ -1,8 +1,8 @@
 #include "Index.fwd.h"
 
 /*
-*  ast/Index.fwd.h contains forward declaration sp/Token.fwd.h
-*  ast/AssignStmt.h needs to know sp/Token.h before it can work
+*  ast/Index.fwd.h contains forward declaration SP/Token.fwd.h
+*  ast/AssignStmt.h needs to know SP/Token.h before it can work
 */
 #include "SP/Token.h"
 //#include "Node.fwd.h"
