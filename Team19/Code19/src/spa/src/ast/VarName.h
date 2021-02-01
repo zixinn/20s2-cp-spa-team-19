@@ -1,6 +1,6 @@
 //  VarName
 #include "Index.fwd.h"
-#include "sp/Token.h"
+#include "SP/Token.h"
 //#include "Node.fwd.h"
 //#include "Expr.fwd.h"
 //#include "VarName.fwd.h"

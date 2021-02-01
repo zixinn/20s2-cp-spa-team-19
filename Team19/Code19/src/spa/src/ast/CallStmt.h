@@ -1,6 +1,6 @@
 #include "Index.fwd.h"
 
-#include "sp/Token.h"
+#include "SP/Token.h"
 
 // Call
 namespace ast {

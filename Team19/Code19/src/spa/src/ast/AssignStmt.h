@@ -4,7 +4,7 @@
 *  ast/Index.fwd.h contains forward declaration sp/Token.fwd.h
 *  ast/AssignStmt.h needs to know sp/Token.h before it can work
 */
-#include "sp/Token.h"
+#include "SP/Token.h"
 //#include "Node.fwd.h"
 //#include "Expr.fwd.h"
 //#include "Stmt.fwd.h"

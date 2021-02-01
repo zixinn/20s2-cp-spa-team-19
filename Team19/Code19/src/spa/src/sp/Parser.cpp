@@ -9,7 +9,7 @@ using namespace std;
 //#include "TNode.h"
 
 #include "ast/Index.h" // need this so assignStmt knows stmt exist
-#include "sp/Parser.h"
+#include "SP/Parser.h"
 
 namespace TokenUtils {
 

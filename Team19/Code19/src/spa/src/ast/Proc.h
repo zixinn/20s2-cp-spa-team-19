@@ -1,6 +1,6 @@
 // Procedure 
 #include "Index.fwd.h"
-#include "sp/Token.h"
+#include "SP/Token.h"
 
 namespace ast {
 	class Proc : public Node

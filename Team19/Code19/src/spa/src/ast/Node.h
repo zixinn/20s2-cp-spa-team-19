@@ -1,6 +1,6 @@
 #pragma once
 #include "Index.fwd.h"
-#include "sp/Token.h"
+#include "SP/Token.h"
 //#include "Node.fwd.h"
 
 // stub for actual Token, moved to .fwd.h

@@ -9,7 +9,7 @@
 
 #include <string>
 #include <vector>
-#include "sp/Token.fwd.h"
+#include "SP/Token.fwd.h"
 
 // stub for actual Token
 //typedef std::string Token;

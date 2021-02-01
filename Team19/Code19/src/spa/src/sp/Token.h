@@ -16,6 +16,10 @@ public:
 		NOT,  //prefix cond
 		SEMICOLON, LPAREN, RPAREN, LBRACE, RBRACE  //delimiters
 	};
+	
+	//default constructor for initialising
+	Token();
+	~Token();
 
 	Token(TokenType type, string literal);
 	

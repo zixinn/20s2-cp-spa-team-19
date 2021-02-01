@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ast/Index.fwd.h"
-#include "sp/Token.h"
+#include "SP/Token.h"
 
 using namespace std;
 

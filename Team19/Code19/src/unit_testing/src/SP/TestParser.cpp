@@ -3,7 +3,7 @@
 #include <vector>
 #include <iostream>
 #include "ast/Index.h"
-#include "sp/Parser.h"
+#include "SP/Parser.h"
 
 #include "catch.hpp"
 using namespace std;
@@ -49,7 +49,7 @@ TEST_CASE("Parser NextToken Test") {
     auto l = new LexerStub(stubTokens);     //new keyword gets me a ptr to LexerStub
     Parser p = Parser(l);
 
-	REQUIRE(p.getCurrToken()->getLiteral() == "procedure");
+    REQUIRE(p.getCurrToken()->getLiteral() == "procedure");
     REQUIRE(p.getCurrToken()->compare(stubTokens[0]));
 
     for (Token* token : stubTokens) {
@@ -145,7 +145,7 @@ TEST_CASE("Parse StmtLst - Assign Test") {
     Parser p = Parser(l);
     ast::StmtLst* stmt_lst = p.parseStmtLst();
 
-	REQUIRE((*stmt_lst).getStatements().size() == 3);
+    REQUIRE((*stmt_lst).getStatements().size() == 3);
 
     std::vector<std::string> identifiers{ "x", "y", "fixx" };
     for (int i = 0; i < identifiers.size(); ++i) {
@@ -174,7 +174,7 @@ TEST_CASE("Parse StmtLst - Call Test") {
     Parser p = Parser(l);
     ast::StmtLst* stmt_lst = p.parseStmtLst();
 
-	REQUIRE((*stmt_lst).getStatements().size() == 2);
+    REQUIRE((*stmt_lst).getStatements().size() == 2);
 
     std::vector<std::string> identifiers{ "sun", "moon" };
     for (int i = 0; i < identifiers.size(); ++i) {

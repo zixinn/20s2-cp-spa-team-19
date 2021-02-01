@@ -1,5 +1,14 @@
 #include "Token.h"
 
+Token::Token() {
+
+}
+
+Token::~Token() {
+
+}
+
+
 Token::Token(TokenType type, string literal) {
 	this->type = type;
 	this->literal = literal;
