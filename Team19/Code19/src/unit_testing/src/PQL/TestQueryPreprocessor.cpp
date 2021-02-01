@@ -95,6 +95,18 @@ TEST_CASE("process valid query with no such that and pattern clause") {
     REQUIRE(actual == expected);
 }
 
+TEST_CASE("process valid query with comma in declaration") {
+    QueryPreprocessor qp = QueryPreprocessor();
+    string query = "stmt s1, s2; \nSelect s1 such that Follows(s1, s2)";
+    Query actual = qp.process(query);
+    Clause c = Clause("Follows", {"s1", "s2"});
+    unordered_map<string, string> declarations;
+    declarations["s1"] = "stmt";
+    declarations["s2"] = "stmt";
+    Query expected = Query(declarations, "s1", { c }, {}, true);
+    REQUIRE(actual == expected);
+}
+
 TEST_CASE("process valid query with such that clause") {
     QueryPreprocessor qp = QueryPreprocessor();
     string query = "assign a; while w; \nSelect w such that Parent* (w, a)";

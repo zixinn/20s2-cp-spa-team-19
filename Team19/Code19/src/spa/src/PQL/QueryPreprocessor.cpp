@@ -1,6 +1,7 @@
 #include <regex>
 
 #include "QueryPreprocessor.h"
+#include "../AbstractAPI.h"
 #include "Utility.h"
 
 QueryPreprocessor::QueryPreprocessor() {
@@ -119,7 +120,6 @@ bool QueryPreprocessor::parseSelect(string select) {
         return parseToSelect(trim(select.substr(0, patternPos)))
                && parsePatternClause(trim(select.substr(patternPos + 9)));
     } else { // both such that and pattern clause
-        int minPos = min(suchThatPos, patternPos);
         if (suchThatPos < patternPos) { // such that before pattern
             return parseToSelect(trim(select.substr(0, suchThatPos)))
                    && parseSuchThatClause(trim(select.substr(suchThatPos + 11, patternPos - suchThatPos - 11)))

@@ -5,23 +5,6 @@
 #include <algorithm>
 #include <string>
 
-#define PROCEDURE "procedure"
-#define STMTLST "stmtLst"
-#define STMT "stmt"
-#define READ "read"
-#define PRINT "print"
-#define ASSIGN "assign"
-#define CALL "call"
-#define WHILE "while"
-#define IF "if"
-#define VARIABLE "variable"
-#define CONSTANT "constant"
-#define INTEGER "integer"
-#define UNDERSCORE "underscore"
-#define NAME "name"
-#define EXPRESSION "expression"
-#define EXPRESSIONWITHUNDERSCORE "expressionwithunderscore"
-
 std::string trim(std::string s);
 
 std::vector<std::string> split(std::string s, std::string delimiter);

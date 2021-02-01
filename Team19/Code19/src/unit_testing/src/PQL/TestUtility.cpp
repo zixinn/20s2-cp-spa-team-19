@@ -88,7 +88,7 @@ TEST_CASE("checkInteger") {
 }
 
 TEST_CASE("checkNameWithQuotes") {
-    // valid 
+    // valid name
     REQUIRE(checkNameWithQuotes("\"name\""));
     REQUIRE(checkNameWithQuotes("\"NaMe\""));
     REQUIRE(checkNameWithQuotes("\"N4m3\""));
