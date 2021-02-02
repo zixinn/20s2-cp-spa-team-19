@@ -2,7 +2,7 @@
 
 StmtTable::StmtTable() = default;
 
-StmtNode StmtTable::getStmtNode(StmtNum stmtNum) {
+ast::Stmt StmtTable::getStmtNode(StmtNum stmtNum) {
     if (stmtASTMap.find(stmtNum) == stmtASTMap.end()) {
         std::cerr << "No statement with StmtNum " << stmtNum << " stored in stmtASTMap." << std::endl;
         throw std::exception();
@@ -43,7 +43,7 @@ int StmtTable::getSize() {
     return stmtNums.size();
 }
 
-bool StmtTable::storeStmt(StmtNum stmtNum, StmtNode stmtNode, STRING type) {
+bool StmtTable::storeStmt(StmtNum stmtNum, ast::Stmt stmtNode, STRING type) {
     bool inserted = stmtASTMap.insert({stmtNum, stmtNode}).second;
 
     if (!inserted) {
