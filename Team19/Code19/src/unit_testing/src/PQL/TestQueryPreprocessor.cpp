@@ -1,0 +1,154 @@
+#include "PQL/QueryPreprocessor.h"
+#include "catch.hpp"
+
+using namespace std;
+
+TEST_CASE("process empty query") {
+    QueryPreprocessor qp = QueryPreprocessor();
+    string query = "";
+    Query actual = qp.process(query);
+    Query expected = Query({}, "", {}, {}, false);
+    REQUIRE(actual == expected);
+}
+
+TEST_CASE("process missing select clause") {
+    QueryPreprocessor qp = QueryPreprocessor();
+    string query = "assign a; while w";
+    Query actual = qp.process(query);
+    Query expected = Query({}, "", {}, {}, false);
+    REQUIRE(actual == expected);
+}
+
+TEST_CASE("process multiple select clause") {
+    QueryPreprocessor qp = QueryPreprocessor();
+    string query = "assign a; while w; \nSelect w such that Parent* (w, a); Select w pattern a (\"count\", _)";
+    Query actual = qp.process(query);
+    Query expected = Query({}, "", {}, {}, false);
+    REQUIRE(actual == expected);
+}
+
+TEST_CASE("process invalid design entity in declaration") {
+    QueryPreprocessor qp = QueryPreprocessor();
+    string query = "assign a; While w; \nSelect w such that Parent* (w, a) pattern a (\"count\", _)";
+    Query actual = qp.process(query);
+    unordered_map<string, string> declarations;
+    declarations["a"] = "assign";
+    Query expected = Query(declarations, "", {}, {}, false);
+    REQUIRE(actual == expected);
+}
+
+TEST_CASE("process invalid synonym in declaration") {
+    QueryPreprocessor qp = QueryPreprocessor();
+    string query = "assign 1a; while w; \nSelect w such that Parent* (w, a) pattern a (\"count\", _)";
+    Query actual = qp.process(query);
+    Query expected = Query({}, "", {}, {}, false);
+    REQUIRE(actual == expected);
+}
+
+TEST_CASE("process synonym not declared") {
+    QueryPreprocessor qp = QueryPreprocessor();
+    string query = "assign a; while W; \nSelect w such that Parent* (w, a) pattern a (\"count\", _)";
+    Query actual = qp.process(query);
+    unordered_map<string, string> declarations;
+    declarations["a"] = "assign";
+    declarations["W"] = "while";
+    Query expected = Query(declarations, "", {}, {}, false);
+    REQUIRE(actual == expected);
+}
+
+TEST_CASE("process invalid such that clause") {
+    QueryPreprocessor qp = QueryPreprocessor();
+    string query = "assign a; stmt s; \nSelect a such that Uses (a, s)";
+    Query actual = qp.process(query);
+    unordered_map<string, string> declarations;
+    declarations["a"] = "assign";
+    declarations["s"] = "stmt";
+    Query expected = Query(declarations, "a", {}, {}, false);
+    REQUIRE(actual == expected);
+
+    query = "assign a; while w; \nSelect w such that Parent* (w, a) and pattern a (\"count\", _)";
+    actual = qp.process(query);
+    unordered_map<string, string> declarations1;
+    declarations1["a"] = "assign";
+    declarations1["w"] = "while";
+    expected = Query(declarations1, "w", {}, {}, false);
+    REQUIRE(actual == expected);
+}
+
+TEST_CASE("process invalid pattern clause") {
+    QueryPreprocessor qp = QueryPreprocessor();
+    string query = "assign a; \nSelect a pattern v (_, \"count + 1\")";
+    Query actual = qp.process(query);
+    unordered_map<string, string> declarations;
+    declarations["a"] = "assign";
+    Query expected = Query(declarations, "a", {}, {}, false);
+    REQUIRE(actual == expected);
+}
+
+TEST_CASE("process valid query with no such that and pattern clause") {
+    QueryPreprocessor qp = QueryPreprocessor();
+    string query = "variable v; Select v";
+    Query actual = qp.process(query);
+    unordered_map<string, string> declarations;
+    declarations["v"] = "variable";
+    Query expected = Query(declarations, "v", {}, {}, true);
+    REQUIRE(actual == expected);
+}
+
+TEST_CASE("process valid query with comma in declaration") {
+    QueryPreprocessor qp = QueryPreprocessor();
+    string query = "stmt s1, s2; \nSelect s1 such that Follows(s1, s2)";
+    Query actual = qp.process(query);
+    Clause c = Clause("Follows", {"s1", "s2"});
+    unordered_map<string, string> declarations;
+    declarations["s1"] = "stmt";
+    declarations["s2"] = "stmt";
+    Query expected = Query(declarations, "s1", { c }, {}, true);
+    REQUIRE(actual == expected);
+}
+
+TEST_CASE("process valid query with such that clause") {
+    QueryPreprocessor qp = QueryPreprocessor();
+    string query = "assign a; while w; \nSelect w such that Parent* (w, a)";
+    Query actual = qp.process(query);
+    Clause c = Clause("Parent*", {"w", "a"});
+    unordered_map<string, string> declarations;
+    declarations["a"] = "assign";
+    declarations["w"] = "while";
+    Query expected = Query(declarations, "w", { c }, {}, true);
+    REQUIRE(actual == expected);
+}
+
+TEST_CASE("process valid query with pattern clause") {
+    QueryPreprocessor qp = QueryPreprocessor();
+    string query = "assign a; \nSelect a pattern a (_, \"count + 1\")";
+    Query actual = qp.process(query);
+    Clause c = Clause("a", { "_", "\"count + 1\"" });
+    unordered_map<string, string> declarations;
+    declarations["a"] = "assign";
+    Query expected = Query(declarations, "a", {}, { c }, true);
+    REQUIRE(actual == expected);
+}
+
+TEST_CASE("process valid query with such that and pattern clause") {
+    QueryPreprocessor qp = QueryPreprocessor();
+    string query = "assign a; while w;\nSelect a pattern a (\"x\", _) such that Uses (a, \"x\")";
+    Query actual = qp.process(query);
+    Clause c1 = Clause("Uses", { "a", "\"x\"" });
+    Clause c2 = Clause("a", { "\"x\"", "_" });
+    unordered_map<string, string> declarations;
+    declarations["a"] = "assign";
+    declarations["w"] = "while";
+    Query expected = Query(declarations, "a", { c1 }, { c2 }, true);
+    REQUIRE(actual == expected);
+
+    query = "assign a; while w;\nSelect a such that Uses (a, \"x\") pattern a (\"x\", _) ";
+    actual = qp.process(query);
+    c1 = Clause("Uses", { "a", "\"x\"" });
+    c2 = Clause("a", { "\"x\"", "_" });
+    unordered_map<string, string> declarations1;
+    declarations1["a"] = "assign";
+    declarations1["w"] = "while";
+    expected = Query(declarations1, "a", { c1 }, { c2 }, true);
+    REQUIRE(actual == expected);
+}
