@@ -9,10 +9,10 @@ using namespace std;
 
 class Lexer {
 public:
-	static bool tokenise(string str, vector<Token>& result);
+	static bool tokenise(string str, vector<sp::Token>& result);
 
 private:
-	static Token nextToken(string::iterator& it);
+	static sp::Token nextToken(string::iterator& it);
 	static void skipWhitespace(string::iterator& it);
-	static Token makeNameConstKeyToken(string::iterator& it);
+	static sp::Token makeNameConstKeyToken(string::iterator& it);
 };

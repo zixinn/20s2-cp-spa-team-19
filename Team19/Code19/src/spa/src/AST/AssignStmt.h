@@ -1,15 +1,8 @@
-#include "Index.fwd.h"
-
-/*
-*  ast/Index.fwd.h contains forward declaration SP/Token.fwd.h
-*  ast/AssignStmt.h needs to know SP/Token.h before it can work
-*/
+#pragma once
 #include "SP/Token.h"
-//#include "Node.fwd.h"
-//#include "Expr.fwd.h"
-//#include "Stmt.fwd.h"
-//#include "VarName.fwd.h"
-//#include "AssignStmt.fwd.h"
+#include "AST/Expr.h"
+#include "AST/VarName.h"
+#include "AST/Stmt.h"
 
 // Assign
 namespace ast {
@@ -18,7 +11,7 @@ namespace ast {
 		Expr* expr;
 	public:
 	//	AssignStmt(int stmtNum, Token token, VarName* var_name, Expr* expr);
-		AssignStmt(int stmtNum, Token* token, VarName* var_name, Expr* expr)
+		AssignStmt(int stmtNum, sp::Token* token, VarName* var_name, Expr* expr)
 			:Stmt( token, stmtNum ), var_name{ var_name }, expr{ expr } {}
 		VarName* getName() { return var_name; }
 		Expr* getExpr() { return expr; }

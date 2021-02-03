@@ -1,15 +1,14 @@
 #pragma once
-#include "Index.fwd.h"
-
-//#include "Node.fwd.h"
-//#include "Expr.fwd.h"
+#include "SP/Token.h"
+#include "AST/Node.h"
+#include "AST/Expr.h"
 
 // Interface Expr for RHS of Assignments
 namespace ast {
 	class Expr : public Node
 	{
 	public:
-		Expr(Token* token) :Node{ token } {};
+		Expr(sp::Token* token) :Node{ token } {};
 		virtual bool compare(Expr* expr) = 0;
 		virtual std::string toString() = 0;
 	};

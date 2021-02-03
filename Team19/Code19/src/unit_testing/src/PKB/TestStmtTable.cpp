@@ -5,7 +5,7 @@ using namespace std;
 
 class StmtNodeStub : public ast::Stmt {
 public:
-    StmtNodeStub(Index index): ast::Stmt(new Token(), index){};
+    StmtNodeStub(int index): ast::Stmt(new sp::Token(), index){};
 };
 
 StmtTable* setupStmtTestTable() {
@@ -107,5 +107,5 @@ TEST_CASE("getAllStmtNums Test") {
 TEST_CASE("getStmtNode Test") {
     StmtTable* stmtTable = setupStmtTestTable();
     REQUIRE(stmtTable->getStmtNode(1)->getIndex() == 1);
-    REQUIRE(stmtTable->getStmtNode(1)->getIndex() == 2);
+    REQUIRE(stmtTable->getStmtNode(2)->getIndex() == 2);
 }

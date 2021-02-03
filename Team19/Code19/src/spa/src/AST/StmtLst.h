@@ -1,7 +1,10 @@
+#pragma once
+
 #include <vector>
-#include "Index.fwd.h"
-//#include "Node.fwd.h"
-//#include "StmtLst.fwd.h"
+#include "SP/Token.h"
+#include "AST/Node.h"
+#include "AST/Stmt.h"
+#include "AST/StmtLst.h"
 
 
 namespace ast {
@@ -9,7 +12,7 @@ namespace ast {
 	{
 		std::vector<Stmt*> statements;
 	public:
-		StmtLst(Token* token, std::vector<Stmt*> statements) :Node{ token }, statements{ statements} {}
+		StmtLst(sp::Token* token, std::vector<Stmt*> statements) :Node{ token }, statements{ statements} {}
 		std::vector<Stmt*> getStatements() { return statements;  };
 		~StmtLst() {
 			for (int i = 0; i < statements.size(); ++i) {
@@ -17,9 +20,5 @@ namespace ast {
 			}
 			statements.clear();
 		}
-		
-
-		// unable to get iterators to work
-		//std::vector<Stmt*>::iterator getIterator() { return statements.begin(); };
 	};
 }

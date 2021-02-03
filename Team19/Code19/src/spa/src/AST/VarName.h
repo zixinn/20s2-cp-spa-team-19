@@ -1,9 +1,7 @@
+#pragma once
 //  VarName
-#include "Index.fwd.h"
 #include "SP/Token.h"
-//#include "Node.fwd.h"
-//#include "Expr.fwd.h"
-//#include "VarName.fwd.h"
+#include "AST/Expr.h"
 
 namespace ast {
 	class VarName : public Expr
@@ -11,7 +9,7 @@ namespace ast {
 	public:
 		const std::string val;		// to change to STRING typedef after integration
 
-		VarName(Token* token, std::string val) :Expr{ token }, val{ val } {}
+		VarName(sp::Token* token, std::string val) :Expr{ token }, val{ val } {}
 		//std::string getTokenLiteral() override { return const_cast<Token*>(token)->getLiteral(); };
 		//inline Token* getToken() override { return token; };
 		bool compare(Expr* expr) override {

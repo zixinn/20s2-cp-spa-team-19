@@ -36,8 +36,8 @@ TEST_CASE("getProcRange Test") {
     REQUIRE(range2.first == 6);
     REQUIRE(range2.second == 10);
 
-    REQUIRE_THROWS_AS(procTable->getProcRange(2), std::out_of_range);
-    REQUIRE_THROWS_AS(procTable->getProcRange(-1), std::out_of_range);
+    REQUIRE_THROWS_AS(procTable->getProcRange(2), std::exception);
+    REQUIRE_THROWS_AS(procTable->getProcRange(-1), std::exception);
 }
 
 TEST_CASE("getSize Test [ProcTable]") {
