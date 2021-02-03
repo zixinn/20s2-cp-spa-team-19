@@ -1,8 +1,5 @@
 #pragma once
-#include "Index.fwd.h"
-
-//#include "Node.fwd.h"
-//#include "CondExpr.fwd.h"
+#include "AST/Node.h"
 
 // Interface CondExpr for booleans
 namespace ast {

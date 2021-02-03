@@ -1,10 +1,7 @@
-// ProcNames are callable
-#include "Index.fwd.h"
+#pragma once
 #include "SP/Token.h"
-
-//#include "Node.fwd.h"
-//#include "Expr.fwd.h"
-//#include "ProcName.fwd.h"
+#include "AST/Expr.h"
+#include "AST/ProcName.h"
 
 namespace ast {
 	class ProcName : public Expr
@@ -12,7 +9,7 @@ namespace ast {
 	public:
 		const std::string val;		// to change to STRING typedef after integration
 
-		ProcName(Token* token, std::string val) :Expr { token }, val{ val } {}
+		ProcName(sp::Token* token, std::string val) :Expr { token }, val{ val } {}
 
 		bool compare(Expr* expr) override {
 			return false; // shouldnt have to compare procedure names

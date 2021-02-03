@@ -1,7 +1,7 @@
 #pragma once
 
-#include "ast/Index.fwd.h"
 #include "SP/Token.h"
+#include "AST/Index.h"
 
 using namespace std;
 
@@ -10,17 +10,17 @@ using namespace std;
 //class LexerStub : public Lexer {
 
 class LexerStub { //: public Lexer {
-	const std::vector<Token*> tokens;
+	const std::vector<sp::Token*> tokens;
 	int index = 0;
 public:
-	LexerStub(std::vector<Token*> tokens) :tokens{ tokens } {};
-	Token* nextToken();
+	LexerStub(std::vector<sp::Token*> tokens) :tokens{ tokens } {};
+	sp::Token* nextToken();
 };
 
 class Parser {
 	LexerStub* l_ptr;
-	Token* currToken = nullptr; // "curr_peek"
-	Token* peekToken = nullptr; //"init_peek";
+	sp::Token* currToken = nullptr; // "curr_peek"
+	sp::Token* peekToken = nullptr; //"init_peek";
 	int pc = 1;
 public:
 	Parser(LexerStub* l_ptr); 
@@ -34,10 +34,10 @@ public:
 	//ast::ReadStmt* parseReadStmt();
 	//ast::PrintStmt* parsePrintStmt();
 
-	inline Token* getCurrToken() { return currToken; };
-	bool currTokenIs(Token::TokenType tok_type);
-	bool expectPeek(Token::TokenType tok_type);
-	bool peekTokenIs(Token::TokenType tok_type);
+	inline sp::Token* getCurrToken() { return currToken; };
+	bool currTokenIs(sp::Token::TokenType tok_type);
+	bool expectPeek(sp::Token::TokenType tok_type);
+	bool peekTokenIs(sp::Token::TokenType tok_type);
 
 	int getPlusPC();
 	std::string genError(std::string str);

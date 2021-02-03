@@ -18,11 +18,11 @@ void require(bool b) {
 
 TEST_CASE("Initial Node Test") {
 
-    Token::TokenType tok_type = Token::TokenType::PLUS;
+    sp::Token::TokenType tok_type = sp::Token::TokenType::PLUS;
 	std::string tok_lit = "plus";
-    Token tok = Token(tok_type, tok_lit);
+    sp::Token tok = sp::Token(tok_type, tok_lit);
 
-    ast::Node * node_ptr = new ast::StubNode(new Token(tok_type, tok_lit));
+    ast::Node * node_ptr = new ast::StubNode(new sp::Token(tok_type, tok_lit));
 	//ast::Node* node_ptr = ast::Node::makeStub(tokenLiteral);
 	
 	//auto flag = tok_lit.compare((*node_ptr).getTokenLiteral());
@@ -34,16 +34,16 @@ TEST_CASE("Initial Node Test") {
 
 TEST_CASE("Parser NextToken Test") {
 
-    std::vector<Token*> stubTokens{ 
-        new Token(Token::TokenType::PROC, "procedure"),
-        new Token(Token::TokenType::NAME, "main"),
-        new Token(Token::TokenType::LBRACE, "{"),
-        new Token(Token::TokenType::NAME, "x"),
-        new Token(Token::TokenType::EQ, "="),
-        new Token(Token::TokenType::CONST, "10"),
-        new Token(Token::TokenType::SEMICOLON, ";"),
-        new Token(Token::TokenType::RBRACE, "}"),
-        new Token(Token::TokenType::EOFF, "EOF"),
+    std::vector<sp::Token*> stubTokens{ 
+        new sp::Token(sp::Token::TokenType::PROC, "procedure"),
+        new sp::Token(sp::Token::TokenType::NAME, "main"),
+        new sp::Token(sp::Token::TokenType::LBRACE, "{"),
+        new sp::Token(sp::Token::TokenType::NAME, "x"),
+        new sp::Token(sp::Token::TokenType::EQ, "="),
+        new sp::Token(sp::Token::TokenType::CONST, "10"),
+        new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+        new sp::Token(sp::Token::TokenType::RBRACE, "}"),
+        new sp::Token(sp::Token::TokenType::EOFF, "EOF"),
     };
     std::vector<string> stubTokensOld{ "procedure", "main", "{", "x", "=", "10", ";", "}", "EOF" };
     auto l = new LexerStub(stubTokens);     //new keyword gets me a ptr to LexerStub
@@ -52,7 +52,7 @@ TEST_CASE("Parser NextToken Test") {
     REQUIRE(p.getCurrToken()->getLiteral() == "procedure");
     REQUIRE(p.getCurrToken()->compare(stubTokens[0]));
 
-    for (Token* token : stubTokens) {
+    for (sp::Token* token : stubTokens) {
         auto tmp_tok = p.getCurrToken();
 	    REQUIRE(token->compare(tmp_tok));
         p.nextToken();
@@ -62,8 +62,8 @@ TEST_CASE("Parser NextToken Test") {
 
 
 TEST_CASE("Parse VarName Test") {
-    std::vector<Token*> stubTokens{
-        new Token(Token::TokenType::NAME, "foobar"),
+    std::vector<sp::Token*> stubTokens{
+        new sp::Token(sp::Token::TokenType::NAME, "foobar"),
     };
 
     auto l = new LexerStub(stubTokens);     //new keyword gets me a ptr to LexerStub
@@ -76,8 +76,8 @@ TEST_CASE("Parse VarName Test") {
 }
 
 TEST_CASE("Parse ProcName Test") {
-    std::vector<Token*> stubTokens{
-        new Token(Token::TokenType::NAME, "procedure"),
+    std::vector<sp::Token*> stubTokens{
+        new sp::Token(sp::Token::TokenType::NAME, "procedure"),
     };
 
     auto l = new LexerStub(stubTokens);     //new keyword gets me a ptr to LexerStub
@@ -90,55 +90,55 @@ TEST_CASE("Parse ProcName Test") {
 }
 
 TEST_CASE("Parse Assign Test") {
-    std::vector<Token*> stubTokens{
-        new Token(Token::TokenType::NAME, "nobody"),
-        new Token(Token::TokenType::ASSIGN, "="),
-        new Token(Token::TokenType::CONST, "10"),
-        new Token(Token::TokenType::SEMICOLON, ";"),
+    std::vector<sp::Token*> stubTokens{
+        new sp::Token(sp::Token::TokenType::NAME, "nobody"),
+        new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+        new sp::Token(sp::Token::TokenType::CONST, "10"),
+        new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
     };
 
     auto l = new LexerStub(stubTokens);     //new keyword gets me a ptr to LexerStub
     Parser p = Parser(l);
     ast::AssignStmt* ass = p.parseAssignStmt();
-    REQUIRE(ass->compareToken(new Token(Token::TokenType::ASSIGN, "=")));
+    REQUIRE(ass->compareToken(new sp::Token(sp::Token::TokenType::ASSIGN, "=")));
     REQUIRE(ass->getName()->getVal() == "nobody");
-    //REQUIRE(ass->compareExpr(new Token(Token::TokenType::CONST, "10")));
+    //REQUIRE(ass->compareExpr(new sp::Token(sp::Token::TokenType::CONST, "10")));
 }
 
 TEST_CASE("Parse Call Test") {
-    std::vector<Token*> stubTokens{
-        new Token(Token::TokenType::CALL, "call"),
-        new Token(Token::TokenType::NAME, "star"),
-        new Token(Token::TokenType::SEMICOLON, ";"),
-        //new Token(Token::TokenType::CALL, "call"),
-        //new Token(Token::TokenType::NAME, "sun"),
-        //new Token(Token::TokenType::SEMICOLON, ";"),
+    std::vector<sp::Token*> stubTokens{
+        new sp::Token(sp::Token::TokenType::CALL, "call"),
+        new sp::Token(sp::Token::TokenType::NAME, "star"),
+        new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+        //new sp::Token(sp::Token::TokenType::CALL, "call"),
+        //new sp::Token(sp::Token::TokenType::NAME, "sun"),
+        //new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
     };
 
     auto l = new LexerStub(stubTokens);     //new keyword gets me a ptr to LexerStub
     Parser p = Parser(l);
     ast::CallStmt* ass = p.parseCallStmt();
-    REQUIRE(ass->compareToken(new Token(Token::TokenType::CALL, "call")));
+    REQUIRE(ass->compareToken(new sp::Token(sp::Token::TokenType::CALL, "call")));
     REQUIRE(ass->getName()->getVal() == "star");
 }
 
 TEST_CASE("Parse StmtLst - Assign Test") {
-    std::vector<Token*> stubTokens{
-        new Token(Token::TokenType::NAME, "x"),
-        new Token(Token::TokenType::ASSIGN, "="),
+    std::vector<sp::Token*> stubTokens{
+        new sp::Token(sp::Token::TokenType::NAME, "x"),
+        new sp::Token(sp::Token::TokenType::ASSIGN, "="),
         // currently will not error when missing RHS this is intentional will fix after parsng RHS
-        new Token(Token::TokenType::CONST, "55"),
+        new sp::Token(sp::Token::TokenType::CONST, "55"),
         // currently will not error when missing ; this is intentional will fix after parsng RHS
-        new Token(Token::TokenType::SEMICOLON, ";"),
-        new Token(Token::TokenType::NAME, "y"),
-        new Token(Token::TokenType::ASSIGN, "="),
-        new Token(Token::TokenType::CONST, "100"),
-        new Token(Token::TokenType::SEMICOLON, ";"),
-        new Token(Token::TokenType::NAME, "fixx"),
-        new Token(Token::TokenType::ASSIGN, "="),
-        new Token(Token::TokenType::CONST, "949412"),
-        new Token(Token::TokenType::SEMICOLON, ";"),
-        new Token(Token::TokenType::EOFF, "EOF"),
+        new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+        new sp::Token(sp::Token::TokenType::NAME, "y"),
+        new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+        new sp::Token(sp::Token::TokenType::CONST, "100"),
+        new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+        new sp::Token(sp::Token::TokenType::NAME, "fixx"),
+        new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+        new sp::Token(sp::Token::TokenType::CONST, "949412"),
+        new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+        new sp::Token(sp::Token::TokenType::EOFF, "EOF"),
     };
 
     auto l = new LexerStub(stubTokens);     //new keyword gets me a ptr to LexerStub
@@ -152,7 +152,7 @@ TEST_CASE("Parse StmtLst - Assign Test") {
         auto id = identifiers[i];
         auto tmp_stmt = stmt_lst->getStatements()[i];
         ast::AssignStmt* ass = (ast::AssignStmt*)tmp_stmt;
-        REQUIRE(ass->compareToken(new Token(Token::TokenType::ASSIGN, "=")));
+        REQUIRE(ass->compareToken(new sp::Token(sp::Token::TokenType::ASSIGN, "=")));
         REQUIRE(ass->getName()->getVal() == id);
         REQUIRE(ass->getIndex() == i + 1);
         //REQUIRE(false);
@@ -160,14 +160,14 @@ TEST_CASE("Parse StmtLst - Assign Test") {
 }
 
 TEST_CASE("Parse StmtLst - Call Test") {
-    std::vector<Token*> stubTokens{
-        new Token(Token::TokenType::CALL, "call"),
-        new Token(Token::TokenType::NAME, "sun"),
-        new Token(Token::TokenType::SEMICOLON, ";"),
-        new Token(Token::TokenType::CALL, "call"),
-        new Token(Token::TokenType::NAME, "moon"),
-        new Token(Token::TokenType::SEMICOLON, ";"),
-        new Token(Token::TokenType::EOFF, "EOF"),
+    std::vector<sp::Token*> stubTokens{
+        new sp::Token(sp::Token::TokenType::CALL, "call"),
+        new sp::Token(sp::Token::TokenType::NAME, "sun"),
+        new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+        new sp::Token(sp::Token::TokenType::CALL, "call"),
+        new sp::Token(sp::Token::TokenType::NAME, "moon"),
+        new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+        new sp::Token(sp::Token::TokenType::EOFF, "EOF"),
     };
 
     auto l = new LexerStub(stubTokens);     //new keyword gets me a ptr to LexerStub
@@ -181,7 +181,7 @@ TEST_CASE("Parse StmtLst - Call Test") {
         auto id = identifiers[i];
         auto tmp_stmt = stmt_lst->getStatements()[i];
         ast::CallStmt* calls = (ast::CallStmt*)tmp_stmt;
-        REQUIRE(calls->compareToken(new Token(Token::TokenType::CALL, "call")));
+        REQUIRE(calls->compareToken(new sp::Token(sp::Token::TokenType::CALL, "call")));
         REQUIRE(calls->getName()->getVal() == id);
         REQUIRE(calls->getIndex() == i + 1);
         //REQUIRE(false);
