@@ -1,4 +1,7 @@
+#pragma once
+
 #include <vector>
+#include "AST/Proc.h"
 
 namespace ast {
 	class Program //: public Node

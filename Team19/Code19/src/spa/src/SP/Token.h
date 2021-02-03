@@ -4,31 +4,32 @@
 
 using namespace std;
 
-class Token {
-public:
-	enum class TokenType {
-		ERROR, EOFF,
-		PROC, READ, PRINT, CALL, WHILE, IF, THEN, ELSE, ASSIGN,  //keywords
-		NAME, CONST,   //identifiers
-		PLUS, MINUS, TIMES, DIV, MOD,  //operators
-		AND, OR,  //infix cond
-		EQ, NEQ, GT, GTE, LT, LTE,  //rel expr
-		NOT,  //prefix cond
-		SEMICOLON, LPAREN, RPAREN, LBRACE, RBRACE  //delimiters
+namespace sp {
+	class Token {
+	public:
+		enum class TokenType {
+			ERROR, EOFF,
+			PROC, READ, PRINT, CALL, WHILE, IF, THEN, ELSE, ASSIGN,  //keywords
+			NAME, CONST,   //identifiers
+			PLUS, MINUS, TIMES, DIV, MOD,  //operators
+			AND, OR,  //infix cond
+			EQ, NEQ, GT, GTE, LT, LTE,  //rel expr
+			NOT,  //prefix cond
+			SEMICOLON, LPAREN, RPAREN, LBRACE, RBRACE  //delimiters
+		};
+
+		//default constructor for initialising
+		Token();
+		~Token();
+
+		Token(TokenType type, string literal);
+
+		TokenType getType();
+		string getLiteral();
+		bool compare(Token* other);
+
+	private:
+		TokenType type;
+		string literal;
 	};
-	
-	//default constructor for initialising
-	Token();
-	~Token();
-
-	Token(TokenType type, string literal);
-	
-	TokenType getType();
-	string getLiteral();
-	bool compare(Token* other);
-
-private:
-	TokenType type;
-	string literal;
-	
-};
+}

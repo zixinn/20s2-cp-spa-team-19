@@ -5,10 +5,6 @@
 
 using namespace std;
 
-//#include "PKB/PKB.h"
-//#include "TNode.h"
-
-#include "ast/Index.h" // need this so assignStmt knows stmt exist
 #include "SP/Parser.h"
 
 namespace TokenUtils {
@@ -27,25 +23,25 @@ void Parser::nextToken() {
 
 ast::StmtLst* Parser::parseStmtLst() {
 	std::vector<ast::Stmt*> xs{};
-	while (this->currToken && (!this->currTokenIs(Token::TokenType::EOFF))) {
+	while (this->currToken && (!this->currTokenIs(sp::Token::TokenType::EOFF))) {
 		ast::Stmt* stmt = this->parseStmt();
 		if (!stmt) { throw this->genError("ParseStmtLst error"); }
 		xs.push_back(stmt);
 		// currToken is semicolon
 		// shuold i also check for } ?
-		if (!this->currTokenIs(Token::TokenType::SEMICOLON)) { 
+		if (!this->currTokenIs(sp::Token::TokenType::SEMICOLON)) { 
 			throw this->genError("ParseStmtLst expected Semicolon, got: " + this->currLiteral());
 		}
 		this->nextToken();		
 	}
-	ast::StmtLst* stmt_lst = new ast::StmtLst(new Token(Token::TokenType::LBRACE, "PLACEHOLDER"), xs);
+	ast::StmtLst* stmt_lst = new ast::StmtLst(new sp::Token(sp::Token::TokenType::LBRACE, "PLACEHOLDER"), xs);
 	return stmt_lst;
 }
 
 ast::Stmt* Parser::parseStmt() {
-	if (this->currTokenIs(Token::TokenType::NAME)) {
+	if (this->currTokenIs(sp::Token::TokenType::NAME)) {
 		return this->parseAssignStmt();
-	} else if (this->currTokenIs(Token::TokenType::CALL)) {
+	} else if (this->currTokenIs(sp::Token::TokenType::CALL)) {
 		return this->parseCallStmt();
 	}
 	throw this->genError("ParseStmt received unexpected token: " + this->currLiteral());
@@ -54,17 +50,17 @@ ast::Stmt* Parser::parseStmt() {
 
 
 ast::CallStmt* Parser::parseCallStmt() {
-	if (!this->currTokenIs(Token::TokenType::CALL)) {
+	if (!this->currTokenIs(sp::Token::TokenType::CALL)) {
 		throw this->genError("ParseCall expected a CALL, got: " + this->currLiteral());
 	}
-	Token* call_tok = this->currToken;
+	sp::Token* call_tok = this->currToken;
 	
-	if (!this->expectPeek(Token::TokenType::NAME)) {
+	if (!this->expectPeek(sp::Token::TokenType::NAME)) {
 		throw this->genError("ParseCall expected a NAME, got: " + this->peekLiteral()); //peek adv only when tru
 	}
 	ast::ProcName* pn = this->parseProcName();
 
-	if (!this->expectPeek(Token::TokenType::SEMICOLON)) {
+	if (!this->expectPeek(sp::Token::TokenType::SEMICOLON)) {
 		throw this->genError("ParseCall expected a SEMICOLON, got: " + this->peekLiteral()); //peek adv only when tru
 	}
 
@@ -79,17 +75,17 @@ ast::CallStmt* Parser::parseCallStmt() {
 
 
 ast::AssignStmt* Parser::parseAssignStmt() {
-	if (!this->currTokenIs(Token::TokenType::NAME)) {
+	if (!this->currTokenIs(sp::Token::TokenType::NAME)) {
 		throw this->genError("ParseAssign expected a NAME, got: " + this->currLiteral());
 	}
 	ast::VarName* vn = this->parseVarName();
 
-	if (!this->expectPeek(Token::TokenType::ASSIGN)) {
+	if (!this->expectPeek(sp::Token::TokenType::ASSIGN)) {
 		throw this->genError("ParseAssign expected a ASSIGN, got: " + this->peekLiteral()); //peek adv only when tru
 	}
-	Token* assToken = this->getCurrToken();
+	sp::Token* assToken = this->getCurrToken();
 
-	while (!this->currTokenIs(Token::TokenType::SEMICOLON)) {
+	while (!this->currTokenIs(sp::Token::TokenType::SEMICOLON)) {
 		this->nextToken();
 	}
 
@@ -109,16 +105,16 @@ int Parser::getPlusPC() {
 }
 
 ast::VarName* Parser::parseVarName() {
-	Token* tok = this->currToken;
-	if (currTokenIs(Token::TokenType::NAME)) {
+	sp::Token* tok = this->currToken;
+	if (currTokenIs(sp::Token::TokenType::NAME)) {
 		return new ast::VarName(tok, tok->getLiteral());
 	}
 	throw this->genError("ParseVarName expected a NAME, got: " + tok->getLiteral());
 }
 
 ast::ProcName* Parser::parseProcName() {
-	Token* tok = this->currToken;
-	if (currTokenIs(Token::TokenType::NAME)) {
+	sp::Token* tok = this->currToken;
+	if (currTokenIs(sp::Token::TokenType::NAME)) {
 		return new ast::ProcName(tok, tok->getLiteral());
 	}
 	throw this->genError("ParseProcName expected a NAME, got: " + tok->getLiteral());
@@ -138,21 +134,21 @@ std::string Parser::currLiteral() {
 	return this->currToken->getLiteral();
 }
 
-bool Parser::currTokenIs(Token::TokenType tok_type) {
+bool Parser::currTokenIs(sp::Token::TokenType tok_type) {
 	if (!this->currToken) {
 		throw this->genError("currToken Error");
 	}
 	return this->currToken->getType() == tok_type;
 }
 
-bool Parser::peekTokenIs(Token::TokenType tok_type) {
+bool Parser::peekTokenIs(sp::Token::TokenType tok_type) {
 	if (!this->peekToken) {
 		throw this->genError("peekToken Error");
 	}
 	return this->peekToken->getType() == tok_type;
 }
 
-bool Parser::expectPeek(Token::TokenType tok_type) {
+bool Parser::expectPeek(sp::Token::TokenType tok_type) {
 	if (this->peekTokenIs(tok_type)) {
 		this->nextToken();
 		return true;
@@ -164,12 +160,12 @@ bool Parser::parseTest() {
 	return false;
 }
 
-Token* LexerStub::nextToken() {
+sp::Token* LexerStub::nextToken() {
 	if (index >= this->tokens.size()) {
 		int diff = index - this->tokens.size() + 1;
-		return new Token(Token::TokenType::EOFF, "EOFF Count: " + std::to_string(diff)); //EOF
+		return new sp::Token(sp::Token::TokenType::EOFF, "EOFF Count: " + std::to_string(diff)); //EOF
 	}
-	Token* out = this->tokens[index];
+	sp::Token* out = this->tokens[index];
 	++index;
 	return out;
 }
