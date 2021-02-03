@@ -73,5 +73,5 @@ bool StmtTable::storeStmt(StmtNum stmtNum, ast::Stmt *stmtNode, STRING type) {
 }
 
 bool StmtTable::hasStmt(StmtNum stmtNum) {
-    return stmtASTMap.find(stmtNum) != stmtASTMap.end();;
+    return stmtASTMap.find(stmtNum) != stmtASTMap.end();
 }
