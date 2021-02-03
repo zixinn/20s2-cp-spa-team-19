@@ -5,21 +5,21 @@
 #include "../Utility.h"
 
 QueryPreprocessor::QueryPreprocessor() {
-    designEntities = { PROCEDURE, STMTLST, STMT, READ, PRINT, ASSIGN, CALL, WHILE, IF, VARIABLE, CONSTANT };
-    validSuchThatArgType["Follows"] = { { STMT, READ, PROCEDURE, ASSIGN, CALL, WHILE, IF, INTEGER, UNDERSCORE },
-                                   { STMT, READ, PROCEDURE, ASSIGN, CALL, WHILE, IF, INTEGER, UNDERSCORE } };
-    validSuchThatArgType["Follows*"] = { { STMT, READ, PRINT, PROCEDURE, ASSIGN, CALL, WHILE, IF, INTEGER, UNDERSCORE },
-                                   { STMT, READ, PRINT, PROCEDURE, ASSIGN, CALL, WHILE, IF, INTEGER, UNDERSCORE } };
-    validSuchThatArgType["Parent"] = { { STMT, WHILE, IF, INTEGER, UNDERSCORE },
-                                   { STMT, READ, PRINT, PROCEDURE, ASSIGN, CALL, WHILE, IF, INTEGER, UNDERSCORE } };
-    validSuchThatArgType["Parent*"] = { { STMT, WHILE, IF, INTEGER, UNDERSCORE },
-                                   { STMT, READ, PRINT, PROCEDURE, ASSIGN, CALL, WHILE, IF, INTEGER, UNDERSCORE } };
-    validSuchThatArgType["Uses"] = { { STMT, PRINT, PROCEDURE, ASSIGN, CALL, WHILE, IF, INTEGER, NAME },
-                                   { VARIABLE, NAME, UNDERSCORE } };
-    validSuchThatArgType["Modifies"] = { { STMT, READ, PROCEDURE, ASSIGN, CALL, WHILE, IF, INTEGER, NAME },
-                                { VARIABLE, NAME, UNDERSCORE } };
-    validPatternArgType["assign"] = { { VARIABLE, NAME, UNDERSCORE },
-                                { UNDERSCORE, NAME, EXPRESSION, EXPRESSIONWITHUNDERSCORE } };
+    designEntities = {PROCEDURE_, STMTLST_, STMT_, READ_, PRINT_, ASSIGN_, CALL_, WHILE_, IF_, VARIABLE_, CONSTANT_ };
+    validSuchThatArgType["Follows"] = { {STMT_, READ_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, UNDERSCORE_ },
+                                   {     STMT_, READ_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, UNDERSCORE_ } };
+    validSuchThatArgType["Follows*"] = { {STMT_, READ_, PRINT_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, UNDERSCORE_ },
+                                   {      STMT_, READ_, PRINT_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, UNDERSCORE_ } };
+    validSuchThatArgType["Parent"] = { {STMT_, WHILE_, IF_,    INTEGER_,   UNDERSCORE_ },
+                                   {    STMT_, READ_,  PRINT_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, UNDERSCORE_ } };
+    validSuchThatArgType["Parent*"] = { {STMT_, WHILE_, IF_,    INTEGER_,   UNDERSCORE_ },
+                                   {     STMT_, READ_,  PRINT_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, UNDERSCORE_ } };
+    validSuchThatArgType["Uses"] = { {STMT_,     PRINT_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, NAME_ },
+                                   {  VARIABLE_, NAME_,  UNDERSCORE_ } };
+    validSuchThatArgType["Modifies"] = { {STMT_,     READ_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, NAME_ },
+                                {         VARIABLE_, NAME_, UNDERSCORE_ } };
+    validPatternArgType["assign"] = { {VARIABLE_,   NAME_, UNDERSCORE_ },
+                                {      UNDERSCORE_, NAME_, EXPRESSION_, EXPRESSIONWITHUNDERSCORE_ } };
 }
 
 bool QueryPreprocessor::checkSynonymDeclared(string synonym) {
@@ -30,15 +30,15 @@ string QueryPreprocessor::getArgType(string synonym) {
     if (checkSynonymDeclared(synonym)) {
         return this->declarations[synonym];
     } else if (checkInteger(synonym)) {
-        return INTEGER;
+        return INTEGER_;
     } else if (synonym == "_") {
-        return UNDERSCORE;
+        return UNDERSCORE_;
     } else if (checkNameWithQuotes(synonym)) {
-        return NAME;
+        return NAME_;
     } else if (checkExpression(synonym)) {
-        return EXPRESSION;
+        return EXPRESSION_;
     } else if (checkExpressionWithUnderscores(synonym)) {
-        return EXPRESSIONWITHUNDERSCORE;
+        return EXPRESSIONWITHUNDERSCORE_;
     } else {
         return "";
     }
