@@ -11,6 +11,10 @@ int ConstTable::getConstValue(STRING input) {
     }
 }
 
+vector<CONST> const &ConstTable::getAllConsts() const {
+    return consts;
+}
+
 bool ConstTable::hasConst(STRING input) {
     return constMap.find(input) != constMap.end();
 }
@@ -27,6 +31,7 @@ bool ConstTable::storeConst(STRING input) {
         try {
             int inputValue = stoi(input);
             constMap[input] = inputValue;
+            consts.push_back(inputValue);
             return  true;
         } catch (exception e) {
             std::cerr << input << " could not be converted into an integer.\n";

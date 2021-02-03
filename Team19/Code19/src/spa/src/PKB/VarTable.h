@@ -12,7 +12,7 @@ public:
     // otherwise, return -1.
     ID getVarID(STRING varName);
 
-    // Returns the varName corresponding to the varID if it exists. Throws out of index exception otherwise.
+    // Returns the varName corresponding to the varID if it exists. Throws out of range exception otherwise.
     STRING getVarName(ID varID);
 
     // returns a const reference to the vector of all variable names stored.
