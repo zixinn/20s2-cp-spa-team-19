@@ -2,7 +2,7 @@
 
 StmtTable::StmtTable() = default;
 
-ast::Stmt StmtTable::getStmtNode(StmtNum stmtNum) {
+ast::Stmt* StmtTable::getStmtNode(StmtNum stmtNum) {
     if (stmtASTMap.find(stmtNum) == stmtASTMap.end()) {
         std::cerr << "No statement with StmtNum " << stmtNum << " stored in stmtASTMap." << std::endl;
         throw std::exception();
@@ -43,7 +43,7 @@ int StmtTable::getSize() {
     return stmtNums.size();
 }
 
-bool StmtTable::storeStmt(StmtNum stmtNum, ast::Stmt stmtNode, STRING type) {
+bool StmtTable::storeStmt(StmtNum stmtNum, ast::Stmt *stmtNode, STRING type) {
     bool inserted = stmtASTMap.insert({stmtNum, stmtNode}).second;
 
     if (!inserted) {
@@ -51,17 +51,17 @@ bool StmtTable::storeStmt(StmtNum stmtNum, ast::Stmt stmtNode, STRING type) {
         return inserted;
     }
 
-    if (type == ASSIGN) {
+    if (type == ASSIGN_) {
         assignStmtNums.push_back(stmtNum);
-    } else if (type == READ) {
+    } else if (type == READ_) {
         readStmtNums.push_back(stmtNum);
-    } else if (type == PRINT) {
+    } else if (type == PRINT_) {
         printStmtNums.push_back(stmtNum);
-    } else if (type == CALL) {
+    } else if (type == CALL_) {
         callStmtNums.push_back(stmtNum);
-    } else if (type == WHILE) {
+    } else if (type == WHILE_) {
         whileStmtNums.push_back(stmtNum);
-    } else if (type == IF) {
+    } else if (type == IF_) {
         ifStmtNums.push_back(stmtNum);
     } else {
         // Statement has already been checked and must be one of the above types.
