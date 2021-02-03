@@ -1,4 +1,6 @@
 #include "Index.fwd.h"
+#include "SP/Token.h"
+#include "Node.h"
 //#include "Node.fwd.h"
 //#include "Stmt.fwd.h"
 
