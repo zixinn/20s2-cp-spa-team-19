@@ -1,4 +1,7 @@
 #include "TestWrapper.h"
+//#include "SP/Lexer.h"
+//#include "SP/Parser.h"
+
 
 // implementation code of WrapperFactory - do NOT modify the next 5 lines
 AbstractWrapper* WrapperFactory::wrapper = 0;
@@ -19,6 +22,18 @@ TestWrapper::TestWrapper() {
 void TestWrapper::parse(std::string filename) {
 	// call your parser to do the parsing
   // ...rest of your code...
+    //std::vector<string> stubTokens{ "procedure", "main", "{", "x", "=", "10", ";", "}", "EOF" };
+    //auto l = new LexerStub(stubTokens);     //new keyword gets me a ptr to LexerStub
+    //Parser p = Parser(l);
+		//2, 11, 30, 11, 10, 11, 13, 12, 14, 0, 27, 31
+	/*
+	vector<Token> tokens;
+	bool valid = Lexer::tokenise("procedure q {\n z = x + 1-    a1;}", tokens);
+	for (int i = 0; i < tokens.size(); i++) {
+		cout << tokens[i].getLiteral() << " " << int(tokens[i].getType()) <<endl;
+	}
+	cout << valid << endl;
+	*/
 }
 
 // method to evaluating a query
