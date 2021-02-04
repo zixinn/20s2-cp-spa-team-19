@@ -1,10 +1,3 @@
-#include<stdio.h>
-#include <iostream>
-#include <string>
-#include <vector>
-
-using namespace std;
-
 #include "PKB.h"
 #include "../TNode.h"
 
@@ -12,6 +5,8 @@ using namespace std;
 ConstTable* PKB::constTable = new ConstTable();
 VarTable* PKB::varTable = new VarTable();
 ProcTable* PKB::procTable = new ProcTable();
+StmtTable* PKB::stmtTable = new StmtTable();
+StmtLstTable* PKB::stmtLstTable = new StmtLstTable();
 
 // Initialise PKB abstration storage components
 

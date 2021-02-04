@@ -23,7 +23,7 @@ STRING ProcTable::getProcName(ID procID) {
 pair<StmtNum, StmtNum> ProcTable::getProcRange(ID procID) {
     if (procStmtMap.find(procID) == procStmtMap.end()) {
         std::cerr << "Index out of range: No procedure with ID " << procID << " in procStmtMap." << std::endl;
-        throw std::out_of_range("ProcID not found in procStmtMap.");
+        throw std::exception();
     } else {
         return procStmtMap.find(procID)->second;
     }
