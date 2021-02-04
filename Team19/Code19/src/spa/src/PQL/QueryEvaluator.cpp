@@ -49,29 +49,15 @@ list<string> QueryEvaluator::evaluate(Query query) {
 
     this->declarations = query.getDeclarations();
     this->toSelect = query.getToSelect();
-    this->suchThatClauses = query.getSuchThatClauses();
-    this->patternClauses = query.getPatternClauses();
+    this->clauses = query.getClauses();
 
-    for (Clause clause : this->patternClauses) {
+    for (Clause clause : this->clauses) {
         unordered_map<string, vector<int>> tempResults;
         if (!evaluateClause(clause, tempResults)) {
             return emptyList;
         }
         if (!tempResults.empty()) {
             join(tempResults);
-        }
-    }
-
-    for (Clause clause : this->suchThatClauses) {
-        unordered_map<string, vector<int>> tempResults;
-        if (!evaluateClause(clause, tempResults)) {
-            return emptyList;
-        }
-        if (!tempResults.empty()) {
-            join(tempResults);
-            if (results.empty()) {
-                return emptyList;
-            }
         }
     }
 

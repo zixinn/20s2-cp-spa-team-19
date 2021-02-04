@@ -19,8 +19,7 @@ public:
 private:
     unordered_map<string, string> declarations;
     string toSelect;
-    vector<Clause> suchThatClauses;
-    vector<Clause> patternClauses;
+    vector<Clause> clauses;
     unordered_map<string, vector<int>> results; // maps synonym declared to possible values for that synonym,
                                                 // each column in the table is represented as an entry in the map
 

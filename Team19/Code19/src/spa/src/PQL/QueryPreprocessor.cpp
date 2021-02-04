@@ -43,8 +43,7 @@ string QueryPreprocessor::getArgType(string synonym) {
 Query QueryPreprocessor::process(string query) {
     this->declarations.clear();
     this->toSelect = "";
-    this->suchThatClauses.clear();
-    this->patternClauses.clear();
+    this->clauses.clear();
     this->isValid = true;
 
     vector<string> statements = split(query, ";");
@@ -80,7 +79,7 @@ Query QueryPreprocessor::process(string query) {
         }
     }
 
-    return Query(this->declarations, this->toSelect, this->suchThatClauses, this->patternClauses, this->isValid);
+    return Query(this->declarations, this->toSelect, this->clauses, this->isValid);
 }
 
 bool QueryPreprocessor::parseDeclaration(string designEntity, string synonyms) {
@@ -156,7 +155,7 @@ bool QueryPreprocessor::parseSuchThatClause(string clause) {
         return false;
     }
 
-    this->suchThatClauses.push_back(Clause(rel, { firstArg, secondArg }));
+    this->clauses.push_back(Clause(rel, { firstArg, secondArg }));
     return true;
 }
 
@@ -195,7 +194,7 @@ bool QueryPreprocessor::parsePatternClause(string clause) {
         return false;
     }
 
-    this->patternClauses.push_back(Clause(syn, { firstArg, secondArg }));
+    this->clauses.push_back(Clause(syn, { firstArg, secondArg }));
     return true;
 }
 
