@@ -12,10 +12,10 @@ public:
     // otherwise, return -1.
     ID getProcID(STRING procName);
 
-    // Returns the procName corresponding to the procID if it exists. Throws out of index exception otherwise.
+    // Returns the procName corresponding to the procID if it exists. Throws exception otherwise.
     STRING getProcName(ID procID);
 
-    // Returns the procedure's startStmt and endStmt if it exists. Throws out of index exception otherwise.
+    // Returns the procedure's startStmt and endStmt if it exists. Throws exception otherwise.
     pair<StmtNum, StmtNum> getProcRange(ID procID);
 
     // returns a const reference to the vector of all procedure names stored.

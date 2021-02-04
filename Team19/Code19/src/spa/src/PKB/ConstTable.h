@@ -9,7 +9,9 @@ public:
     ConstTable();
 
     // Returns the value of the specified constant. Returns -1 if it is not found.
-    int getConstValue(STRING const);
+    CONST getConstValue(STRING const);
+    // Returns a const reference to the vector of all constants stored.
+    vector<CONST> const &getAllConsts() const;
     // Returns TRUE if const exists in the table; false otherwise.
     bool hasConst(STRING const);
     // Returns the number of constants stored in the table.
@@ -20,4 +22,5 @@ public:
 
 private:
     unordered_map<STRING, CONST> constMap;
+    vector<CONST> consts;
 };

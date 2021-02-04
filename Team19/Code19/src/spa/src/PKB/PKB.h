@@ -3,6 +3,8 @@
 #include "ConstTable.h" // included as .cpp needs constructor
 #include "VarTable.h"
 #include "ProcTable.h"
+#include "StmtTable.h"
+#include "StmtLstTable.h"
 
 #include "../AbstractAPI.h"
 
@@ -23,6 +25,8 @@ public:
     static ConstTable* constTable;
     static VarTable* varTable;
     static ProcTable* procTable;
+    static StmtTable* stmtTable;
+    static StmtLstTable* stmtLstTable;
 
 
 };
