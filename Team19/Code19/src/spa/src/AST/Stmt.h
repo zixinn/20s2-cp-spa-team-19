@@ -1,8 +1,5 @@
 #pragma once
-
-#include "SP/Token.h"
 #include "AST/Node.h"
-#include "AST/Stmt.h"
 
 // Interface Stmt for anything with a statement number
 namespace ast {

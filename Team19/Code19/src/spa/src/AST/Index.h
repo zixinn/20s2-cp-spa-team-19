@@ -18,4 +18,6 @@
 #include "Program.h"
 
 #include "AssignStmt.h"
+#include "ReadStmt.h"
 #include "CallStmt.h"
+#include "PrintStmt.h"

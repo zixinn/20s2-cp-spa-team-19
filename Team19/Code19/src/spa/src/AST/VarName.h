@@ -1,5 +1,6 @@
 #pragma once
 //  VarName
+#include <typeinfo>
 #include "SP/Token.h"
 #include "AST/Expr.h"
 
