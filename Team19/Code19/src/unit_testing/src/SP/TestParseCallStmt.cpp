@@ -1,4 +1,5 @@
 #include <string>
+#include <iostream>
 #include <vector>
 #include "AST/Index.h"
 #include "SP/Parser.h"
@@ -58,7 +59,16 @@ TEST_CASE("Parse StmtLst - Call Test") {
         REQUIRE(calls->getName()->compareToken(new sp::Token(sp::Token::TokenType::NAME, id)));
         REQUIRE(calls->getName()->getVal() == id);
         REQUIRE(calls->getIndex() == i + 1);
+
         //REQUIRE(false);
+    }
+
+    // testing toString()
+    std::vector<std::string> expected_strings{ "call sun;", "call moon;", "call procedure;" };
+    for (int i = 0; i < identifiers.size(); ++i) {
+        auto str = expected_strings[i];
+        auto tmp_stmt = stmt_lst->getStatements()[i];
+        REQUIRE(str == tmp_stmt->toString());
     }
 }
 
@@ -113,6 +123,25 @@ TEST_CASE("Parse StmtLst - Call - Keyword Test") {
         REQUIRE(calls->getName()->getVal() == id);
         REQUIRE(calls->getIndex() == i + 1);
         //REQUIRE(false);
+    }
+
+
+    // testing toString()
+    std::vector<std::string> expected_strings{ 
+        "call sun;", 
+        "call procedure;", 
+        "call read;", 
+        "call print;", 
+        "call call;", 
+        "call while;", 
+        "call if;", 
+        "call then;", 
+        "call else;", 
+    };
+    for (int i = 0; i < identifiers.size(); ++i) {
+        auto str = expected_strings[i];
+        auto tmp_stmt = stmt_lst->getStatements()[i];
+        REQUIRE(str == tmp_stmt->toString());
     }
 }
 

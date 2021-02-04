@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 #include "AST/Node.h"
 
 // Interface Stmt for anything with a statement number
@@ -9,5 +10,6 @@ namespace ast {
 	public:
 		Stmt(sp::Token* token, int index) :Node{ token }, index{ index } {};
 		int getIndex() { return index; };
+		virtual std::string toString() { return "STMT: OVERRIDE THIS"; };
 	};
 }

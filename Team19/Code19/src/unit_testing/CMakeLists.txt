@@ -3,6 +3,7 @@ file(GLOB_RECURSE headers "${CMAKE_CURRENT_SOURCE_DIR}/src/*.h" "${CMAKE_CURRENT
 add_executable(unit_testing ${srcs} 
 	src/SP/TestParseCallStmt.cpp
 	src/SP/TestParseReadStmt.cpp
+	src/SP/TestParseAssignStmt.cpp
 )
 
 target_link_libraries(unit_testing spa)

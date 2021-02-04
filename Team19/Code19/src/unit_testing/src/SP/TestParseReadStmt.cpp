@@ -116,4 +116,22 @@ TEST_CASE("Parse StmtLst - Read - Keyword Test") {
         REQUIRE(calls->getIndex() == i + 1);
         //REQUIRE(false);
     }
+
+    // testing toString()
+    std::vector<std::string> expected_strings{ 
+        "read sun;", 
+        "read procedure;", 
+        "read read;", 
+        "read print;", 
+        "read call;", 
+        "read while;", 
+        "read if;", 
+        "read then;", 
+        "read else;", 
+    };
+    for (int i = 0; i < identifiers.size(); ++i) {
+        auto str = expected_strings[i];
+        auto tmp_stmt = stmt_lst->getStatements()[i];
+        REQUIRE(str == tmp_stmt->toString());
+    }
 }

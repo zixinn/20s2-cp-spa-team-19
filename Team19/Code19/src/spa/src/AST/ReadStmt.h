@@ -11,6 +11,11 @@ namespace ast {
 			:Stmt( token, stmtNum ), var_name{ var_name } {}
 		VarName* getName() { return var_name; }
 
+		std::string toString() override {
+			std::string var_str = var_name ? var_name->toString() : "[NULL_PTR]";
+			return "read " + var_str + ";";
+		}
+
 		~ReadStmt() {
 			delete var_name;
 		}
