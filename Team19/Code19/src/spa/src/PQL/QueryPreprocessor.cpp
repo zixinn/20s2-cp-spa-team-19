@@ -1,8 +1,4 @@
-#include <regex>
-
 #include "QueryPreprocessor.h"
-#include "../AbstractAPI.h"
-#include "../Utility.h"
 
 QueryPreprocessor::QueryPreprocessor() {
     designEntities = {PROCEDURE_, STMTLST_, STMT_, READ_, PRINT_, ASSIGN_, CALL_, WHILE_, IF_, VARIABLE_, CONSTANT_ };
