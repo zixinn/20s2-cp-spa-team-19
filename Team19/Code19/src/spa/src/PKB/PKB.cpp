@@ -10,6 +10,7 @@ StmtLstTable* PKB::stmtLstTable = new StmtLstTable();
 
 // Initialise PKB Design abstraction storage components
 Follows* PKB::follows = new Follows();
+Parent* PKB::parent = new Parent();
 
 //int PKB::setProcToAST(PROC p, TNode* r) {
 //	return 0;
