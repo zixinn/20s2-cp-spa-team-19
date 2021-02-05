@@ -5,6 +5,7 @@
 #include "ProcTable.h"
 #include "StmtTable.h"
 #include "StmtLstTable.h"
+#include "Follows.h"
 
 #include "../AbstractAPI.h"
 
@@ -21,12 +22,15 @@ public:
 //	static int setProcToAST(PROC p, TNode* r);
 //	static TNode* getRootAST (PROC p);
 
-    // PKB Components for Program Data Entities
+    // PKB Components for Program Design Entities
     static ConstTable* constTable;
     static VarTable* varTable;
     static ProcTable* procTable;
     static StmtTable* stmtTable;
     static StmtLstTable* stmtLstTable;
+
+    // PKB Components for Program Design Abstractions
+    static Follows* follows;
 
 
 };

@@ -1,14 +1,15 @@
 #include "PKB.h"
 #include "../TNode.h"
 
-// Initialise PKB entity storage components
+// Initialise PKB Design entity storage components
 ConstTable* PKB::constTable = new ConstTable();
 VarTable* PKB::varTable = new VarTable();
 ProcTable* PKB::procTable = new ProcTable();
 StmtTable* PKB::stmtTable = new StmtTable();
 StmtLstTable* PKB::stmtLstTable = new StmtLstTable();
 
-// Initialise PKB abstration storage components
+// Initialise PKB Design abstraction storage components
+Follows* PKB::follows = new Follows();
 
 //int PKB::setProcToAST(PROC p, TNode* r) {
 //	return 0;
