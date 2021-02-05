@@ -57,9 +57,9 @@ pair<vector<StmtNum>, vector<StmtNum> > Parent::getAllParent() {
 pair<vector<StmtNum>, vector<StmtNum> > Parent::getAllParentStar() {
     vector<StmtNum> s1s, s2s;
     for (auto &it : parentStarMap) {
-        for (StmtNum it2 : it.second) {
+        for (StmtNum s2 : it.second) {
             s1s.push_back(it.first);
-            s2s.push_back(it2);
+            s2s.push_back(s2);
         }
     }
     return make_pair(s1s, s2s);
