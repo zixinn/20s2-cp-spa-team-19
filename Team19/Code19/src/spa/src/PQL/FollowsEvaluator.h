@@ -2,6 +2,7 @@
 
 #include "Clause.h"
 #include "QueryUtility.h"
+#include "../PKB/PKB.h"
 
 class FollowsEvaluator {
 public:
