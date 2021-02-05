@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 #include "SP/Token.h"
 #include "AST/Expr.h"
 #include "AST/VarName.h"
@@ -16,6 +17,12 @@ namespace ast {
 		VarName* getName() { return var_name; }
 		Expr* getExpr() { return expr; }
 		bool compareExpr(Expr* otherExpr) { return this->expr->compare(otherExpr); }
+
+		std::string toString() override {
+			std::string var_str = var_name ? var_name->toString() : "[NULL_PTR]";
+			std::string expr_str = expr ? expr->toString() : "[NULL_PTR]";
+			return var_str + " = " + expr_str + ";";
+		}
 
 		~AssignStmt() {
 			delete var_name;

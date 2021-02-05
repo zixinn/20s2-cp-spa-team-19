@@ -12,6 +12,11 @@ namespace ast {
 			:Stmt( token, stmtNum ), proc_name{ proc_name } {}
 		ProcName* getName() { return proc_name; }
 
+		std::string toString() override {
+			std::string proc_str = proc_name ? proc_name->toString() : "[NULL_PTR]";
+			return "call " + proc_str + ";";
+		}
+
 		~CallStmt() {
 			delete proc_name;
 		}

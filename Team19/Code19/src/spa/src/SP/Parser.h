@@ -31,13 +31,20 @@ public:
 	ast::Stmt* parseStmt();
 	ast::AssignStmt* parseAssignStmt();
 	ast::CallStmt* parseCallStmt();
-	//ast::ReadStmt* parseReadStmt();
-	//ast::PrintStmt* parsePrintStmt();
+	ast::ReadStmt* parseReadStmt();
+	ast::PrintStmt* parsePrintStmt();
 
 	inline sp::Token* getCurrToken() { return currToken; };
+	static bool isKeyword(sp::Token* tok);
+
+private:
 	bool currTokenIs(sp::Token::TokenType tok_type);
 	bool expectPeek(sp::Token::TokenType tok_type);
 	bool peekTokenIs(sp::Token::TokenType tok_type);
+
+	bool currTokenIsNameOrKeyword();
+	bool expectPeekIsNameOrKeyword();
+	bool peekTokenIsNameOrKeyword();
 
 	int getPlusPC();
 	std::string genError(std::string str);
