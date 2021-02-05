@@ -49,14 +49,14 @@ TEST_CASE("storeProcUses Test") {
     REQUIRE_FALSE(uses->storeProcUses(3,4));
 }
 
-TEST_CASE("getStmtSize Test") {
+TEST_CASE("getStmtSize Test [Uses]") {
     Uses* uses = setUpStmtUses();
     REQUIRE(uses->getStmtSize() == 6);
     uses->storeStmtUses(4, 5);
     REQUIRE(uses->getStmtSize() == 7);
 }
 
-TEST_CASE("getProcSize Test") {
+TEST_CASE("getProcSize Test [Uses]") {
     Uses* uses = setUpProcUses();
     REQUIRE(uses->getProcSize() == 6);
     uses->storeProcUses(4, 5);
