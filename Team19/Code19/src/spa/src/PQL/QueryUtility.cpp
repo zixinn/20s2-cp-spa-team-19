@@ -2,6 +2,7 @@
 
 using namespace std;
 
+// Checks if the synonym has been declared in declarations
 bool checkSynonymDeclared(string synonym, unordered_map<string, string> declarations) {
     return declarations.find(synonym) != declarations.end();
 }
@@ -60,9 +61,11 @@ vector<int> selectAll(string synonymType) {
     return res;
 }
 
-// Stores the intersection of allResults and allCorrectType in results
+// Stores the intersection of allResults and allCorrectType in results, removes duplicates
 // Returns true if results is non-empty, false otherwise
 bool intersectSingleSynonym(vector<int> allResults, vector<int> allCorrectType, vector<int>& results) {
+    unordered_set<int> set(allResults.begin(), allResults.end());
+    allResults.assign(set.begin(), set.end());
     vector<int> res;
     int size = allResults.size();
     for (int i = 0; i < size; i++) {
@@ -74,7 +77,7 @@ bool intersectSingleSynonym(vector<int> allResults, vector<int> allCorrectType, 
     return !res.empty();
 }
 
-// Stores the intersection of allResults and allCorrectType in results
+// Stores pairs of entries of allResults such that the first entry exists in allCorrectType.first and the second entry exists in allCorrectType.second in results
 // Returns true if results is non-empty, false otherwise
 bool intersectDoubleSynonym(pair<vector<int>, vector<int>> allResults, pair<vector<int>, vector<int>> allCorrectType, pair<vector<int>, vector<int>>& results) {
     pair<vector<int>, vector<int>> res;
