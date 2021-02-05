@@ -7,6 +7,7 @@
 #include "../Utility.h"
 #include "Clause.h"
 #include "Query.h"
+#include "QueryUtility.h"
 
 class QueryPreprocessor {
 public:
@@ -25,9 +26,6 @@ private:
     unordered_set<string> designEntities;
     unordered_map<string, vector<unordered_set<string>>> validSuchThatArgType;
     unordered_map<string, vector<unordered_set<string>>> validPatternArgType;
-
-    bool checkSynonymDeclared(string synonym);
-    string getArgType(string synonym);
 
     bool parseDeclaration(string designEntity, string synonyms);
     bool checkDesignEntity(string designEntity);

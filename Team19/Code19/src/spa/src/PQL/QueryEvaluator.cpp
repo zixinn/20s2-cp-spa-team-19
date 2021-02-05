@@ -4,41 +4,6 @@ QueryEvaluator::QueryEvaluator() {
 
 }
 
-// Returns stmtNum of all stmt with type synonymType or ID of all proc/var/const with type synonymType
-vector<int> QueryEvaluator::selectAll(string synonymType) {
-    vector<int> res;
-    if (synonymType == PROCEDURE_) {
-        int size = PKB::procTable->getSize();
-        for (int i = 0; i < size; i++) {
-            res.push_back(i);
-        }
-        return res;
-    } else if (synonymType == STMT_) {
-        return PKB::stmtTable->getAllStmtNums();
-    } else if (synonymType == READ_) {
-        return PKB::stmtTable->getAllReadStmtNums();
-    } else if (synonymType == PRINT_) {
-        return PKB::stmtTable->getAllPrintStmtNums();
-    } else if (synonymType == ASSIGN_) {
-        return PKB::stmtTable->getAllAssignStmtNums();
-    } else if (synonymType == CALL_) {
-        return PKB::stmtTable->getAllCallStmtNums();
-    } else if (synonymType == WHILE_) {
-        return PKB::stmtTable->getAllWhileStmtNums();
-    } else if (synonymType == IF_) {
-        return PKB::stmtTable->getAllIfStmtNums();
-    } else if (synonymType == VARIABLE_) {
-        int size = PKB::varTable->getSize();
-        for (int i = 0; i < size; i++) {
-            res.push_back(i);
-        }
-        return res;
-    } else if (synonymType == CONSTANT_) {
-        return PKB::constTable->getAllConsts();
-    }
-    return res;
-}
-
 // Evaluates the query and returns a list containing the answers to the query
 list<string> QueryEvaluator::evaluate(Query query) {
     list<string> emptyList;
@@ -58,6 +23,9 @@ list<string> QueryEvaluator::evaluate(Query query) {
         }
         if (!tempResults.empty()) {
             join(tempResults);
+            if (results.empty()) {
+                return emptyList;
+            }
         }
     }
 
@@ -69,26 +37,19 @@ list<string> QueryEvaluator::evaluate(Query query) {
 bool QueryEvaluator::evaluateClause(Clause clause, unordered_map<string, vector<int>>& tempResults) {
 //    string rel = clause.getRel();
 //    if (rel == "Follows") {
-//        FollowsEvaluator evaluator = FollowsEvaluator();
-//        return evaluator.evaluate(this->declarations, clause, tempResults);
+//        return FollowsEvaluator::evaluate(this->declarations, clause, tempResults);
 //    } else if (rel == "Follows*") {
-//        FollowsTEvaluator evaluator = FollowsTEvaluator();
-//        return evaluator.evaluate(this->declarations, clause, tempResults);
+//        return FollowsTEvaluator::evaluate(this->declarations, clause, tempResults);
 //    } else if (rel == "Parent") {
-//        ParentEvaluator evaluator = ParentEvaluator();
-//        return evaluator.evaluate(this->declarations, clause, tempResults);
+//        return ParentEvaluator::evaluate(this->declarations, clause, tempResults);
 //    } else if (rel == "Parent*") {
-//        ParentTEvaluator evaluator = ParentTEvaluator();
-//        return evaluator.evaluate(this->declarations, clause, tempResults);
+//        return ParentTEvaluator::evaluate(this->declarations, clause, tempResults);
 //    } else if (rel == "Uses") {
-//        UsesEvaluator evaluator = UsesEvaluator();
-//        return evaluator.evaluate(this->declarations, clause, tempResults);
+//        return UsesEvaluator::evaluate(this->declarations, clause, tempResults);
 //    } else if (rel == "Modifies") {
-//        ModifiesEvaluator evaluator = ModifiesEvaluator();
-//        return evaluator.evaluate(this->declarations, clause, tempResults);
+//        return ModifiesEvaluator::evaluate(this->declarations, clause, tempResults);
 //    } else { // pattern
-//        PatternEvaluator evaluator = PatternEvaluator();
-//        return evaluator.evaluate(this->declarations, clause, tempResults);
+//        return PatternEvaluator::evaluate(this->declarations, clause, tempResults);
 //    }
     return true;
 }

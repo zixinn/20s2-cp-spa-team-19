@@ -1,43 +1,21 @@
 #include "QueryPreprocessor.h"
 
 QueryPreprocessor::QueryPreprocessor() {
-    designEntities = {PROCEDURE_, STMTLST_, STMT_, READ_, PRINT_, ASSIGN_, CALL_, WHILE_, IF_, VARIABLE_, CONSTANT_ };
-    validSuchThatArgType["Follows"] = { {STMT_, READ_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, UNDERSCORE_ },
-                                   {     STMT_, READ_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, UNDERSCORE_ } };
-    validSuchThatArgType["Follows*"] = { {STMT_, READ_, PRINT_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, UNDERSCORE_ },
-                                   {      STMT_, READ_, PRINT_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, UNDERSCORE_ } };
-    validSuchThatArgType["Parent"] = { {STMT_, WHILE_, IF_,    INTEGER_,   UNDERSCORE_ },
-                                   {    STMT_, READ_,  PRINT_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, UNDERSCORE_ } };
-    validSuchThatArgType["Parent*"] = { {STMT_, WHILE_, IF_,    INTEGER_,   UNDERSCORE_ },
-                                   {     STMT_, READ_,  PRINT_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, UNDERSCORE_ } };
-    validSuchThatArgType["Uses"] = { {STMT_,     PRINT_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, NAME_ },
-                                   {  VARIABLE_, NAME_,  UNDERSCORE_ } };
-    validSuchThatArgType["Modifies"] = { {STMT_,     READ_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, NAME_ },
-                                {         VARIABLE_, NAME_, UNDERSCORE_ } };
-    validPatternArgType["assign"] = { {VARIABLE_,   NAME_, UNDERSCORE_ },
-                                {      UNDERSCORE_, NAME_, EXPRESSION_, EXPRESSIONWITHUNDERSCORE_ } };
-}
-
-bool QueryPreprocessor::checkSynonymDeclared(string synonym) {
-    return this->declarations.find(synonym) != this->declarations.end();
-}
-
-string QueryPreprocessor::getArgType(string synonym) {
-    if (checkSynonymDeclared(synonym)) {
-        return this->declarations[synonym];
-    } else if (checkInteger(synonym)) {
-        return INTEGER_;
-    } else if (synonym == "_") {
-        return UNDERSCORE_;
-    } else if (checkNameWithQuotes(synonym)) {
-        return NAME_;
-    } else if (checkExpression(synonym)) {
-        return EXPRESSION_;
-    } else if (checkExpressionWithUnderscores(synonym)) {
-        return EXPRESSIONWITHUNDERSCORE_;
-    } else {
-        return "";
-    }
+    designEntities = { PROCEDURE_, STMTLST_, STMT_, READ_, PRINT_, ASSIGN_, CALL_, WHILE_, IF_, VARIABLE_, CONSTANT_ };
+    validSuchThatArgType["Follows"] = { { STMT_, READ_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, UNDERSCORE_ },
+                                        { STMT_, READ_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, UNDERSCORE_ } };
+    validSuchThatArgType["Follows*"] = { { STMT_, READ_, PRINT_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, UNDERSCORE_ },
+                                         { STMT_, READ_, PRINT_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, UNDERSCORE_ } };
+    validSuchThatArgType["Parent"] = { { STMT_, WHILE_, IF_, INTEGER_, UNDERSCORE_ },
+                                       { STMT_, READ_, PRINT_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, UNDERSCORE_ } };
+    validSuchThatArgType["Parent*"] = { { STMT_, WHILE_, IF_, INTEGER_, UNDERSCORE_ },
+                                        { STMT_, READ_, PRINT_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, UNDERSCORE_ } };
+    validSuchThatArgType["Uses"] = { { STMT_, PRINT_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, NAME_ },
+                                     { VARIABLE_, NAME_, UNDERSCORE_ } };
+    validSuchThatArgType["Modifies"] = { { STMT_, READ_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, NAME_ },
+                                         { VARIABLE_, NAME_, UNDERSCORE_ } };
+    validPatternArgType["assign"] = { { VARIABLE_, NAME_, UNDERSCORE_ },
+                                      { UNDERSCORE_, NAME_, EXPRESSION_, EXPRESSIONWITHUNDERSCORE_ } };
 }
 
 Query QueryPreprocessor::process(string query) {
@@ -89,7 +67,7 @@ bool QueryPreprocessor::parseDeclaration(string designEntity, string synonyms) {
     }
     vector<string> synonymsVector = split(synonyms, ",");
     for (string synonym : synonymsVector) {
-        if (checkSynonymDeclared(synonym) || !checkName(synonym)) {
+        if (checkSynonymDeclared(synonym, this->declarations) || !checkName(synonym)) {
             this->isValid = false;
             return false;
         }
@@ -128,7 +106,7 @@ bool QueryPreprocessor::parseSelect(string select) {
 }
 
 bool QueryPreprocessor::parseToSelect(string synonym) {
-    if (!checkSynonymDeclared(synonym) || !checkName(synonym)) {
+    if (!checkSynonymDeclared(synonym, this->declarations) || !checkName(synonym)) {
         this->isValid = false;
         return false;
     }
@@ -167,7 +145,7 @@ bool QueryPreprocessor::checkSuchThatClause(string rel, vector<string> args) {
 
     vector<unordered_set<string>> validArgType = this->validSuchThatArgType.find(rel)->second;
     for (int i = 0; i < 2; i++) {
-        if (validArgType[i].find(getArgType(args[i])) == validArgType[i].end()) {
+        if (validArgType[i].find(getArgType(args[i], this->declarations)) == validArgType[i].end()) {
             this->isValid = false;
             return false;
         }
@@ -199,14 +177,14 @@ bool QueryPreprocessor::parsePatternClause(string clause) {
 }
 
 bool QueryPreprocessor::checkPatternClause(string syn, vector<string> args) {
-    string argType = getArgType(syn);
+    string argType = getArgType(syn, this->declarations);
     if (argType != "assign") {
         this->isValid = false;
         return false;
     }
     vector<unordered_set<string>> validArgType = this->validPatternArgType.find(argType)->second;
     for (int i = 0; i < 2; i++) {
-        if (validArgType[i].find(getArgType(args[i])) == validArgType[i].end()) {
+        if (validArgType[i].find(getArgType(args[i], this->declarations)) == validArgType[i].end()) {
             this->isValid = false;
             return false;
         }
