@@ -33,6 +33,8 @@ public:
 	ast::CallStmt* parseCallStmt();
 	ast::ReadStmt* parseReadStmt();
 	ast::PrintStmt* parsePrintStmt();
+	ast::Proc* parseProc();
+	ast::Program* parseProgram();
 
 	inline sp::Token* getCurrToken() { return currToken; };
 	static bool isKeyword(sp::Token* tok);

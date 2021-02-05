@@ -21,6 +21,50 @@ void Parser::nextToken() {
 	peekToken = (*l_ptr).nextToken();
 };
 
+
+ast::Program* Parser::parseProgram() {
+	std::vector<ast::Proc*> procs{};
+	while (this->currToken && (!this->currTokenIs(sp::Token::TokenType::EOFF))) {
+		ast::Proc* proc = this->parseProc();
+		if (!proc) { throw this->genError("ParseProc error"); }
+		procs.push_back(proc);
+		// currToken will be } ? 
+		// depend on parseStmtLst
+		if (!this->currTokenIs(sp::Token::TokenType::LBRACE)) {
+			throw this->genError("ParseProc expected LBRACE, got: " + this->currLiteral());
+		}
+		this->nextToken();
+	}
+	if (procs.size() == 0) {
+		throw this->genError("Expect at least one procedure");
+		return new ast::Program(nullptr, procs);
+	} else {
+		return new ast::Program(procs[0], procs);
+	}
+}
+
+ast::Proc* Parser::parseProc() {
+	if (!this->currTokenIs(sp::Token::TokenType::PROC)) {
+		throw this->genError("ParseProc expected a PROC, got: " + this->currLiteral());
+	}
+	sp::Token* proc_tok = this->currToken;
+
+	if (!this->expectPeekIsNameOrKeyword()) {
+		throw this->genError("ParseProc expected a NAME or Keyword, got: " + this->peekLiteral());
+	}
+	ast::ProcName* pn = this->parseProcName();
+
+	if (!this->expectPeek(sp::Token::TokenType::LBRACE)) {
+		throw this->genError("ParseProc expected a LBRACE, got: " + this->peekLiteral()); 
+	}
+
+	//current token is {
+	this->nextToken();
+
+	ast::StmtLst* stmtlst = this->parseStmtLst();
+	return new ast::Proc(proc_tok, pn, stmtlst);
+}
+
 ast::StmtLst* Parser::parseStmtLst() {
 	std::vector<ast::Stmt*> xs{};
 	while (this->currToken && (!this->currTokenIs(sp::Token::TokenType::EOFF))) {
