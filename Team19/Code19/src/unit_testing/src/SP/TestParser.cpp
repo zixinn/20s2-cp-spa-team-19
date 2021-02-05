@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
-#include "ast/Index.h"
+#include "AST/Index.h"
 #include "SP/Parser.h"
 
 #include "catch.hpp"
