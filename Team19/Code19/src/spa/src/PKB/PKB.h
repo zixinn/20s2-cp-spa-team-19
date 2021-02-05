@@ -7,6 +7,7 @@
 #include "StmtLstTable.h"
 #include "Follows.h"
 #include "Parent.h"
+#include "Uses.h"
 
 #include "../AbstractAPI.h"
 
@@ -33,6 +34,7 @@ public:
     // PKB Components for Program Design Abstractions
     static Follows* follows;
     static Parent* parent;
+    static Uses* uses;
 
 
 };
