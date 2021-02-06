@@ -13,7 +13,7 @@ namespace ast {
 			:Expr( token ), left{ left }, right{ right } {}
 		Expr* getLeft() { return left; }
 		Expr* getRight() { return right; }
-		bool compareExpr(Expr* otherExpr) { throw "NOT READY"; }
+		bool compare(Expr* otherExpr) override { throw "NOT READY"; }
 
 		std::string toString() override {
 			std::string left_str = left ? left->toString() : "[NULL_PTR]";

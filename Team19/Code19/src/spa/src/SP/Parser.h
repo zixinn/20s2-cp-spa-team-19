@@ -1,5 +1,6 @@
 #pragma once
 
+#include <unordered_map>
 #include "SP/Token.h"
 #include "AST/Index.h"
 
@@ -8,6 +9,35 @@ using namespace std;
 //class Lexer {};
 
 //class LexerStub : public Lexer {
+
+// function pointers for ExprParsing
+namespace ParserUtils {
+
+	// BODMAS precedence, higher the more impt
+	namespace ExprPrecedence {		// the order matters
+		const int BLANK = 0;
+		const int LOWEST = 1;
+		const int ADDMINUS = 2;		// operators: + -
+		const int DIVMULT = 3;		// operators: * / %
+		const int PREFIX = 4;		// operators: !
+	};
+
+	// map tokens to correct BODMAS precedence ranking
+	const unordered_map<sp::Token::TokenType, int> exprRanks{
+		{sp::Token::TokenType::PLUS, ExprPrecedence::ADDMINUS },
+		{sp::Token::TokenType::MINUS, ExprPrecedence::ADDMINUS },
+		{sp::Token::TokenType::DIV, ExprPrecedence::DIVMULT },
+		{sp::Token::TokenType::TIMES, ExprPrecedence::DIVMULT },
+		{sp::Token::TokenType::MOD, ExprPrecedence::DIVMULT },
+	};
+
+	inline const bool hasExprRank(sp::Token::TokenType tok_type) {
+		return exprRanks.find(tok_type) != exprRanks.end();
+	}
+	inline const int getExprRankUnsafe(sp::Token::TokenType tok_type) {
+		return exprRanks.at(tok_type);
+	}
+}
 
 class LexerStub { //: public Lexer {
 	const std::vector<sp::Token*> tokens;
@@ -27,6 +57,7 @@ public:
 	void nextToken();
 	ast::VarName* parseVarName();
 	ast::ProcName* parseProcName();
+	ast::ConstVal* parseConstVal();
 	ast::StmtLst* parseStmtLst();
 	ast::Stmt* parseStmt();
 	ast::AssignStmt* parseAssignStmt();
@@ -35,6 +66,7 @@ public:
 	ast::PrintStmt* parsePrintStmt();
 	ast::Proc* parseProc();
 	ast::Program* parseProgram();
+	ast::Expr* parseExpr(int precedence);
 
 	inline sp::Token* getCurrToken() { return currToken; };
 	static bool isKeyword(sp::Token* tok);
@@ -53,4 +85,10 @@ private:
 	std::string currLiteral();
 	std::string peekLiteral();
 	bool parseTest();
+
+	// expr
+	ast::Expr* parsePrefixExpr(sp::Token* tok);
+	ast::Expr* parseInfixExpr(ast::Expr*);
+	int peekPrecedence();
+	int currPrecedence();
 };

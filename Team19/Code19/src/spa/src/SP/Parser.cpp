@@ -12,6 +12,7 @@ namespace TokenUtils {
 }
 
 Parser::Parser(LexerStub* l_ptr) : l_ptr{l_ptr} {
+	//this->registerInfixExpr(sp::Token::TokenType::NAME, &Parser::parseVarNameExpr);
 	this->nextToken();
 	this->nextToken();
 }
@@ -164,13 +165,72 @@ ast::AssignStmt* Parser::parseAssignStmt() {
 	}
 	sp::Token* assToken = this->getCurrToken();
 
-	while (!this->currTokenIs(sp::Token::TokenType::SEMICOLON)) {
+	// placeholder block for without parseExpr
+	//while (!this->currTokenIs(sp::Token::TokenType::SEMICOLON)) {
+	//	this->nextToken();
+	//}
+
+	/****				The following is for parseExpr						****/
+	this->nextToken();	// curr Token is =
+	ast::Expr* ass_expr = this->parseExpr(ParserUtils::ExprPrecedence::LOWEST);
+	this->nextToken();	// curr Token is last Expr on RHS, next to get semicolon as curr
+	/****				End parseExpr										****/
+
+
+	// when returning, currToken must be semicolon
+	if (!this->currTokenIs(sp::Token::TokenType::SEMICOLON)) { 
+		throw this->genError("ParseAssign expected Semicolon, got: " + this->currLiteral());
+	}
+	// this is here instead of lower to ensure StmtNum is more accurate
+
+	return new ast::AssignStmt(this->getPlusPC(), assToken, vn, ass_expr); // expr not calc yet
+	//// below to check for AssignStmt printouts if needed
+	//ast::AssignStmt* ass = new ast::AssignStmt(this->getPlusPC(), assToken, vn, ass_expr);
+	//std::cout << "StmtNum: " + std::to_string(ass->getIndex()) + " - " + ass->toString() << std::endl;
+	//return ass;
+}
+
+
+ast::Expr* Parser::parseExpr(int precedence) {
+	// e.g. y = x + 1; this deals with the x
+	auto left_expr = parsePrefixExpr(this->currToken);
+
+	// if y = x; will encounter semicolon and just return
+	// the higher the precedence the deeper it is in the tree
+	while (!this->peekTokenIs(sp::Token::TokenType::SEMICOLON) && precedence < this->peekPrecedence()) {
 		this->nextToken();
+		left_expr = this->parseInfixExpr(left_expr);
 	}
 
-	ast::AssignStmt* ass = new ast::AssignStmt(this->getPlusPC(), assToken, vn, nullptr); // expr not calc yet
-	// when returning, currToken must be semicolon
-	return ass;
+	return left_expr;
+}
+
+// basically a switch for choosing parsing VarName or ConstVal
+ast::Expr* Parser::parsePrefixExpr(sp::Token* tok) {
+	//throw "NOT READY";
+	if (tok->getType() == sp::Token::TokenType::NAME) {
+		return parseVarName();
+	}
+	else if (tok->getType() == sp::Token::TokenType::CONST) {
+		return parseConstVal();
+	}
+	throw this->genError("ParsePrefixExpr expected a Prefix, NAME or CONST got: " + tok->getLiteral());
+}
+
+ast::Expr* Parser::parseInfixExpr(ast::Expr* left_expr) {
+	//throw "NOT READY";
+	auto tok = this->currToken;
+	if (!ParserUtils::hasExprRank(tok->getType())) {
+		throw this->genError("ParsePrefixExpr expected a Infix Operator, got: " + tok->getLiteral());
+	}
+	// expr is a valid infix expr
+
+	// need to rmb whch operator comes first, curr one, or next
+	auto curr_precedence = this->currPrecedence();
+	this->nextToken();
+	auto right_expr = this->parseExpr(curr_precedence);
+	return new ast::InfixExpr(tok, left_expr, right_expr);
+
 }
 
 std::string Parser::genError(std::string str) {
@@ -201,6 +261,22 @@ ast::ProcName* Parser::parseProcName() {
 		return new ast::ProcName(newToken, tok->getLiteral());
 	}
 	throw this->genError("ParseProcName expected a NAME or Keyword, got: " + tok->getLiteral());
+}
+
+ast::ConstVal* Parser::parseConstVal() {
+	sp::Token* tok = this->currToken;
+	if (currTokenIs(sp::Token::TokenType::CONST)) {
+		int tmp;
+		try {
+			tmp = std::stoi(tok->getLiteral());
+		}
+		catch (std::exception& e) {
+			// exception trying to convert to string
+			throw "ParseConstVal: unable to convert token literal to strint, got: " + tok->getLiteral();
+		}
+		return new ast::ConstVal(tok, tmp);
+	}
+	throw this->genError("ParseConstVal expected a CONST, got: " + tok->getLiteral());
 }
 
 std::string Parser::peekLiteral() {
@@ -259,6 +335,21 @@ bool Parser::expectPeekIsNameOrKeyword() {
 		return true;
 	}
 	return false;
+}
+
+int Parser::peekPrecedence() {
+	if (ParserUtils::hasExprRank(this->peekToken->getType())) {
+		return ParserUtils::getExprRankUnsafe(this->peekToken->getType());
+	}
+	// no rank found, everything else takes precedence
+	return ParserUtils::ExprPrecedence::LOWEST;
+}
+
+int Parser::currPrecedence() {
+	if (ParserUtils::hasExprRank(this->currToken->getType())) {
+		return ParserUtils::getExprRankUnsafe(this->currToken->getType());
+	}
+	return ParserUtils::ExprPrecedence::LOWEST;
 }
 
 bool Parser::parseTest() {

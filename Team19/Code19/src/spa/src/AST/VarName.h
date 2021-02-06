@@ -8,7 +8,7 @@ namespace ast {
 	class VarName : public Expr
 	{
 	public:
-		const std::string val;		// to change to STRING typedef after integration
+		const std::string val;
 
 		VarName(sp::Token* token, std::string val) :Expr{ token }, val{ val } {}
 		std::string toString() override { return this->val; };
