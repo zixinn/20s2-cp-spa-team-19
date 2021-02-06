@@ -58,9 +58,9 @@ pair<vector<StmtNum>, vector<StmtNum> > Follows::getAllFollows() {
 pair<vector<StmtNum>, vector<StmtNum> > Follows::getAllFollowsStar() {
     vector<StmtNum> s1s, s2s;
     for (auto &it : followsStarMap) {
-        for (StmtNum it2 : it.second) {
+        for (StmtNum s2 : it.second) {
             s1s.push_back(it.first);
-            s2s.push_back(it2);
+            s2s.push_back(s2);
         }
     }
     return make_pair(s1s, s2s);
