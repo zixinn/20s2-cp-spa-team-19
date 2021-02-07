@@ -28,12 +28,7 @@ ast::Program* Parser::parseProgram() {
 		ast::Proc* proc = this->parseProc();
 		if (!proc) { throw this->genError("ParseProc error"); }
 		procs.push_back(proc);
-		// currToken will be } ? 
-		// depend on parseStmtLst
-		if (!this->currTokenIs(sp::Token::TokenType::LBRACE)) {
-			throw this->genError("ParseProc expected LBRACE, got: " + this->currLiteral());
-		}
-		this->nextToken();
+		
 	}
 	if (procs.size() == 0) {
 		throw this->genError("Expect at least one procedure");
@@ -62,12 +57,24 @@ ast::Proc* Parser::parseProc() {
 	this->nextToken();
 
 	ast::StmtLst* stmtlst = this->parseStmtLst();
+
+	if (!this->currTokenIs(sp::Token::TokenType::RBRACE)) {
+		throw this->genError("ParseProc expected a RBRACE, got: " + this->peekLiteral()); 
+	}
+	//current token is }
+	this->nextToken();
+
 	return new ast::Proc(proc_tok, pn, stmtlst);
 }
 
 ast::StmtLst* Parser::parseStmtLst() {
 	std::vector<ast::Stmt*> xs{};
 	while (this->currToken && (!this->currTokenIs(sp::Token::TokenType::EOFF))) {
+		if (this->currTokenIs(sp::Token::TokenType::RBRACE)) {
+			// if encouter } means end of stmtLst
+			break;
+		}
+
 		ast::Stmt* stmt = this->parseStmt();
 		if (!stmt) { throw this->genError("ParseStmtLst error"); }
 		xs.push_back(stmt);
