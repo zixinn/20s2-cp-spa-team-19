@@ -11,11 +11,16 @@
 #include "Stmt.h"
 #include "StmtLst.h"
 
+#include "InfixExpr.h"
+
 #include "VarName.h"
 #include "ProcName.h"
+#include "ConstVal.h"
 
 #include "Proc.h"
 #include "Program.h"
 
 #include "AssignStmt.h"
+#include "ReadStmt.h"
 #include "CallStmt.h"
+#include "PrintStmt.h"
