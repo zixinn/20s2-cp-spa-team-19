@@ -86,6 +86,9 @@ ast::StmtLst* Parser::parseStmtLst() {
 ast::Stmt* Parser::parseStmt() {
 	if (this->currTokenIs(sp::Token::TokenType::NAME)) {
 		return this->parseAssignStmt();
+	} else if (this->currTokenIsNameOrKeyword() && this->peekTokenIs(sp::Token::TokenType::ASSIGN)) {
+		// this clause must be close to the top, precedence over the other keyword parse methods
+		return this->parseAssignStmt();
 	} else if (this->currTokenIs(sp::Token::TokenType::CALL)) {
 		return this->parseCallStmt();
 	} else if (this->currTokenIs(sp::Token::TokenType::PRINT)) {
@@ -201,6 +204,8 @@ ast::Expr* Parser::parseExpr(int precedence) {
 		left_expr = this->parseInfixExpr(left_expr);
 	}
 
+	// we may encounter an invalid symbol like RPAREN here or SEMICOLON and thats ok, just return
+	// let the caller deal with it, LPAREN parsing needs this
 	return left_expr;
 }
 
@@ -212,6 +217,9 @@ ast::Expr* Parser::parsePrefixExpr(sp::Token* tok) {
 	}
 	else if (tok->getType() == sp::Token::TokenType::CONST) {
 		return parseConstVal();
+	}
+	else if (tok->getType() == sp::Token::TokenType::LPAREN) {
+		return parseLParenPrefixExpr();
 	}
 	throw this->genError("ParsePrefixExpr expected a Prefix, NAME or CONST got: " + tok->getLiteral());
 }
@@ -230,6 +238,22 @@ ast::Expr* Parser::parseInfixExpr(ast::Expr* left_expr) {
 	auto right_expr = this->parseExpr(curr_precedence);
 	return new ast::InfixExpr(tok, left_expr, right_expr);
 
+}
+
+ast::Expr* Parser::parseLParenPrefixExpr() {
+	sp::Token* tok = this->currToken;
+	if (tok->getType() != sp::Token::TokenType::LPAREN) {
+		throw this->genError("ParseLParen expected LPAREN instead encountered: " + tok->getLiteral());
+	}
+	this->nextToken();
+	ast::Expr* expr = this->parseExpr(ParserUtils::ExprPrecedence::LOWEST);
+	this->nextToken();	// shift away the last expr within the RParen, curr should now be RPAREN
+
+	// the currToken should be RPAREN, since we just shifted away the last expr in RParen
+	if (!this->currTokenIs(sp::Token::TokenType::RPAREN)) {
+		throw this->genError("ParseLParen expected RPAREN instead encountered: " + this->currLiteral());
+	}
+	return expr;
 }
 
 std::string Parser::genError(std::string str) {
