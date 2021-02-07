@@ -86,6 +86,8 @@ ast::StmtLst* Parser::parseStmtLst() {
 ast::Stmt* Parser::parseStmt() {
 	if (this->currTokenIs(sp::Token::TokenType::NAME)) {
 		return this->parseAssignStmt();
+	} else if (this->currTokenIsNameOrKeyword() && this->peekTokenIs(sp::Token::TokenType::ASSIGN)) {
+		return this->parseAssignStmt();
 	} else if (this->currTokenIs(sp::Token::TokenType::CALL)) {
 		return this->parseCallStmt();
 	} else if (this->currTokenIs(sp::Token::TokenType::PRINT)) {

@@ -87,3 +87,49 @@ TEST_CASE("ParseLexer Assign Paren - Test") {
         REQUIRE(stmt->toString() == expected);
     }
 }
+
+
+// test for keywords on LHS of assign
+TEST_CASE("ParseLexer Assign Keyword LHS - Test") {
+
+    // if and while not ready yet
+    // also dont forget to test for  THEN, ELSE
+    std::vector<std::pair<std::string, std::string>> tests{
+        {
+            "call = 1+2+3+4;",
+            "call = (((1 + 2) + 3) + 4);"
+        },
+        {
+            "read = 2/5*3/6;",
+            "read = (((2 / 5) * 3) / 6);"
+        },
+        {
+            "print = a * b / ( c - a ) / b / c - z;",
+            "print = (((((a * b) / (c - a)) / b) / c) - z);"
+        },
+        {
+            "procedure=a;",
+            "procedure = a;",
+        },
+        {
+            "program=(1);",
+            "program = 1;",
+        },
+    };
+
+    for (int i = 0; i < tests.size(); ++i) {
+        std::string input = std::get<0>(tests[i]);
+        std::string expected = std::get<1>(tests[i]);
+
+        /** begin ritual to Summon Parser **/
+        std::vector<sp::Token> actual_tok;
+        std::vector<sp::Token*> tok_ptrs;
+        ParserUtils::StringToTokenPtrs(input, actual_tok, tok_ptrs);
+        auto l = new LexerStub(tok_ptrs);
+        auto p = Parser(l);
+        /** Parser now ready for use      **/
+
+        ast::Stmt* stmt = p.parseStmt();
+        REQUIRE(stmt->toString() == expected);
+    }
+}
