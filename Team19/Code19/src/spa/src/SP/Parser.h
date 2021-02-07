@@ -1,6 +1,7 @@
 #pragma once
 
 #include <unordered_map>
+#include <unordered_set>
 #include "SP/Token.h"
 #include "AST/Index.h"
 
@@ -23,7 +24,7 @@ namespace ParserUtils {
 	};
 
 	// map tokens to correct BODMAS precedence ranking
-	const unordered_map<sp::Token::TokenType, int> exprRanks{
+	const unordered_map<sp::Token::TokenType, int, sp::tokentype_hash> exprRanks{
 		{sp::Token::TokenType::PLUS, ExprPrecedence::ADDMINUS },
 		{sp::Token::TokenType::MINUS, ExprPrecedence::ADDMINUS },
 		{sp::Token::TokenType::DIV, ExprPrecedence::DIVMULT },
@@ -37,6 +38,23 @@ namespace ParserUtils {
 	inline const int getExprRankUnsafe(sp::Token::TokenType tok_type) {
 		return exprRanks.at(tok_type);
 	}
+
+	// to determine what can pass as a PROCNAME or VARNAME
+	const std::unordered_set<sp::Token::TokenType, sp::tokentype_hash> keywords {
+		sp::Token::TokenType::PROC,
+		sp::Token::TokenType::READ,
+		sp::Token::TokenType::PRINT,
+		sp::Token::TokenType::CALL,
+		sp::Token::TokenType::WHILE,
+		sp::Token::TokenType::IF,
+		sp::Token::TokenType::THEN,
+		sp::Token::TokenType::ELSE,
+	};
+
+	inline const bool isKeyword(sp::Token::TokenType tok_type) {
+		// if iterator returned from .find() == .end(), that means not found in set
+		return keywords.find(tok_type) != keywords.end();
+	};
 }
 
 class LexerStub { //: public Lexer {

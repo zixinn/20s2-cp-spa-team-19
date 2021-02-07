@@ -2,7 +2,6 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <unordered_set>
 
 using namespace std;
 #include "SP/Parser.h"
@@ -367,17 +366,5 @@ sp::Token* LexerStub::nextToken() {
 }
 
 bool Parser::isKeyword(sp::Token* tok) {
-	std::unordered_set<sp::Token::TokenType> keywords {
-		sp::Token::TokenType::PROC,
-		sp::Token::TokenType::READ,
-		sp::Token::TokenType::PRINT,
-		sp::Token::TokenType::CALL,
-		sp::Token::TokenType::WHILE,
-		sp::Token::TokenType::IF,
-		sp::Token::TokenType::THEN,
-		sp::Token::TokenType::ELSE,
-	};
-
-	// if iterator returned from .find() == .end(), that means not found in set
-	return keywords.find(tok->getType()) != keywords.end();
+	return ParserUtils::isKeyword(tok->getType());
 }

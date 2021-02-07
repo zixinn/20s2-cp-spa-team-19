@@ -15,7 +15,8 @@ namespace sp {
 			AND, OR,  //infix cond
 			EQ, NEQ, GT, GTE, LT, LTE,  //rel expr
 			NOT,  //prefix cond
-			SEMICOLON, LPAREN, RPAREN, LBRACE, RBRACE  //delimiters
+			SEMICOLON, LPAREN, RPAREN, LBRACE, RBRACE,  //delimiters
+			PROCNAME, CONSTNAME			// for parser use only
 		};
 
 		//default constructor for initialising
@@ -31,5 +32,8 @@ namespace sp {
 	private:
 		TokenType type;
 		string literal;
+	};
+	struct tokentype_hash { //hash<Token::TokenType> {
+		size_t operator() (Token::TokenType const& x) const { return std::hash<int>()(int(x));  }
 	};
 }
