@@ -75,6 +75,18 @@ TEST_CASE("Parse VarName Test") {
     
 }
 
+TEST_CASE("Parse ConstVal Test") {
+    std::vector<sp::Token*> stubTokens{
+        new sp::Token(sp::Token::TokenType::CONST, "55"),
+    };
+
+    auto l = new LexerStub(stubTokens);     //new keyword gets me a ptr to LexerStub
+    Parser p = Parser(l);
+    ast::ConstVal* cv = p.parseConstVal();
+    REQUIRE(cv->getToken()->compare(stubTokens[0]));
+    REQUIRE(cv->getVal() == 55);
+}
+
 TEST_CASE("Parse ProcName Test") {
     std::vector<sp::Token*> stubTokens{
         new sp::Token(sp::Token::TokenType::NAME, "procedure"),

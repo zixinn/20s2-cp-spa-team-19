@@ -62,3 +62,26 @@ TEST_CASE("Parse StmtLst - Assign Test") {
     }
 }
 
+TEST_CASE("Parse Assign Expr - Mid Test") {
+
+    std::vector<sp::Token*> stubTokens{
+        new sp::Token(sp::Token::TokenType::NAME, "x"),
+        new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+        new sp::Token(sp::Token::TokenType::NAME, "v"),
+        new sp::Token(sp::Token::TokenType::PLUS, "+"),
+        new sp::Token(sp::Token::TokenType::NAME, "x"),
+        new sp::Token(sp::Token::TokenType::TIMES, "*"),
+        new sp::Token(sp::Token::TokenType::NAME, "y"),
+        new sp::Token(sp::Token::TokenType::PLUS, "+"),
+        new sp::Token(sp::Token::TokenType::NAME, "z"),
+        new sp::Token(sp::Token::TokenType::TIMES, "*"),
+        new sp::Token(sp::Token::TokenType::NAME, "t"),
+        new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+        new sp::Token(sp::Token::TokenType::EOFF, "EOF"),
+    };
+
+    auto l = new LexerStub(stubTokens);     //new keyword gets me a ptr to LexerStub
+    Parser p = Parser(l);
+    ast::AssignStmt* ass = p.parseAssignStmt();
+    REQUIRE(ass->toString() == "x = ((v + (x * y)) + (z * t));");
+}

@@ -6,7 +6,7 @@ namespace ast {
 	class ConstVal : public Expr
 	{
 	public:
-		const int val;		// to change to STRING typedef after integration
+		const int val;
 
 		ConstVal(sp::Token* token, int val) :Expr { token }, val{ val } {}
 

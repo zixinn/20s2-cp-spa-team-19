@@ -10,6 +10,7 @@ namespace ast {
 		std::vector<Proc*> procedures; // default initialization is called when not mentioned in constructor
 	public:
 		Program() { main = NULL; }
+		Program(Proc* main, std::vector<Proc*> procedures) : main{ main }, procedures { procedures }{}
 		std::string getTokenLiteral() //override 
 		{ 
 			if (procedures.size() > 0) {
