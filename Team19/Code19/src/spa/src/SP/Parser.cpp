@@ -201,6 +201,8 @@ ast::Expr* Parser::parseExpr(int precedence) {
 		left_expr = this->parseInfixExpr(left_expr);
 	}
 
+	// we may encounter an invalid symbol like RPAREN here or SEMICOLON and thats ok, just return
+	// let the caller deal with it, LPAREN parsing needs this
 	return left_expr;
 }
 
@@ -212,6 +214,9 @@ ast::Expr* Parser::parsePrefixExpr(sp::Token* tok) {
 	}
 	else if (tok->getType() == sp::Token::TokenType::CONST) {
 		return parseConstVal();
+	}
+	else if (tok->getType() == sp::Token::TokenType::LPAREN) {
+		return parseLParenPrefixExpr();
 	}
 	throw this->genError("ParsePrefixExpr expected a Prefix, NAME or CONST got: " + tok->getLiteral());
 }
@@ -230,6 +235,23 @@ ast::Expr* Parser::parseInfixExpr(ast::Expr* left_expr) {
 	auto right_expr = this->parseExpr(curr_precedence);
 	return new ast::InfixExpr(tok, left_expr, right_expr);
 
+}
+
+ast::Expr* Parser::parseLParenPrefixExpr() {
+	sp::Token* tok = this->currToken;
+	if (tok->getType() != sp::Token::TokenType::LPAREN) {
+		throw this->genError("ParseLParen expected LPAREN instead encountered: " + tok->getLiteral());
+	}
+	this->nextToken();
+	ast::Expr* expr = this->parseExpr(ParserUtils::ExprPrecedence::LOWEST);
+	this->nextToken();	// shift away the last expr within the RParen
+
+	// note: if expect Peek is RPAREN, then advance to curr being RPAREN
+	sp::Token* wrong_tok = this->currToken;
+	if (this->expectPeek(sp::Token::TokenType::RPAREN)) {
+		throw this->genError("ParseLParen expected RPAREN instead encountered: " + wrong_tok->getLiteral());
+	}
+	return expr;
 }
 
 std::string Parser::genError(std::string str) {
