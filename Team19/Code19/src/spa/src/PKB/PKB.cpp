@@ -14,6 +14,36 @@ Parent* PKB::parent = new Parent();
 Uses* PKB::uses = new Uses();
 Modifies* PKB::modifies = new Modifies();
 
+void PKB::resetPKB() {
+    delete constTable;
+    delete varTable;
+    delete procTable;
+    delete stmtTable;
+    delete stmtLstTable;
+
+    delete follows;
+    delete parent;
+    delete uses;
+    delete modifies;
+
+    constTable = new ConstTable();
+    varTable = new VarTable();
+    procTable = new ProcTable();
+    stmtTable = new StmtTable();
+    stmtLstTable = new StmtLstTable();
+
+    follows = new Follows();
+    parent = new Parent();
+    uses = new Uses();
+    modifies = new Modifies();
+}
+
+bool PKB::populatePKB() {
+    follows->populateFollowsStar();
+    parent->populateParentStar();
+    return true;
+}
+
 //int PKB::setProcToAST(PROC p, TNode* r) {
 //	return 0;
 //}

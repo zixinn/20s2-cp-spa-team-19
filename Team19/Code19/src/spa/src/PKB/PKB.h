@@ -38,5 +38,10 @@ public:
     static Uses* uses;
     static Modifies* modifies;
 
+    // Resets the entire PKB (delete everything stored in PKB)
+    static void resetPKB();
+
+    //  Populate Follows* / Parent*. Returns true if the PKB has been successfully populated.
+    static bool populatePKB();
 
 };
