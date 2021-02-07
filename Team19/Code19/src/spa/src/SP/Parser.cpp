@@ -87,6 +87,7 @@ ast::Stmt* Parser::parseStmt() {
 	if (this->currTokenIs(sp::Token::TokenType::NAME)) {
 		return this->parseAssignStmt();
 	} else if (this->currTokenIsNameOrKeyword() && this->peekTokenIs(sp::Token::TokenType::ASSIGN)) {
+		// this clause must be close to the top, precedence over the other keyword parse methods
 		return this->parseAssignStmt();
 	} else if (this->currTokenIs(sp::Token::TokenType::CALL)) {
 		return this->parseCallStmt();
