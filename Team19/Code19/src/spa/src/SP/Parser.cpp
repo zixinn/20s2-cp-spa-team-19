@@ -247,12 +247,11 @@ ast::Expr* Parser::parseLParenPrefixExpr() {
 	}
 	this->nextToken();
 	ast::Expr* expr = this->parseExpr(ParserUtils::ExprPrecedence::LOWEST);
-	this->nextToken();	// shift away the last expr within the RParen
+	this->nextToken();	// shift away the last expr within the RParen, curr should now be RPAREN
 
-	// note: if expect Peek is RPAREN, then advance to curr being RPAREN
-	sp::Token* wrong_tok = this->currToken;
-	if (this->expectPeek(sp::Token::TokenType::RPAREN)) {
-		throw this->genError("ParseLParen expected RPAREN instead encountered: " + wrong_tok->getLiteral());
+	// the currToken should be RPAREN, since we just shifted away the last expr in RParen
+	if (!this->currTokenIs(sp::Token::TokenType::RPAREN)) {
+		throw this->genError("ParseLParen expected RPAREN instead encountered: " + this->currLiteral());
 	}
 	return expr;
 }

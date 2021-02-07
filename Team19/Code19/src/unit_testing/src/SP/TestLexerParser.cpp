@@ -69,6 +69,18 @@ TEST_CASE("ParseLexer Assign Paren - Test") {
             "zz = 1;",
             "zz = 1;",
         },
+        {
+            "aa = (1+(2));",
+            "aa = (1 + 2);",
+        },
+        {
+            "bb = (b);",
+            "bb = b;",
+        },
+        {
+            "cc = (1) + ((2) + (3)) + (4);",
+            "cc = ((1 + (2 + 3)) + 4);",
+        },
     };
 
     for (int i = 0; i < tests.size(); ++i) {
