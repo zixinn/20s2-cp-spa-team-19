@@ -41,6 +41,7 @@ public:
 	ast::Proc* parseProc();
 	ast::Program* parseProgram();
 	ast::Expr* parseExpr(int precedence);
+	ast::CondExpr* parseCondExpr(int precedence);
 
 	inline sp::Token* getCurrToken() { return currToken; };
 	static bool isKeyword(sp::Token* tok);

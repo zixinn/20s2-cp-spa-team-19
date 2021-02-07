@@ -216,6 +216,26 @@ ast::Expr* Parser::parseExpr(int precedence) {
 	return left_expr;
 }
 
+ast::CondExpr* Parser::parseCondExpr(int precedence) {
+	throw "not ready, everything below this is unchanged";
+
+	/*
+	// e.g. y = x + 1; this deals with the x
+	auto left_expr = parsePrefixExpr(this->currToken);
+
+	// if y = x; will encounter semicolon and just return
+	// the higher the precedence the deeper it is in the tree
+	while (!this->peekTokenIs(sp::Token::TokenType::SEMICOLON) && precedence < this->peekPrecedence()) {
+		this->nextToken();
+		left_expr = this->parseInfixExpr(left_expr);
+	}
+
+	// we may encounter an invalid symbol like RPAREN here or SEMICOLON and thats ok, just return
+	// let the caller deal with it, LPAREN parsing needs this
+	return left_expr;
+	*/
+}
+
 // basically a switch for choosing parsing VarName or ConstVal
 ast::Expr* Parser::parsePrefixExpr(sp::Token* tok) {
 	//throw "NOT READY";

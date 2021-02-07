@@ -14,6 +14,15 @@ namespace ParserUtils {
 		const int PREFIX = 4;		// operators: !
 	};
 
+	// CondExpr precedence, higher the more impt
+	namespace CondExprPrecedence {		// the order matters
+		const int BLANK = 0;
+		const int LOWEST = 1;
+		const int PREFIX = 1;		// operators: !
+		const int ANDOR = 2;		// operators: && ||
+		const int GLTEQN = 3;		// > >= < <= == !=
+	};
+
 	// map tokens to correct BODMAS precedence ranking
 	const unordered_map<sp::Token::TokenType, int, sp::tokentype_hash> exprRanks{
 		{sp::Token::TokenType::PLUS, ExprPrecedence::ADDMINUS },

@@ -21,5 +21,6 @@ namespace ast {
 			// PROBLEM: a proc_name and a var_name can have same name, maybe add new TokenType?
 			return false; // this->getTokenLiteral() == expr->getTokenLiteral();
 		};
+		~VarName() {};
 	};
 }

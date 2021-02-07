@@ -18,5 +18,6 @@ namespace ast {
 
 		ast::ProcName* getName() { return proc_name; }
 		ast::StmtLst* getStmtLst() { return stmt_lst; }
+		~Proc() {};
 	};
 }
