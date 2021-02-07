@@ -62,12 +62,24 @@ ast::Proc* Parser::parseProc() {
 	this->nextToken();
 
 	ast::StmtLst* stmtlst = this->parseStmtLst();
+
+	if (!this->currTokenIs(sp::Token::TokenType::RBRACE)) {
+		throw this->genError("ParseProc expected a RBRACE, got: " + this->peekLiteral()); 
+	}
+	//current token is }
+	this->nextToken();
+
 	return new ast::Proc(proc_tok, pn, stmtlst);
 }
 
 ast::StmtLst* Parser::parseStmtLst() {
 	std::vector<ast::Stmt*> xs{};
 	while (this->currToken && (!this->currTokenIs(sp::Token::TokenType::EOFF))) {
+		if (this->currTokenIs(sp::Token::TokenType::RBRACE)) {
+			// if encouter } means end of stmtLst
+			break;
+		}
+
 		ast::Stmt* stmt = this->parseStmt();
 		if (!stmt) { throw this->genError("ParseStmtLst error"); }
 		xs.push_back(stmt);
