@@ -1,0 +1,300 @@
+#include "DesignExtractor.h"
+
+// DE internal structures
+ID DesignExtractor::currentProcedureID;
+ID DesignExtractor::currentParent;
+set<ID> DesignExtractor::currentModifiedVarsLst;
+set<ID> DesignExtractor::currentUsedVarsLst;
+vector<ID> DesignExtractor::currentStmtLst;
+
+// Stacks
+vector<vector<int>> DesignExtractor::stmtLstsStack;
+vector<set<ID>> DesignExtractor::usesStack;
+vector<set<ID>> DesignExtractor::modifiesStack;
+vector<ID> DesignExtractor::parentStack;
+
+// To support generic stacks
+template <typename T>
+static T DesignExtractor::DEStack<T>::stackPop(vector<T> &stack) {
+    if (stack.empty()) {
+        T empty;
+        return empty;
+    }
+    T entry = stack.back();  // as pop_back() doesn't have return value
+    stack.pop_back();
+    return entry;
+}
+template <typename T>
+static void DesignExtractor::DEStack<T>::stackPush(vector<T> &stack, T entry) {
+    stack.push_back(entry);
+}
+
+void DesignExtractor::storeNewProcedure(STRING procedureName) {
+    // Stores new procedure into PKB and receive the PKB-assigned ID
+    currentProcedureID = PKB::procTable->storeProcName(procedureName);
+}
+void DesignExtractor::exitProcedure() {
+    // Store Procedure's stmtLst
+    PKB::procTable->storeProcStmt(currentProcedureID, currentStmtLst[0], currentStmtLst.back());
+    addCurrentStmtLstToPKB();
+
+    // Update Follows, Modifies, Uses for all statements in this procedure's currentStmtLst
+    // Stmts in containers were handled earlier; this includes Parents
+        // Uses/Modifies relationships in containers wont be added during exitProcedure
+        // because the container statements' stmtLsts are not in the Procedure's currentStmtLst
+    addFollowsForCurrentStmtLst();
+    // Stores this Procedure's Modifies, Uses relationships for the currentStmtLst
+    addAllCurrentStmtLstModifiesForProcedure();
+    addAllCurrentStmtLstUsesForProcedure();
+}
+
+
+void DesignExtractor::storeNewWhile(int startStmtNum, vector<STRING> condVarNames, Stmt* AST) {
+    // Store the conditional variables into PKB and receive the PKB-assigned ID
+    for (STRING varName : condVarNames) {
+        ID varID = PKB::varTable->storeVarName(varName);
+         PKB::uses->storeStmtUses(startStmtNum, varID);
+
+        // DE Internal Bookkeeping
+        currentUsedVarsLst.insert(varID);   // the conditional variables used
+    }
+
+    // Stores <stmtNum, PAIR<variable ID, *AST>> into Assignment Map.
+    if (!PKB::stmtTable->storeStmt(startStmtNum, AST, WHILE_)) {
+        std::cerr << "DE encountered an error when attempting to store statement " << startStmtNum << " in PKB.\n";
+    }
+
+    // DE Internal Bookkeeping
+    currentStmtLst.push_back(startStmtNum);
+    // Prepare for the while loop's stmtLst
+    currentParent = startStmtNum;
+    saveCurrentState();
+    createNewCurrentState(startStmtNum); // current While stmt is not part of the new stmtLst
+}
+
+void DesignExtractor::exitWhile() {
+    storeCurrentStmtLstRelationships(); // Store While loop's stmtLst's relationships
+    popSavedState();                    // Reset to previous local state variables
+}
+
+void DesignExtractor::storeNewIf(int startStmtNum, vector<STRING> condVarNames, Stmt* AST) {
+    // Store the conditional variables into PKB and receive the PKB-assigned ID
+    for (STRING varName : condVarNames) {
+        ID varID = PKB::varTable->storeVarName(varName);
+         PKB::uses->storeStmtUses(startStmtNum, varID);
+
+        // DE Internal Bookkeeping
+        currentUsedVarsLst.insert(varID);   // the conditional variables used
+    }
+    // Stores <stmtNum, PAIR<variable ID, *AST>> into Assignment Map.
+    if (!PKB::stmtTable->storeStmt(startStmtNum, AST, IF_)) {
+        std::cerr << "DE encountered an error when attempting to store statement " << startStmtNum << " in PKB.\n";
+    }
+
+    // DE Internal Bookkeeping
+    currentStmtLst.push_back(startStmtNum);
+    // Prepare for the If stmt's stmtLst
+    currentParent = startStmtNum;
+    saveCurrentState();
+    createNewCurrentState(startStmtNum); // current If stmt is not part of the new stmtLst
+}
+void DesignExtractor::storeNewElse() {
+    // Stores the else section of if-else statement
+    // An if-then and its else statement has their own separate stmtLsts
+    // So, it's necessary to populate the if-part abstractions and reset the local state variables
+    storeCurrentStmtLstRelationships();
+    createNewCurrentState(currentParent);
+}
+void DesignExtractor::endIfElse() {
+    // Called when exiting an if-else statement.
+    storeCurrentStmtLstRelationships(); // Store If stmt's stmtLst's relationships
+    popSavedState();                    // Reset to previous local state variables
+}
+
+void DesignExtractor::storeNewAssignment(int stmtNum, STRING variableName, Stmt* AST) {
+    // Store the LHS variable into PKB and receive the PKB-assigned ID
+    ID varID = PKB::varTable->storeVarName(variableName);
+    // Update Modifies
+     PKB::modifies->storeStmtModifies(stmtNum, varID);
+
+    // Stores <stmtNum, PAIR<variable ID, *AST>> into Assignment Map.
+    if (!PKB::stmtTable->storeStmt(stmtNum, AST, ASSIGN_)) {
+        std::cerr << "DE encountered an error when attempting to store statement " << stmtNum << " in PKB.\n";
+    }
+
+    // Traverse AST and extract the variables/constants used in the Expr
+    vector<STRING> varNameLst;
+    vector<STRING> constLst;
+    std::tie(varNameLst, constLst) = extractVarsAndConsts(static_cast<AssignStmt *>(AST));
+    // Store constants into PKB
+    for (STRING constant : constLst) {
+        PKB::constTable->storeConst(constant);
+    }
+    // Store variables into PKB & update Uses table.
+    for (STRING var : varNameLst) {
+        int varID =  PKB::varTable->storeVarName(var);   // if var already exists, it returns previously assigned ID.
+         PKB::uses->storeStmtUses(stmtNum, varID);
+
+        // DE Internal Bookkeeping
+        currentUsedVarsLst.insert(varID);
+    }
+
+    // DE Internal Bookkeeping
+    currentStmtLst.push_back(stmtNum);
+    currentModifiedVarsLst.insert(varID);
+}
+
+void DesignExtractor::storeNewRead(int stmtNum, STRING variableName, Stmt* AST) {
+    // Store the LHS variable into PKB and receive the PKB-assigned ID
+    ID varID = PKB::varTable->storeVarName(variableName);
+    // Update Modifies
+     PKB::modifies->storeStmtModifies(stmtNum, varID);
+
+    // Stores <stmtNum, PAIR<variable ID, *AST>> into Assignment Map.
+    if (!PKB::stmtTable->storeStmt(stmtNum, AST, READ_)) {
+        std::cerr << "DE encountered an error when attempting to store statement " << stmtNum << " in PKB.\n";
+    }
+
+    // DE Internal Bookkeeping
+    currentStmtLst.push_back(stmtNum);
+    currentModifiedVarsLst.insert(varID);
+}
+void DesignExtractor::storeNewPrint(int stmtNum, STRING variableName, Stmt* AST) {
+    // Store the LHS variable into PKB and receive the PKB-assigned ID
+    ID varID = PKB::varTable->storeVarName(variableName);
+
+    // Update Uses. Note that Print only uses one variable.
+     PKB::uses->storeStmtUses(stmtNum, varID);
+
+    // Stores <stmtNum, PAIR<variable ID, *AST>> into Assignment Map.
+    if (!PKB::stmtTable->storeStmt(stmtNum, AST, PRINT_)) {
+        std::cerr << "DE encountered an error when attempting to store statement " << stmtNum << " in PKB.\n";
+    }
+    // DE Internal Bookkeeping
+    currentStmtLst.push_back(stmtNum);
+    currentUsedVarsLst.insert(varID);
+}
+
+void DesignExtractor::signalReset() {
+    // Reset DE internal structures
+    currentProcedureID = NULL;
+    currentParent = NULL;
+    currentModifiedVarsLst.clear();
+    currentUsedVarsLst.clear();
+    currentStmtLst.clear();
+    // Stacks
+    stmtLstsStack.clear();
+    usesStack.clear();
+    modifiesStack.clear();
+    parentStack.clear();
+
+    PKB::resetPKB();
+}
+
+bool DesignExtractor::signalEnd() {
+    return PKB::populatePKB();
+}
+
+// DE Internal Methods
+pair<vector<STRING>, vector<STRING>> DesignExtractor::extractVarsAndConsts(AssignStmt* AST) {
+    // The first in the pair is a list of varNames. The second is a list of Constant strings.
+    // AssignStmt contains Expr; getExpr();
+    // Expr be infix or varName or const
+    // TODO: Waiting on AST implementation
+
+}
+
+void DesignExtractor::storeCurrentStmtLstRelationships() {
+    addCurrentStmtLstToPKB();
+    // Stores Follows, Parent for the currentStmtLst
+    addFollowsForCurrentStmtLst();
+    addParentForCurrentStmtLst();
+
+    // Stores Modifies, Uses for the currentStmtLst
+    // This is done for ALL parents of the currentStmtLst
+    addModifiesForAllParentsOfCurrentStmtLst();
+    addUsesForAllParentForCurrentStmtLst();
+
+    // Stores the current Procedure's Modifies, Uses relationships for the currentStmtLst
+    // Uses/Modifies relationships in the container wont be added during exitProcedure
+    // because the container statements' stmtLsts are not in the Procedure's currentStmtLst
+    addAllCurrentStmtLstModifiesForProcedure();
+    addAllCurrentStmtLstUsesForProcedure();
+}
+
+void DesignExtractor::addCurrentStmtLstToPKB() {
+    // Adds the container stmt's stmtLst to PKB
+    if (!currentStmtLst.empty()) {
+        PKB::stmtLstTable->storeStmtLst(currentStmtLst[0]);
+    }
+}
+void DesignExtractor::addFollowsForCurrentStmtLst() {
+    // If currentStmtLst contains statements, add Follows(s1, s2) between each
+    if (!currentStmtLst.empty()) {
+        // size() - 1 because last stmt will have nothing following it
+        for (int i = 0; i < currentStmtLst.size() - 1; i++){
+             PKB::follows->storeFollows(currentStmtLst[i], currentStmtLst[i + 1]);
+        }
+    }
+
+}
+void DesignExtractor::addParentForCurrentStmtLst() {
+    // adds Parents relationship for all stmts in currentStmtLst
+    if (!parentStack.empty()) {
+        int parent = parentStack.back();
+        for (int child : currentStmtLst) {
+            PKB::parent->storeParent(parent, child);
+        }
+    }
+}
+
+void DesignExtractor::addModifiesForAllParentsOfCurrentStmtLst() {
+    for (ID varID : currentModifiedVarsLst) {
+        for (int parent : parentStack) {
+            PKB::modifies->storeStmtModifies(parent, varID);
+        }
+    }
+}
+void DesignExtractor::addUsesForAllParentForCurrentStmtLst() {
+    for (ID varID : currentUsedVarsLst) {
+        for (int parent : parentStack) {
+            PKB::uses->storeStmtUses(parent, varID);
+        }
+    }
+}
+
+void DesignExtractor::addAllCurrentStmtLstModifiesForProcedure() {
+    for (ID varID : currentModifiedVarsLst) {
+        PKB::modifies->storeStmtModifies(currentProcedureID, varID);
+    }
+}
+void DesignExtractor::addAllCurrentStmtLstUsesForProcedure() {
+    for (ID varID : currentUsedVarsLst) {
+        PKB::modifies->storeStmtModifies(currentProcedureID, varID);
+    }
+}
+
+void DesignExtractor::saveCurrentState() {
+    // Push all current state variables to the storage stacks.
+    DEStack<vector<int>>::stackPush(stmtLstsStack, currentStmtLst);
+    DEStack<ID>::stackPush(parentStack, currentParent);
+    DEStack<set<ID>>::stackPush(usesStack, currentUsedVarsLst);
+    DEStack<set<ID>>::stackPush(modifiesStack, currentModifiedVarsLst);
+
+}
+
+void DesignExtractor::popSavedState() {
+    // Pop all storage stacks and restore the current state variables
+    currentStmtLst = DEStack<vector<int>>::stackPop(stmtLstsStack);
+    currentParent = DEStack<ID>::stackPop(parentStack);
+    currentUsedVarsLst = DEStack<set<ID>>::stackPop(usesStack);
+    currentModifiedVarsLst = DEStack<set<ID>>::stackPop(modifiesStack);
+}
+
+void DesignExtractor::createNewCurrentState(ID parentStmt) {
+    currentParent = parentStmt;
+    currentStmtLst = vector<ID>();
+    currentUsedVarsLst = set<ID>();
+    currentModifiedVarsLst = set<ID>();
+}
+
