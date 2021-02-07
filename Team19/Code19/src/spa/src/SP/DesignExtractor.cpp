@@ -1,4 +1,5 @@
 #include "DesignExtractor.h"
+#include "SP/Token.h"
 
 // DE internal structures
 ID DesignExtractor::currentProcedureID;
@@ -111,7 +112,7 @@ void DesignExtractor::endIfElse() {
     popSavedState();                    // Reset to previous local state variables
 }
 
-void DesignExtractor::storeNewAssignment(int stmtNum, STRING variableName, Stmt* AST) {
+void DesignExtractor::storeNewAssignment(int stmtNum, STRING variableName, AssignStmt* AST) {
     // Store the LHS variable into PKB and receive the PKB-assigned ID
     ID varID = PKB::varTable->storeVarName(variableName);
     // Update Modifies
@@ -125,7 +126,11 @@ void DesignExtractor::storeNewAssignment(int stmtNum, STRING variableName, Stmt*
     // Traverse AST and extract the variables/constants used in the Expr
     vector<STRING> varNameLst;
     vector<STRING> constLst;
-    std::tie(varNameLst, constLst) = extractVarsAndConsts(static_cast<AssignStmt *>(AST));
+    Expr* expression = AST->getExpr();
+
+    // AssignStmt contains Expr; getExpr();
+    std::tie(varNameLst, constLst) = extractVarsAndConsts(expression, varNameLst, constLst);
+
     // Store constants into PKB
     for (STRING constant : constLst) {
         PKB::constTable->storeConst(constant);
@@ -144,7 +149,7 @@ void DesignExtractor::storeNewAssignment(int stmtNum, STRING variableName, Stmt*
     currentModifiedVarsLst.insert(varID);
 }
 
-void DesignExtractor::storeNewRead(int stmtNum, STRING variableName, Stmt* AST) {
+void DesignExtractor::storeNewRead(int stmtNum, STRING variableName, ReadStmt* AST) {
     // Store the LHS variable into PKB and receive the PKB-assigned ID
     ID varID = PKB::varTable->storeVarName(variableName);
     // Update Modifies
@@ -159,7 +164,7 @@ void DesignExtractor::storeNewRead(int stmtNum, STRING variableName, Stmt* AST) 
     currentStmtLst.push_back(stmtNum);
     currentModifiedVarsLst.insert(varID);
 }
-void DesignExtractor::storeNewPrint(int stmtNum, STRING variableName, Stmt* AST) {
+void DesignExtractor::storeNewPrint(int stmtNum, STRING variableName, PrintStmt* AST) {
     // Store the LHS variable into PKB and receive the PKB-assigned ID
     ID varID = PKB::varTable->storeVarName(variableName);
 
@@ -196,11 +201,38 @@ bool DesignExtractor::signalEnd() {
 }
 
 // DE Internal Methods
-pair<vector<STRING>, vector<STRING>> DesignExtractor::extractVarsAndConsts(AssignStmt* AST) {
+pair<vector<STRING>, vector<STRING>> DesignExtractor::extractVarsAndConsts(Expr* expression,
+                                                                           vector<STRING> varNameLst,
+                                                                           vector<STRING> constLst) {
     // The first in the pair is a list of varNames. The second is a list of Constant strings.
-    // AssignStmt contains Expr; getExpr();
-    // Expr be infix or varName or const
-    // TODO: Waiting on AST implementation
+
+    // 3 types of expressions: InfixExpr, ConstVal, VarName
+    sp::Token::TokenType tokenType = expression->getToken()->getType();
+    switch (tokenType) {
+        // ConstVal
+        case sp::Token::TokenType::CONST:
+            constLst.push_back(expression->getTokenLiteral());
+            break;
+        // VarName
+        case sp::Token::TokenType::NAME:
+            varNameLst.push_back(static_cast<VarName *>(expression)->getVal());
+            break;
+        // InfixExpr. Fallthrough!
+        case sp::Token::TokenType::PLUS:
+        case sp::Token::TokenType::MINUS:
+        case sp::Token::TokenType::TIMES:
+        case sp::Token::TokenType::DIV:
+        case sp::Token::TokenType::MOD: {
+            InfixExpr* expression = static_cast<InfixExpr *>(expression);
+            // Traverse left first
+            extractVarsAndConsts(expression->getLeft(), varNameLst, constLst);
+            extractVarsAndConsts(expression->getRight(), varNameLst, constLst);
+            break;
+        }
+
+    }
+    return make_pair(varNameLst, constLst);
+
 
 }
 

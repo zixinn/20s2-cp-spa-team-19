@@ -31,11 +31,11 @@ public:
     static void endIfElse();
 
     // Stores a new Assignment into the PKB.
-    static void storeNewAssignment(int stmtNum, STRING variableName, Stmt* AST);
+    static void storeNewAssignment(int stmtNum, STRING variableName, AssignStmt* AST);
     // Stores a new Read into the PKB.
-    static void storeNewRead(int stmtNum, STRING variableName, Stmt* AST);
+    static void storeNewRead(int stmtNum, STRING variableName, ReadStmt* AST);
     // Stores a new Print into the PKB.
-    static void storeNewPrint(int stmtNum, STRING variableName, Stmt* AST);
+    static void storeNewPrint(int stmtNum, STRING variableName, PrintStmt* AST);
 
     // Informs DE that end of file (EOF) has been reached.
     // DE will call PKB functions for the calculation of Follows*, Parent*,
@@ -55,7 +55,7 @@ public:
 
     // Iteration 2/3
         // Finds or adds the entry of the callerName in the NestedCallsMap and append procedureName to the calledProceduresList of the entry. Returns true (success) if successful; otherwise, returns false if this is a recursive call.
-        // bool storeNewCall(int stmtNum,STRING callerName, NODE* AST);
+        // bool storeNewCall(int stmtNum,STRING callerName, CallStmt* AST);
 
 private:
     // For bookkeeping
@@ -89,7 +89,9 @@ private:
 
     // Other internal DE methods
     // Extracts varNames and Constants from the RHS of an AssignStmt
-    static pair<vector<STRING>, vector<STRING>> extractVarsAndConsts(AssignStmt* AST);
+    static pair<vector<STRING>, vector<STRING>> extractVarsAndConsts(Expr* AST,
+                                                                     vector<STRING> varNameLst,
+                                                                     vector<STRING> constLst);
 
     // Stores Follows, Parent, Modifies, Uses for the currentStmtLst (for container statements)
     static void storeCurrentStmtLstRelationships();

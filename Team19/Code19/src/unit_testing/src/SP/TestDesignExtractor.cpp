@@ -1,18 +1,75 @@
 #include "SP/DesignExtractor.h"
 #include "PKB/PKB.h"
+#include "AST/Index.h"
+#include "SP/Parser.h"
 
 #include "catch.hpp"
 using namespace std;
 
-// Set up PKB
-void setupPKBAndCleamDE() {
-    DesignExtractor::signalReset(); // Resets both DE and PKB
-    PKB::constTable->storeConst("6");
-}
-
-TEST_CASE("storeNewProcedureTest") {
+TEST_CASE("storeNewProcedure Test") {
 
 }
+
+TEST_CASE("storeNewAssignment Const RHS Test") {
+    PKB::resetPKB();
+    // Set up Assignment AST
+    std::vector<sp::Token*> stubTokens{
+            new sp::Token(sp::Token::TokenType::NAME, "axel"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::CONST, "420"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto l = new LexerStub(stubTokens);     //new keyword gets me a ptr to LexerStub
+    Parser p = Parser(l);
+    ast::AssignStmt* assignment = p.parseAssignStmt();
+
+    DesignExtractor::storeNewAssignment(1, "axel", assignment);
+    // Check varName
+    ID varID = PKB::varTable->getVarID("axel");
+    REQUIRE(varID == 0);    // varTable ID starts indexing at 0
+    REQUIRE(PKB::varTable->getVarName(varID) == "axel");
+    // Check ConstTable
+    REQUIRE(PKB::constTable->hasConst("420") == true);
+    REQUIRE(PKB::constTable->getConstValue("420") == 420);
+    // Check Modifies
+    REQUIRE(PKB::modifies->getStmtsModifies(varID) == unordered_set<StmtNum>{ 1 }); // StmtNums start from 1
+    // No Uses since RHS is a constant
+}
+
+TEST_CASE("storeNewAssignment VarName RHS Test") {
+    PKB::resetPKB();
+    // Set up Assignment AST
+    std::vector<sp::Token*> stubTokens{
+            new sp::Token(sp::Token::TokenType::NAME, "axel2"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::NAME, "semelparity"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto l = new LexerStub(stubTokens);     //new keyword gets me a ptr to LexerStub
+    Parser p = Parser(l);
+    ast::AssignStmt* assignment = p.parseAssignStmt();
+
+    DesignExtractor::storeNewAssignment(1, "axel2", assignment);
+    // Check varName, LHS
+    ID varID = PKB::varTable->getVarID("axel2");
+    REQUIRE(varID == 0);    // varTable ID starts indexing at 0
+    REQUIRE(PKB::varTable->getVarName(varID) == "axel2");
+
+    // Check varName, RHS
+    ID varIDRHS = PKB::varTable->getVarID("semelparity");
+    REQUIRE(varIDRHS == 1);    // second variable in varTable
+    REQUIRE(PKB::varTable->getVarName(varIDRHS) == "semelparity");
+
+    // Check Modifies
+    REQUIRE(PKB::modifies->getStmtsModifies(varID) == unordered_set<StmtNum>{ 1 }); // StmtNums start from 1
+    // Check Uses
+    REQUIRE(PKB::uses->getStmtsUses(varIDRHS) == unordered_set<StmtNum>{ 1 }); // StmtNums start from 1
+}
+
+TEST_CASE("storeNewAssignment VarNames and Consts Test") {
+
+}
+
 
 // Test cases for stacks and related methods
 TEST_CASE("Generic Stack Operations Test") {
