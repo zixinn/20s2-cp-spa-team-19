@@ -216,30 +216,11 @@ ast::Expr* Parser::parseExpr(int precedence) {
 	return left_expr;
 }
 
-ast::CondExpr* Parser::parseCondExpr(int precedence) {
-	throw "not ready, everything below this is unchanged";
-
-	/*
-	// e.g. y = x + 1; this deals with the x
-	auto left_expr = parsePrefixExpr(this->currToken);
-
-	// if y = x; will encounter semicolon and just return
-	// the higher the precedence the deeper it is in the tree
-	while (!this->peekTokenIs(sp::Token::TokenType::SEMICOLON) && precedence < this->peekPrecedence()) {
-		this->nextToken();
-		left_expr = this->parseInfixExpr(left_expr);
-	}
-
-	// we may encounter an invalid symbol like RPAREN here or SEMICOLON and thats ok, just return
-	// let the caller deal with it, LPAREN parsing needs this
-	return left_expr;
-	*/
-}
-
 // basically a switch for choosing parsing VarName or ConstVal
 ast::Expr* Parser::parsePrefixExpr(sp::Token* tok) {
 	//throw "NOT READY";
-	if (tok->getType() == sp::Token::TokenType::NAME) {
+	//if (tok->getType() == sp::Token::TokenType::NAME) {
+	if (this->currTokenIsNameOrKeyword()) {
 		return parseVarName();
 	}
 	else if (tok->getType() == sp::Token::TokenType::CONST) {
@@ -255,7 +236,7 @@ ast::Expr* Parser::parseInfixExpr(ast::Expr* left_expr) {
 	//throw "NOT READY";
 	auto tok = this->currToken;
 	if (!ParserUtils::hasExprRank(tok->getType())) {
-		throw this->genError("ParsePrefixExpr expected a Infix Operator, got: " + tok->getLiteral());
+		throw this->genError("ParseInfixExpr expected a Infix Operator, got: " + tok->getLiteral());
 	}
 	// expr is a valid infix expr
 
@@ -279,6 +260,106 @@ ast::Expr* Parser::parseLParenPrefixExpr() {
 	// the currToken should be RPAREN, since we just shifted away the last expr in RParen
 	if (!this->currTokenIs(sp::Token::TokenType::RPAREN)) {
 		throw this->genError("ParseLParen expected RPAREN instead encountered: " + this->currLiteral());
+	}
+	return expr;
+}
+
+ast::CondExpr* Parser::parseCondExpr(int precedence) {
+	//throw "not ready, everything below this is unchanged";
+
+	// e.g. (a == b) && (c > 5); this deals with the (a == b)
+	auto left_expr = parsePrefixCondExpr();
+	// here could be a RPAREN )
+
+	// if y = x; will encounter semicolon and just return
+	// unlike expr, condexpr must have ( )
+	// no need for precedence, since order enforced by CondExpr > RelExpr > Expr typing
+	//while (!this->peekTokenIs(sp::Token::TokenType::SEMICOLON) && precedence < this->peekPrecedence()) {
+	while (ParserUtils::isCondExprOps(this->peekToken->getType())) {
+		this->nextToken();	// shift away the RPAREN )
+		left_expr = this->parseInfixCondExpr(left_expr);
+	}
+
+	// we may encounter an invalid symbol like RPAREN here or SEMICOLON and thats ok, just return
+	// let the caller deal with it, LPAREN parsing needs this
+	return left_expr;
+}
+
+ast::CondExpr* Parser::parseInfixCondExpr(ast::CondExpr* left_expr) {
+	auto tok = this->currToken;
+	if (!ParserUtils::isCondExprOps(tok->getType())) {
+		throw this->genError("ParseInfixCondExpr expected AND or OR, got: " + tok->getLiteral());
+	}
+	// expr is a valid infix cond expr
+
+	// precedence not needed, AND and OR same rank
+	//auto curr_precedence = this->currPrecedence();
+	auto curr_precedence = ParserUtils::CondExprPrecedence::LOWEST;		
+	this->nextToken();
+	auto right_expr = this->parseCondExpr(curr_precedence);
+	return new ast::InfixCondExpr(tok, left_expr, right_expr);
+}
+
+// basically a switch for choosing parsing VarName or ConstVal
+ast::CondExpr* Parser::parsePrefixCondExpr() {
+	auto tok = this->currToken;
+	//if (tok->getType() == sp::Token::TokenType::NAME) {
+	if (this->currTokenIsNameOrKeyword()) {
+		return parseRelExpr();
+	}
+	else if (tok->getType() == sp::Token::TokenType::CONST) {
+		return parseRelExpr();
+	}
+	else if (tok->getType() == sp::Token::TokenType::NOT) {
+		return parseNotExpr();
+	}
+	else if (tok->getType() == sp::Token::TokenType::LPAREN) {
+		return parseLParenPrefixCondExpr();
+	}
+	throw this->genError("ParsePrefixExpr expected a Prefix, NAME or CONST got: " + tok->getLiteral());
+}
+
+ast::CondExpr* Parser::parseRelExpr() {
+	// no checks, because it might be a LParen, or NAME or CONST, let parseExpr deal with it
+	// LHS of a RelExpr is always an expression eg x + 1 > b
+	auto left_expr = parseExpr(ParserUtils::ExprPrecedence::LOWEST);
+	this->nextToken();	// shift away the last expr before the >=, curr should now be >= or equivalent
+
+	// the currToken should be a relative operator eg >, >=, ==, != etc
+	auto operator_tok = this->currToken;
+	if (!ParserUtils::isRelOps(this->currToken->getType())) {
+		throw this->genError("ParseRelExpr expected >, >=, ==, != etc instead encountered: " + this->currLiteral());
+	}
+	this->nextToken();	// shift away the relative operator
+	// no checks, because it might be a LParen, or NAME or CONST, let parseExpr deal with it
+	auto right_expr = parseExpr(ParserUtils::ExprPrecedence::LOWEST);
+
+	return new ast::RelExpr(operator_tok, left_expr, right_expr);
+}
+
+ast::CondExpr* Parser::parseNotExpr() {
+	sp::Token* tok = this->currToken;
+	if (tok->getType() != sp::Token::TokenType::NOT) {
+		throw this->genError("ParseNotExpr expected NOT instead encountered: " + tok->getLiteral());
+	}
+	this->nextToken();
+	ast::CondExpr* expr = this->parseCondExpr(ParserUtils::CondExprPrecedence::LOWEST);
+	return new ast::PrefixCondExpr(tok, expr);
+}
+
+// pretty much a clone of parseLParenPrefixExpr
+ast::CondExpr* Parser::parseLParenPrefixCondExpr() {
+	sp::Token* tok = this->currToken;
+	if (tok->getType() != sp::Token::TokenType::LPAREN) {
+		throw this->genError("ParseLParenCond expected LPAREN instead encountered: " + tok->getLiteral());
+	}
+	this->nextToken();
+	ast::CondExpr* expr = this->parseCondExpr(ParserUtils::ExprPrecedence::LOWEST);
+	this->nextToken();	// shift away the last expr within the RParen, curr should now be RPAREN
+
+	// the currToken should be RPAREN, since we just shifted away the last expr in RParen
+	if (!this->currTokenIs(sp::Token::TokenType::RPAREN)) {
+		throw this->genError("ParseLParenCond expected RPAREN instead encountered: " + this->currLiteral());
 	}
 	return expr;
 }

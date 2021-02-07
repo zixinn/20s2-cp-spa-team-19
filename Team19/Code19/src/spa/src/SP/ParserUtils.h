@@ -18,9 +18,9 @@ namespace ParserUtils {
 	namespace CondExprPrecedence {		// the order matters
 		const int BLANK = 0;
 		const int LOWEST = 1;
-		const int PREFIX = 1;		// operators: !
 		const int ANDOR = 2;		// operators: && ||
-		const int GLTEQN = 3;		// > >= < <= == !=
+		const int PREFIX = 3;		// operators: !
+		const int GLTEQN = 4;		// > >= < <= == !=
 	};
 
 	// map tokens to correct BODMAS precedence ranking
@@ -72,4 +72,30 @@ namespace ParserUtils {
 			throw "Output Token* vector is not the same size as Lexer::tokenize vector output size";
 		}
 	}
+
+	// EQ, NEQ, GT, GTE, LT, LTE,  //rel expr
+	const std::unordered_set<sp::Token::TokenType, sp::tokentype_hash> rel_ops {
+		sp::Token::TokenType::EQ,
+		sp::Token::TokenType::NEQ,
+		sp::Token::TokenType::GT,
+		sp::Token::TokenType::GTE,
+		sp::Token::TokenType::LT,
+		sp::Token::TokenType::LTE,
+	};
+
+	inline const bool isRelOps(sp::Token::TokenType tok_type) {
+		// if iterator returned from .find() == .end(), that means not found in set
+		return rel_ops.find(tok_type) != rel_ops.end();
+	};
+
+	// AND, OR,  cond_expr ops
+	const std::unordered_set<sp::Token::TokenType, sp::tokentype_hash> cond_expr_ops {
+		sp::Token::TokenType::AND,
+		sp::Token::TokenType::OR,
+	};
+
+	inline const bool isCondExprOps(sp::Token::TokenType tok_type) {
+		// if iterator returned from .find() == .end(), that means not found in set
+		return cond_expr_ops.find(tok_type) != cond_expr_ops.end();
+	};
 }

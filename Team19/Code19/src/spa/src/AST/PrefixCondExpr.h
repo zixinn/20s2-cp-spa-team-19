@@ -13,6 +13,7 @@ namespace ast {
 
 		std::string toString() override {
 			std::string right_str = right ? right->toString() : "[NULL_PTR]";
+			//return this->getTokenLiteral() + "(" + right_str + ")";
 			return this->getTokenLiteral() + "(" + right_str + ")";
 		}
 

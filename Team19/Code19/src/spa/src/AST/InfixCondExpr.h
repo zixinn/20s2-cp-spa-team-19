@@ -17,7 +17,7 @@ namespace ast {
 		std::string toString() override {
 			std::string left_str = left ? left->toString() : "[NULL_PTR]";
 			std::string right_str = right ? right->toString() : "[NULL_PTR]";
-			return "(" + left_str + " " + this->getTokenLiteral() + " " + right_str + ")";
+			return "(" + left_str + ") " + this->getTokenLiteral() + " (" + right_str + ")";
 		}
 
 		~InfixCondExpr() {
