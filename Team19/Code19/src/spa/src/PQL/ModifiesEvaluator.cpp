@@ -28,12 +28,10 @@ bool ModifiesEvaluator::evaluateStmtModifies(unordered_map<string, string> decla
             if (varId == -1) {
                 return false;
             }
-//            return PKB::modifies->stmtModifiesVar(stoi(firstArg), varId);
-            return true; // to remove
+            return PKB::modifies->stmtModifiesVar(stoi(firstArg), varId);
 
         } else { // 1, v or 1, _
-//            unordered_set<int> vars = PKB::modifies->getVarsModifiedByStmt(stoi(firstArg));
-            unordered_set<int> vars; // to remove
+            unordered_set<int> vars = PKB::modifies->getVarsModifiedByStmt(stoi(firstArg));
             if (vars.empty()) {
                 return false;
             }
@@ -56,8 +54,7 @@ bool ModifiesEvaluator::evaluateStmtModifies(unordered_map<string, string> decla
             if (varId == -1) {
                 return false;
             }
-//            unordered_set<int> stmts = PKB::modifies->getStmtsModifies(varId);
-            unordered_set<int> stmts; // to remove
+            unordered_set<int> stmts = PKB::modifies->getStmtsModifies(varId);
             if (stmts.empty()) {
                 return false;
             }
@@ -71,8 +68,7 @@ bool ModifiesEvaluator::evaluateStmtModifies(unordered_map<string, string> decla
             return nonEmpty;
 
         } else { // s, v or s, _
-//            pair<vector<int>, vector<int>> allStmtModifies = PKB::modifies->getAllStmtModifies();
-            pair<vector<int>, vector<int>> allStmtModifies; // to remove
+            pair<vector<int>, vector<int>> allStmtModifies = PKB::modifies->getAllStmtModifies();
             if (allStmtModifies.first.empty()) {
                 return false;
             }
@@ -110,12 +106,10 @@ bool ModifiesEvaluator::evaluateProcModifies(unordered_map<string, string> decla
             if (procId == -1 || varId == -1) {
                 return false;
             }
-//            return PKB::modifies->procModifiesVar(procId, varId);
-            return true; // to remove
+            return PKB::modifies->procModifiesVar(procId, varId);
 
         } else { // "main", v or "main", _
-//            unordered_set<int> vars = PKB::modifies->getVarsModifiedByProc(procId);
-            unordered_set<int> vars; // to remove
+            unordered_set<int> vars = PKB::modifies->getVarsModifiedByProc(procId);
             if (vars.empty()) {
                 return false;
             }
@@ -138,8 +132,7 @@ bool ModifiesEvaluator::evaluateProcModifies(unordered_map<string, string> decla
             if (varId == -1) {
                 return false;
             }
-//            unordered_set<int> procs = PKB::modifies->getProcsModifies(varId);
-            unordered_set<int> procs; // to remove
+            unordered_set<int> procs = PKB::modifies->getProcsModifies(varId);
             if (procs.empty()) {
                 return false;
             }
@@ -153,8 +146,7 @@ bool ModifiesEvaluator::evaluateProcModifies(unordered_map<string, string> decla
             return nonEmpty;
 
         } else { // p, v or p, _
-//            pair<vector<int>, vector<int>> allProcModifies = PKB::modifies->getAllProcModifies();
-            pair<vector<int>, vector<int>> allProcModifies; // to remove
+            pair<vector<int>, vector<int>> allProcModifies = PKB::modifies->getAllProcModifies();
             if (allProcModifies.first.empty()) {
                 return false;
             }

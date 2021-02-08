@@ -8,6 +8,13 @@
 #include "Clause.h"
 #include "Query.h"
 #include "QueryUtility.h"
+#include "FollowsEvaluator.h"
+#include "FollowsTEvaluator.h"
+//#include "ParentEvaluator.h"
+//#include "ParentTEvaluator.h"
+//#include "UsesEvaluator.h"
+#include "ModifiesEvaluator.h"
+//#include "PatternEvaluator.h"
 
 class QueryEvaluator {
 public:

@@ -40,22 +40,22 @@ list<string> QueryEvaluator::evaluate(Query query) {
 // Evaluates the clause and stores the results for the clause in tempResults
 // Returns false if the clause is false or cannot be satisfied
 bool QueryEvaluator::evaluateClause(Clause clause, unordered_map<string, vector<int>>& tempResults) {
-//    string rel = clause.getRel();
-//    if (rel == "Follows") {
-//        return FollowsEvaluator::evaluate(this->declarations, clause, tempResults);
-//    } else if (rel == "Follows*") {
-//        return FollowsTEvaluator::evaluate(this->declarations, clause, tempResults);
+    string rel = clause.getRel();
+    if (rel == "Follows") {
+        return FollowsEvaluator::evaluate(this->declarations, clause, tempResults);
+    } else if (rel == "Follows*") {
+        return FollowsTEvaluator::evaluate(this->declarations, clause, tempResults);
 //    } else if (rel == "Parent") {
 //        return ParentEvaluator::evaluate(this->declarations, clause, tempResults);
 //    } else if (rel == "Parent*") {
 //        return ParentTEvaluator::evaluate(this->declarations, clause, tempResults);
 //    } else if (rel == "Uses") {
 //        return UsesEvaluator::evaluate(this->declarations, clause, tempResults);
-//    } else if (rel == "Modifies") {
-//        return ModifiesEvaluator::evaluate(this->declarations, clause, tempResults);
+    } else if (rel == "Modifies") {
+        return ModifiesEvaluator::evaluate(this->declarations, clause, tempResults);
 //    } else { // pattern
 //        return PatternEvaluator::evaluate(this->declarations, clause, tempResults);
-//    }
+    }
     return true;
 }
 

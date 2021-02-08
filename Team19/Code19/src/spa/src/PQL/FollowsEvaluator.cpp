@@ -13,17 +13,14 @@ bool FollowsEvaluator::evaluate(unordered_map<string, string> declarations, Clau
     string secondType = getArgType(secondArg, declarations);
 
     if (firstType == UNDERSCORE_ && secondType == UNDERSCORE_) { // _, _
-//        return PKB::follows->getFollowsSize() > 0;
-        return true; // to remove
+        return PKB::follows->getFollowsSize() > 0;
     }
 
     if (firstType == INTEGER_ && secondType == INTEGER_) { // known, known
-//        return PKB::follows->isFollows(stoi(firstArg), stoi(secondArg));
-        return true; // to remove
+        return PKB::follows->isFollows(stoi(firstArg), stoi(secondArg));
 
     } else if (firstType == INTEGER_ && secondType != INTEGER_) { // known, s or known, _
-//        int follower = PKB::follows->getFollower(stoi(firstArg));
-        int follower; // to remove
+        int follower = PKB::follows->getFollower(stoi(firstArg));
         if (follower == -1) {
             return false;
         }
@@ -38,8 +35,7 @@ bool FollowsEvaluator::evaluate(unordered_map<string, string> declarations, Clau
         return true;
 
     } else if (firstType != INTEGER_ && secondType == INTEGER_) { // s, known or _, known
-//        int followee = PKB::follows->getFollowee(stoi(secondArg));
-        int followee; // to remove
+        int followee = PKB::follows->getFollowee(stoi(secondArg));
         if (followee == -1) {
             return false;
         }
@@ -57,8 +53,7 @@ bool FollowsEvaluator::evaluate(unordered_map<string, string> declarations, Clau
         if (firstArg == secondArg) {
             return false;
         }
-//        pair<vector<int>, vector<int>> allFollows = PKB::follows->getAllFollows();
-        pair<vector<int>, vector<int>> allFollows; // to remove
+        pair<vector<int>, vector<int>> allFollows = PKB::follows->getAllFollows();
         if (allFollows.first.empty()) {
             return false;
         }

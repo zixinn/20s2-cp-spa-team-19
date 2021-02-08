@@ -13,17 +13,14 @@ bool FollowsTEvaluator::evaluate(unordered_map<string, string> declarations, Cla
     string secondType = getArgType(secondArg, declarations);
 
     if (firstType == UNDERSCORE_ && secondType == UNDERSCORE_) { // _, _
-//        return PKB::follows->getFollowsStarSize() > 0;
-        return true; // to remove
+        return PKB::follows->getFollowsStarSize() > 0;
     }
 
     if (firstType == INTEGER_ && secondType == INTEGER_) { // known, known
-//        return PKB::follows->isFollowsStar(stoi(firstArg), stoi(secondArg));
-        return true; // to remove
+        return PKB::follows->isFollowsStar(stoi(firstArg), stoi(secondArg));
 
     } else if (firstType == INTEGER_ && secondType != INTEGER_) { // known, s or known, _
-//        unordered_set<int> followers = PKB::follows->getFollowerStar(stoi(firstArg));
-        unordered_set<int> followers; // to remove
+        unordered_set<int> followers = PKB::follows->getFollowerStar(stoi(firstArg));
         if (followers.empty()) {
             return false;
         }
@@ -40,8 +37,7 @@ bool FollowsTEvaluator::evaluate(unordered_map<string, string> declarations, Cla
         return true;
 
     } else if (firstType != INTEGER_ && secondType == INTEGER_) { // s, known or _, known
-//        unordered_set<int> followees = PKB::follows->getFolloweeStar(stoi(secondArg));
-        unordered_set<int> followees; // to remove
+        unordered_set<int> followees = PKB::follows->getFolloweeStar(stoi(secondArg));
         if (followees.empty()) {
             return false;
         }
@@ -61,8 +57,7 @@ bool FollowsTEvaluator::evaluate(unordered_map<string, string> declarations, Cla
         if (firstArg == secondArg) {
             return false;
         }
-//        pair<vector<int>, vector<int>> allFollowsStar = PKB::follows->getAllFollowsStar();
-        pair<vector<int>, vector<int>> allFollowsStar; // to remove
+        pair<vector<int>, vector<int>> allFollowsStar = PKB::follows->getAllFollowsStar();
         if (allFollowsStar.first.empty()) {
             return false;
         }
