@@ -250,7 +250,7 @@ TEST_CASE("storeNewPrint Test") {
     REQUIRE(PKB::uses->getStmtsUses(varID) == unordered_set<StmtNum>{ 1 }); // StmtNums start from 1
 }
 
-TEST_CASE("storeNewWhile and exitWhile Test, no nested while/if") {
+TEST_CASE("[SIMPLE, no nested while/if] storeNewWhile and exitWhile Test") {
     // TODO: CHANGE THIS TO WHILESTMT
     PKB::resetPKB();
     // Set up Assignment AST
@@ -262,17 +262,187 @@ TEST_CASE("storeNewWhile and exitWhile Test, no nested while/if") {
     };
     auto l = new LexerStub(stubTokens);     //new keyword gets me a ptr to LexerStub
     Parser p = Parser(l);
-    ast::Stmt* placeholder = p.parseAssignStmt();
+    // TODO: CHANGE TO WHILESTMT
+    ast::AssignStmt* assignment = p.parseAssignStmt();
 
-    vector<STRING> condVarNames{ "x", "y" };
+    std::vector<sp::Token*> readTokens{
+            new sp::Token(sp::Token::TokenType::READ, "read"),
+            new sp::Token(sp::Token::TokenType::NAME, "shine"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto lread = new LexerStub(readTokens);     //new keyword gets me a ptr to LexerStub
+    Parser pread = Parser(lread);
+    ast::ReadStmt* readStmt = pread.parseReadStmt();
+
+    vector<STRING> condVarNames{ "x", "y" };    // Used in conditional expression of while loop
     vector<STRING> condConsts{ "5", "10" };
-    DesignExtractor::storeNewWhile(1,condVarNames, condConsts, placeholder);
+    // TODO: CHANGE 'ASSIGNMENT' TO ACTUAL WHILESTMT ASAP
+    DesignExtractor::storeNewProcedure("hana");
+    DesignExtractor::storeNewWhile(1,condVarNames, condConsts, assignment);
+    DesignExtractor::storeNewAssignment(2, "axel2", assignment);
+    DesignExtractor::storeNewRead(3, "shine", readStmt);
+    DesignExtractor::exitWhile();
+    DesignExtractor::exitProcedure();
 
-    //// Store a new while statement
-    //static void storeNewWhile(int startStmtNum, vector<STRING> condVarNames, Stmt* AST);
-    //// Called when exiting a while loop
-    //static void exitWhile();
-    //
+    // Check StmtLst
+    REQUIRE(PKB::stmtLstTable->hasStmtLst(1) == true);
+    REQUIRE(PKB::stmtLstTable->hasStmtLst(2) == true); // StmtLst of while loop
+    REQUIRE(PKB::stmtLstTable->hasStmtLst(3) == false); // Stmt 3 not in a separate stmtLst
+    // Check varNames
+    ID condVarId = PKB::varTable->getVarID("x");
+    REQUIRE(condVarId == 0);    // varTable ID starts indexing at 0
+    REQUIRE(PKB::varTable->getVarName(condVarId) == "x");
+    ID condVarId2 = PKB::varTable->getVarID("y");
+    REQUIRE(condVarId2 == 1);    // varTable ID starts indexing at 0
+    REQUIRE(PKB::varTable->getVarName(condVarId2) == "y");
+    ID varID = PKB::varTable->getVarID("axel2");
+    REQUIRE(varID == 2);    // varTable ID starts indexing at 0
+    REQUIRE(PKB::varTable->getVarName(varID) == "axel2");
+    ID varID2 = PKB::varTable->getVarID("semelparity");
+    REQUIRE(varID2 == 3);
+    REQUIRE(PKB::varTable->getVarName(varID2) == "semelparity");
+    ID varID3 = PKB::varTable->getVarID("shine");
+    REQUIRE(varID3 == 4);
+    REQUIRE(PKB::varTable->getVarName(varID3) == "shine");
+
+    // Check consts used in conditional
+    REQUIRE(PKB::constTable->hasConst("5") == true);
+    REQUIRE(PKB::constTable->getConstValue("5") == 5);
+    REQUIRE(PKB::constTable->hasConst("10") == true);
+    REQUIRE(PKB::constTable->getConstValue("10") == 10);
+    REQUIRE(PKB::constTable->hasConst("0") == false);
+
+    // Check Follows (in while stmtlst)
+    REQUIRE(PKB::follows->getFollower(1) != 2); // 2 does not follow 1 because 2 is nested in 1
+    REQUIRE(PKB::follows->getFollower(2) == 3);
+    REQUIRE(PKB::follows->getFollower(2) != 4);
+
+    // Check Parent
+    // TODO: something wonky going on with parentTable, can only store/get 1 child rn
+//    REQUIRE(PKB::parent->getChild(1) == 2);
+//    REQUIRE(PKB::parent->getParentSize() == 2);
+//    REQUIRE(PKB::parent->getParent(3) == 1);
+//    REQUIRE(PKB::parent->getChild(1) != 1);
+
+    // Check Uses
+    REQUIRE(PKB::uses->getStmtsUses(condVarId) == unordered_set<StmtNum>{ 1 });
+    REQUIRE(PKB::uses->getStmtsUses(condVarId2) == unordered_set<StmtNum>{ 1 });
+    REQUIRE(PKB::uses->getStmtsUses(varID2) == unordered_set<StmtNum>{ 1, 2 }); // as 1 is a container stmt
+
+    // Check Modifies
+    REQUIRE(PKB::modifies->getStmtsModifies(varID) == unordered_set<ID>{ 1, 2 }); // as 1 is a container stmt
+    REQUIRE(PKB::modifies->getStmtsModifies(varID3) == unordered_set<ID>{ 1, 3 }); // as 1 is a container stmt
+    REQUIRE(PKB::modifies->getProcsModifies(varID3) == unordered_set<ID>{ 0 });
+}
+
+TEST_CASE("[ONE NESTED WHILE] storeNewWhile and exitWhile Test") {
+    // TODO: CHANGE THIS TO WHILESTMT
+    PKB::resetPKB();
+    // Set up Assignment AST
+    std::vector<sp::Token*> stubTokens{
+            new sp::Token(sp::Token::TokenType::NAME, "axel2"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::NAME, "semelparity"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto l = new LexerStub(stubTokens);     //new keyword gets me a ptr to LexerStub
+    Parser p = Parser(l);
+    // TODO: CHANGE TO WHILESTMT
+    ast::AssignStmt* assignment = p.parseAssignStmt();
+
+    std::vector<sp::Token*> readTokens{
+            new sp::Token(sp::Token::TokenType::READ, "read"),
+            new sp::Token(sp::Token::TokenType::NAME, "shine"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto lread = new LexerStub(readTokens);     //new keyword gets me a ptr to LexerStub
+    Parser pread = Parser(lread);
+    ast::ReadStmt* readStmt = pread.parseReadStmt();
+
+    vector<STRING> condVarNames{ "x", "y" };    // Used in conditional expression of while loop
+    vector<STRING> condConsts{ "5", "10" };
+    vector<STRING> nestedCondVarNames{ "a", "z" };    // Used in conditional expression of nested while loop
+    vector<STRING> nestedCondConsts{ "33", "1" };
+    // TODO: CHANGE 'ASSIGNMENT' TO ACTUAL WHILESTMT ASAP
+    DesignExtractor::storeNewProcedure("hana");
+    DesignExtractor::storeNewWhile(1,condVarNames, condConsts, assignment);
+        DesignExtractor::storeNewAssignment(2, "axel2", assignment);
+        DesignExtractor::storeNewWhile(3,nestedCondVarNames, nestedCondConsts, assignment);
+            DesignExtractor::storeNewRead(4, "shine", readStmt);
+        DesignExtractor::exitWhile();
+    DesignExtractor::exitWhile();
+    DesignExtractor::exitProcedure();
+
+    // Check StmtLst
+    REQUIRE(PKB::stmtLstTable->hasStmtLst(1) == true);  // StmtLst of procedure
+    REQUIRE(PKB::stmtLstTable->hasStmtLst(2) == true); // StmtLst of first while loop
+    REQUIRE(PKB::stmtLstTable->hasStmtLst(3) == false); // Line containing nested while loop
+    REQUIRE(PKB::stmtLstTable->hasStmtLst(4) == true); // Line containing nested while loop's stmtLst
+
+    // Check cond varNames
+    ID condVarId = PKB::varTable->getVarID("x");
+    REQUIRE(condVarId == 0);    // varTable ID starts indexing at 0
+    REQUIRE(PKB::varTable->getVarName(condVarId) == "x");
+    ID condVarId2 = PKB::varTable->getVarID("y");
+    REQUIRE(condVarId2 == 1);
+    REQUIRE(PKB::varTable->getVarName(condVarId2) == "y");
+    ID condVarId3 = PKB::varTable->getVarID("a");
+
+    REQUIRE(condVarId3 == 4);   // Gap in varID because of line 2 AssignStmt
+    REQUIRE(PKB::varTable->getVarName(condVarId3) == "a");
+    ID condVarId4 = PKB::varTable->getVarID("z");
+    REQUIRE(condVarId4 == 5);
+    REQUIRE(PKB::varTable->getVarName(condVarId4) == "z");
+    // Check rest ofvarNames
+    ID varID = PKB::varTable->getVarID("axel2");
+    REQUIRE(varID == 2);    // varTable ID starts indexing at 0
+    REQUIRE(PKB::varTable->getVarName(varID) == "axel2");
+    ID varID2 = PKB::varTable->getVarID("semelparity");
+    REQUIRE(varID2 == 3);
+    REQUIRE(PKB::varTable->getVarName(varID2) == "semelparity");
+    ID varID3 = PKB::varTable->getVarID("shine");
+    REQUIRE(varID3 == 6);   // due to cond variables in nested While loop
+    REQUIRE(PKB::varTable->getVarName(varID3) == "shine");
+
+    // Check consts used in conditional
+    REQUIRE(PKB::constTable->hasConst("5") == true);
+    REQUIRE(PKB::constTable->getConstValue("5") == 5);
+    REQUIRE(PKB::constTable->hasConst("10") == true);
+    REQUIRE(PKB::constTable->getConstValue("10") == 10);
+    REQUIRE(PKB::constTable->hasConst("0") == false);
+    REQUIRE(PKB::constTable->hasConst("33") == true);
+    REQUIRE(PKB::constTable->getConstValue("33") == 33);
+    REQUIRE(PKB::constTable->hasConst("1") == true);
+    REQUIRE(PKB::constTable->getConstValue("1") == 1);
+
+    // Check Follows (in while stmtlst)
+    REQUIRE(PKB::follows->getFollower(1) != 2);
+    REQUIRE(PKB::follows->getFollower(2) == 3); // nested While follows stmt 2
+    REQUIRE(PKB::follows->getFollower(3) != 4);
+    REQUIRE(PKB::follows->getFollower(1) != 3); // nested While does not follow parent While
+
+    // Check Parent
+    // TODO: something wonky going on with parentTable, can only store/get 1 child rn
+    // 1 should be parent of 2 and 3, 3 should be parent of 4. 1 should not be parent of 4
+    // Rewrite the below
+//    REQUIRE(PKB::parent->getChild(1) == 2);
+//    REQUIRE(PKB::parent->getParentSize() == 2);
+//    REQUIRE(PKB::parent->getParent(3) == 1);
+//    REQUIRE(PKB::parent->getChild(1) != 1);
+//
+    // Check Uses
+    REQUIRE(PKB::uses->getStmtsUses(condVarId) == unordered_set<StmtNum>{ 1 });
+    REQUIRE(PKB::uses->getStmtsUses(condVarId2) == unordered_set<StmtNum>{ 1 });
+    REQUIRE(PKB::uses->getStmtsUses(condVarId3) == unordered_set<StmtNum>{ 1, 3 }); // Nested while
+    REQUIRE(PKB::uses->getStmtsUses(condVarId4) == unordered_set<StmtNum>{ 1, 3 });
+    REQUIRE(PKB::uses->getStmtsUses(varID2) == unordered_set<StmtNum>{ 1, 2 }); // as 1 is a container stmt
+    REQUIRE(PKB::uses->getVarsUsedByProc(0) == unordered_set<StmtNum>{ condVarId, condVarId2,
+                                                                       condVarId3, condVarId4, varID2 });
+
+    // Check Modifies
+    REQUIRE(PKB::modifies->getStmtsModifies(varID) == unordered_set<ID>{ 1, 2 }); // as 1 is a container stmt
+    REQUIRE(PKB::modifies->getStmtsModifies(varID3) == unordered_set<ID>{ 1, 3, 4 }); // as 1, 3 are container stmts
+    REQUIRE(PKB::modifies->getProcsModifies(varID3) == unordered_set<ID>{ 0 });
 }
 
 TEST_CASE("storeNewIf and storeNewElse and endIfElse Test") {

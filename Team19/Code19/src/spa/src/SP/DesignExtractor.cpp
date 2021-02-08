@@ -18,8 +18,6 @@ vector<ID> DesignExtractor::parentStack;
 template <typename T>
 T DesignExtractor::DEStack<T>::stackPop(vector<T> &stack) {
     if (stack.empty()) {
-//        T empty;
-//        return true;
         throw std::out_of_range("DE: attempted to pop an empty stack.");
     }
     T entry = stack.back();  // as pop_back() doesn't have return value
