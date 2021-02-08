@@ -63,6 +63,7 @@ private:
 	// expr
 	ast::Expr* parsePrefixExpr(sp::Token* tok);
 	ast::Expr* parseInfixExpr(ast::Expr*);
+	ast::Expr* parseLParenPrefixExpr();
 	int peekPrecedence();
 	int currPrecedence();
 };
