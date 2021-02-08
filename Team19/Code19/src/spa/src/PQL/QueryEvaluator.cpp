@@ -6,6 +6,11 @@ QueryEvaluator::QueryEvaluator() {
 
 // Evaluates the query and returns a list containing the answers to the query
 list<string> QueryEvaluator::evaluate(Query query) {
+    this->declarations.clear();
+    this->toSelect = "";
+    this->clauses.clear();
+    this->results.clear();
+
     list<string> emptyList;
 
     if (!query.getIsValid()) {
