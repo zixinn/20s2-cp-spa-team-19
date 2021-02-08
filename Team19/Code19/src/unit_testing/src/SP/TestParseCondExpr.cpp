@@ -23,6 +23,10 @@ TEST_CASE("ParseLexer CondExpr - Test") {
             "1 == b;",
             "1 == b",
         },
+        //{
+        //    "!1 == b;",
+        //    "1 == b",
+        //},
         {
             "(!(4 == 5)) && (a > (b))",
             "(!(4 == 5)) && (a > b)",
@@ -75,6 +79,10 @@ TEST_CASE("ParseLexer CondExpr - Keywords, Test") {
             "(!(a != b)) && (else == (1+then) / 3 * (5))",
             "(!(a != b)) && (else == (((1 + then) / 3) * 5))",
         },
+        {
+            "(1) == b;",
+            "1 == b",
+        },
     };
 
     for (int i = 0; i < tests.size(); ++i) {
@@ -89,9 +97,49 @@ TEST_CASE("ParseLexer CondExpr - Keywords, Test") {
         auto p = Parser(l);
         /** Parser now ready for use      **/
 
-        ast::CondExpr* ce = p.parseCondExpr(ParserUtils::CondExprPrecedence::LOWEST);
-        REQUIRE(ce->toString() == expected);
+        try {
+            ast::CondExpr* ce = p.parseCondExpr(ParserUtils::CondExprPrecedence::LOWEST);
+            REQUIRE(ce->toString() == expected);
+        }
+        catch (sp::ParserException &ex) {
+            INFO(ex.what());
+            INFO("TestCase: " + input + ", Exception Thrown");
+            REQUIRE(false);
+        }
     }
 }
 
+TEST_CASE("ParseLexer CondExpr - Exceptions, Test") {
+    //std::string input = "if = v + x * y + z * t;";    // if not implemented yet
+    std::vector<std::pair<std::string, std::string>> tests{
+        {
+            "!1 == b;",
+            "1 == b",
+        },
+    };
 
+    for (int i = 0; i < tests.size(); ++i) {
+        std::string input = std::get<0>(tests[i]);
+        std::string expected = std::get<1>(tests[i]);
+
+        /** begin ritual to Summon Parser **/
+        std::vector<sp::Token> actual_tok;
+        std::vector<sp::Token*> tok_ptrs;
+        ParserUtils::StringToTokenPtrs(input, actual_tok, tok_ptrs);
+        auto l = new LexerStub(tok_ptrs);
+        auto p = Parser(l);
+        /** Parser now ready for use      **/
+
+        try {
+            ast::CondExpr* ce = p.parseCondExpr(ParserUtils::CondExprPrecedence::LOWEST);
+            //REQUIRE(ce->toString() == expected);
+            INFO("Exception Expected: TestCase: " + input + ", got: " + ce->toString());
+            REQUIRE(false);
+        }
+        catch (sp::ParserException &ex) {
+            INFO(ex.what());
+            //INFO("TestCase: " + input + ", Exception Thrown");
+            REQUIRE(true);
+        }
+    }
+}

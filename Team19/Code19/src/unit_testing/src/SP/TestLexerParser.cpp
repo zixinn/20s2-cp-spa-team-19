@@ -95,8 +95,14 @@ TEST_CASE("ParseLexer Assign Paren - Test") {
         auto p = Parser(l);
         /** Parser now ready for use      **/
 
-        ast::Stmt* stmt = p.parseStmt();
-        REQUIRE(stmt->toString() == expected);
+        try {
+            ast::Stmt* stmt = p.parseStmt();
+            REQUIRE(stmt->toString() == expected);
+        }
+        catch (sp::ParserException &ex) {
+            INFO(ex.what());
+            REQUIRE(false);
+        }
     }
 }
 

@@ -5,6 +5,7 @@
 #include "SP/Token.h"
 #include "AST/Index.h"
 #include "SP/ParserUtils.h"
+#include "SP/ParserException.h"
 
 using namespace std;
 
@@ -56,7 +57,10 @@ private:
 	bool peekTokenIsNameOrKeyword();
 
 	int getPlusPC();
-	std::string genError(std::string str);
+	//std::string genError(std::string str);
+	sp::ParserException genError(std::string str);
+	sp::ParserException genExprError(std::string str);
+	sp::ParserException genCondExprError(std::string str);
 	std::string currLiteral();
 	std::string peekLiteral();
 	bool parseTest();

@@ -229,14 +229,14 @@ ast::Expr* Parser::parsePrefixExpr(sp::Token* tok) {
 	else if (tok->getType() == sp::Token::TokenType::LPAREN) {
 		return parseLParenPrefixExpr();
 	}
-	throw this->genError("ParsePrefixExpr expected a Prefix, NAME or CONST got: " + tok->getLiteral());
+	throw this->genExprError("ParsePrefixExpr expected a Prefix, NAME or CONST got: " + tok->getLiteral());
 }
 
 ast::Expr* Parser::parseInfixExpr(ast::Expr* left_expr) {
 	//throw "NOT READY";
 	auto tok = this->currToken;
 	if (!ParserUtils::hasExprRank(tok->getType())) {
-		throw this->genError("ParseInfixExpr expected a Infix Operator, got: " + tok->getLiteral());
+		throw this->genExprError("ParseInfixExpr expected a Infix Operator, got: " + tok->getLiteral());
 	}
 	// expr is a valid infix expr
 
@@ -259,7 +259,7 @@ ast::Expr* Parser::parseLParenPrefixExpr() {
 
 	// the currToken should be RPAREN, since we just shifted away the last expr in RParen
 	if (!this->currTokenIs(sp::Token::TokenType::RPAREN)) {
-		throw this->genError("ParseLParen expected RPAREN instead encountered: " + this->currLiteral());
+		throw this->genExprError("ParseLParen expected RPAREN instead encountered: " + this->currLiteral());
 	}
 	return expr;
 }
@@ -288,7 +288,7 @@ ast::CondExpr* Parser::parseCondExpr(int precedence) {
 ast::CondExpr* Parser::parseInfixCondExpr(ast::CondExpr* left_expr) {
 	auto tok = this->currToken;
 	if (!ParserUtils::isCondExprOps(tok->getType())) {
-		throw this->genError("ParseInfixCondExpr expected AND or OR, got: " + tok->getLiteral());
+		throw this->genCondExprError("ParseInfixCondExpr expected AND or OR, got: " + tok->getLiteral());
 	}
 	// expr is a valid infix cond expr
 
@@ -316,7 +316,8 @@ ast::CondExpr* Parser::parsePrefixCondExpr() {
 	else if (tok->getType() == sp::Token::TokenType::LPAREN) {
 		return parseLParenPrefixCondExpr();
 	}
-	throw this->genError("ParsePrefixExpr expected a Prefix, NAME or CONST got: " + tok->getLiteral());
+	//throw this->genError("ParsePrefixExpr expected a Prefix, NAME or CONST got: " + tok->getLiteral());
+	throw this->genCondExprError("ParsePrefixExpr expected a Prefix, NAME or CONST got: " + tok->getLiteral());
 }
 
 ast::CondExpr* Parser::parseRelExpr() {
@@ -328,7 +329,7 @@ ast::CondExpr* Parser::parseRelExpr() {
 	// the currToken should be a relative operator eg >, >=, ==, != etc
 	auto operator_tok = this->currToken;
 	if (!ParserUtils::isRelOps(this->currToken->getType())) {
-		throw this->genError("ParseRelExpr expected >, >=, ==, != etc instead encountered: " + this->currLiteral());
+		throw this->genCondExprError("ParseRelExpr expected >, >=, ==, != etc instead encountered: " + this->currLiteral());
 	}
 	this->nextToken();	// shift away the relative operator
 	// no checks, because it might be a LParen, or NAME or CONST, let parseExpr deal with it
@@ -340,7 +341,7 @@ ast::CondExpr* Parser::parseRelExpr() {
 ast::CondExpr* Parser::parseNotExpr() {
 	sp::Token* tok = this->currToken;
 	if (tok->getType() != sp::Token::TokenType::NOT) {
-		throw this->genError("ParseNotExpr expected NOT instead encountered: " + tok->getLiteral());
+		throw this->genCondExprError("ParseNotExpr expected NOT instead encountered: " + tok->getLiteral());
 	}
 	this->nextToken();
 	ast::CondExpr* expr = this->parseCondExpr(ParserUtils::CondExprPrecedence::LOWEST);
@@ -351,7 +352,7 @@ ast::CondExpr* Parser::parseNotExpr() {
 ast::CondExpr* Parser::parseLParenPrefixCondExpr() {
 	sp::Token* tok = this->currToken;
 	if (tok->getType() != sp::Token::TokenType::LPAREN) {
-		throw this->genError("ParseLParenCond expected LPAREN instead encountered: " + tok->getLiteral());
+		throw this->genCondExprError("ParseLParenCond expected LPAREN instead encountered: " + tok->getLiteral());
 	}
 	this->nextToken();
 	ast::CondExpr* expr = this->parseCondExpr(ParserUtils::ExprPrecedence::LOWEST);
@@ -359,13 +360,23 @@ ast::CondExpr* Parser::parseLParenPrefixCondExpr() {
 
 	// the currToken should be RPAREN, since we just shifted away the last expr in RParen
 	if (!this->currTokenIs(sp::Token::TokenType::RPAREN)) {
-		throw this->genError("ParseLParenCond expected RPAREN instead encountered: " + this->currLiteral());
+		throw this->genCondExprError("ParseLParenCond expected RPAREN instead encountered: " + this->currLiteral());
 	}
 	return expr;
 }
 
-std::string Parser::genError(std::string str) {
-	return "StmtNum: " + std::to_string(this->pc) + " - " + str;
+//std::string Parser::genError(std::string str) {
+sp::ParserException Parser::genError(std::string str) {
+	//return "StmtNum: " + std::to_string(this->pc) + " - " + str;
+	return sp::ParserException(this->pc, str);
+}
+
+sp::ParserException Parser::genExprError(std::string str) {
+	return sp::ParseExprException(this->pc, str);
+}
+
+sp::ParserException Parser::genCondExprError(std::string str) {
+	return sp::ParseCondExprException(this->pc, str);
 }
 
 int Parser::getPlusPC() {
