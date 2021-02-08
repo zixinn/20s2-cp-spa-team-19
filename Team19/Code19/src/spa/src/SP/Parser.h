@@ -72,7 +72,7 @@ private:
 
 	// condexpr
 	ast::CondExpr* parsePrefixCondExpr();
-	ast::CondExpr* parseRelExpr();
+	ast::CondExpr* parseRelExpr(ast::Expr*);
 	ast::CondExpr* parseNotExpr();
 	ast::CondExpr* parseLParenPrefixCondExpr();
 	ast::CondExpr* parseInfixCondExpr(ast::CondExpr*);
