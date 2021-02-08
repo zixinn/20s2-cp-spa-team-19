@@ -299,12 +299,12 @@ void DesignExtractor::addUsesForAllParentForCurrentStmtLst() {
 
 void DesignExtractor::addAllCurrentStmtLstModifiesForProcedure() {
     for (ID varID : currentModifiedVarsLst) {
-        PKB::modifies->storeStmtModifies(currentProcedureID, varID);
+        PKB::modifies->storeProcModifies(currentProcedureID, varID);
     }
 }
 void DesignExtractor::addAllCurrentStmtLstUsesForProcedure() {
     for (ID varID : currentUsedVarsLst) {
-        PKB::modifies->storeStmtModifies(currentProcedureID, varID);
+        PKB::uses->storeProcUses(currentProcedureID, varID);
     }
 }
 
