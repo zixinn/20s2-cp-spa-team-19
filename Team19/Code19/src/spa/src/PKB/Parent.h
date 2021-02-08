@@ -13,14 +13,14 @@ public:
     // Returns true if Parent*(s1, s2)
     bool isParentStar(StmtNum s1, StmtNum s2);
 
-    // Returns s2, the statement that is the child of s1. Returns -1 if there is no such statement.
-    StmtNum getChild(StmtNum s1);
+    // Returns s2, the statement that is the child of s1. Returns an empty set if there are no children.
+    unordered_set<StmtNum> const &getChildren(StmtNum s1) const;
 
     // Returns s1, the statement that is the parent of by s2. Returns -1 if there is no such statement.
     StmtNum getParent(StmtNum s2);
 
     // Returns set of s2, the statements that Parent*(s1, s2).
-    unordered_set<StmtNum> const & getChildStar(StmtNum s1) const;
+    unordered_set<StmtNum> const & getChildrenStar(StmtNum s1) const;
 
     // Returns set of s1, the statements that Parent*(s1, s2).
     unordered_set<StmtNum> const &getParentStar(StmtNum s2) const;
@@ -35,7 +35,8 @@ public:
     // e.g. if (1,2), (3,4), (5,6) is in parentStarMap, then it will return <[1,3,5], [2,4,6]>
     pair<vector<StmtNum>, vector<StmtNum> > getAllParentStar();
 
-    // Returns the number of entries in parentMap
+    // Returns the no. of pairs of Parent relationship.
+    // E.g. if the parentMap has [1: {2,3}], then the size is 2. Because there are pairs (1,2) and (1,3).
     int getParentSize();
 
     // Returns the no. of pairs of Parent* relationship.
@@ -63,8 +64,8 @@ public:
 
 private:
 
-    // Stores <s1, s2> where Parent(s1, s2)
-    unordered_map<StmtNum, StmtNum> parentMap;
+    // Stores <s1, set of s2's> where Parent(s1, s2)
+    unordered_map<StmtNum, unordered_set<StmtNum> > parentMap;
 
     // Stores <s2, s1> where Parent(s1, s2)
     unordered_map<StmtNum, StmtNum> reverseParentMap;
