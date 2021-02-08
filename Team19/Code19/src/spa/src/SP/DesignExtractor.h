@@ -90,8 +90,8 @@ private:
     // Other internal DE methods
     // Extracts varNames and Constants from the RHS of an AssignStmt
     static pair<vector<STRING>, vector<STRING>> extractVarsAndConsts(Expr* AST,
-                                                                     vector<STRING> varNameLst,
-                                                                     vector<STRING> constLst);
+                                                                     vector<STRING> &varNameLst,
+                                                                     vector<STRING> &constLst);
 
     // Stores Follows, Parent, Modifies, Uses for the currentStmtLst (for container statements)
     static void storeCurrentStmtLstRelationships();

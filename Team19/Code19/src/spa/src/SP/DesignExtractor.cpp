@@ -202,8 +202,8 @@ bool DesignExtractor::signalEnd() {
 
 // DE Internal Methods
 pair<vector<STRING>, vector<STRING>> DesignExtractor::extractVarsAndConsts(Expr* expression,
-                                                                           vector<STRING> varNameLst,
-                                                                           vector<STRING> constLst) {
+                                                                           vector<STRING> &varNameLst,
+                                                                           vector<STRING> &constLst) {
     // The first in the pair is a list of varNames. The second is a list of Constant strings.
 
     // 3 types of expressions: InfixExpr, ConstVal, VarName
@@ -223,10 +223,12 @@ pair<vector<STRING>, vector<STRING>> DesignExtractor::extractVarsAndConsts(Expr*
         case sp::Token::TokenType::TIMES:
         case sp::Token::TokenType::DIV:
         case sp::Token::TokenType::MOD: {
-            InfixExpr* expression = static_cast<InfixExpr *>(expression);
+            InfixExpr* infixExpression = static_cast<InfixExpr *>(expression);
+            sp::Token::TokenType infixTokenType = infixExpression->getToken()->getType();
+
             // Traverse left first
-            extractVarsAndConsts(expression->getLeft(), varNameLst, constLst);
-            extractVarsAndConsts(expression->getRight(), varNameLst, constLst);
+            extractVarsAndConsts(infixExpression->getLeft(), varNameLst, constLst);
+            extractVarsAndConsts(infixExpression->getRight(), varNameLst, constLst);
             break;
         }
 
