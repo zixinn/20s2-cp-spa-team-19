@@ -6,20 +6,6 @@
 #include "../PKB/PKB.h"
 
 using namespace std;
-// first have to verify which one is first argument: statement (int) or synonym  //no procedure for iteration 1 
-// which one is the second argument: synonym (of variable), variable_name (in quotes) or underscore
-
-// first arg:
-// if we have stmt num, call &getVarsUsedByStmt() to get all variables
-// else if its a synonym
-// PAIR<VECTOR<INT>, VECTOR<INT>> getAllStmtUses(); (to get all the stmt nums) ‘stmt’ | ‘print’ | ‘while’ | ‘if’ | ‘assign’ synonym
-//
-// second arg:
-// if synonym (of variable) - get var, add stmt and var into results.
-// if variable (in quotes) - compare with second arg, add stmt num into results
-// if underscore - return all stmt num
-
-// we can either query for the stmt number, or query for the variable name (that is being used)
 
 UsesEvaluator::UsesEvaluator() {
 
@@ -97,7 +83,7 @@ bool UsesEvaluator::evaluateStmtUses(unordered_map<string, string> declarations,
 			}
 			return nonEmpty;
 		}
-		else if (secondType == VARIABLE_) { // s, v or s, _
+		else { // s, v or s, _
 			pair<vector<int>, vector<int>> allStmtUses = PKB::uses->getAllStmtUses();
 			if (allStmtUses.first.empty()) {
 				return false;

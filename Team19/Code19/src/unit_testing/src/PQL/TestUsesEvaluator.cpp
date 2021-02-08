@@ -1,6 +1,8 @@
 #include "PQL/UsesEvaluator.h"
 #include "catch.hpp"
 
+#include <set>
+
 using namespace std;
 
 class StmtNodeStub : public ast::Stmt {
@@ -97,9 +99,10 @@ TEST_CASE("UsesEvaluator evaluate stmt known synonym") {
 
     unordered_map<string, vector<int>> tempResults2;
     bool b2 = UsesEvaluator::evaluate({ {"v", VARIABLE_} }, Clause("Uses", vector<string>{"4", "v"}), tempResults2);
-    unordered_map<string, vector<int>> expected2 = { {"v", vector<int>{4, 3}} };
+    unordered_set<int> actual2(tempResults2["v"].begin(), tempResults2["v"].end());
+    unordered_set<int> expected2{ 3, 4 };
     REQUIRE(b2);
-    REQUIRE(tempResults2 == expected2);
+    REQUIRE(actual2 == expected2);
 }
 
 TEST_CASE("UsesEvaluator evaluate stmt known underscore") {
@@ -123,9 +126,10 @@ TEST_CASE("UsesEvaluator evaluate stmt synonym known") {
 
     unordered_map<string, vector<int>> tempResults1;
     bool b1 = UsesEvaluator::evaluate({ {"s", STMT_} }, Clause("Uses", vector<string>{"s", "\"cenX\""}), tempResults1);
-    unordered_map<string, vector<int>> expected1 = { {"s", vector<int>{10, 5, 12, 7, 2}} };
+    unordered_set<int> actual1(tempResults1["s"].begin(), tempResults1["s"].end());
+    unordered_set<int> expected1{ 2, 5, 7, 10, 12 };
     REQUIRE(b1);
-    REQUIRE(tempResults1 == expected1);
+    REQUIRE(actual1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
     bool b2 = UsesEvaluator::evaluate({ {"w", WHILE_} }, Clause("Uses", vector<string>{"w", "\"count\""}), tempResults2);
@@ -145,9 +149,15 @@ TEST_CASE("UsesEvaluator evaluate stmt synonym synonym") {
 
     unordered_map<string, vector<int>> tempResults1;
     bool b1 = UsesEvaluator::evaluate({ {"ifs", IF_}, {"v", "variable"} }, Clause("Uses", vector<string>{"ifs", "v"}), tempResults1);
-    unordered_map<string, vector<int>> expected1 = { {"ifs", vector<int>{10, 10, 10}}, {"v", vector<int>{2, 1, 5}} };
+    set<pair<int, int>> actual1;
+    for (int i = 0; i < tempResults1.begin()->second.size(); i++) {
+        pair<int, int> p = make_pair(tempResults1["ifs"].at(i), tempResults1["v"].at(i));
+        actual1.insert(p);
+    }
+    set<pair<int, int>> expected1 = { {make_pair(10, 1), make_pair(10, 2), make_pair(10, 5)} };
     REQUIRE(b1);
-    REQUIRE(tempResults1 == expected1);
+    REQUIRE(tempResults1.size() == 2);
+    REQUIRE(actual1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
     bool b2 = UsesEvaluator::evaluate({ {"r", READ_}, {"v", VARIABLE_} }, Clause("Uses", vector<string>{"r", "v"}), tempResults2);
@@ -161,9 +171,10 @@ TEST_CASE("UsesEvaluator evaluate stmt synonym underscore") {
 
     unordered_map<string, vector<int>> tempResults1;
     bool b1 = UsesEvaluator::evaluate({ {"a", ASSIGN_} }, Clause("Uses", vector<string>{"a", "_"}), tempResults1);
-    unordered_map<string, vector<int>> expected1 = { {"a", vector<int>{1, 2, 3, 6, 7, 8, 11, 12, 13, 14}} };
+    unordered_set<int> actual1(tempResults1["a"].begin(), tempResults1["a"].end());
+    unordered_set<int> expected1{ 1, 2, 3, 6, 7, 8, 11, 12, 13, 14 };
     REQUIRE(b1);
-    REQUIRE(tempResults1 == expected1);
+    REQUIRE(actual1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
     bool b2 = UsesEvaluator::evaluate({ {"r", READ_} }, Clause("Uses", vector<string>{"r", "_"}), tempResults2);
@@ -193,9 +204,10 @@ TEST_CASE("UsesEvaluator evaluate proc known synonym") {
 
     unordered_map<string, vector<int>> tempResults1;
     bool b1 = UsesEvaluator::evaluate({ {"v", VARIABLE_} }, Clause("Uses", vector<string>{"\"computeCentroid\"", "v"}), tempResults1);
-    unordered_map<string, vector<int>> expected1 = { {"v", vector<int>{6, 5, 4, 3, 2, 1, 0}} };
+    unordered_set<int> actual1(tempResults1["v"].begin(), tempResults1["v"].end());
+    unordered_set<int> expected1{ 0, 1, 2, 3, 4, 5, 6 };
     REQUIRE(b1);
-    REQUIRE(tempResults1 == expected1);
+    REQUIRE(actual1 == expected1);
 }
 
 TEST_CASE("UsesEvaluator evaluate proc known underscore") {
@@ -229,9 +241,15 @@ TEST_CASE("UsesEvaluator evaluate proc synonym synonym") {
 
     unordered_map<string, vector<int>> tempResults1;
     bool b1 = UsesEvaluator::evaluate({ {"p", PROCEDURE_}, {"v", VARIABLE_} }, Clause("Uses", vector<string>{"p", "v"}), tempResults1);
-    unordered_map<string, vector<int>> expected1 = { {"p", vector<int>{0, 0, 0, 0, 0, 0, 0}}, {"v", vector<int>{6, 5, 4, 3, 2, 1, 0}} };
+    set<pair<int, int>> actual1;
+    for (int i = 0; i < tempResults1.begin()->second.size(); i++) {
+        pair<int, int> p = make_pair(tempResults1["p"].at(i), tempResults1["v"].at(i));
+        actual1.insert(p);
+    }
+    set<pair<int, int>> expected1 = { {make_pair(0, 0), make_pair(0, 1), make_pair(0, 2), make_pair(0, 3), make_pair(0, 4), make_pair(0, 5), make_pair(0, 6)} };
     REQUIRE(b1);
-    REQUIRE(tempResults1 == expected1);
+    REQUIRE(tempResults1.size() == 2);
+    REQUIRE(actual1 == expected1);
 }
 
 TEST_CASE("UsesEvaluator evaluate proc synonym underscore") {
