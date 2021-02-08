@@ -265,16 +265,18 @@ ast::Expr* Parser::parseLParenPrefixExpr() {
 }
 
 // honestly no idea if this is even needed
+// for test case to catch `a == b) && (c < 5)` output is `a == b` but wont other parts of parser catch?
 ast::CondExpr* Parser::parseCondExpr(int precedence) {
-	auto cond_expr = this->parseCondExprInner(precedence);
-	//std::cout << this->currLiteral() << std::endl;
-	//std::cout << this->peekToken->getLiteral() << std::endl;
-	this->nextToken(); // currToken is )
-	auto peek_tok = this->peekToken;
-	if (ParserUtils::isRelOps(peek_tok->getType()) || ParserUtils::isCondExprOps(peek_tok->getType())) {
-		throw this->genCondExprError("ParseCondExpr encountered unexpected: " + peek_tok->getLiteral());
-	}
-	return cond_expr;
+	return this->parseCondExprInner(precedence);
+	//auto cond_expr = this->parseCondExprInner(precedence);
+	////std::cout << this->currLiteral() << std::endl;
+	////std::cout << this->peekToken->getLiteral() << std::endl;
+	//this->nextToken(); // currToken is )
+	//auto peek_tok = this->peekToken;
+	//if (ParserUtils::isRelOps(peek_tok->getType()) || ParserUtils::isCondExprOps(peek_tok->getType())) {
+	//	throw this->genCondExprError("ParseCondExpr encountered unexpected: " + peek_tok->getLiteral());
+	//}
+	//return cond_expr;
 }
 
 ast::CondExpr* Parser::parseCondExprInner(int precedence) {

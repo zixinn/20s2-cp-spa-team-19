@@ -143,10 +143,10 @@ TEST_CASE("ParseLexer CondExpr - Exceptions, Test") {
             "a == b && (c < 5);",
             "(a == b) && (c < 5)",
         },
-        {
-            "a == b) && (c < 5);",
-            "(a == b) && (c < 5)",
-        },
+        //{ // relying on others like IF/WHILE to catch this
+        //    "a == b) && (c < 5);",
+        //    "(a == b) && (c < 5)",
+        //},
         {
             "(a == b) && c < 5;",
             "(a == b) && (c < 5)",
