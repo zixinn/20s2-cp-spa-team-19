@@ -250,8 +250,24 @@ TEST_CASE("storeNewPrint Test") {
     REQUIRE(PKB::uses->getStmtsUses(varID) == unordered_set<StmtNum>{ 1 }); // StmtNums start from 1
 }
 
-TEST_CASE("storeNewWhile and exitWhile Test") {
-    // TODO
+TEST_CASE("storeNewWhile and exitWhile Test, no nested while/if") {
+    // TODO: CHANGE THIS TO WHILESTMT
+    PKB::resetPKB();
+    // Set up Assignment AST
+    std::vector<sp::Token*> stubTokens{
+            new sp::Token(sp::Token::TokenType::NAME, "axel2"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::NAME, "semelparity"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto l = new LexerStub(stubTokens);     //new keyword gets me a ptr to LexerStub
+    Parser p = Parser(l);
+    ast::Stmt* placeholder = p.parseAssignStmt();
+
+    vector<STRING> condVarNames{ "x", "y" };
+    vector<STRING> condConsts{ "5", "10" };
+    DesignExtractor::storeNewWhile(1,condVarNames, condConsts, placeholder);
+
     //// Store a new while statement
     //static void storeNewWhile(int startStmtNum, vector<STRING> condVarNames, Stmt* AST);
     //// Called when exiting a while loop
@@ -286,7 +302,8 @@ TEST_CASE("Generic Stack Operations Test") {
     DesignExtractor::DEStack<vector<int>>::stackPush(stmtLstsStack, numbers);
     REQUIRE(stmtLstsStack.size() == 1);
     REQUIRE(DesignExtractor::DEStack<vector<ID>>::stackPop(stmtLstsStack) == numbers);
-    REQUIRE(DesignExtractor::DEStack<vector<ID>>::stackPop(stmtLstsStack) == vector<ID>{});
+    REQUIRE_THROWS(DesignExtractor::DEStack<vector<ID>>::stackPop(stmtLstsStack),
+                   std::out_of_range("DE: attempted to pop an empty stack."));
     DesignExtractor::DEStack<vector<int>>::stackPush(stmtLstsStack, numbers);
     DesignExtractor::DEStack<vector<int>>::stackPush(stmtLstsStack, numbers);
     DesignExtractor::DEStack<vector<int>>::stackPush(stmtLstsStack, numbers2);
@@ -300,7 +317,8 @@ TEST_CASE("Generic Stack Operations Test") {
     DesignExtractor::DEStack<set<ID>>::stackPush(usesStack, usesIDs);
     REQUIRE(usesStack.size() == 1);
     REQUIRE(DesignExtractor::DEStack<set<ID>>::stackPop(usesStack) == usesIDs);
-    REQUIRE(DesignExtractor::DEStack<set<ID>>::stackPop(usesStack) == set<ID>{});
+    REQUIRE_THROWS(DesignExtractor::DEStack<set<ID>>::stackPop(usesStack),
+                   std::out_of_range("DE: attempted to pop an empty stack."));
     DesignExtractor::DEStack<set<int>>::stackPush(usesStack, usesIDs);
     DesignExtractor::DEStack<set<int>>::stackPush(usesStack, usesIDs);
     DesignExtractor::DEStack<set<int>>::stackPush(usesStack, usesIDs2);
@@ -314,7 +332,8 @@ TEST_CASE("Generic Stack Operations Test") {
     DesignExtractor::DEStack<set<ID>>::stackPush(modifiesStack, usesIDs);
     REQUIRE(modifiesStack.size() == 1);
     REQUIRE(DesignExtractor::DEStack<set<ID>>::stackPop(modifiesStack) == usesIDs);
-    REQUIRE(DesignExtractor::DEStack<set<ID>>::stackPop(modifiesStack) == set<ID>{});
+    REQUIRE_THROWS(DesignExtractor::DEStack<set<ID>>::stackPop(modifiesStack),
+                   std::out_of_range("DE: attempted to pop an empty stack."));
     DesignExtractor::DEStack<set<int>>::stackPush(modifiesStack, usesIDs);
     DesignExtractor::DEStack<set<int>>::stackPush(modifiesStack, usesIDs);
     DesignExtractor::DEStack<set<int>>::stackPush(modifiesStack, usesIDs2);
@@ -326,7 +345,8 @@ TEST_CASE("Generic Stack Operations Test") {
     DesignExtractor::DEStack<ID>::stackPush(parentStack, 3);
     REQUIRE(parentStack.size() == 1);
     REQUIRE(DesignExtractor::DEStack<ID>::stackPop(parentStack) == 3);
-    REQUIRE(DesignExtractor::DEStack<ID>::stackPop(parentStack) == 1);  // empty parent stack returns 1
+    REQUIRE_THROWS(DesignExtractor::DEStack<ID>::stackPop(parentStack),
+                   std::out_of_range("DE: attempted to pop an empty stack."));
     DesignExtractor::DEStack<ID>::stackPush(parentStack, 5);
     DesignExtractor::DEStack<ID>::stackPush(parentStack, 356);
     DesignExtractor::DEStack<ID>::stackPush(parentStack, 909090);

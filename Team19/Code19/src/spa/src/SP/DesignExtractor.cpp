@@ -16,17 +16,18 @@ vector<ID> DesignExtractor::parentStack;
 
 // To support generic stacks
 template <typename T>
-static T DesignExtractor::DEStack<T>::stackPop(vector<T> &stack) {
+T DesignExtractor::DEStack<T>::stackPop(vector<T> &stack) {
     if (stack.empty()) {
-        T empty;
-        return empty;
+//        T empty;
+//        return true;
+        throw std::out_of_range("DE: attempted to pop an empty stack.");
     }
     T entry = stack.back();  // as pop_back() doesn't have return value
     stack.pop_back();
     return entry;
 }
 template <typename T>
-static void DesignExtractor::DEStack<T>::stackPush(vector<T> &stack, T entry) {
+void DesignExtractor::DEStack<T>::stackPush(vector<T> &stack, T entry) {
     stack.push_back(entry);
 }
 
@@ -50,7 +51,7 @@ void DesignExtractor::exitProcedure() {
 }
 
 
-void DesignExtractor::storeNewWhile(int startStmtNum, vector<STRING> condVarNames, Stmt* AST) {
+void DesignExtractor::storeNewWhile(int startStmtNum, vector<STRING> condVarNames, vector<STRING> condConsts, Stmt* AST) {
     // Store the conditional variables into PKB and receive the PKB-assigned ID
     for (STRING varName : condVarNames) {
         ID varID = PKB::varTable->storeVarName(varName);
@@ -58,6 +59,9 @@ void DesignExtractor::storeNewWhile(int startStmtNum, vector<STRING> condVarName
 
         // DE Internal Bookkeeping
         currentUsedVarsLst.insert(varID);   // the conditional variables used
+    }
+    for (STRING constant : condConsts) {
+        PKB::constTable->storeConst(constant);
     }
 
     // Stores <stmtNum, PAIR<variable ID, *AST>> into Assignment Map.
@@ -78,7 +82,7 @@ void DesignExtractor::exitWhile() {
     popSavedState();                    // Reset to previous local state variables
 }
 
-void DesignExtractor::storeNewIf(int startStmtNum, vector<STRING> condVarNames, Stmt* AST) {
+void DesignExtractor::storeNewIf(int startStmtNum, vector<STRING> condVarNames, vector<STRING> condConsts, Stmt* AST) {
     // Store the conditional variables into PKB and receive the PKB-assigned ID
     for (STRING varName : condVarNames) {
         ID varID = PKB::varTable->storeVarName(varName);
@@ -87,6 +91,10 @@ void DesignExtractor::storeNewIf(int startStmtNum, vector<STRING> condVarNames, 
         // DE Internal Bookkeeping
         currentUsedVarsLst.insert(varID);   // the conditional variables used
     }
+    for (STRING constant : condConsts) {
+        PKB::constTable->storeConst(constant);
+    }
+
     // Stores <stmtNum, PAIR<variable ID, *AST>> into Assignment Map.
     if (!PKB::stmtTable->storeStmt(startStmtNum, AST, IF_)) {
         std::cerr << "DE encountered an error when attempting to store statement " << startStmtNum << " in PKB.\n";

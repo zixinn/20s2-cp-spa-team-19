@@ -18,13 +18,13 @@ public:
     static void exitProcedure();
 
     // Store a new while statement
-    static void storeNewWhile(int startStmtNum, vector<STRING> condVarNames, Stmt* AST);
+    static void storeNewWhile(int startStmtNum, vector<STRING> condVarNames, vector<STRING> condConsts,  Stmt* AST);
     // Called when exiting a while loop
     static void exitWhile();
 
     // The 3 methods below should be called for a single if-else stmt.
     // Stores a new If into the PKB.
-    static void storeNewIf(int startStmtNum, vector<STRING> condVarNames, Stmt* AST);
+    static void storeNewIf(int startStmtNum, vector<STRING> condVarNames, vector<STRING> condConsts, Stmt* AST);
     // Stores the else section of the if-else statement
     static void storeNewElse();
     // Called when exiting the if-else statement.
