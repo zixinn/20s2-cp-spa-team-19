@@ -98,6 +98,10 @@ TEST_CASE("ParseLexer CondExpr - Keywords, Test") {
             "(!(a != b)) && (else == (1+then) / 3 * (5))",
             "(!(a != b)) && (else == (((1 + then) / 3) * 5))",
         },
+        {   
+            "(!(a + 1 > c % 2)) || (a != b)",
+            "(!((a + 1) > (c % 2))) || (a != b)",
+        },
         {
             "(1) == b;",
             "1 == b",
@@ -158,10 +162,6 @@ TEST_CASE("ParseLexer CondExpr - Exceptions, Test") {
         {   // need parenthesis around !, for the ||
             "!(a + 1 > c % 2) || (a != b)",
             "!(a + 1 > c % 2) || (a != b)",
-        },
-        {   
-            "(!(a + 1 > c % 2)) || (a != b)",
-            "(!(a + 1 > c % 2)) || (a != b)",
         },
         {
             "(a == b) && c < 5;",
