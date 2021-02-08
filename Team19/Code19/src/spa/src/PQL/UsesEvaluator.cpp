@@ -4,7 +4,6 @@
 #include "UsesEvaluator.h"
 #include "QueryUtility.h"
 #include "../PKB/PKB.h"
-//#include "UsesTable.h"
 
 using namespace std;
 // first have to verify which one is first argument: statement (int) or synonym  //no procedure for iteration 1 
@@ -26,83 +25,188 @@ UsesEvaluator::UsesEvaluator() {
 
 }
 
-vector<string> validArgTypes = { STMT_, PRINT_, WHILE_, IF_, ASSIGN_ };
+bool UsesEvaluator::evaluate(unordered_map<string, string> declarations, Clause clause, 
+	unordered_map<string, vector<int>>& tempResults) {
+	string firstArg = clause.getArgs().at(0);
+	string firstType = getArgType(firstArg, declarations);
+	if (firstType == NAME_ || firstType == PROCEDURE_) {
+		return evaluateProcUses(declarations, clause, tempResults);
+	}
+	else { // firstType == INTEGER_ || firstType == STMT_ || firstType == READ_ || firstType == ASSIGN_ || firstType == CALL_ || firstType == WHILE_ || firstType == IF_
+		return evaluateStmtUses(declarations, clause, tempResults);
+	}
+}
 
-bool UsesEvaluator::evaluate(unordered_map<string, string> declarations, 
+bool UsesEvaluator::evaluateStmtUses(unordered_map<string, string> declarations, 
 	Clause clause, unordered_map<string, vector<int>>& tempResults) {
 	vector<string> variables;
 	vector<StmtNum> stmtNums;
 	bool result = true;
-	string arg1 = clause.getArgs().at(0);
-	string arg2 = clause.getArgs().at(1);
-	string arg1Type = getArgType(arg1, declarations);
-	string arg2Type = getArgType(arg2, declarations);
+	string firstArg = clause.getArgs().at(0);
+	string secondArg = clause.getArgs().at(1);
+	string firstType = getArgType(firstArg, declarations);
+	string secondType = getArgType(secondArg, declarations);
 	
-	if (arg1Type == INTEGER_) { // first arg is an integer
-		int stmtNum = stoi(arg1);
-		set<int> varSet = PKB::usesTable->getVarsUsedByStmt(stmtNum);
-		set<int>::iterator it = varSet.begin();
+	if (firstType == INTEGER_) { // 1, "v" or 1, v or 1, _
+		int stmtNum = stoi(firstArg);
 
-		while (it != varSet.end())
-		{
-			string varName = PKB::varTable->getVarName(*it);
-			variables.push_back(varName);
-			it++;
-		}
-	}
-	else if (find(validArgTypes.begin(), validArgTypes.end(), arg1Type) 
-		!= validArgTypes.end()) { // first arg is a synonym
-		vector<StmtNum> usesStmts = PKB::usesTable->getAllStmtUses().first; // get all stmts that uses something
-		
-		if (arg2Type == NAME_) { // if arg 2 is synonym of variable
-			stmtNums = usesStmts;
-			variables = PKB::usesTable->getAllStmtUses().second;
-		}
-		else if (arg2Type == VARIABLE_) { // if arg2 is variable in quotes
-			if (!PKB::varTable->hasVar(arg2)) {
+		if (secondType == NAME_) { // 1, "v"
+			int varId = PKB::varTable->getVarID(trim(secondArg.substr(1, secondArg.size() - 2)));
+			if (varId == -1) {
 				return false;
 			}
-
-			vector<StmtNum>::iterator it1 = usesStmts.begin();
-			int numStmtUseVar = 0;
-			while (it1 != usesStmts.end()) { // iterate through all uses stmts
-				set<int> varsUsed = PKB::usesTable->getVarsUsedByStmt(*it1); // get all variables used by a stmt
-				int varId = PKB::varTable->getVarID(arg2);
-				
-				if (varsUsed.find(varId) != varsUsed.end()) { // var found in stmt, add stmt to stmt list
-					stmtNums.push_back(*it1);
-					numStmtUseVar++;
-				}
-				else { continue; }
-				
-				it1++;
-			}
-			if (numStmtUseVar == 0) { result = false; }
+			return PKB::uses->stmtUsesVar(stmtNum, varId);
 		}
-		else if (arg2Type == UNDERSCORE_) { stmtNums = usesStmts; }
-		else { result = false; }
+		else { // 1, v or 1, _
+			unordered_set<ID> varSet = PKB::uses->getVarsUsedByStmt(stmtNum);
+	
+			if (varSet.empty()) {
+				return false;
+			}
+			if (secondType != UNDERSCORE_) {
+				vector<int> variables;
+				variables.assign(varSet.begin(), varSet.end());
+				vector<int> res;
+				bool nonEmpty = intersectSingleSynonym(variables, selectAll(secondType), res);
+				if (nonEmpty) {
+					tempResults[secondArg] = res;
+				}
+				return nonEmpty;
+			}
+			return true;
+		}
 	}
-	else { result = false; }
+	else { // s, "v" or s, v or s, _
+		vector<StmtNum> usesStmts = PKB::uses->getAllStmtUses().first; 
+		
+		if (secondType == NAME_) { // s, "v"
+			int varId = PKB::varTable->getVarID(trim(secondArg.substr(1, secondArg.size() - 2)));
+			if (varId == -1) {
+				return false;
+			}
+			unordered_set<int> stmts = PKB::uses->getStmtsUses(varId);
+			if (stmts.empty()) {
+				return false;
+			}
+			vector<int> statements;
+			statements.assign(stmts.begin(), stmts.end());
+			vector<int> res;
+			bool nonEmpty = intersectSingleSynonym(statements, selectAll(firstType), res);
+			if (nonEmpty) {
+				tempResults[firstArg] = res;
+			}
+			return nonEmpty;
+		}
+		else if (secondType == VARIABLE_) { // s, v or s, _
+			pair<vector<int>, vector<int>> allStmtUses = PKB::uses->getAllStmtUses();
+			if (allStmtUses.first.empty()) {
+				return false;
+			}
+			if (secondType == UNDERSCORE_) { // s, _
+				vector<int> res;
+				bool nonEmpty = intersectSingleSynonym(allStmtUses.first, selectAll(firstType), res);
+				if (nonEmpty) {
+					tempResults[firstArg] = res;
+				}
+				return nonEmpty;
+			}
+			else { // s, v
+				pair<vector<int>, vector<int>> allCorrectType = make_pair(selectAll(firstType), selectAll(secondType));
+				pair<vector<int>, vector<int>> res;
+				bool nonEmpty = intersectDoubleSynonym(allStmtUses, allCorrectType, res);
+				if (nonEmpty) {
+					tempResults[firstArg] = res.first;
+					tempResults[secondArg] = res.second;
+				}
+				return nonEmpty;
+			}
+		}
+	}
+}
 
-	return result;
+bool UsesEvaluator::evaluateProcUses(unordered_map<string, string> declarations, 
+	Clause clause, unordered_map<string, vector<int>>& tempResults) {
+	string firstArg = clause.getArgs().at(0);
+	string secondArg = clause.getArgs().at(1);
+	string firstType = getArgType(firstArg, declarations);
+	string secondType = getArgType(secondArg, declarations);
+
+	if (firstType == NAME_) { // "main", "v" or "main", v or "main", _
+		int procId = PKB::procTable->getProcID(trim(firstArg.substr(1, firstArg.size() - 2)));
+		if (secondType == NAME_) { // "main", "v"
+			int varId = PKB::varTable->getVarID(trim(secondArg.substr(1, secondArg.size() - 2)));
+			if (procId == -1 || varId == -1) {
+				return false;
+			}
+			return PKB::uses->procUsesVar(procId, varId);
+
+		}
+		else { // "main", v or "main", _
+			unordered_set<int> vars = PKB::uses->getVarsUsedByProc(procId);
+			if (vars.empty()) {
+				return false;
+			}
+			if (secondType != UNDERSCORE_) {
+				vector<int> variables;
+				variables.assign(vars.begin(), vars.end());
+				vector<int> res;
+				bool nonEmpty = intersectSingleSynonym(variables, selectAll(secondType), res);
+				if (nonEmpty) {
+					tempResults[secondArg] = res;
+				}
+				return nonEmpty;
+			}
+			return true;
+		}
+
+	}
+	else { // p, "v" or p, v or p, _
+		if (secondType == NAME_) { // p, "v"
+			int varId = PKB::varTable->getVarID(trim(secondArg.substr(1, secondArg.size() - 2)));
+			if (varId == -1) {
+				return false;
+			}
+			unordered_set<int> procs = PKB::uses->getProcsUses(varId);
+			if (procs.empty()) {
+				return false;
+			}
+			vector<int> procedures;
+			procedures.assign(procs.begin(), procs.end());
+			vector<int> res;
+			bool nonEmpty = intersectSingleSynonym(procedures, selectAll(firstType), res);
+			if (nonEmpty) {
+				tempResults[firstArg] = res;
+			}
+			return nonEmpty;
+
+		}
+		else { // p, v or p, _
+			pair<vector<int>, vector<int>> allProcUses = PKB::uses->getAllProcUses();
+			if (allProcUses.first.empty()) {
+				return false;
+			}
+			if (secondType == UNDERSCORE_) { // p, _
+				vector<int> res;
+				bool nonEmpty = intersectSingleSynonym(allProcUses.first, selectAll(firstType), res);
+				if (nonEmpty) {
+					tempResults[firstArg] = res;
+				}
+				return nonEmpty;
+			}
+			else { // p, v
+				pair<vector<int>, vector<int>> allCorrectType = make_pair(selectAll(firstType), selectAll(secondType));
+				pair<vector<int>, vector<int>> res;
+				bool nonEmpty = intersectDoubleSynonym(allProcUses, allCorrectType, res);
+				if (nonEmpty) {
+					tempResults[firstArg] = res.first;
+					tempResults[secondArg] = res.second;
+				}
+				return nonEmpty;
+			}
+		}
+	}
 }
 
 UsesEvaluator::~UsesEvaluator() {
 
 }
-
-
-//assign a; variable v;
-//Select a such that Uses(a, v) pattern a(v, _)
-
-//variable v;
-//Select v such that Uses(14, v)
-
-//assign a; while w;
-//Select a pattern a(“x”, _) such that Uses(a, “x”)
-
-//Uses(6, “c”)
-
-//stmt s; variable v;
-//Select s such that Uses(s, v)
-
