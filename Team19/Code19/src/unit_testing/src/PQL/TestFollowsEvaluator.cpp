@@ -1,6 +1,8 @@
 #include "PQL/FollowsEvaluator.h"
 #include "catch.hpp"
 
+#include <set>
+
 using namespace std;
 
 class StmtNodeStub : public ast::Stmt {
@@ -148,9 +150,16 @@ TEST_CASE("FollowsEvaluator evaluate synonym synonym") {
 
     unordered_map<string, vector<int>> tempResults1;
     bool b1 = FollowsEvaluator::evaluate({{"a", ASSIGN_}, {"c", CALL_}}, Clause("Follows", vector<string>{"a", "c"}), tempResults1);
-    unordered_map<string, vector<int>> expected1 = {{"a", vector<int>{8, 3}}, {"c", vector<int>{9, 4}}};
+//    unordered_map<string, vector<int>> expected1 = {{"a", vector<int>{8, 3}}, {"c", vector<int>{9, 4}}};
+    set<pair<int, int>> actual1;
+    for (int i = 0; i < tempResults1.begin()->second.size(); i++) {
+        pair<int, int> p = make_pair(tempResults1["a"].at(i), tempResults1["c"].at(i));
+        actual1.insert(p);
+    }
+    set<pair<int, int>> expected1 = {{make_pair(3, 4), make_pair(8, 9)}};
     REQUIRE(b1);
-    REQUIRE(tempResults1 == expected1);
+    REQUIRE(tempResults1.size() == 2);
+    REQUIRE(actual1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
     bool b2 = FollowsEvaluator::evaluate({{"a", ASSIGN_}, {"w", WHILE_}}, Clause("Follows", vector<string>{"a", "w"}), tempResults2);
@@ -164,9 +173,11 @@ TEST_CASE("FollowsEvaluator evaluate synonym underscore") {
 
     unordered_map<string, vector<int>> tempResults1;
     bool b1 = FollowsEvaluator::evaluate({{"a", ASSIGN_}}, Clause("Follows", vector<string>{"a", "_"}), tempResults1);
-    unordered_map<string, vector<int>> expected1 = {{"a", vector<int>{1, 12, 2, 3, 6, 7, 8}}};
+//    unordered_map<string, vector<int>> expected1 = {{"a", vector<int>{1, 12, 2, 3, 6, 7, 8}}};
+    unordered_set<int> actual1(tempResults1["a"].begin(), tempResults1["a"].end());
+    unordered_set<int> expected1 {1, 2, 3, 6, 7, 8, 12};
     REQUIRE(b1);
-    REQUIRE(tempResults1 == expected1);
+    REQUIRE(actual1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
     bool b2 = FollowsEvaluator::evaluate({{"r", READ_}}, Clause("Follows", vector<string>{"r", "_"}), tempResults2);
@@ -180,9 +191,11 @@ TEST_CASE("FollowsEvaluator evaluate underscore synonym") {
 
     unordered_map<string, vector<int>> tempResults1;
     bool b1 = FollowsEvaluator::evaluate({{"a", ASSIGN_}}, Clause("Follows", vector<string>{"_", "a"}), tempResults1);
-    unordered_map<string, vector<int>> expected1 = {{"a", vector<int>{2, 13, 7, 8, 3, 14}}};
+//    unordered_map<string, vector<int>> expected1 = {{"a", vector<int>{2, 13, 7, 8, 3, 14}}};
+    unordered_set<int> actual1(tempResults1["a"].begin(), tempResults1["a"].end());
+    unordered_set<int> expected1 {2, 3, 7, 8, 13, 14};
     REQUIRE(b1);
-    REQUIRE(tempResults1 == expected1);
+    REQUIRE(actual1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
     bool b2 = FollowsEvaluator::evaluate({{"p", PRINT_}}, Clause("Follows", vector<string>{"_", "p"}), tempResults2);
