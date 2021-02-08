@@ -71,6 +71,7 @@ private:
 	ast::Expr* parseLParenPrefixExpr();
 
 	// condexpr
+	ast::CondExpr* parseCondExprInner(int precedence);
 	ast::CondExpr* parsePrefixCondExpr();
 	ast::CondExpr* parseRelExpr(ast::Expr*);
 	ast::CondExpr* parseNotExpr();

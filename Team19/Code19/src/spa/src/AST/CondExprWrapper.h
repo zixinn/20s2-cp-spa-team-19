@@ -20,5 +20,9 @@ namespace ast {
 			delete inside;
 		}
 
+		static inline CondExprWrapper* wrap(Expr* expr) {
+			return new CondExprWrapper(expr->getToken(), expr);
+		}
+
 	};
 }

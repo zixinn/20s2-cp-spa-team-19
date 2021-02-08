@@ -23,12 +23,16 @@ TEST_CASE("ParseLexer CondExpr - Test") {
             "1 == b;",
             "1 == b",
         },
-        //{
-        //    "!1 == b;",
-        //    "1 == b",
-        //},
         {
             "(!(4 == 5)) && (a > (b))",
+            "(!(4 == 5)) && (a > b)",
+        },
+        {
+            "((((!(4 == 5))))) && (a > (b))",
+            "(!(4 == 5)) && (a > b)",
+        },
+        {
+            "(((((!(4 == 5))))) && (a > (b)))",
             "(!(4 == 5)) && (a > b)",
         },
         {
@@ -49,8 +53,15 @@ TEST_CASE("ParseLexer CondExpr - Test") {
         auto p = Parser(l);
         /** Parser now ready for use      **/
 
-        ast::CondExpr* ce = p.parseCondExpr(ParserUtils::CondExprPrecedence::LOWEST);
-        REQUIRE(ce->toString() == expected);
+        try {
+            ast::CondExpr* ce = p.parseCondExpr(ParserUtils::CondExprPrecedence::LOWEST);
+            REQUIRE(ce->toString() == expected);
+        }
+        catch (sp::ParserException &ex) {
+            INFO(ex.what());
+            INFO("TestCase: " + input + ", Exception Thrown");
+            REQUIRE(false);
+        }
     }
 }
 
@@ -81,6 +92,10 @@ TEST_CASE("ParseLexer CondExpr - Keywords, Test") {
         },
         {
             "(1) == b;",
+            "1 == b",
+        },
+        {
+            "(((1))) == b;",
             "1 == b",
         },
     };
@@ -121,7 +136,15 @@ TEST_CASE("ParseLexer CondExpr - Exceptions, Test") {
             "(a == b) && (c < 5)",
         },
         {
+            "((a)) == b && c < 5;",
+            "(a == b) && (c < 5)",
+        },
+        {
             "a == b && (c < 5);",
+            "(a == b) && (c < 5)",
+        },
+        {
+            "a == b) && (c < 5);",
             "(a == b) && (c < 5)",
         },
         {
