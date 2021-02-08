@@ -37,37 +37,37 @@ void setupUses() {
     PKB::procTable = new ProcTable();
     PKB::procTable->storeProcName("computeCentroid"); // 0
 
-    PKB::modifies = new Modifies();
-    PKB::modifies->storeStmtUses(1, 0);
-    PKB::modifies->storeStmtUses(2, 1);
-    PKB::modifies->storeStmtUses(3, 2);
-    PKB::modifies->storeStmtUses(4, 3);
-    PKB::modifies->storeStmtUses(4, 4);
-    PKB::modifies->storeStmtUses(5, 0);
-    PKB::modifies->storeStmtUses(5, 1);
-    PKB::modifies->storeStmtUses(5, 2);
-    PKB::modifies->storeStmtUses(5, 3);
-    PKB::modifies->storeStmtUses(5, 4);
-    PKB::modifies->storeStmtUses(6, 0);
-    PKB::modifies->storeStmtUses(7, 1);
-    PKB::modifies->storeStmtUses(8, 2);
-    PKB::modifies->storeStmtUses(9, 3);
-    PKB::modifies->storeStmtUses(9, 4);
-    PKB::modifies->storeStmtUses(10, 5);
-    PKB::modifies->storeStmtUses(10, 1);
-    PKB::modifies->storeStmtUses(10, 2);
-    PKB::modifies->storeStmtUses(11, 5);
-    PKB::modifies->storeStmtUses(12, 1);
-    PKB::modifies->storeStmtUses(13, 2);
-    PKB::modifies->storeStmtUses(14, 6);
+    PKB::uses = new Uses();
+    PKB::uses->storeStmtUses(1, 0);
+    PKB::uses->storeStmtUses(2, 1);
+    PKB::uses->storeStmtUses(3, 2);
+    PKB::uses->storeStmtUses(4, 3);
+    PKB::uses->storeStmtUses(4, 4);
+    PKB::uses->storeStmtUses(5, 0);
+    PKB::uses->storeStmtUses(5, 1);
+    PKB::uses->storeStmtUses(5, 2);
+    PKB::uses->storeStmtUses(5, 3);
+    PKB::uses->storeStmtUses(5, 4);
+    PKB::uses->storeStmtUses(6, 0);
+    PKB::uses->storeStmtUses(7, 1);
+    PKB::uses->storeStmtUses(8, 2);
+    PKB::uses->storeStmtUses(9, 3);
+    PKB::uses->storeStmtUses(9, 4);
+    PKB::uses->storeStmtUses(10, 5);
+    PKB::uses->storeStmtUses(10, 1);
+    PKB::uses->storeStmtUses(10, 2);
+    PKB::uses->storeStmtUses(11, 5);
+    PKB::uses->storeStmtUses(12, 1);
+    PKB::uses->storeStmtUses(13, 2);
+    PKB::uses->storeStmtUses(14, 6);
 
-    PKB::modifies->storeProcUses(0, 0);
-    PKB::modifies->storeProcUses(0, 1);
-    PKB::modifies->storeProcUses(0, 2);
-    PKB::modifies->storeProcUses(0, 3);
-    PKB::modifies->storeProcUses(0, 4);
-    PKB::modifies->storeProcUses(0, 5);
-    PKB::modifies->storeProcUses(0, 6);
+    PKB::uses->storeProcUses(0, 0);
+    PKB::uses->storeProcUses(0, 1);
+    PKB::uses->storeProcUses(0, 2);
+    PKB::uses->storeProcUses(0, 3);
+    PKB::uses->storeProcUses(0, 4);
+    PKB::uses->storeProcUses(0, 5);
+    PKB::uses->storeProcUses(0, 6);
 }
 
 TEST_CASE("UsesEvaluator evaluate stmt known known") {
