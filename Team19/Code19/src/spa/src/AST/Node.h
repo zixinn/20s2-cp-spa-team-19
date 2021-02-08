@@ -11,9 +11,15 @@ namespace ast {
 		sp::Token* token;
 	public:
 		Node(sp::Token* token) :token{ token } {};
-		inline bool compareToken(sp::Token* tok) { return token->compare(tok); };
 		std::string getTokenLiteral() { return const_cast<sp::Token*>(token)->getLiteral(); };
 		inline sp::Token* getToken() { return token; };
+
+		inline bool compareToken(sp::Token* tok) { 
+			if (!tok) { throw "Node::compareToken other token is nullptr"; }
+			return token->compare(tok); 
+		};
+
+		~Node() { delete token; }
 
 	};
 
