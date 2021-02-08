@@ -284,6 +284,22 @@ ast::CondExpr* Parser::parseCondExprInner(int precedence) {
 	// e.g. (1) == a
 	auto left_expr = parsePrefixCondExpr();
 
+	// e.g. a + 1 > c % 2
+	if (ParserUtils::hasExprRank(this->peekToken->getType())) {
+		this->nextToken(); // shift + to current
+		ast::Expr* left_unwrap;
+		try {
+			left_unwrap = ((ast::CondExprWrapper*)left_expr)->unWrap();
+		}
+		catch (std::exception ex) {
+			throw this->genCondExprError("parseCondExprInner expected CondExprWrapper 0 instead got: " + left_expr->getTokenLiteral());
+		}
+		if (!left_unwrap) {
+			throw this->genCondExprError("parseCondExprInner expected CondExprWrapper 4 instead got: " + left_expr->getTokenLiteral());
+		}
+		left_expr = ast::CondExprWrapper::wrap(this->parseInfixExpr(left_unwrap));
+	}
+
 	if (ParserUtils::isRelOps(this->peekToken->getType())) {
 		this->nextToken(); // shift relToken to current
 		ast::Expr* left_unwrap;
@@ -390,7 +406,11 @@ ast::CondExpr* Parser::parseNotExpr() {
 	if (!this->currTokenIs(sp::Token::TokenType::LPAREN)) {
 		throw this->genCondExprError("ParseNotExpr expected LPAREN ( instead encountered: " + this->currLiteral());
 	}
-	ast::CondExpr* expr = this->parseCondExprInner(ParserUtils::CondExprPrecedence::LOWEST);
+	//ast::CondExpr* expr = this->parseCondExprInner(ParserUtils::CondExprPrecedence::LOWEST);
+	ast::CondExpr* expr = this->parseLParenPrefixCondExpr();
+	if (!this->currTokenIs(sp::Token::TokenType::RPAREN)) {
+		throw this->genCondExprError("ParseNotExpr expected RPAREN ) instead encountered: " + this->currLiteral());
+	}
 	return new ast::PrefixCondExpr(tok, expr);
 }
 
