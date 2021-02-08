@@ -78,9 +78,9 @@ ast::StmtLst* Parser::parseStmtLst() {
 		ast::Stmt* stmt = this->parseStmt();
 		if (!stmt) { throw this->genError("ParseStmtLst error"); }
 		xs.push_back(stmt);
-		// currToken is semicolon
-		// shuold i also check for } ?
-		if (!this->currTokenIs(sp::Token::TokenType::SEMICOLON)) { 
+
+		// currToken is semicolon or RBRACE (if WHILE or IF which dont end with ;)
+		if (!this->currTokenIs(sp::Token::TokenType::SEMICOLON) && !this->currTokenIs(sp::Token::TokenType::RBRACE)) { 
 			throw this->genError("ParseStmtLst expected Semicolon, got: " + this->currLiteral());
 		}
 		this->nextToken();		
@@ -102,6 +102,8 @@ ast::Stmt* Parser::parseStmt() {
 		return this->parsePrintStmt();
 	} else if (this->currTokenIs(sp::Token::TokenType::READ)) {
 		return this->parseReadStmt();
+	} else if (this->currTokenIs(sp::Token::TokenType::WHILE)) {
+		return this->parseWhileStmt();
 	}
 	throw this->genError("ParseStmt received unexpected token: " + this->currLiteral());
 }
@@ -439,6 +441,34 @@ ast::CondExpr* Parser::parseLParenPrefixCondExpr() {
 		throw this->genCondExprError("ParseLParenCond expected RPAREN instead encountered: " + this->currLiteral());
 	}
 	return expr;
+}
+
+ast::WhileStmt* Parser::parseWhileStmt() {
+	auto tok = this->currToken;
+	if (!this->currTokenIs(sp::Token::TokenType::WHILE)) {
+		throw this->genError("ParseWhile expected WHILE, encountered: " + this->currLiteral());
+	}
+	if (!this->expectPeek(sp::Token::TokenType::LPAREN)) {
+		throw this->genError("ParseWhile expected LPAREN (, encountered: " + this->peekToken->getLiteral());
+	}
+	auto cond_expr = this->parseCondExpr(ParserUtils::CondExprPrecedence::LOWEST);
+
+	if (!this->currTokenIs(sp::Token::TokenType::RPAREN)) {
+		throw this->genError("ParseWhile expected RPAREN ), encountered: " + this->currLiteral());
+	}
+
+	if (!this->expectPeek(sp::Token::TokenType::LBRACE)) {
+		throw this->genError("ParseWhile expected LBRACE {, encountered: " + this->peekToken->getLiteral());
+	}
+	this->nextToken();
+
+	auto stmt_lst = this->parseStmtLst();
+
+	if (!this->currTokenIs(sp::Token::TokenType::RBRACE)) {
+		throw this->genError("ParseWhile expected RBRACE }, encountered: " + this->currLiteral());
+	}
+
+	return new ast::WhileStmt(this->getPlusPC(), tok, cond_expr, stmt_lst);
 }
 
 //std::string Parser::genError(std::string str) {
