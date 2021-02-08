@@ -343,7 +343,14 @@ ast::CondExpr* Parser::parseNotExpr() {
 	if (tok->getType() != sp::Token::TokenType::NOT) {
 		throw this->genCondExprError("ParseNotExpr expected NOT instead encountered: " + tok->getLiteral());
 	}
+	// here currToken is !
 	this->nextToken();
+	// here currToken should be (
+
+	// curr shouldve be (
+	if (!this->currTokenIs(sp::Token::TokenType::LPAREN)) {
+		throw this->genCondExprError("ParseNotExpr expected LPAREN ( instead encountered: " + this->currLiteral());
+	}
 	ast::CondExpr* expr = this->parseCondExpr(ParserUtils::CondExprPrecedence::LOWEST);
 	return new ast::PrefixCondExpr(tok, expr);
 }

@@ -116,6 +116,18 @@ TEST_CASE("ParseLexer CondExpr - Exceptions, Test") {
             "!1 == b;",
             "1 == b",
         },
+        {
+            "a == b && c < 5;",
+            "(a == b) && (c < 5)",
+        },
+        {
+            "a == b && (c < 5);",
+            "(a == b) && (c < 5)",
+        },
+        {
+            "(a == b) && c < 5;",
+            "(a == b) && (c < 5)",
+        },
     };
 
     for (int i = 0; i < tests.size(); ++i) {
