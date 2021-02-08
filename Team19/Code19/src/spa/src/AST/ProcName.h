@@ -7,7 +7,7 @@ namespace ast {
 	class ProcName : public Expr
 	{
 	public:
-		const std::string val;		// to change to STRING typedef after integration
+		const std::string val;
 
 		ProcName(sp::Token* token, std::string val) :Expr { token }, val{ val } {}
 

@@ -1,7 +1,10 @@
 #pragma once
 
+#include <unordered_map>
+#include <unordered_set>
 #include "SP/Token.h"
 #include "AST/Index.h"
+#include "SP/ParserUtils.h"
 
 using namespace std;
 
@@ -14,6 +17,7 @@ class LexerStub { //: public Lexer {
 	int index = 0;
 public:
 	LexerStub(std::vector<sp::Token*> tokens) :tokens{ tokens } {};
+	//static void LexerStubAdapt(std::vector<sp::Token>& tokens, std::vector<sp::Token*>& out);
 	sp::Token* nextToken();
 };
 
@@ -27,21 +31,38 @@ public:
 	void nextToken();
 	ast::VarName* parseVarName();
 	ast::ProcName* parseProcName();
+	ast::ConstVal* parseConstVal();
 	ast::StmtLst* parseStmtLst();
 	ast::Stmt* parseStmt();
 	ast::AssignStmt* parseAssignStmt();
 	ast::CallStmt* parseCallStmt();
-	//ast::ReadStmt* parseReadStmt();
-	//ast::PrintStmt* parsePrintStmt();
+	ast::ReadStmt* parseReadStmt();
+	ast::PrintStmt* parsePrintStmt();
+	ast::Proc* parseProc();
+	ast::Program* parseProgram();
+	ast::Expr* parseExpr(int precedence);
 
 	inline sp::Token* getCurrToken() { return currToken; };
+	static bool isKeyword(sp::Token* tok);
+
+private:
 	bool currTokenIs(sp::Token::TokenType tok_type);
 	bool expectPeek(sp::Token::TokenType tok_type);
 	bool peekTokenIs(sp::Token::TokenType tok_type);
+
+	bool currTokenIsNameOrKeyword();
+	bool expectPeekIsNameOrKeyword();
+	bool peekTokenIsNameOrKeyword();
 
 	int getPlusPC();
 	std::string genError(std::string str);
 	std::string currLiteral();
 	std::string peekLiteral();
 	bool parseTest();
+
+	// expr
+	ast::Expr* parsePrefixExpr(sp::Token* tok);
+	ast::Expr* parseInfixExpr(ast::Expr*);
+	int peekPrecedence();
+	int currPrecedence();
 };
