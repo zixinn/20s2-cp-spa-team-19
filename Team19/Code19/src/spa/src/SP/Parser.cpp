@@ -282,6 +282,11 @@ ast::CondExpr* Parser::parseCondExpr(int precedence) {
 ast::CondExpr* Parser::parseCondExprInner(int precedence) {
 	//throw "not ready, everything below this is unchanged";
 	// e.g. (1) == a
+	bool isStartWithParen = false;
+	auto start_tok = this->currToken;
+	if (this->currTokenIs(sp::Token::TokenType::LPAREN)) {
+		isStartWithParen = true;
+	}
 	auto left_expr = parsePrefixCondExpr();
 
 	// e.g. a + 1 > c % 2
@@ -319,6 +324,10 @@ ast::CondExpr* Parser::parseCondExprInner(int precedence) {
 	// must be (a > b) && (c == d) the first ) before the &&, first LPAREN ??
 	if (!this->currTokenIs(sp::Token::TokenType::RPAREN) && ParserUtils::isCondExprOps(this->peekToken->getType())) {
 		throw this->genCondExprError("parseCondExprInner expected ) before && instead got: " + this->currLiteral());
+	}
+	// for scenario !(a + 1 > c % 2) || (a != b), need wrap ( ... ) around !
+	if (!isStartWithParen && ParserUtils::isCondExprOps(this->peekToken->getType())) {
+		throw this->genCondExprError("parseCondExprInner expected ( ... ) before && instead got: " + start_tok->getLiteral());
 	}
 
 	// if y = x; will encounter semicolon and just return

@@ -32,10 +32,6 @@ TEST_CASE("ParseLexer CondExpr - Test") {
             "((a + 1) > (c % 2)) || (a != b)",
         },
         {
-            "!(a + 1 > c % 2) || (a != b)",
-            "!(a + 1 > c % 2) || (a != b)",
-        },
-        {
             "(!(4 == 5)) && (a > (b))",
             "(!(4 == 5)) && (a > b)",
         },
@@ -159,6 +155,14 @@ TEST_CASE("ParseLexer CondExpr - Exceptions, Test") {
         //    "a == b) && (c < 5);",
         //    "(a == b) && (c < 5)",
         //},
+        {   // need parenthesis around !, for the ||
+            "!(a + 1 > c % 2) || (a != b)",
+            "!(a + 1 > c % 2) || (a != b)",
+        },
+        {   
+            "(!(a + 1 > c % 2)) || (a != b)",
+            "(!(a + 1 > c % 2)) || (a != b)",
+        },
         {
             "(a == b) && c < 5;",
             "(a == b) && (c < 5)",
