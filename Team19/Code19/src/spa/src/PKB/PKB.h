@@ -5,6 +5,10 @@
 #include "ProcTable.h"
 #include "StmtTable.h"
 #include "StmtLstTable.h"
+#include "Follows.h"
+#include "Parent.h"
+#include "Uses.h"
+#include "Modifies.h"
 
 #include "../AbstractAPI.h"
 
@@ -21,12 +25,23 @@ public:
 //	static int setProcToAST(PROC p, TNode* r);
 //	static TNode* getRootAST (PROC p);
 
-    // PKB Components for Program Data Entities
+    // PKB Components for Program Design Entities
     static ConstTable* constTable;
     static VarTable* varTable;
     static ProcTable* procTable;
     static StmtTable* stmtTable;
     static StmtLstTable* stmtLstTable;
 
+    // PKB Components for Program Design Abstractions
+    static Follows* follows;
+    static Parent* parent;
+    static Uses* uses;
+    static Modifies* modifies;
+
+    // Resets the entire PKB (delete everything stored in PKB)
+    static void resetPKB();
+
+    //  Populate Follows* / Parent*. Returns true if the PKB has been successfully populated.
+    static bool populatePKB();
 
 };
