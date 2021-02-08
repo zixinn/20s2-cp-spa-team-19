@@ -136,7 +136,6 @@ void DesignExtractor::storeNewAssignment(int stmtNum, STRING variableName, Assig
 
     // AssignStmt contains Expr; getExpr();
     std::tie(varNameLst, constLst) = extractVarsAndConsts(expression, varNameLst, constLst);
-
     // Store constants into PKB
     for (STRING constant : constLst) {
         PKB::constTable->storeConst(constant);
