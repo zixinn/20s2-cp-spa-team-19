@@ -35,5 +35,19 @@ namespace sp {
 	public:
 		ParseCondExprException(int stmtNum, std::string info) :ParseExprException("CondExpr", stmtNum, info ) {};
 	};
+
+	class UtilsException : public std::exception {
+		const std::string type;
+		const std::string info;
+
+	public:
+		UtilsException(std::string info) :type{ "" }, info{ info } {};
+		UtilsException(std::string type, std::string info) :type{type}, info{ info } {};
+		inline std::string what() {
+			const std::string ex_header = this->type == "" ? "" : this->type + " :: ";
+			return ex_header + "ERROR :: \n - " + this->info;
+		}
+
+	};
 }
 

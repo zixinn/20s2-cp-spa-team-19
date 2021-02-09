@@ -73,12 +73,12 @@ private:
 	ast::Expr* parseLParenPrefixExpr();
 
 	// condexpr
-	ast::CondExpr* parseCondExprInner(int precedence);
-	ast::CondExpr* parsePrefixCondExpr();
-	ast::CondExpr* parseRelExpr(ast::Expr*);
-	ast::CondExpr* parseNotExpr();
-	ast::CondExpr* parseLParenPrefixCondExpr();
-	ast::CondExpr* parseInfixCondExpr(ast::CondExpr*);
+	//ast::CondExpr* parseCondExprInner(int precedence);
+	//ast::CondExpr* parsePrefixCondExpr();
+	//ast::CondExpr* parseRelExpr(ast::Expr*);
+	//ast::CondExpr* parseNotExpr();
+	//ast::CondExpr* parseLParenPrefixCondExpr();
+	//ast::CondExpr* parseInfixCondExpr(ast::CondExpr*);
 
 	int peekPrecedence();
 	int currPrecedence();
