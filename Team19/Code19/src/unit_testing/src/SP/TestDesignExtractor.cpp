@@ -251,8 +251,19 @@ TEST_CASE("storeNewPrint Test") {
 }
 
 TEST_CASE("[SIMPLE, no nested while/if] storeNewWhile and exitWhile Test") {
-    // TODO: CHANGE THIS TO WHILESTMT
     DesignExtractor::signalReset();
+    // TODO: CHANGE THIS TO WHILESTMT
+    std::vector<sp::Token*> whileStubTokens{
+            new sp::Token(sp::Token::TokenType::NAME, "axel2"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::NAME, "semelparity"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto lwhile = new LexerStub(whileStubTokens);     //new keyword gets me a ptr to LexerStub
+    Parser pwhile = Parser(lwhile);
+    // TODO: CHANGE TO WHILESTMT/ Add new WHILESTMT ast
+    ast::AssignStmt* PLACEHOLDER_WHILE = pwhile.parseAssignStmt();
+
     // Set up Assignment AST
     std::vector<sp::Token*> stubTokens{
             new sp::Token(sp::Token::TokenType::NAME, "axel2"),
@@ -262,7 +273,6 @@ TEST_CASE("[SIMPLE, no nested while/if] storeNewWhile and exitWhile Test") {
     };
     auto l = new LexerStub(stubTokens);     //new keyword gets me a ptr to LexerStub
     Parser p = Parser(l);
-    // TODO: CHANGE TO WHILESTMT
     ast::AssignStmt* assignment = p.parseAssignStmt();
 
     std::vector<sp::Token*> readTokens{
@@ -278,7 +288,7 @@ TEST_CASE("[SIMPLE, no nested while/if] storeNewWhile and exitWhile Test") {
     vector<STRING> condConsts{ "5", "10" };
     // TODO: CHANGE 'ASSIGNMENT' TO ACTUAL WHILESTMT ASAP
     DesignExtractor::storeNewProcedure("hana");
-    DesignExtractor::storeNewWhile(1,condVarNames, condConsts, assignment);
+    DesignExtractor::storeNewWhile(1,condVarNames, condConsts, PLACEHOLDER_WHILE);
     DesignExtractor::storeNewAssignment(2, "axel2", assignment);
     DesignExtractor::storeNewRead(3, "shine", readStmt);
     DesignExtractor::exitWhile();
@@ -318,11 +328,10 @@ TEST_CASE("[SIMPLE, no nested while/if] storeNewWhile and exitWhile Test") {
     REQUIRE(PKB::follows->getFollower(2) != 4);
 
     // Check Parent
-    // TODO: something wonky going on with parentTable, can only store/get 1 child rn
-//    REQUIRE(PKB::parent->getChild(1) == 2);
-//    REQUIRE(PKB::parent->getParentSize() == 2);
-//    REQUIRE(PKB::parent->getParent(3) == 1);
-//    REQUIRE(PKB::parent->getChild(1) != 1);
+    REQUIRE(PKB::parent->getChildren(1) == unordered_set<StmtNum>{ 2, 3 });
+    REQUIRE(PKB::parent->getParent(2) == 1);
+    REQUIRE(PKB::parent->getParent(3) == 1);
+    REQUIRE(PKB::parent->getParent(1) == -1);   // No parent
 
     // Check Uses
     REQUIRE(PKB::uses->getStmtsUses(condVarId) == unordered_set<StmtNum>{ 1 });
@@ -336,8 +345,19 @@ TEST_CASE("[SIMPLE, no nested while/if] storeNewWhile and exitWhile Test") {
 }
 
 TEST_CASE("[ONE NESTED WHILE] storeNewWhile and exitWhile Test") {
-    // TODO: CHANGE THIS TO WHILESTMT
     DesignExtractor::signalReset();
+
+    std::vector<sp::Token*> whileStubTokens{
+            new sp::Token(sp::Token::TokenType::NAME, "axel2"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::NAME, "semelparity"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto lwhile = new LexerStub(whileStubTokens);     //new keyword gets me a ptr to LexerStub
+    Parser pwhile = Parser(lwhile);
+    // TODO: CHANGE TO WHILESTMT/ Add new WHILESTMT ast
+    ast::AssignStmt* PLACEHOLDER_WHILE = pwhile.parseAssignStmt();
+
     // Set up Assignment AST
     std::vector<sp::Token*> stubTokens{
             new sp::Token(sp::Token::TokenType::NAME, "axel2"),
@@ -347,7 +367,6 @@ TEST_CASE("[ONE NESTED WHILE] storeNewWhile and exitWhile Test") {
     };
     auto l = new LexerStub(stubTokens);     //new keyword gets me a ptr to LexerStub
     Parser p = Parser(l);
-    // TODO: CHANGE TO WHILESTMT
     ast::AssignStmt* assignment = p.parseAssignStmt();
 
     std::vector<sp::Token*> readTokens{
@@ -365,9 +384,9 @@ TEST_CASE("[ONE NESTED WHILE] storeNewWhile and exitWhile Test") {
     vector<STRING> nestedCondConsts{ "33", "1" };
     // TODO: CHANGE 'ASSIGNMENT' TO ACTUAL WHILESTMT ASAP
     DesignExtractor::storeNewProcedure("hana");
-    DesignExtractor::storeNewWhile(1,condVarNames, condConsts, assignment);
+    DesignExtractor::storeNewWhile(1,condVarNames, condConsts, PLACEHOLDER_WHILE);
         DesignExtractor::storeNewAssignment(2, "axel2", assignment);
-        DesignExtractor::storeNewWhile(3,nestedCondVarNames, nestedCondConsts, assignment);
+        DesignExtractor::storeNewWhile(3,nestedCondVarNames, nestedCondConsts, PLACEHOLDER_WHILE);
             DesignExtractor::storeNewRead(4, "shine", readStmt);
         DesignExtractor::exitWhile();
     DesignExtractor::exitWhile();
@@ -421,14 +440,12 @@ TEST_CASE("[ONE NESTED WHILE] storeNewWhile and exitWhile Test") {
     REQUIRE(PKB::follows->getFollower(1) != 3); // nested While does not follow parent While
 
     // Check Parent
-    // TODO: something wonky going on with parentTable, can only store/get 1 child rn
-    // 1 should be parent of 2 and 3, 3 should be parent of 4. 1 should not be parent of 4
-    // Rewrite the below
-//    REQUIRE(PKB::parent->getChild(1) == 2);
-//    REQUIRE(PKB::parent->getParentSize() == 2);
-//    REQUIRE(PKB::parent->getParent(3) == 1);
-//    REQUIRE(PKB::parent->getChild(1) != 1);
-//
+    REQUIRE(PKB::parent->getChildren(1) == unordered_set<StmtNum>{ 2, 3 });
+    REQUIRE(PKB::parent->getChildren(3) == unordered_set<StmtNum>{ 4 });
+    REQUIRE(PKB::parent->getParent(2) == 1);
+    REQUIRE(PKB::parent->getParent(3) == 1);
+    REQUIRE(PKB::parent->getParent(4) == 3);
+
     // Check Uses
     REQUIRE(PKB::uses->getStmtsUses(condVarId) == unordered_set<StmtNum>{ 1 });
     REQUIRE(PKB::uses->getStmtsUses(condVarId2) == unordered_set<StmtNum>{ 1 });
@@ -445,8 +462,19 @@ TEST_CASE("[ONE NESTED WHILE] storeNewWhile and exitWhile Test") {
 }
 
 TEST_CASE("[SIMPLE, no nested if/while] storeNewIf and storeNewElse and endIfElse Test") {
-    // TODO: CHANGE THIS TO IFSTMT
     DesignExtractor::signalReset();
+    // TODO: CHANGE TO IFSTMT/ Add new IFStmt ast
+    std::vector<sp::Token*> ifStubTokens{
+            new sp::Token(sp::Token::TokenType::NAME, "axel2"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::NAME, "semelparity"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto lif = new LexerStub(ifStubTokens);     //new keyword gets me a ptr to LexerStub
+    Parser pif = Parser(lif);
+    // TODO: CHANGE TO IFSTMT/ Add new IFStmt ast
+    ast::AssignStmt* PLACEHOLDER_IF = pif.parseAssignStmt();
+
     // Set up Assignment AST
     std::vector<sp::Token*> stubTokens{
             new sp::Token(sp::Token::TokenType::NAME, "axel2"),
@@ -456,7 +484,6 @@ TEST_CASE("[SIMPLE, no nested if/while] storeNewIf and storeNewElse and endIfEls
     };
     auto l = new LexerStub(stubTokens);     //new keyword gets me a ptr to LexerStub
     Parser p = Parser(l);
-    // TODO: CHANGE TO IFSTMT/Add new IFStmt ast
     ast::AssignStmt* assignment = p.parseAssignStmt();
 
     std::vector<sp::Token*> stub2Tokens{
@@ -483,7 +510,7 @@ TEST_CASE("[SIMPLE, no nested if/while] storeNewIf and storeNewElse and endIfEls
     // TODO: CHANGE 'ASSIGNMENT' TO ACTUAL IFSTMT ASAP
     DesignExtractor::storeNewProcedure("kanzashi");
     DesignExtractor::storeNewAssignment(1, "axel2", assignment);
-    DesignExtractor::storeNewIf(2,condVarNames, condConsts, assignment);    // If-then
+    DesignExtractor::storeNewIf(2,condVarNames, condConsts, PLACEHOLDER_IF);    // If-then
         DesignExtractor::storeNewAssignment(3, "slalom", assignment2);
     DesignExtractor::storeNewElse();                                                    // Else
         DesignExtractor::storeNewRead(4, "shine", readStmt);
@@ -532,8 +559,10 @@ TEST_CASE("[SIMPLE, no nested if/while] storeNewIf and storeNewElse and endIfEls
     REQUIRE(PKB::follows->getFollower(2) != 4); // 4 nested in 2
     REQUIRE(PKB::follows->getFollower(3) != 4); // 4 in separate stmtLst
 
-//    // Check Parent
-//    // TODO: something wonky going on with parentTable, can only store/get 1 child rn. Write this later.
+    // Check Parent
+    REQUIRE(PKB::parent->getChildren(2) == unordered_set<StmtNum>{ 3, 4 });
+    REQUIRE(PKB::parent->getParent(3) == 2);
+    REQUIRE(PKB::parent->getParent(4) == 2);
 
     // Check Uses
     REQUIRE(PKB::uses->getStmtsUses(condVarId) == unordered_set<StmtNum>{ 2 });
@@ -548,8 +577,20 @@ TEST_CASE("[SIMPLE, no nested if/while] storeNewIf and storeNewElse and endIfEls
 }
 
 TEST_CASE("[ONE NESTED IF] storeNewIf and storeNewElse and endIfElse Test") {
-    // TODO: CHANGE THIS TO IFSTMT
     DesignExtractor::signalReset();
+
+    // TODO: CHANGE TO IFSTMT/ Add new IFStmt ast
+    std::vector<sp::Token*> ifStubTokens{
+            new sp::Token(sp::Token::TokenType::NAME, "axel2"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::NAME, "semelparity"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto lif = new LexerStub(ifStubTokens);     //new keyword gets me a ptr to LexerStub
+    Parser pif = Parser(lif);
+    // TODO: CHANGE TO IFSTMT/ Add new IFStmt ast
+    ast::AssignStmt* PLACEHOLDER_IF = pif.parseAssignStmt();
+
     // Set up Assignment AST
     std::vector<sp::Token*> stubTokens{
             new sp::Token(sp::Token::TokenType::NAME, "axel2"),
@@ -559,7 +600,6 @@ TEST_CASE("[ONE NESTED IF] storeNewIf and storeNewElse and endIfElse Test") {
     };
     auto l = new LexerStub(stubTokens);     //new keyword gets me a ptr to LexerStub
     Parser p = Parser(l);
-    // TODO: CHANGE TO IFSTMT/ Add new IFStmt ast
     ast::AssignStmt* assignment = p.parseAssignStmt();
 
     std::vector<sp::Token*> stub2Tokens{
@@ -608,10 +648,10 @@ TEST_CASE("[ONE NESTED IF] storeNewIf and storeNewElse and endIfElse Test") {
     DesignExtractor::storeNewProcedure("mitosis");
     DesignExtractor::storeNewAssignment(1, "axel2", assignment);
     // TODO: CHANGE 'ASSIGNMENT' TO ACTUAL IFSTMT ASAP
-    DesignExtractor::storeNewIf(2,condVarNames, condConsts, assignment);    // If-then
+    DesignExtractor::storeNewIf(2,condVarNames, condConsts, PLACEHOLDER_IF);    // If-then
         DesignExtractor::storeNewAssignment(3, "slalom", assignment2);
     DesignExtractor::storeNewElse();                                                    // Else
-        DesignExtractor::storeNewIf(4,nestedCondVarNames, nestedCondConsts, assignment);    // Nested If-then
+        DesignExtractor::storeNewIf(4,nestedCondVarNames, nestedCondConsts, PLACEHOLDER_IF);    // Nested If-then
             DesignExtractor::storeNewAssignment(5, "quartz", assignment3);
         DesignExtractor::storeNewElse();                                                    // Nested Else
             DesignExtractor::storeNewAssignment(6, "sapphire", assignment4);
@@ -693,9 +733,12 @@ TEST_CASE("[ONE NESTED IF] storeNewIf and storeNewElse and endIfElse Test") {
     REQUIRE(PKB::follows->getFollower(6) != 6); // stmt cannot follow itself
     REQUIRE(PKB::follows->getFollower(6) == 7);
 
-
-////    // Check Parent
-////    // TODO: something wonky going on with parentTable, can only store/get 1 child rn. Write this later.
+    // Check Parent
+    REQUIRE(PKB::parent->getChildren(2) == unordered_set<StmtNum>{ 3, 4 }); // Only testing for Parent, not Parent*
+    REQUIRE(PKB::parent->getChildren(4) == unordered_set<StmtNum>{ 5, 6, 7 });
+    REQUIRE(PKB::parent->getParent(3) == 2);
+    REQUIRE(PKB::parent->getParent(7) == 4);
+    REQUIRE(PKB::parent->getParent(1) == -1);
 
     // Check Uses
     REQUIRE(PKB::uses->getStmtsUses(condVarId) == unordered_set<StmtNum>{ 2 });
@@ -706,7 +749,6 @@ TEST_CASE("[ONE NESTED IF] storeNewIf and storeNewElse and endIfElse Test") {
     REQUIRE(PKB::uses->getStmtsUses(varID5) == unordered_set<StmtNum>{ 2, 4, 5 }); // as 2 is a container stmt
     REQUIRE(PKB::uses->getVarsUsedByProc(0) == unordered_set<StmtNum>{ condVarId, condVarId2,
                                                                        condVarId3, condVarId4, varID2, varID5 });
-
     // Check Modifies
     REQUIRE(PKB::modifies->getStmtsModifies(varID) == unordered_set<ID>{ 1 });
     REQUIRE(PKB::modifies->getStmtsModifies(varID3) == unordered_set<ID>{ 2, 3 }); // as 2 is a container stmt
@@ -716,7 +758,197 @@ TEST_CASE("[ONE NESTED IF] storeNewIf and storeNewElse and endIfElse Test") {
 }
 
 TEST_CASE("[WHILE-IF NESTING] storeNewWhile & storeNewIf Interaction Test") {
+    // TODO: CHANGE THIS TO WHILESTMT
+    DesignExtractor::signalReset();
 
+    std::vector<sp::Token*> whileStubTokens{
+            new sp::Token(sp::Token::TokenType::NAME, "axel2"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::NAME, "semelparity"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto lwhile = new LexerStub(whileStubTokens);     //new keyword gets me a ptr to LexerStub
+    Parser pwhile = Parser(lwhile);
+    // TODO: CHANGE TO WHILESTMT/ Add new WHILESTMT ast
+    ast::AssignStmt* PLACEHOLDER_WHILE = pwhile.parseAssignStmt();
+
+    // TODO: CHANGE TO IFSTMT/ Add new IFStmt ast
+    std::vector<sp::Token*> ifStubTokens{
+            new sp::Token(sp::Token::TokenType::NAME, "axel2"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::NAME, "semelparity"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto lif = new LexerStub(ifStubTokens);     //new keyword gets me a ptr to LexerStub
+    Parser pif = Parser(lif);
+    // TODO: CHANGE TO IFSTMT/ Add new IFStmt ast
+    ast::AssignStmt* PLACEHOLDER_IF = pif.parseAssignStmt();
+
+    // Set up Assignment AST
+    std::vector<sp::Token*> stubTokens{
+            new sp::Token(sp::Token::TokenType::NAME, "axel2"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::NAME, "semelparity"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto l = new LexerStub(stubTokens);     //new keyword gets me a ptr to LexerStub
+    Parser p = Parser(l);
+    // TODO: CHANGE TO IFSTMT/ Add new IFStmt ast
+    ast::AssignStmt* assignment = p.parseAssignStmt();
+
+    std::vector<sp::Token*> stub2Tokens{
+            new sp::Token(sp::Token::TokenType::NAME, "slalom"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::NAME, "semelparity"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto l2 = new LexerStub(stub2Tokens);     //new keyword gets me a ptr to LexerStub
+    Parser p2 = Parser(l2);
+    ast::AssignStmt* assignment2 = p2.parseAssignStmt();
+
+    std::vector<sp::Token*> stub3Tokens{
+            new sp::Token(sp::Token::TokenType::NAME, "quartz"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::NAME, "conspiracy"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto l3 = new LexerStub(stub3Tokens);     //new keyword gets me a ptr to LexerStub
+    Parser p3 = Parser(l3);
+    ast::AssignStmt* assignment3 = p3.parseAssignStmt();
+
+    std::vector<sp::Token*> stub4Tokens{
+            new sp::Token(sp::Token::TokenType::NAME, "sapphire"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::CONST, "100"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto l4 = new LexerStub(stub4Tokens);     //new keyword gets me a ptr to LexerStub
+    Parser p4 = Parser(l4);
+    ast::AssignStmt* assignment4 = p4.parseAssignStmt();
+
+    std::vector<sp::Token*> readTokens{
+            new sp::Token(sp::Token::TokenType::READ, "read"),
+            new sp::Token(sp::Token::TokenType::NAME, "droning"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto lread = new LexerStub(readTokens);     //new keyword gets me a ptr to LexerStub
+    Parser pread = Parser(lread);
+    ast::ReadStmt* readStmt = pread.parseReadStmt();
+
+    vector<STRING> condVarNames{ "x", "y" };    // Used in conditional expression of if stmt
+    vector<STRING> condConsts{ "5", "10" };
+    vector<STRING> nestedCondVarNames{ "a", "z" };    // Used in conditional expression of nested if stmt
+    vector<STRING> nestedCondConsts{ "33", "1" };
+    DesignExtractor::storeNewProcedure("arabesque");
+    DesignExtractor::storeNewAssignment(1, "axel2", assignment);
+    // TODO: CHANGE 'ASSIGNMENT' TO ACTUAL IFSTMT ASAP
+    DesignExtractor::storeNewIf(2,condVarNames, condConsts, PLACEHOLDER_IF);    // If-then
+        DesignExtractor::storeNewAssignment(3, "slalom", assignment2);
+    DesignExtractor::storeNewElse();                                                    // Else
+        // TODO: CHANGE 'ASSIGNMENT' TO ACTUAL WHILESTMT ASAP
+        DesignExtractor::storeNewWhile(4,nestedCondVarNames, nestedCondConsts, PLACEHOLDER_WHILE);    // Nested While
+            DesignExtractor::storeNewAssignment(5, "quartz", assignment3);
+            DesignExtractor::storeNewAssignment(6, "sapphire", assignment4);
+            DesignExtractor::storeNewRead(7, "droning", readStmt);
+         DesignExtractor::exitWhile();
+    DesignExtractor::endIfElse();
+    DesignExtractor::exitProcedure();
+
+    // Check StmtLst
+    REQUIRE(PKB::stmtLstTable->hasStmtLst(1) == true);  // Procedure's stmtLst
+    REQUIRE(PKB::stmtLstTable->hasStmtLst(2) == false); // If stmt itself
+    REQUIRE(PKB::stmtLstTable->hasStmtLst(3) == true); // If stmt's stmtLst
+    REQUIRE(PKB::stmtLstTable->hasStmtLst(4) == true); // First Else's stmtLst
+    REQUIRE(PKB::stmtLstTable->hasStmtLst(5) == true); // Nested While's's stmtLst
+    REQUIRE(PKB::stmtLstTable->hasStmtLst(6) == false);
+    REQUIRE(PKB::stmtLstTable->hasStmtLst(7) == false);
+
+    // Check varNames
+    ID varID = PKB::varTable->getVarID("axel2");
+    REQUIRE(varID == 0);    // varTable ID starts indexing at 0
+    REQUIRE(PKB::varTable->getVarName(varID) == "axel2");
+    ID varID2 = PKB::varTable->getVarID("semelparity");
+    REQUIRE(varID2 == 1);
+    REQUIRE(PKB::varTable->getVarName(varID2) == "semelparity");
+
+    ID condVarId = PKB::varTable->getVarID("x");
+    REQUIRE(condVarId == 2);    // varTable ID starts indexing at 0
+    REQUIRE(PKB::varTable->getVarName(condVarId) == "x");
+    ID condVarId2 = PKB::varTable->getVarID("y");
+    REQUIRE(condVarId2 == 3);    // varTable ID starts indexing at 0
+    REQUIRE(PKB::varTable->getVarName(condVarId2) == "y");
+
+    ID varID3 = PKB::varTable->getVarID("slalom");  // Both Assignments' exprs are the same, so no new var added.
+    REQUIRE(varID3 == 4);
+    REQUIRE(PKB::varTable->getVarName(varID3) == "slalom");
+
+    // Nested If vars
+    ID condVarId3 = PKB::varTable->getVarID("a");
+    REQUIRE(condVarId3 == 5);   // Gap in varID because of line 2 AssignStmt
+    REQUIRE(PKB::varTable->getVarName(condVarId3) == "a");
+    ID condVarId4 = PKB::varTable->getVarID("z");
+    REQUIRE(condVarId4 == 6);
+    REQUIRE(PKB::varTable->getVarName(condVarId4) == "z");
+
+    ID varID4 = PKB::varTable->getVarID("quartz");
+    REQUIRE(varID4 == 7);
+    REQUIRE(PKB::varTable->getVarName(varID4) == "quartz");
+    ID varID5 = PKB::varTable->getVarID("conspiracy");
+    REQUIRE(varID5 == 8);
+    REQUIRE(PKB::varTable->getVarName(varID5) == "conspiracy");
+    ID varID6 = PKB::varTable->getVarID("sapphire");
+    REQUIRE(varID6 == 9);
+    REQUIRE(PKB::varTable->getVarName(varID6) == "sapphire");
+    ID varID7 = PKB::varTable->getVarID("droning");
+    REQUIRE(varID7 == 10);
+    REQUIRE(PKB::varTable->getVarName(varID7) == "droning");
+
+    // Check consts used in conditional
+    REQUIRE(PKB::constTable->hasConst("5") == true);
+    REQUIRE(PKB::constTable->getConstValue("5") == 5);
+    REQUIRE(PKB::constTable->hasConst("10") == true);
+    REQUIRE(PKB::constTable->getConstValue("10") == 10);
+    REQUIRE(PKB::constTable->hasConst("-50") == false);
+    REQUIRE(PKB::constTable->hasConst("33") == true);
+    REQUIRE(PKB::constTable->getConstValue("33") == 33);
+    REQUIRE(PKB::constTable->hasConst("1") == true);
+    REQUIRE(PKB::constTable->getConstValue("1") == 1);
+    REQUIRE(PKB::constTable->hasConst("100") == true);
+    REQUIRE(PKB::constTable->getConstValue("100") == 100);
+
+    // Check Follows
+    REQUIRE(PKB::follows->getFollower(1) == 2);
+    REQUIRE(PKB::follows->getFollower(2) != 3); // 3 is nested in 2
+    REQUIRE(PKB::follows->getFollower(2) != 4); // 4 nested in 2
+    REQUIRE(PKB::follows->getFollower(3) != 4); // 4 in separate stmtLst
+    REQUIRE(PKB::follows->getFollower(4) != 5); // 5 is nested in 4
+    REQUIRE(PKB::follows->getFollower(4) != 6); // 6 is nested in 4
+    REQUIRE(PKB::follows->getFollower(5) == 6); // nested in while loop
+    REQUIRE(PKB::follows->getFollower(6) == 7);
+    REQUIRE(PKB::follows->getFollower(6) != 6); // stmt cannot follow itself
+
+    // Check Parent
+    REQUIRE(PKB::parent->getChildren(2) == unordered_set<StmtNum>{ 3, 4 }); // Only testing for Parent, not Parent*
+    REQUIRE(PKB::parent->getChildren(4) == unordered_set<StmtNum>{ 5, 6, 7 });
+    REQUIRE(PKB::parent->getParent(3) == 2);
+    REQUIRE(PKB::parent->getParent(7) == 4);
+    REQUIRE(PKB::parent->getParent(1) == -1);
+
+    // Check Uses
+    REQUIRE(PKB::uses->getStmtsUses(condVarId) == unordered_set<StmtNum>{ 2 });
+    REQUIRE(PKB::uses->getStmtsUses(condVarId2) == unordered_set<StmtNum>{ 2 });
+    REQUIRE(PKB::uses->getStmtsUses(condVarId3) == unordered_set<StmtNum>{ 2, 4 }); // Nested if
+    REQUIRE(PKB::uses->getStmtsUses(condVarId4) == unordered_set<StmtNum>{ 2, 4 });
+    REQUIRE(PKB::uses->getStmtsUses(varID2) == unordered_set<StmtNum>{ 1, 2, 3 }); // as 2 is a container stmt
+    REQUIRE(PKB::uses->getStmtsUses(varID5) == unordered_set<StmtNum>{ 2, 4, 5 }); // as 2 is a container stmt
+    REQUIRE(PKB::uses->getVarsUsedByProc(0) == unordered_set<StmtNum>{ condVarId, condVarId2,
+                                                                       condVarId3, condVarId4, varID2, varID5 });
+    // Check Modifies
+    REQUIRE(PKB::modifies->getStmtsModifies(varID) == unordered_set<ID>{ 1 });
+    REQUIRE(PKB::modifies->getStmtsModifies(varID3) == unordered_set<ID>{ 2, 3 }); // as 2 is a container stmt
+    REQUIRE(PKB::modifies->getStmtsModifies(varID4) == unordered_set<ID>{ 2, 4, 5 }); // 2, 4 is container stmt
+    REQUIRE(PKB::modifies->getStmtsModifies(varID6) == unordered_set<ID>{ 2, 4, 6 });
+    REQUIRE(PKB::modifies->getStmtsModifies(varID7) == unordered_set<ID>{ 2, 4, 7 });
 }
 
 // Test cases for stacks and related methods

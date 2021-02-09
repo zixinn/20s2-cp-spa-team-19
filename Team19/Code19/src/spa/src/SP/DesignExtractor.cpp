@@ -7,7 +7,6 @@ ID DesignExtractor::currentParent;
 set<ID> DesignExtractor::currentModifiedVarsLst;
 set<ID> DesignExtractor::currentUsedVarsLst;
 vector<ID> DesignExtractor::currentStmtLst;
-
 // Stacks
 vector<vector<int>> DesignExtractor::stmtLstsStack;
 vector<set<ID>> DesignExtractor::usesStack;
@@ -29,10 +28,12 @@ void DesignExtractor::DEStack<T>::stackPush(vector<T> &stack, T entry) {
     stack.push_back(entry);
 }
 
+// DE public API for Parser
 void DesignExtractor::storeNewProcedure(STRING procedureName) {
     // Stores new procedure into PKB and receive the PKB-assigned ID
     currentProcedureID = PKB::procTable->storeProcName(procedureName);
 }
+
 void DesignExtractor::exitProcedure() {
     // Store Procedure's stmtLst
     PKB::procTable->storeProcStmt(currentProcedureID, currentStmtLst[0], currentStmtLst.back());
@@ -47,7 +48,6 @@ void DesignExtractor::exitProcedure() {
     addAllCurrentStmtLstModifiesForProcedure();
     addAllCurrentStmtLstUsesForProcedure();
 }
-
 
 void DesignExtractor::storeNewWhile(int startStmtNum, vector<STRING> condVarNames, vector<STRING> condConsts, Stmt* AST) {
     // Store the conditional variables into PKB and receive the PKB-assigned ID
@@ -66,7 +66,6 @@ void DesignExtractor::storeNewWhile(int startStmtNum, vector<STRING> condVarName
     if (!PKB::stmtTable->storeStmt(startStmtNum, AST, WHILE_)) {
         std::cerr << "DE encountered an error when attempting to store statement " << startStmtNum << " in PKB.\n";
     }
-
     // DE Internal Bookkeeping
     currentStmtLst.push_back(startStmtNum);
     // Prepare for the while loop's stmtLst
@@ -92,12 +91,10 @@ void DesignExtractor::storeNewIf(int startStmtNum, vector<STRING> condVarNames, 
     for (STRING constant : condConsts) {
         PKB::constTable->storeConst(constant);
     }
-
     // Stores <stmtNum, PAIR<variable ID, *AST>> into Assignment Map.
     if (!PKB::stmtTable->storeStmt(startStmtNum, AST, IF_)) {
         std::cerr << "DE encountered an error when attempting to store statement " << startStmtNum << " in PKB.\n";
     }
-
     // DE Internal Bookkeeping
     currentStmtLst.push_back(startStmtNum);
     // Prepare for the If stmt's stmtLst
@@ -112,6 +109,7 @@ void DesignExtractor::storeNewElse() {
     storeCurrentStmtLstRelationships();
     createNewCurrentState(currentParent);
 }
+
 void DesignExtractor::endIfElse() {
     // Called when exiting an if-else statement.
     storeCurrentStmtLstRelationships(); // Store If stmt's stmtLst's relationships
@@ -133,7 +131,6 @@ void DesignExtractor::storeNewAssignment(int stmtNum, STRING variableName, Assig
     vector<STRING> varNameLst;
     vector<STRING> constLst;
     Expr* expression = AST->getExpr();
-
     // AssignStmt contains Expr; getExpr();
     std::tie(varNameLst, constLst) = extractVarsAndConsts(expression, varNameLst, constLst);
     // Store constants into PKB
@@ -142,13 +139,12 @@ void DesignExtractor::storeNewAssignment(int stmtNum, STRING variableName, Assig
     }
     // Store variables into PKB & update Uses table.
     for (STRING var : varNameLst) {
-        int varID =  PKB::varTable->storeVarName(var);   // if var already exists, it returns previously assigned ID.
-         PKB::uses->storeStmtUses(stmtNum, varID);
+        int listVarID =  PKB::varTable->storeVarName(var);   // if var already exists, it returns previously assigned ID.
+         PKB::uses->storeStmtUses(stmtNum, listVarID);
 
         // DE Internal Bookkeeping
-        currentUsedVarsLst.insert(varID);
+        currentUsedVarsLst.insert(listVarID);
     }
-
     // DE Internal Bookkeeping
     currentStmtLst.push_back(stmtNum);
     currentModifiedVarsLst.insert(varID);
@@ -164,18 +160,16 @@ void DesignExtractor::storeNewRead(int stmtNum, STRING variableName, ReadStmt* A
     if (!PKB::stmtTable->storeStmt(stmtNum, AST, READ_)) {
         std::cerr << "DE encountered an error when attempting to store statement " << stmtNum << " in PKB.\n";
     }
-
     // DE Internal Bookkeeping
     currentStmtLst.push_back(stmtNum);
     currentModifiedVarsLst.insert(varID);
 }
+
 void DesignExtractor::storeNewPrint(int stmtNum, STRING variableName, PrintStmt* AST) {
     // Store the LHS variable into PKB and receive the PKB-assigned ID
     ID varID = PKB::varTable->storeVarName(variableName);
-
     // Update Uses. Note that Print only uses one variable.
      PKB::uses->storeStmtUses(stmtNum, varID);
-
     // Stores <stmtNum, PAIR<variable ID, *AST>> into Assignment Map.
     if (!PKB::stmtTable->storeStmt(stmtNum, AST, PRINT_)) {
         std::cerr << "DE encountered an error when attempting to store statement " << stmtNum << " in PKB.\n";
@@ -210,7 +204,6 @@ pair<vector<STRING>, vector<STRING>> DesignExtractor::extractVarsAndConsts(Expr*
                                                                            vector<STRING> &varNameLst,
                                                                            vector<STRING> &constLst) {
     // The first in the pair is a list of varNames. The second is a list of Constant strings.
-
     // 3 types of expressions: InfixExpr, ConstVal, VarName
     sp::Token::TokenType tokenType = expression->getToken()->getType();
     switch (tokenType) {
@@ -220,7 +213,7 @@ pair<vector<STRING>, vector<STRING>> DesignExtractor::extractVarsAndConsts(Expr*
             break;
         // VarName
         case sp::Token::TokenType::NAME:
-            varNameLst.push_back(static_cast<VarName *>(expression)->getVal());
+            varNameLst.push_back(dynamic_cast<VarName *>(expression)->getVal());
             break;
         // InfixExpr. Fallthrough!
         case sp::Token::TokenType::PLUS:
@@ -228,19 +221,16 @@ pair<vector<STRING>, vector<STRING>> DesignExtractor::extractVarsAndConsts(Expr*
         case sp::Token::TokenType::TIMES:
         case sp::Token::TokenType::DIV:
         case sp::Token::TokenType::MOD: {
-            InfixExpr* infixExpression = static_cast<InfixExpr *>(expression);
-            sp::Token::TokenType infixTokenType = infixExpression->getToken()->getType();
-
+            auto *infixExpression = dynamic_cast<InfixExpr *>(expression);
             // Traverse left first
             extractVarsAndConsts(infixExpression->getLeft(), varNameLst, constLst);
             extractVarsAndConsts(infixExpression->getRight(), varNameLst, constLst);
             break;
         }
-
+        default:
+            throw std::invalid_argument("Expression Node has the wrong token value");
     }
     return make_pair(varNameLst, constLst);
-
-
 }
 
 void DesignExtractor::storeCurrentStmtLstRelationships() {
@@ -248,12 +238,10 @@ void DesignExtractor::storeCurrentStmtLstRelationships() {
     // Stores Follows, Parent for the currentStmtLst
     addFollowsForCurrentStmtLst();
     addParentForCurrentStmtLst();
-
     // Stores Modifies, Uses for the currentStmtLst
     // This is done for ALL parents of the currentStmtLst
     addModifiesForAllParentsOfCurrentStmtLst();
     addUsesForAllParentForCurrentStmtLst();
-
     // Stores the current Procedure's Modifies, Uses relationships for the currentStmtLst
     // Uses/Modifies relationships in the container wont be added during exitProcedure
     // because the container statements' stmtLsts are not in the Procedure's currentStmtLst
@@ -277,6 +265,7 @@ void DesignExtractor::addFollowsForCurrentStmtLst() {
     }
 
 }
+
 void DesignExtractor::addParentForCurrentStmtLst() {
     // adds Parents relationship for all stmts in currentStmtLst
     if (!parentStack.empty()) {
@@ -294,6 +283,7 @@ void DesignExtractor::addModifiesForAllParentsOfCurrentStmtLst() {
         }
     }
 }
+
 void DesignExtractor::addUsesForAllParentForCurrentStmtLst() {
     for (ID varID : currentUsedVarsLst) {
         for (int parent : parentStack) {
@@ -307,6 +297,7 @@ void DesignExtractor::addAllCurrentStmtLstModifiesForProcedure() {
         PKB::modifies->storeProcModifies(currentProcedureID, varID);
     }
 }
+
 void DesignExtractor::addAllCurrentStmtLstUsesForProcedure() {
     for (ID varID : currentUsedVarsLst) {
         PKB::uses->storeProcUses(currentProcedureID, varID);
@@ -319,7 +310,6 @@ void DesignExtractor::saveCurrentState() {
     DEStack<ID>::stackPush(parentStack, currentParent);
     DEStack<set<ID>>::stackPush(usesStack, currentUsedVarsLst);
     DEStack<set<ID>>::stackPush(modifiesStack, currentModifiedVarsLst);
-
 }
 
 void DesignExtractor::popSavedState() {

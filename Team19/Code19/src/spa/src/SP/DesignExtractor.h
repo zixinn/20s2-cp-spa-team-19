@@ -1,4 +1,3 @@
-#include<stdio.h>
 #include <set>
 
 #include "../AbstractAPI.h"
@@ -16,7 +15,6 @@ public:
     static void storeNewProcedure(STRING procedureName);
     // Called when exiting a procedure
     static void exitProcedure();
-
     // Store a new while statement
     static void storeNewWhile(int startStmtNum, vector<STRING> condVarNames, vector<STRING> condConsts,  Stmt* AST);
     // Called when exiting a while loop
@@ -44,8 +42,7 @@ public:
     // Informs DE that an error was encountered, causing DE and PKB to be reset.
     static void signalReset();
 
-
-        // To support generic stacks
+    // To support generic stacks
     template <typename T>
     class DEStack {
     public:
@@ -72,8 +69,6 @@ private:
     static set<ID> currentModifiedVarsLst;
     // The current list of used variables for this statement
     static set<ID> currentUsedVarsLst;
-
-
     // Stacks to handle container statements & nested container statements.
     // Each stack stores its respective entries for the CURRENT PROCEDURE (currentProcedureId)
     // e.g. a stack of stmtLsts, a stack of vectors (containing IDs)
@@ -92,7 +87,6 @@ private:
     static pair<vector<STRING>, vector<STRING>> extractVarsAndConsts(Expr* AST,
                                                                      vector<STRING> &varNameLst,
                                                                      vector<STRING> &constLst);
-
     // Stores Follows, Parent, Modifies, Uses for the currentStmtLst (for container statements)
     static void storeCurrentStmtLstRelationships();
     // Stores the first stmt number in the currentStmtLst into PKB's StmtLstTable
