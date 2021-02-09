@@ -1,6 +1,6 @@
 #pragma once
-#include "SP/Token.h";
-#include "SP/Lexer.h";
+#include "SP/Token.h"
+#include "SP/Lexer.h"
 
 // function pointers for ExprParsing
 namespace ParserUtils {

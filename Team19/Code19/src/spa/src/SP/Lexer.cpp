@@ -1,29 +1,6 @@
 #include "Lexer.h"
 #include "../Utility.h"
 
-//#include <algorithm> // for all_of function
-//
-//from pql/Utility
-//bool checkName(string s) {
-//	bool isValid = false;
-//	if (isalpha(s[0])) {
-//		isValid = true;
-//		for (int i = 1; i <= s.length() - 1; i++)
-//		{
-//			isValid = (isalnum(s[i]));
-//
-//			if (!isValid) {
-//				break;
-//			}
-//		}
-//	}
-//	return isValid;
-//}
-//
-//from pql/Utility
-//bool checkInteger(string s) {
-//	return !s.empty() && all_of(s.begin(), s.end(), ::isdigit);
-//}
 
 bool Lexer::tokenise(string str, vector<sp::Token>& result) {
 	
@@ -31,10 +8,15 @@ bool Lexer::tokenise(string str, vector<sp::Token>& result) {
 		return false;
 	}
 	string::iterator it = str.begin();
+	string::iterator end = str.end();
 
 	sp::Token token;
 	while (it != str.end()) {
-		token = nextToken(it);
+		bool endSpace = skipWhitespace(it, end);
+		if (endSpace) {
+			break;
+		}
+		token = nextToken(it, end);
 		if (token.getType() == sp::Token::TokenType::ERROR) {
 			return false;
 		}
@@ -46,8 +28,7 @@ bool Lexer::tokenise(string str, vector<sp::Token>& result) {
 
 }
 
-sp::Token Lexer::nextToken(string::iterator& it) {
-	skipWhitespace(it);
+sp::Token Lexer::nextToken(string::iterator& it, string::iterator end) {
 	sp::Token token;
 	char next;
 	switch (*it) {
@@ -82,82 +63,121 @@ sp::Token Lexer::nextToken(string::iterator& it) {
 			token = sp::Token(sp::Token::TokenType::RBRACE, "}");
 			break;
 		case '=':
-			next = *(it + 1);
-			if (next == '=') {
-				token = sp::Token(sp::Token::TokenType::EQ, "==");
-				it++;
-			} else {
+			//check if this is the last char in string
+			if ((it + 1) == end) {
 				token = sp::Token(sp::Token::TokenType::ASSIGN, "=");
+			} else {
+				next = *(it + 1);
+				if (next == '=') {
+					token = sp::Token(sp::Token::TokenType::EQ, "==");
+					it++;
+				} else {
+					token = sp::Token(sp::Token::TokenType::ASSIGN, "=");
+				}
 			}
 			break;
 		case '!':
-			next = *(it + 1);
-			if (next == '=') {
-				token = sp::Token(sp::Token::TokenType::NEQ, "!=");
-				it++;
-			} else {
+			//check if this is the last char in string
+			if ((it + 1) == end) {
 				token = sp::Token(sp::Token::TokenType::NOT, "!");
+			} else {
+				next = *(it + 1);
+				if (next == '=') {
+					token = sp::Token(sp::Token::TokenType::NEQ, "!=");
+					it++;
+				} else {
+					token = sp::Token(sp::Token::TokenType::NOT, "!");
+				}
 			}
 			break;
 		case '<':
-			next = *(it + 1);
-			if (next == '=') {
-				token = sp::Token(sp::Token::TokenType::LTE, "<=");
-				it++;
-			} else {
+			//check if this is the last char in string
+			if ((it + 1) == end) {
 				token = sp::Token(sp::Token::TokenType::LT, "<");
+			} else {
+				next = *(it + 1);
+				if (next == '=') {
+					token = sp::Token(sp::Token::TokenType::LTE, "<=");
+					it++;
+				} else {
+					token = sp::Token(sp::Token::TokenType::LT, "<");
+				}
 			}
 			break;
 		case '>':
-			next = *(it + 1);
-			if (next == '=') {
-				token = sp::Token(sp::Token::TokenType::GTE, ">=");
-				it++;
-			} else {
+			//check if this is the last char in string
+			if ((it + 1) == end) {
 				token = sp::Token(sp::Token::TokenType::GT, ">");
+			} else {
+				next = *(it + 1);
+				if (next == '=') {
+					token = sp::Token(sp::Token::TokenType::GTE, ">=");
+					it++;
+				} else {
+					token = sp::Token(sp::Token::TokenType::GT, ">");
+				}
 			}
 			break;
 		case '&':
-			next = *(it + 1);
-			if (next == '&') {
-				token = sp::Token(sp::Token::TokenType::AND, "&&");
-				it++;
-			} else {
+			//check if this is the last char in string
+			if ((it + 1) == end) {
 				token = sp::Token(sp::Token::TokenType::ERROR, "&");
+			} else {
+				next = *(it + 1);
+				if (next == '&') {
+					token = sp::Token(sp::Token::TokenType::AND, "&&");
+					it++;
+				} else {
+					token = sp::Token(sp::Token::TokenType::ERROR, "&");
+				}
 			}
 			break;
 		case '|':
-			next = *(it + 1);
-			if (next == '|') {
-				token = sp::Token(sp::Token::TokenType::OR, "||");
-				it++;
-			}
-			else {
+			//check if this is the last char in string
+			if ((it + 1) == end) {
 				token = sp::Token(sp::Token::TokenType::ERROR, "|");
+			} else {
+				next = *(it + 1);
+				if (next == '|') {
+					token = sp::Token(sp::Token::TokenType::OR, "||");
+					it++;
+				} else {
+					token = sp::Token(sp::Token::TokenType::ERROR, "|");
+				}
 			}
 			break;
 		default:
-			token = makeNameConstKeyToken(it);
+			token = makeNameConstKeyToken(it, end);
 			break;
 	}
 	return token;
 }
 
-void Lexer::skipWhitespace(string::iterator& it) {
+//Returns true if string ends with whitespace, else false
+bool Lexer::skipWhitespace(string::iterator& it, string::iterator end) {
 	string whitespace = " \t\n\r\f\v";
 	while (whitespace.find(*it) < whitespace.length()) {
 		it++;
+		//string ends with whitespace
+		if (it == end) {
+			return true;
+		}
 	}
+	return false;
 }
 
-sp::Token Lexer::makeNameConstKeyToken(string::iterator& it) {
+sp::Token Lexer::makeNameConstKeyToken(string::iterator& it, string::iterator end) {
 	string literal = "";
 	while (isdigit(*it) || isalpha(*it)) {
 		literal += string(1, *it);
 		it++;
+		if (it == end) {
+			break;
+		}
 	}
 	
 	it--;
+
 	if (literal == "procedure") {
 		return sp::Token(sp::Token::TokenType::PROC, literal);
 	} else if (literal == "read") {

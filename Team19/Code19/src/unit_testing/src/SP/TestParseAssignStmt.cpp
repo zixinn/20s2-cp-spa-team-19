@@ -85,3 +85,25 @@ TEST_CASE("Parse Assign Expr - Mid Test") {
     ast::AssignStmt* ass = p.parseAssignStmt();
     REQUIRE(ass->toString() == "x = ((v + (x * y)) + (z * t));");
 }
+
+TEST_CASE("Parse Assign Expr - With Paren Test") {
+
+    std::vector<sp::Token*> stubTokens{
+        new sp::Token(sp::Token::TokenType::NAME, "x"),
+        new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+        new sp::Token(sp::Token::TokenType::LPAREN, "("),
+        new sp::Token(sp::Token::TokenType::NAME, "y"),
+        new sp::Token(sp::Token::TokenType::PLUS, "+"),
+        new sp::Token(sp::Token::TokenType::CONST, "5"),
+        new sp::Token(sp::Token::TokenType::RPAREN, ")"),
+        new sp::Token(sp::Token::TokenType::TIMES, "*"),
+        new sp::Token(sp::Token::TokenType::CONST, "3"),
+        new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+        new sp::Token(sp::Token::TokenType::EOFF, "EOF"),
+    };
+
+    auto l = new LexerStub(stubTokens);
+    Parser p = Parser(l);
+    ast::AssignStmt* ass = p.parseAssignStmt();
+    REQUIRE(ass->toString() == "x = ((y + 5) * 3);");
+}
