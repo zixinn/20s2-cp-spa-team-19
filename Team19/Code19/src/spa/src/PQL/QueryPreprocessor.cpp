@@ -172,7 +172,7 @@ bool QueryPreprocessor::parsePatternClause(string clause) {
 
 bool QueryPreprocessor::checkPatternClause(string syn, vector<string> args) {
     string argType = getArgType(syn, this->declarations);
-    if (argType != "assign") {
+    if (argType != ASSIGN_) {
         this->isValid = false;
         return false;
     }
