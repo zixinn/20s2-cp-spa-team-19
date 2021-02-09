@@ -77,6 +77,24 @@ bool intersectSingleSynonym(vector<int> allResults, vector<int> allCorrectType, 
     return !res.empty();
 }
 
+// Function overload
+// Stores the intersection of allResults and allCorrectType in results, removes duplicates
+// Returns true if results is non-empty, false otherwise
+bool intersectSingleSynonym(unordered_set<int> allResults, vector<int> allCorrectType, vector<int>& results) {
+    vector<int> allResultsVector;
+    allResultsVector.assign(allResults.begin(), allResults.end());
+    vector<int> res;
+    int size = allResultsVector.size();
+    for (int i = 0; i < size; i++) {
+        if (find(allCorrectType.begin(), allCorrectType.end(), allResultsVector.at(i)) != allCorrectType.end()) {
+            res.push_back(allResultsVector.at(i));
+        }
+    }
+    results = res;
+    return !res.empty();
+}
+
+
 // Stores pairs of entries of allResults such that the first entry exists in allCorrectType.first and the second entry exists in allCorrectType.second in results
 // Returns true if results is non-empty, false otherwise
 bool intersectDoubleSynonym(pair<vector<int>, vector<int>> allResults, pair<vector<int>, vector<int>> allCorrectType, pair<vector<int>, vector<int>>& results) {
