@@ -25,10 +25,8 @@ bool FollowsTEvaluator::evaluate(unordered_map<string, string> declarations, Cla
             return false;
         }
         if (secondType != UNDERSCORE_) {
-            vector<int> followerStar;
-            followerStar.assign(followers.begin(), followers.end());
             vector<int> res;
-            bool nonEmpty = intersectSingleSynonym(followerStar, selectAll(secondType), res);
+            bool nonEmpty = intersectSingleSynonym(followers, selectAll(secondType), res);
             if (nonEmpty) {
                 tempResults[secondArg] = res;
             }
@@ -42,10 +40,8 @@ bool FollowsTEvaluator::evaluate(unordered_map<string, string> declarations, Cla
             return false;
         }
         if (firstType != UNDERSCORE_) {
-            vector<int> followeeStar;
-            followeeStar.assign(followees.begin(), followees.end());
             vector<int> res;
-            bool nonEmpty = intersectSingleSynonym(followeeStar, selectAll(firstType), res);
+            bool nonEmpty = intersectSingleSynonym(followees, selectAll(firstType), res);
             if (nonEmpty) {
                 tempResults[firstArg] = res;
             }

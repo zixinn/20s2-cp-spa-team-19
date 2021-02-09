@@ -43,10 +43,8 @@ bool ParentTEvaluator::evaluate(unordered_map<string, string> declarations,
             return false;
         }
         if (firstType != UNDERSCORE_) {
-            vector<int> parentStar;
-            parentStar.assign(parent.begin(), parent.end());
             vector<int> res;
-            bool nonEmpty = intersectSingleSynonym(parentStar, selectAll(firstType), res);
+            bool nonEmpty = intersectSingleSynonym(parent, selectAll(firstType), res);
             if (nonEmpty) {
                 tempResults[firstArg] = res;
             }

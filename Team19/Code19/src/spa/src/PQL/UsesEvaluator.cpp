@@ -50,10 +50,8 @@ bool UsesEvaluator::evaluateStmtUses(unordered_map<string, string> declarations,
 				return false;
 			}
 			if (secondType != UNDERSCORE_) {
-				vector<int> variables;
-				variables.assign(varSet.begin(), varSet.end());
 				vector<int> res;
-				bool nonEmpty = intersectSingleSynonym(variables, selectAll(secondType), res);
+				bool nonEmpty = intersectSingleSynonym(varSet, selectAll(secondType), res);
 				if (nonEmpty) {
 					tempResults[secondArg] = res;
 				}
@@ -74,10 +72,8 @@ bool UsesEvaluator::evaluateStmtUses(unordered_map<string, string> declarations,
 			if (stmts.empty()) {
 				return false;
 			}
-			vector<int> statements;
-			statements.assign(stmts.begin(), stmts.end());
 			vector<int> res;
-			bool nonEmpty = intersectSingleSynonym(statements, selectAll(firstType), res);
+			bool nonEmpty = intersectSingleSynonym(stmts, selectAll(firstType), res);
 			if (nonEmpty) {
 				tempResults[firstArg] = res;
 			}
@@ -133,10 +129,8 @@ bool UsesEvaluator::evaluateProcUses(unordered_map<string, string> declarations,
 				return false;
 			}
 			if (secondType != UNDERSCORE_) {
-				vector<int> variables;
-				variables.assign(vars.begin(), vars.end());
 				vector<int> res;
-				bool nonEmpty = intersectSingleSynonym(variables, selectAll(secondType), res);
+				bool nonEmpty = intersectSingleSynonym(vars, selectAll(secondType), res);
 				if (nonEmpty) {
 					tempResults[secondArg] = res;
 				}
@@ -156,10 +150,8 @@ bool UsesEvaluator::evaluateProcUses(unordered_map<string, string> declarations,
 			if (procs.empty()) {
 				return false;
 			}
-			vector<int> procedures;
-			procedures.assign(procs.begin(), procs.end());
 			vector<int> res;
-			bool nonEmpty = intersectSingleSynonym(procedures, selectAll(firstType), res);
+			bool nonEmpty = intersectSingleSynonym(procs, selectAll(firstType), res);
 			if (nonEmpty) {
 				tempResults[firstArg] = res;
 			}

@@ -28,7 +28,6 @@ bool ParentEvaluator::evaluate(unordered_map<string, string> declarations,
         }
         if (secondType != UNDERSCORE_) { // known, s
             vector<int> res;
- 
             bool nonEmpty = intersectSingleSynonym(children, selectAll(secondType), res);
             if (nonEmpty) {
                 tempResults[secondArg] = res;
