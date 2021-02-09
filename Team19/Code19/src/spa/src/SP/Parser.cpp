@@ -446,6 +446,7 @@ ast::CondExpr* Parser::parseLParenPrefixCondExpr() {
 }
 
 ast::WhileStmt* Parser::parseWhileStmt() {
+	int curr_index = this->getPlusPC();
 	auto tok = this->currToken;
 	if (!this->currTokenIs(sp::Token::TokenType::WHILE)) {
 		throw this->genError("ParseWhile expected WHILE, encountered: " + this->currLiteral());
@@ -470,12 +471,13 @@ ast::WhileStmt* Parser::parseWhileStmt() {
 		throw this->genError("ParseWhile expected RBRACE }, encountered: " + this->currLiteral());
 	}
 
-	return new ast::WhileStmt(this->getPlusPC(), tok, cond_expr, stmt_lst);
+	return new ast::WhileStmt(curr_index, tok, cond_expr, stmt_lst);
 }
 
 ast::IfStmt* Parser::parseIfStmt() {
 	//throw "NOT READY";
 	auto tok = this->currToken;
+	int curr_index = this->getPlusPC();
 	if (!this->currTokenIs(sp::Token::TokenType::IF)) {
 		throw this->genError("ParseIf expected IF, encountered: " + this->currLiteral());
 	}
@@ -518,7 +520,7 @@ ast::IfStmt* Parser::parseIfStmt() {
 		throw this->genError("ParseWhile expected RBRACE }, encountered: " + this->currLiteral());
 	}
 
-	return new ast::IfStmt(this->getPlusPC(), tok, cond_expr, csq_lst, alt_lst);
+	return new ast::IfStmt(curr_index, tok, cond_expr, csq_lst, alt_lst);
 }
 
 //std::string Parser::genError(std::string str) {
