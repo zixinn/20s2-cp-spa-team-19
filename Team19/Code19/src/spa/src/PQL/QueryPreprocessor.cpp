@@ -24,37 +24,31 @@ Query QueryPreprocessor::process(string query) {
     this->clauses.clear();
     this->isValid = true;
 
-    vector<string> statements = split(query, ";");
-
-    bool selectFound = false;
-    bool multipleSelect = false;
-    for (int i = 0; i < statements.size(); i++) {
-        if (statements[i].find("Select ") == 0) {
-            if (selectFound) {
-                multipleSelect = true;
-                break;
-            }
-            selectFound = true;
-        }
-    }
-    if (!selectFound || multipleSelect) {
+    if (query.empty() || query.at(query.length() - 1) == ';') {
         this->isValid = false;
     }
 
-    for (int i = 0; i < statements.size() && this->isValid; i++) {
-        if (statements[i].find("Select ") != 0) {
-            if (!regex_match(statements[i], regex("^.*\\s.*$"))) {
-                this->isValid = false;
-                break;
-            }
-
-            int space = statements[i].find(' ');
-            string designEntity = trim(statements[i].substr(0, space));
-            string synonyms = trim(statements[i].substr(space + 1));
-            parseDeclaration(designEntity, synonyms);
-        } else {
-            parseSelect(trim(statements[i].substr(7)));
+    vector<string> statements;
+    if (this->isValid) {
+        statements = split(query, ";");
+        if (statements[statements.size() - 1].find("Select ") != 0) {
+            this->isValid = false;
         }
+    }
+
+    for (int i = 0; i < statements.size() - 1 && this->isValid; i++) {
+        if (!regex_match(statements[i], regex("^.*\\s.*$"))) {
+            this->isValid = false;
+            break;
+        }
+        int space = statements[i].find(' ');
+        string designEntity = trim(statements[i].substr(0, space));
+        string synonyms = trim(statements[i].substr(space + 1));
+        parseDeclaration(designEntity, synonyms);
+    }
+
+    if (this->isValid) {
+        parseSelect(trim(statements[statements.size() - 1].substr(7)));
     }
 
     return Query(this->declarations, this->toSelect, this->clauses, this->isValid);
@@ -106,7 +100,7 @@ bool QueryPreprocessor::parseSelect(string select) {
 }
 
 bool QueryPreprocessor::parseToSelect(string synonym) {
-    if (!checkSynonymDeclared(synonym, this->declarations) || !checkName(synonym)) {
+    if (!checkSynonymDeclared(synonym, this->declarations)) {
         this->isValid = false;
         return false;
     }

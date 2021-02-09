@@ -11,6 +11,14 @@ TEST_CASE("process empty query") {
     REQUIRE(actual == expected);
 }
 
+TEST_CASE("process select ending with ;") {
+    QueryPreprocessor qp = QueryPreprocessor();
+    string query = "assign a; while w; \nSelect w such that Parent* (w, a);";
+    Query actual = qp.process(query);
+    Query expected = Query({}, "", {}, false);
+    REQUIRE(actual == expected);
+}
+
 TEST_CASE("process missing select clause") {
     QueryPreprocessor qp = QueryPreprocessor();
     string query = "assign a; while w";
@@ -22,6 +30,17 @@ TEST_CASE("process missing select clause") {
 TEST_CASE("process multiple select clause") {
     QueryPreprocessor qp = QueryPreprocessor();
     string query = "assign a; while w; \nSelect w such that Parent* (w, a); Select w pattern a (\"count\", _)";
+    Query actual = qp.process(query);
+    unordered_map<string, string> declarations;
+    declarations["a"] = "assign";
+    declarations["w"] = "while";
+    Query expected = Query(declarations, "", {}, false);
+    REQUIRE(actual == expected);
+}
+
+TEST_CASE("process query not ending with Select clause") {
+    QueryPreprocessor qp = QueryPreprocessor();
+    string query = "assign a; while w; \nSelect w such that Parent* (w, a); variable v";
     Query actual = qp.process(query);
     Query expected = Query({}, "", {}, false);
     REQUIRE(actual == expected);
