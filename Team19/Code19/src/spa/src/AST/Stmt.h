@@ -11,5 +11,6 @@ namespace ast {
 		Stmt(sp::Token* token, int index) :Node{ token }, index{ index } {};
 		int getIndex() { return index; };
 		virtual std::string toString() { return "STMT: OVERRIDE THIS"; };
+		~Stmt() {};
 	};
 }

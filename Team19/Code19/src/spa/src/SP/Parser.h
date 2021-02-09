@@ -5,6 +5,7 @@
 #include "SP/Token.h"
 #include "AST/Index.h"
 #include "SP/ParserUtils.h"
+#include "SP/ParserException.h"
 
 using namespace std;
 
@@ -41,6 +42,7 @@ public:
 	ast::Proc* parseProc();
 	ast::Program* parseProgram();
 	ast::Expr* parseExpr(int precedence);
+	ast::CondExpr* parseCondExpr(int precedence);
 
 	inline sp::Token* getCurrToken() { return currToken; };
 	static bool isKeyword(sp::Token* tok);
@@ -55,7 +57,10 @@ private:
 	bool peekTokenIsNameOrKeyword();
 
 	int getPlusPC();
-	std::string genError(std::string str);
+	//std::string genError(std::string str);
+	sp::ParserException genError(std::string str);
+	sp::ParserException genExprError(std::string str);
+	sp::ParserException genCondExprError(std::string str);
 	std::string currLiteral();
 	std::string peekLiteral();
 	bool parseTest();
@@ -64,6 +69,15 @@ private:
 	ast::Expr* parsePrefixExpr(sp::Token* tok);
 	ast::Expr* parseInfixExpr(ast::Expr*);
 	ast::Expr* parseLParenPrefixExpr();
+
+	// condexpr
+	ast::CondExpr* parseCondExprInner(int precedence);
+	ast::CondExpr* parsePrefixCondExpr();
+	ast::CondExpr* parseRelExpr(ast::Expr*);
+	ast::CondExpr* parseNotExpr();
+	ast::CondExpr* parseLParenPrefixCondExpr();
+	ast::CondExpr* parseInfixCondExpr(ast::CondExpr*);
+
 	int peekPrecedence();
 	int currPrecedence();
 };

@@ -13,6 +13,11 @@
 
 #include "InfixExpr.h"
 
+#include "CondExprWrapper.h"
+#include "PrefixCondExpr.h"
+#include "InfixCondExpr.h"
+#include "RelExpr.h"
+
 #include "VarName.h"
 #include "ProcName.h"
 #include "ConstVal.h"
