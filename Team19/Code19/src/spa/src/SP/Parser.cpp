@@ -104,6 +104,8 @@ ast::Stmt* Parser::parseStmt() {
 		return this->parseReadStmt();
 	} else if (this->currTokenIs(sp::Token::TokenType::WHILE)) {
 		return this->parseWhileStmt();
+	} else if (this->currTokenIs(sp::Token::TokenType::IF)) {
+		return this->parseIfStmt();
 	}
 	throw this->genError("ParseStmt received unexpected token: " + this->currLiteral());
 }
@@ -444,6 +446,7 @@ ast::CondExpr* Parser::parseLParenPrefixCondExpr() {
 }
 
 ast::WhileStmt* Parser::parseWhileStmt() {
+	int curr_index = this->getPlusPC();
 	auto tok = this->currToken;
 	if (!this->currTokenIs(sp::Token::TokenType::WHILE)) {
 		throw this->genError("ParseWhile expected WHILE, encountered: " + this->currLiteral());
@@ -468,7 +471,56 @@ ast::WhileStmt* Parser::parseWhileStmt() {
 		throw this->genError("ParseWhile expected RBRACE }, encountered: " + this->currLiteral());
 	}
 
-	return new ast::WhileStmt(this->getPlusPC(), tok, cond_expr, stmt_lst);
+	return new ast::WhileStmt(curr_index, tok, cond_expr, stmt_lst);
+}
+
+ast::IfStmt* Parser::parseIfStmt() {
+	//throw "NOT READY";
+	auto tok = this->currToken;
+	int curr_index = this->getPlusPC();
+	if (!this->currTokenIs(sp::Token::TokenType::IF)) {
+		throw this->genError("ParseIf expected IF, encountered: " + this->currLiteral());
+	}
+	if (!this->expectPeek(sp::Token::TokenType::LPAREN)) {
+		throw this->genError("ParseIf expected LPAREN (, encountered: " + this->peekToken->getLiteral());
+	}
+	auto cond_expr = this->parseCondExpr(ParserUtils::CondExprPrecedence::LOWEST);
+
+	if (!this->currTokenIs(sp::Token::TokenType::RPAREN)) {
+		throw this->genError("ParseIf expected RPAREN ), encountered: " + this->currLiteral());
+	}
+
+	if (!this->expectPeek(sp::Token::TokenType::THEN)) {
+		throw this->genError("ParseIf expected THEN, encountered: " + this->peekToken->getLiteral());
+	}
+
+	if (!this->expectPeek(sp::Token::TokenType::LBRACE)) {
+		throw this->genError("ParseIf expected LBRACE {, encountered: " + this->peekToken->getLiteral());
+	}
+	this->nextToken();
+
+	auto csq_lst = this->parseStmtLst();
+
+	if (!this->currTokenIs(sp::Token::TokenType::RBRACE)) {
+		throw this->genError("ParseIf expected RBRACE }, encountered: " + this->currLiteral());
+	}
+
+	if (!this->expectPeek(sp::Token::TokenType::ELSE)) {
+		throw this->genError("ParseIf expected ELSE, encountered: " + this->peekToken->getLiteral());
+	}
+
+	if (!this->expectPeek(sp::Token::TokenType::LBRACE)) {
+		throw this->genError("ParseWhile expected LBRACE {, encountered: " + this->peekToken->getLiteral());
+	}
+	this->nextToken();
+
+	auto alt_lst = this->parseStmtLst();
+
+	if (!this->currTokenIs(sp::Token::TokenType::RBRACE)) {
+		throw this->genError("ParseWhile expected RBRACE }, encountered: " + this->currLiteral());
+	}
+
+	return new ast::IfStmt(curr_index, tok, cond_expr, csq_lst, alt_lst);
 }
 
 //std::string Parser::genError(std::string str) {
