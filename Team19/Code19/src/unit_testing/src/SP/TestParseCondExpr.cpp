@@ -163,6 +163,10 @@ TEST_CASE("ParseLexer CondExpr - Exceptions, Test") {
             "!(a + 1 > c % 2) || (a != b)",
             "!(a + 1 > c % 2) || (a != b)",
         },
+        {   
+            "(!(a + 1 > c % 2) || (a != b)",
+            "(!(a + 1 > c % 2) || (a != b)",
+        },
         {
             "(a == b) && c < 5;",
             "(a == b) && (c < 5)",
