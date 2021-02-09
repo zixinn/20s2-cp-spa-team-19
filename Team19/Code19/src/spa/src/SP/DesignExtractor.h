@@ -16,24 +16,24 @@ public:
     // Called when exiting a procedure
     static void exitProcedure();
     // Store a new while statement
-    static void storeNewWhile(int startStmtNum, vector<STRING> condVarNames, vector<STRING> condConsts,  Stmt* AST);
+    static void storeNewWhile(StmtNum startStmtNum, vector<STRING> condVarNames, vector<STRING> condConsts,  Stmt* AST);
     // Called when exiting a while loop
     static void exitWhile();
 
     // The 3 methods below should be called for a single if-else stmt.
     // Stores a new If into the PKB.
-    static void storeNewIf(int startStmtNum, vector<STRING> condVarNames, vector<STRING> condConsts, Stmt* AST);
+    static void storeNewIf(StmtNum startStmtNum, vector<STRING> condVarNames, vector<STRING> condConsts, Stmt* AST);
     // Stores the else section of the if-else statement
     static void storeNewElse();
     // Called when exiting the if-else statement.
     static void endIfElse();
 
     // Stores a new Assignment into the PKB.
-    static void storeNewAssignment(int stmtNum, STRING variableName, AssignStmt* AST);
+    static void storeNewAssignment(StmtNum stmtNum, STRING variableName, AssignStmt* AST);
     // Stores a new Read into the PKB.
-    static void storeNewRead(int stmtNum, STRING variableName, ReadStmt* AST);
+    static void storeNewRead(StmtNum stmtNum, STRING variableName, ReadStmt* AST);
     // Stores a new Print into the PKB.
-    static void storeNewPrint(int stmtNum, STRING variableName, PrintStmt* AST);
+    static void storeNewPrint(StmtNum stmtNum, STRING variableName, PrintStmt* AST);
 
     // Informs DE that end of file (EOF) has been reached.
     // DE will call PKB functions for the calculation of Follows*, Parent*,
@@ -52,7 +52,7 @@ public:
 
     // Iteration 2/3
         // Finds or adds the entry of the callerName in the NestedCallsMap and append procedureName to the calledProceduresList of the entry. Returns true (success) if successful; otherwise, returns false if this is a recursive call.
-        // bool storeNewCall(int stmtNum,STRING callerName, CallStmt* AST);
+        // bool storeNewCall(StmtNum stmtNum,STRING callerName, CallStmt* AST);
 
 private:
     // For bookkeeping
@@ -62,9 +62,9 @@ private:
 
     // The variables here are all /relative/ to the current statement.
     // The stmtLst for the current statement
-    static vector<ID> currentStmtLst;
+    static vector<StmtNum> currentStmtLst;
     // The ID of the (direct) Parent of the current statement
-    static ID currentParent;
+    static StmtNum currentParent;
     // The current list of modified variables for this statement
     static set<ID> currentModifiedVarsLst;
     // The current list of used variables for this statement
@@ -72,10 +72,10 @@ private:
     // Stacks to handle container statements & nested container statements.
     // Each stack stores its respective entries for the CURRENT PROCEDURE (currentProcedureId)
     // e.g. a stack of stmtLsts, a stack of vectors (containing IDs)
-    static vector<vector<int>> stmtLstsStack;    // StmtNums
+    static vector<vector<StmtNum>> stmtLstsStack;    // StmtNums
     static vector<set<ID>> usesStack;
     static vector<set<ID>> modifiesStack;
-    static vector<int> parentStack;
+    static vector<StmtNum> parentStack;
     // These stacks must always be handled together as a unit.
     static void saveCurrentState(); // push to all stacks
     // Wipes the local state variables for the given parent (container) statement
