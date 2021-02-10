@@ -5,6 +5,7 @@
 #include "SP/Token.h"
 #include "AST/Index.h"
 #include "SP/ParserUtils.h"
+#include "SP/CondExprUtils.h"
 #include "SP/ParserException.h"
 
 using namespace std;

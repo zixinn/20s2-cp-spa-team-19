@@ -89,3 +89,174 @@ TEST_CASE("CondExprUtils - ParseRelExpr Test") {
     }
 }
 
+TEST_CASE("CondExprUtils - checkSubExpr - pass Test") {
+
+    std::vector<std::vector<sp::Token*>> tests{
+        {
+            new sp::Token(sp::Token::TokenType::LPAREN, "("),
+            new sp::Token(sp::Token::TokenType::BOOL, "BOOL"),
+            new sp::Token(sp::Token::TokenType::RPAREN, ")"),
+        },
+        {
+            new sp::Token(sp::Token::TokenType::LPAREN, "("),
+            new sp::Token(sp::Token::TokenType::LPAREN, "("),
+            new sp::Token(sp::Token::TokenType::BOOL, "BOOL"),
+            new sp::Token(sp::Token::TokenType::RPAREN, ")"),
+            new sp::Token(sp::Token::TokenType::RPAREN, ")"),
+        },
+    };
+
+    for (int ii = 0; ii < tests.size(); ii++) {
+        auto input = tests[ii];
+
+        try {
+            auto result = CondExprUtils::CheckSubExpr(input);
+            REQUIRE(result);
+        }
+        catch (sp::UtilsException& ex) {
+            INFO(ex.what());
+            //INFO("UE: Test case: " + input);
+            INFO("UE: Test Num: " + std::to_string(ii));
+            REQUIRE(false);
+        }
+        catch (sp::ParserException& ex) {
+            INFO(ex.what());
+            //INFO("PE: Test case: " + input);
+            INFO("PE: Test Num: " + std::to_string(ii));
+            REQUIRE(false);
+        }
+    }
+}
+
+TEST_CASE("CondExprUtils - checkSubExpr - fail Test") {
+
+    std::vector<std::vector<sp::Token*>> tests{
+        {
+            new sp::Token(sp::Token::TokenType::LPAREN, "("),
+            new sp::Token(sp::Token::TokenType::LPAREN, "("),
+            new sp::Token(sp::Token::TokenType::BOOL, "BOOL"),
+            new sp::Token(sp::Token::TokenType::RPAREN, ")"),
+        },
+        {
+            new sp::Token(sp::Token::TokenType::LPAREN, "("),
+            new sp::Token(sp::Token::TokenType::BOOL, "BOOL"),
+            new sp::Token(sp::Token::TokenType::RPAREN, ")"),
+            new sp::Token(sp::Token::TokenType::RPAREN, ")"),
+        },
+        {
+            new sp::Token(sp::Token::TokenType::LPAREN, "("),
+            new sp::Token(sp::Token::TokenType::LPAREN, "("),
+            new sp::Token(sp::Token::TokenType::BOOL, "BOOL"),
+            new sp::Token(sp::Token::TokenType::RPAREN, ")"),
+            new sp::Token(sp::Token::TokenType::LPAREN, "("),
+            new sp::Token(sp::Token::TokenType::RPAREN, ")"),
+        },
+        {
+            new sp::Token(sp::Token::TokenType::LPAREN, "("),
+            new sp::Token(sp::Token::TokenType::BOOL, "BOOL"),
+            new sp::Token(sp::Token::TokenType::RPAREN, ")"),
+            new sp::Token(sp::Token::TokenType::LPAREN, "("),
+            new sp::Token(sp::Token::TokenType::BOOL, "BOOL"),
+            new sp::Token(sp::Token::TokenType::RPAREN, ")"),
+            new sp::Token(sp::Token::TokenType::LPAREN, "("),
+            new sp::Token(sp::Token::TokenType::BOOL, "BOOL"),
+            new sp::Token(sp::Token::TokenType::RPAREN, ")"),
+        },
+        {
+            new sp::Token(sp::Token::TokenType::LPAREN, "("),
+            new sp::Token(sp::Token::TokenType::LPAREN, "("),
+            new sp::Token(sp::Token::TokenType::BOOL, "BOOL"),
+            new sp::Token(sp::Token::TokenType::RPAREN, ")"),
+            new sp::Token(sp::Token::TokenType::LPAREN, "("),
+            new sp::Token(sp::Token::TokenType::BOOL, "BOOL"),
+            new sp::Token(sp::Token::TokenType::RPAREN, ")"),
+            new sp::Token(sp::Token::TokenType::LPAREN, "("),
+            new sp::Token(sp::Token::TokenType::BOOL, "BOOL"),
+            new sp::Token(sp::Token::TokenType::RPAREN, ")"),
+            new sp::Token(sp::Token::TokenType::RPAREN, ")"),
+        },
+    };
+
+    for (int ii = 0; ii < tests.size(); ii++) {
+        auto input = tests[ii];
+
+        try {
+            auto result = CondExprUtils::CheckSubExpr(input);
+            INFO("Expect Exception: Test Num: " + std::to_string(ii));
+            REQUIRE(false);
+        }
+        catch (sp::UtilsException& ex) {
+            INFO(ex.what());
+            REQUIRE(true);
+        }
+        catch (sp::ParserException& ex) {
+            INFO(ex.what());
+            INFO("PE: Test Num: " + std::to_string(ii));
+            REQUIRE(false);
+        }
+    }
+}
+
+TEST_CASE("CondExprUtils - checkLeft - pass Test") {
+
+    std::vector<std::tuple<std::vector<sp::Token*>, int, int>> tests{
+        {
+            {
+                new sp::Token(sp::Token::TokenType::LPAREN, "("),
+                new sp::Token(sp::Token::TokenType::BOOL, "BOOL"),
+                new sp::Token(sp::Token::TokenType::RPAREN, ")"),
+                new sp::Token(sp::Token::TokenType::AND, "&&"),
+            }, 2, 0 // ) left of && is in index 2, respective ( is at 0th
+        },
+        {
+            {
+                new sp::Token(sp::Token::TokenType::LPAREN, "("),
+                new sp::Token(sp::Token::TokenType::LPAREN, "("),
+                new sp::Token(sp::Token::TokenType::LPAREN, "("),
+                new sp::Token(sp::Token::TokenType::BOOL, "BOOL"),
+                new sp::Token(sp::Token::TokenType::RPAREN, ")"),
+                new sp::Token(sp::Token::TokenType::RPAREN, ")"),
+                new sp::Token(sp::Token::TokenType::RPAREN, ")"),
+                new sp::Token(sp::Token::TokenType::OR, "||"),
+            }, 6, 0
+        },
+        {
+            {
+                new sp::Token(sp::Token::TokenType::LPAREN, "("),
+                new sp::Token(sp::Token::TokenType::LPAREN, "("),
+                new sp::Token(sp::Token::TokenType::LPAREN, "("),
+                new sp::Token(sp::Token::TokenType::LPAREN, "("),
+                new sp::Token(sp::Token::TokenType::LPAREN, "("),
+                new sp::Token(sp::Token::TokenType::LPAREN, "("),
+                new sp::Token(sp::Token::TokenType::BOOL, "BOOL"),
+                new sp::Token(sp::Token::TokenType::RPAREN, ")"),
+                new sp::Token(sp::Token::TokenType::RPAREN, ")"),
+                new sp::Token(sp::Token::TokenType::RPAREN, ")"),
+                new sp::Token(sp::Token::TokenType::AND, "&&"),
+            }, 9, 3
+        },
+    };
+
+    for (int ii = 0; ii < tests.size(); ii++) {
+        auto input = std::get<0>(tests[ii]);
+        auto start = std::get<1>(tests[ii]);
+        auto expect = std::get<2>(tests[ii]);
+
+        try {
+            auto result = CondExprUtils::SeekParenLeftCheck(input, start);
+            REQUIRE(result == expect);
+        }
+        catch (sp::UtilsException& ex) {
+            INFO(ex.what());
+            //INFO("UE: Test case: " + input);
+            INFO("UE: Test Num: " + std::to_string(ii));
+            REQUIRE(false);
+        }
+        catch (sp::ParserException& ex) {
+            INFO(ex.what());
+            //INFO("PE: Test case: " + input);
+            INFO("PE: Test Num: " + std::to_string(ii));
+            REQUIRE(false);
+        }
+    }
+}

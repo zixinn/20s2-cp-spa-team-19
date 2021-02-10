@@ -341,6 +341,9 @@ ast::CondExpr* Parser::parseCondExpr(int precedence) {
 		throw this->genCondExprError("ParseCondExpr ceg: " + ceb->toString() + ", index: " + std::to_string(ceIndex));
 	}
 
+	// dummy method
+	CondExprUtils::ParseRelExpr(tokens, tokens, 3);
+
 	throw "NOT READY";
 	//auto cond_expr = this->parseCondExprInner(precedence);
 	////std::cout << this->currLiteral() << std::endl;
