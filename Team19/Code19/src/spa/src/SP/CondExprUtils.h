@@ -11,6 +11,7 @@ namespace CondExprUtils {
 	// helper functions
 	std::string VectorToString(std::vector<sp::Token*>& input);
 	void VectorSlice(std::vector<sp::Token*>& input, std::vector<sp::Token*>& output, int left, int right);
+	void VectorShallowCopy(std::vector<sp::Token*>& input, std::vector<sp::Token*>& output);
 
 	// l_paren++ for LParen, l_paren-- for RParen
 	// example start: x-1, start_lparen:  0, target_lparen:  1 := `( ...   left_start` for <
@@ -22,6 +23,7 @@ namespace CondExprUtils {
 	int CopyAndReplace(std::vector<sp::Token*>& input, std::vector<sp::Token*>& output, int left, int index, int right);
 	int CopyAndReplaceExcl(std::vector<sp::Token*>& input, std::vector<sp::Token*>& output, int left, int index, int right);
 	bool CheckSubExpr(std::vector<sp::Token*>& input);
+	bool CheckSubExprNoThrow(std::vector<sp::Token*>& input);
 
 	// for use in ParseRelExpr
 	void CheckExpr(std::vector<sp::Token*> input, std::string comp);
