@@ -403,13 +403,18 @@ namespace CondExprUtils {
 
 	// outermost logic
 	ast::CondExprBag ParseCondExpr(std::vector<sp::Token*>& input) {
-		// find all relexpr and deal with those
-		// then call ParseCondExprInner, which dispatches between NOT and &&
 
 		// assumes extreme L and extreme R must be same enclosign ( ... ) level
 		// deals with everything inside those brackets
 		throw "NOT READY";
 	}
+
+	void ParseCondExprInner(std::vector<sp::Token*>& input, std::vector<sp::Token*>& output) {
+		throw "NOT READY";
+		// find all relexpr and deal with those
+		// then call ParseCondExprInner, which dispatches between NOT and &&
+	}
+		
 
 	// index is the index of the && operator
 	void ParseAndOr(std::vector<sp::Token*>& input,std::vector<sp::Token*>& output, int index) {

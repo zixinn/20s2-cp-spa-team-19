@@ -33,6 +33,7 @@ namespace CondExprUtils {
 
 	// outermost logic
 	ast::CondExprBag ParseCondExpr(std::vector<sp::Token*>& input);
+	void ParseCondExprInner(std::vector<sp::Token*>& input, std::vector<sp::Token*>& output);
 
 	// called by ParseCondExpr, ParseNot, ParseAndOr
 	void CondExprDispatch(std::vector<sp::Token*>& input, std::vector<sp::Token*>& output);
