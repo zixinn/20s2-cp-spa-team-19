@@ -1,0 +1,44 @@
+name: CMake
+
+
+on:
+# Trigger the workflow on push or pull request,
+# but only for the main branch
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+env:
+  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  BUILD_TYPE: Debug
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ilammy/msvc-dev-cmd@v1
+      with:
+          arch: x86
+      
+    - name: Run CMake+Ninja
+      shell: cmd
+      working-directory: ${{ github.workspace }}/Team19/Code19
+      run: |
+        cmake -B build -G "Ninja" ^
+          -DCMAKE_BUILD_TYPE="Debug" ^
+          -DCMAKE_MAKE_PROGRAM="c:\program files (x86)\microsoft visual studio\2019\enterprise\common7\ide\commonextensions\microsoft\cmake\Ninja\ninja.exe" 
+      
+    - name: Build
+      working-directory: ${{ github.workspace }}/Team19/Code19
+      shell: cmd
+      run: cmake --build build
+        
+    - name: Run unit tests
+      working-directory: ${{ github.workspace }}/Team19/Code19/build/src/unit_testing
+      run: ./unit_testing.exe
+      
