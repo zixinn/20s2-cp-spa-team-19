@@ -389,6 +389,22 @@ TEST_CASE("CondExprUtils - CondExprDispatch - General - pass Test") {
     std::vector<std::pair<std::vector<sp::Token*>, std::string>> tests{
         {
             {
+                new sp::Token(sp::Token::TokenType::LPAREN, "("),
+                new sp::Token(sp::Token::TokenType::NOT, "!"),
+                new sp::Token(sp::Token::TokenType::LPAREN, "("),
+                new sp::Token(sp::Token::TokenType::LPAREN, "("),
+                new sp::Token(sp::Token::TokenType::BOOL, "BOOL"),
+                new sp::Token(sp::Token::TokenType::RPAREN, ")"),
+                new sp::Token(sp::Token::TokenType::AND, "&&"),
+                new sp::Token(sp::Token::TokenType::LPAREN, "("),
+                new sp::Token(sp::Token::TokenType::BOOL, "BOOL"),
+                new sp::Token(sp::Token::TokenType::RPAREN, ")"),
+                new sp::Token(sp::Token::TokenType::RPAREN, ")"),
+                new sp::Token(sp::Token::TokenType::RPAREN, ")"),
+            }, "( BOOL )"
+        },
+        {
+            {
                 new sp::Token(sp::Token::TokenType::NOT, "!"),
                 new sp::Token(sp::Token::TokenType::LPAREN, "("),
                 new sp::Token(sp::Token::TokenType::LPAREN, "("),
@@ -505,7 +521,7 @@ TEST_CASE("CondExprUtils - CondExprDispatch - General - pass Test") {
         try {
             CondExprUtils::CondExprDispatch(input, output);
             INFO("Test Num: " + std::to_string(ii));
-            REQUIRE(CondExprUtils::VectorToString(output) == "BOOL");
+            REQUIRE(CondExprUtils::VectorToString(output) == expect);
             REQUIRE(true);
             std::cout << std::endl;
         }
