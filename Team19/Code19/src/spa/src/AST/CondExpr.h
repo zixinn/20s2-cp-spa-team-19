@@ -10,6 +10,6 @@ namespace ast {
 	public:
 		CondExpr(sp::Token* token) :Node(token) {};
 		virtual std::string toString() = 0;
-		~CondExpr();
+		~CondExpr() {};
 	};
 }

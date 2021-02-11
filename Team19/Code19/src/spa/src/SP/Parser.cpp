@@ -272,16 +272,14 @@ ast::Expr* Parser::parseLParenPrefixExpr() {
 // for test case to catch `a == b) && (c < 5)` output is `a == b` but wont other parts of parser catch?
 ast::CondExpr* Parser::parseCondExpr(int precedence) {
 	//throw "NOT READY";
-	ast::CondExprBag* ceb = new ast::CondExprBag(new sp::Token(sp::Token::TokenType::LPAREN, "COND_EXPR_BAG"));
-	std::vector<sp::Token*> tokens{};
+	ast::CondExprBag* ceb = new ast::CondExprBag(new sp::Token(sp::Token::TokenType::BOOL, "COND_EXPR_BAG"));
 
 	// expect first part to always be (
 	// since if ( ... )
 	if (!this->currTokenIs(sp::Token::TokenType::LPAREN)) {
 		throw this->genError("ParseCondExpr expected LPAREN instead encountered: " + this->currLiteral());
 	}
-	//dont push this LParen, its for the if ( ... )
-	//tokens.push_back(this->currToken);
+	ceb->pushToken(this->currToken);
 	this->nextToken();
 
 	int l_parens = 1;
@@ -291,69 +289,23 @@ ast::CondExpr* Parser::parseCondExpr(int precedence) {
 		if (this->currTokenIs(sp::Token::TokenType::LPAREN)) { l_parens++; }
 		if (this->currTokenIs(sp::Token::TokenType::RPAREN)) { l_parens--; }
 		if (l_parens <= 0) { break; }	// dont add to bag
-		tokens.push_back(tok);
+		//tokens.push_back(tok);
 		ceb->pushToken(tok);
 		// nextToken
 		this->nextToken();
 	}
+	if (!this->currTokenIs(sp::Token::TokenType::RPAREN)) {
+		throw this->genError("ParseCondExpr expected RPAREN instead encountered: " + this->currLiteral());
+	}
+	ceb->pushToken(this->currToken);
+	std::vector<sp::Token*> tokens;
+	CondExprUtils::VectorShallowCopy(ceb->getTokens(), tokens);
 	std::cout << ceb->toString() << std::endl;
+	std::cout << "Parser::ParseCondExpr :: vector: " + CondExprUtils::VectorToString(tokens)  << std::endl;
 
-	//
-
-	// label_1
-	int ceIndex = -1;
-	for (int i = 0; i < tokens.size(); i++) {
-		auto tok = tokens[i];
-		if (ParserUtils::isCondExprOps(tok->getType())) {
-			ceIndex = i;
-			break;
-		}
-	}
-
-	// loop one by one, eg loop all of > until no more, then mix of && or ||
-	// if token is <, >, == etc is dispatch to relexpr
-	// if token is && or || dispatch to condExpr
-	// if token is !, dispatch to !
-
-	// relexpr needs to call Parser
-
-	std::cout << "STRING: " + std::to_string(ceIndex) << std::endl;
-	if (ceIndex == -1) {
-		// if -1, parseRelExpr left to right
-		// parseRelExpr should also check if its just ((BOOL))
-	}
-	else if (ceIndex > 0) {
-		// remove
-		// set l1 index
-		// set l2 index
-		// set r1 index
-		// set r2 index
-		// ensure l1,l2, r1,r2 are (), () respectively
-		// send [l1,l2] for checkCondExpr, note these are ( and )
-		// send [r1,r2] for checkCondExpr
-		// create new vector
-		// for 0 ... l1-1, push onto vector
-		// push BOOL dummy token onto vector
-		// for r2+1, ... push onto vector
-		// goto label_1
-	}
-	else {
-		throw this->genCondExprError("ParseCondExpr ceg: " + ceb->toString() + ", index: " + std::to_string(ceIndex));
-	}
-
-	// dummy method
-	CondExprUtils::ParseRelExpr(tokens, tokens, 3);
-
-	throw "NOT READY";
-	//auto cond_expr = this->parseCondExprInner(precedence);
-	////std::cout << this->currLiteral() << std::endl;
-	////std::cout << this->peekToken->getLiteral() << std::endl;
-	//this->nextToken(); // currToken is )
-	//auto peek_tok = this->peekToken;
-	//if (ParserUtils::isRelOps(peek_tok->getType()) || ParserUtils::isCondExprOps(peek_tok->getType())) {
-	//	throw this->genCondExprError("ParseCondExpr encountered unexpected: " + peek_tok->getLiteral());
-	//}
-	//return cond_expr;
+	// check if legal or throw exception
+	CondExprUtils::ParseCondExpr(tokens);
+	return ceb;
 }
 
 //ast::CondExpr* Parser::parseCondExprInner(int precedence) {

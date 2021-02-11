@@ -402,15 +402,20 @@ namespace CondExprUtils {
 	//}
 
 	// outermost logic
-	ast::CondExprBag ParseCondExpr(std::vector<sp::Token*>& input) {
+	// we cannot create an object in a function and return it
+	// so this thing only checks for errors, nothing else
+	void ParseCondExpr(std::vector<sp::Token*>& input) {
 
-		// assumes extreme L and extreme R must be same enclosign ( ... ) level
+		// MUST assumes extreme L and extreme R must be same enclosign ( ... ) level
 		// deals with everything inside those brackets
-		throw "NOT READY";
+		//throw "NOT READY";
+		std::vector<sp::Token*> cpy_in;
+		VectorShallowCopy(input, cpy_in);
+		std::vector<sp::Token*> tmp_out;
+		ParseCondExprInner(cpy_in, tmp_out);
 	}
 
 	void ParseCondExprInner(std::vector<sp::Token*>& input, std::vector<sp::Token*>& output) {
-		//throw "NOT READY";
 		// find all relexpr and deal with those
 		// then call ParseCondExprInner, which dispatches between NOT and &&
 		std::vector<sp::Token*> tmp_out;
