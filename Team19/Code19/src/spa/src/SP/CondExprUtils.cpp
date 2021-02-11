@@ -410,9 +410,12 @@ namespace CondExprUtils {
 	}
 
 	void ParseCondExprInner(std::vector<sp::Token*>& input, std::vector<sp::Token*>& output) {
-		throw "NOT READY";
+		//throw "NOT READY";
 		// find all relexpr and deal with those
 		// then call ParseCondExprInner, which dispatches between NOT and &&
+		std::vector<sp::Token*> tmp_out;
+		RelExprDispatch(input, tmp_out);
+		CondExprDispatch(tmp_out, output);
 	}
 
 	void RelExprDispatch(std::vector<sp::Token*>& input, std::vector<sp::Token*>& output) {

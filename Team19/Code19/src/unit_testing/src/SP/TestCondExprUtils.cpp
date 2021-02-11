@@ -600,7 +600,7 @@ TEST_CASE("CondExprUtils - CondExprDispatch - General - pass Test") {
     }
 }
 
-TEST_CASE("CondExprUtils - ALL Test") {
+TEST_CASE("CondExprUtils - Inner ALL Test") {
     // WE STILL NEED TO FIX THE ParseCondExprInner method BEFORE WE USE THIS TEST
 
     std::vector<std::pair<std::string, std::string>> tests{
@@ -610,19 +610,23 @@ TEST_CASE("CondExprUtils - ALL Test") {
         },
         {
             "(flag >= b) && (3 + f < 4)",
-            "( BOOL )",
+            "BOOL",
         },
         {
             "!((flag >= b) && (3 + f < 4))",
-            "( BOOL )",
+            "BOOL",
         },
         {
             "(flag >= b) && (!(3 + f < 4))",
+            "BOOL",
+        },
+        {
+            "((flag >= b) && (!(3 + f < 4)))",
             "( BOOL )",
         },
         {
-            "(test + 3) || (flag >= (((b) + 3) * 4))",
-            "( BOOL )",
+            "((test + 3) > (a) ) || (flag >= (((b) + 3) * 4))",
+            "BOOL",
         },
         {
             "((flag) + 5 * 3 >= (((b) + 3) * 4))",
@@ -646,12 +650,76 @@ TEST_CASE("CondExprUtils - ALL Test") {
         try {
             CondExprUtils::ParseCondExprInner(tok_ptrs, out_ptrs);
             auto result = CondExprUtils::VectorToString(out_ptrs);
+            INFO("Test Num: " + std::to_string(ii));
             REQUIRE(result == expected);
         }
         catch (sp::UtilsException& ex) {
             INFO(ex.what());
             INFO("UE: Test case: " + input);
             REQUIRE(false);
+        }
+        catch (sp::ParserException& ex) {
+            INFO(ex.what());
+            INFO("PE: Test case: " + input);
+            REQUIRE(false);
+        }
+    }
+}
+
+TEST_CASE("CondExprUtils - Inner Fail Test") {
+    // WE STILL NEED TO FIX THE ParseCondExprInner method BEFORE WE USE THIS TEST
+
+    std::vector<std::pair<std::string, std::string>> tests{
+        {
+            "(flag && b)",
+            "( BOOL )",
+        },
+        {
+            "!(flag >= b) && (3 + f < 4)",
+            "BOOL",
+        },
+        {   // RHS || expects (
+            "(flag >= b) || !(3 + f < 4)",
+            "BOOL",
+        },
+        {     // test + 3 is not BOOl, need rel
+            "(test + 3) || (flag >= (((b) + 3) * 4))",
+            "BOOL",
+        },
+        {     // RHS of || is Expr not BOOL
+            "((test + 3) > (a) ) || ((((b) + 3) * 4))",
+            "BOOL",
+        },
+        {   // this should be ((a == b) || (c == d)) && (d == e)
+            "(a == b) || (c ==d) && (d == e)",
+            "BOOL",
+        },
+    };
+
+    for (int ii = 0; ii < tests.size(); ii++) {
+        std::string input = std::get<0>(tests[ii]);
+        std::string expected = std::get<1>(tests[ii]);
+
+
+        //  generate token* vector from string
+        std::vector<sp::Token> actual_tok;
+        std::vector<sp::Token*> tok_ptrs;
+        ParserUtils::StringToTokenPtrs(input, actual_tok, tok_ptrs);
+        if (tok_ptrs.back()->getType() == sp::Token::TokenType::EOFF) { tok_ptrs.pop_back(); }
+        //
+
+        std::vector<sp::Token*> out_ptrs;
+        try {
+            CondExprUtils::ParseCondExprInner(tok_ptrs, out_ptrs);
+            auto result = CondExprUtils::VectorToString(out_ptrs);
+            INFO("Test Num: " + std::to_string(ii));
+            //REQUIRE(result == expected);
+            REQUIRE(false);
+        }
+        catch (sp::UtilsException& ex) {
+            INFO(ex.what());
+            INFO("UE: Test case: " + input);
+            REQUIRE(true);
         }
         catch (sp::ParserException& ex) {
             INFO(ex.what());
