@@ -46,6 +46,10 @@ public:
 	ast::WhileStmt* parseWhileStmt();
 	ast::IfStmt* parseIfStmt();
 
+	//parse the whole thing including calls to DE
+	//Return true if no error encountered, else false
+	bool parse();
+
 	inline sp::Token* getCurrToken() { return currToken; };
 	static bool isKeyword(sp::Token* tok);
 
@@ -82,4 +86,8 @@ private:
 
 	int peekPrecedence();
 	int currPrecedence();
+
+	//calls to DE
+	void addStmtLstToDE(vector<ast::Stmt*> stmts);
+
 };

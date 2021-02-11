@@ -12,6 +12,7 @@ namespace ast {
 		WhileStmt(int stmtNum, sp::Token* token, CondExpr* cond_expr, StmtLst* stmt_lst)
 			:Stmt(token, stmtNum), cond_expr{ cond_expr }, stmt_lst{ stmt_lst } {}
 		CondExpr* getCondExpr() { return cond_expr; }
+		StmtLst* getStmtLst() { return stmt_lst; }
 
 		std::string toString() override {
 			std::string cond_str = cond_expr ? cond_expr->toString() : "[NULL_PTR]";
