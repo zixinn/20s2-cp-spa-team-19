@@ -300,8 +300,8 @@ ast::CondExpr* Parser::parseCondExpr(int precedence) {
 	ceb->pushToken(this->currToken);
 	std::vector<sp::Token*> tokens;
 	CondExprUtils::VectorShallowCopy(ceb->getTokens(), tokens);
-	std::cout << ceb->toString() << std::endl;
-	std::cout << "Parser::ParseCondExpr :: vector: " + CondExprUtils::VectorToString(tokens)  << std::endl;
+	//std::cout << ceb->toString() << std::endl;
+	//std::cout << "Parser::ParseCondExpr :: vector: " + CondExprUtils::VectorToString(tokens)  << std::endl;
 
 	// check if legal or throw exception
 	try {

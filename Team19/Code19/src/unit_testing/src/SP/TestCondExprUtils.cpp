@@ -628,7 +628,6 @@ TEST_CASE("CondExprUtils - CondExprDispatch - General - pass Test") {
             INFO("Test Num: " + std::to_string(ii));
             REQUIRE(CondExprUtils::VectorToString(output) == expect);
             REQUIRE(true);
-            std::cout << std::endl;
         }
         catch (sp::UtilsException& ex) {
             INFO(ex.what());

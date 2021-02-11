@@ -166,7 +166,7 @@ namespace CondExprUtils {
 
 		// seek ( ... ) &&
 		int left_end = SeekParenLeft(input, left_start-1,-1,0);
-		std::cout << "KEFTL :: " + std::to_string(left_end) << std::endl;
+		//std::cout << "KEFTL :: " + std::to_string(left_end) << std::endl;
 		std::vector<sp::Token*> tmp;
 		VectorSlice(input, tmp, left_end, left_start);
 
@@ -202,7 +202,7 @@ namespace CondExprUtils {
 		// CondExprDispatch must return the outermost ( ... )
 		std::vector<sp::Token*> new_right;
 		CondExprDispatch(tmp_right, new_right);
-		std::cout << "SeekParenRight:: tmp_right: " + VectorToString(tmp_right) + ", new_right: " + VectorToString(new_right) << std::endl;
+		//std::cout << "SeekParenRight:: tmp_right: " + VectorToString(tmp_right) + ", new_right: " + VectorToString(new_right) << std::endl;
 
 		// now new_right has been fully processed, should not have any ! or &&
 		CheckSubExpr(new_right);
@@ -232,7 +232,7 @@ namespace CondExprUtils {
 	// consumes L and R inclusive a,b,c,d,(,e,f,g,h,),i,j,k,l -> a,b,c,d,BOOL,i,j,k,l
 	int CopyAndReplace(std::vector<sp::Token*>& input, std::vector<sp::Token*>& output, int left, int index, int right) {
 		// copy over into return vector
-		std::cout << "CAR BEFORE:: Input: " + VectorToString(input) + ", Output: " + VectorToString(output) + ", left: " + to_string(left) + ", index: " + to_string(index) + ", right: " + to_string(right) << endl;
+		//std::cout << "CAR BEFORE:: Input: " + VectorToString(input) + ", Output: " + VectorToString(output) + ", left: " + to_string(left) + ", index: " + to_string(index) + ", right: " + to_string(right) << endl;
 		for (int i = 0; i < input.size(); i++) {
 			// this copis brackets too
 			if (i < left || right < i) {
@@ -243,7 +243,7 @@ namespace CondExprUtils {
 				output.push_back(new sp::Token(sp::Token::TokenType::BOOL, "BOOL"));
 			}
 		}
-		std::cout << "CAR AFTER:: Input: " + VectorToString(input) + ", Output: " + VectorToString(output) + ", left: " + to_string(left) + ", index: " + to_string(index) + ", right: " + to_string(right) << endl;
+		//std::cout << "CAR AFTER:: Input: " + VectorToString(input) + ", Output: " + VectorToString(output) + ", left: " + to_string(left) + ", index: " + to_string(index) + ", right: " + to_string(right) << endl;
 		return -1; // idk
 	}
 
@@ -285,13 +285,6 @@ namespace CondExprUtils {
 		// example lparen: start:  0, target:  1 := `( ...   left_start` for <
 		// go left until find (, l_lparen == 1 when we have an extra (
 		left = SeekParenLeft(input, left, 0, 1);
-		//int l_lparen = 0;
-		//while (left > 0) {
-		//	if (input[left]->getType() == sp::Token::TokenType::RPAREN) { l_lparen--; }
-		//	if (input[left]->getType() == sp::Token::TokenType::LPAREN) { l_lparen++; }
-		//	if (l_lparen == 1) { break; }
-		//	left--;
-		//}
 		//std::cout << "LEFT: " + std::to_string(left) << std::endl;
 		//std::cout << "l_lparen: " + std::to_string(l_lparen) << std::endl;
 
@@ -302,14 +295,6 @@ namespace CondExprUtils {
 
 		// example lparen: start:  0, target: -1 := `right   ... )` for <
 		right = SeekParenRight(input, right, 0, -1);
-		//int r_lparen = 0;
-		//while (right < input.size()) {
-		//	if (input[right]->getType() == sp::Token::TokenType::RPAREN) { r_lparen--; }
-		//	if (input[right]->getType() == sp::Token::TokenType::LPAREN) { r_lparen++; }
-		//	if (r_lparen == -1) { break; }
-		//	right++;
-		//}
-		std::cout << "RIGHT: " + std::to_string(right) << std::endl;
 
 		// if not RPAREN, may have reached end of list
 		if (input[right]->getType() != sp::Token::TokenType::RPAREN) {
@@ -324,24 +309,14 @@ namespace CondExprUtils {
 		// RHS expr check, right-1 to not inclide )
 		std::vector<sp::Token*> tmp_vec_rhs;
 		VectorSlice(input, tmp_vec_rhs, index+1, right-1);
-		std::cout << "XXXXX Check RHS vector: " + VectorToString(tmp_vec_rhs) << std::endl;
+		//std::cout << "XXXXX Check RHS vector: " + VectorToString(tmp_vec_rhs) << std::endl;
 		CheckExpr(tmp_vec_rhs, "ParseRelExpr (RHS)");
 
 		// copy over into return vector
 		// DO NOT consume the ( and ), relExpr is valid without them, its for the others to consume
 		CopyAndReplaceExcl(input, output, left, index, right);
-		//for (int i = 0; i < input.size(); i++) {
-		//	// this copis brackets too
-		//	if (i <= left || right <= i) {
-		//		output.push_back(input[i]);
-		//	}
-		//	if (i == index) {
-		//		//output.push_back(new sp::Token(sp::Token::TokenType::BOOL, "CondExprUtils.h"));
-		//		output.push_back(new sp::Token(sp::Token::TokenType::BOOL, "BOOL"));
-		//	}
-		//}
 
-		std::cout << "CHECKEXPR: " + std::to_string(3) << std::endl;
+		//std::cout << "CHECKEXPR: " + std::to_string(3) << std::endl;
 	}
 
 	void CondExprDispatch(std::vector<sp::Token*>& input, std::vector<sp::Token*>& output) {
@@ -353,7 +328,7 @@ namespace CondExprUtils {
 		while (tmp_in.size() != tmp_out.size()) {
 			bool isClean = true;
 			tmp_out.clear();
-			cout << "DISPATCH:: tmp_in: " + VectorToString(tmp_in) + ", ii: " + to_string(ii) << endl;
+			//cout << "DISPATCH:: tmp_in: " + VectorToString(tmp_in) + ", ii: " + to_string(ii) << endl;
 			for (int i = 0; i < tmp_in.size(); i++) {
 				auto tok = tmp_in[i];
 				if (ParserUtils::isCondExprOps(tok->getType())) {
@@ -366,14 +341,14 @@ namespace CondExprUtils {
 					break;	// out of for, still in while
 				}
 			}
-			cout << "DISPATCH Exit FOR" << endl;
+			//cout << "DISPATCH Exit FOR" << endl;
 			if (isClean) { 
 				// untouched, so tmp_out would be empty and we should copy it over
 				VectorShallowCopy(tmp_in, tmp_out);
 				break; 
 			}
 			if (CheckSubExprNoThrow(tmp_out)) { break; }
-			cout << "DISPATCH RESET BEGIN" << endl;
+			//cout << "DISPATCH RESET BEGIN" << endl;
 			// reset
 			tmp_in.clear();
 			VectorShallowCopy(tmp_out, tmp_in);
@@ -382,34 +357,6 @@ namespace CondExprUtils {
 		}
 		VectorShallowCopy(tmp_out, output);
 	}
-
-	//void CondExprDispatch(std::vector<sp::Token*>& input, std::vector<sp::Token*>& output) {
-	//	int ceIndex = -1;
-	//	bool isDirty = false;
-	//	for (int i = 0; i < input.size(); i++) {
-	//		auto tok = input[i];
-	//		if (ParserUtils::isCondExprOps(tok->getType())) {
-	//			ceIndex = i;
-	//			std::cout << "DISPATCH ANDOR (before):: ceIndex: " + std::to_string(ceIndex) + ", vector: " + VectorToString(input) + ", output: " + VectorToString(output) << std::endl;
-	//			ParseAndOr(input, output, ceIndex);
-	//			std::cout << "DISPATCH ANDOR (after):: ceIndex: " + std::to_string(ceIndex) + ", vector: " + VectorToString(input) + ", output: " + VectorToString(output) << std::endl;
-	//			return;
-	//			isDirty = true;
-	//		} else if (tok->getType() == sp::Token::TokenType::NOT) {
-	//			ceIndex = i;
-	//			std::cout << "DISPATCH NOT (before) :: ceIndex: " + std::to_string(ceIndex) + ", vector: " + VectorToString(input) + ", output: " + VectorToString(output) << std::endl;
-	//			ParseNot(input, output, ceIndex);
-	//			std::cout << "DISPATCH NOT (after) :: ceIndex: " + std::to_string(ceIndex) + ", vector: " + VectorToString(input) + ", output: " + VectorToString(output) << std::endl;
-	//			return;
-	//			isDirty = true;
-	//		}
-	//	}
-	//	//std::cout << "HERE: " << std::endl;
-	//	// cannot find any arguments, expect (BOOL), so just copy it out, let caller check
-	//	if (!isDirty) {
-	//		VectorShallowCopy(input, output);
-	//	}
-	//}
 
 	// outermost logic
 	// we cannot create an object in a function and return it
@@ -430,7 +377,7 @@ namespace CondExprUtils {
 		// then call ParseCondExprInner, which dispatches between NOT and &&
 		std::vector<sp::Token*> tmp_out;
 		RelExprDispatch(input, tmp_out);
-		cout << "INNER (RelExpr) :: tmp_out: " + VectorToString(tmp_out) << endl;
+		//cout << "INNER (RelExpr) :: tmp_out: " + VectorToString(tmp_out) << endl;
 		CondExprDispatch(tmp_out, output);
 		CheckSubExpr(output);
 	}
@@ -444,7 +391,7 @@ namespace CondExprUtils {
 		while (tmp_in.size() != tmp_out.size()) {
 			bool isClean = true;
 			tmp_out.clear();
-			cout << "RELEXPR DISPATCH:: tmp_in: " + VectorToString(tmp_in) + ", ii: " + to_string(ii) << endl;
+			//cout << "RELEXPR DISPATCH:: tmp_in: " + VectorToString(tmp_in) + ", ii: " + to_string(ii) << endl;
 			for (int i = 0; i < tmp_in.size(); i++) {
 				auto tok = tmp_in[i];
 				if (ParserUtils::isRelOps(tok->getType())) {
@@ -453,7 +400,7 @@ namespace CondExprUtils {
 					break;	// out of for, still in while
 				}
 			}
-			cout << "RELEXPR DISPATCH Exit FOR" << endl;
+			//cout << "RELEXPR DISPATCH Exit FOR" << endl;
 			if (isClean) { 
 				// untouched, so tmp_out would be empty and we should copy it over
 				VectorShallowCopy(tmp_in, tmp_out);
@@ -461,7 +408,7 @@ namespace CondExprUtils {
 			}
 			// not needed since may have && or || or !
 			//if (CheckSubExprNoThrow(tmp_out)) { break; }
-			cout << "RELEXPR DISPATCH RESET BEGIN" << endl;
+			//cout << "RELEXPR DISPATCH RESET BEGIN" << endl;
 			// reset
 			tmp_in.clear();
 			VectorShallowCopy(tmp_out, tmp_in);
@@ -476,7 +423,7 @@ namespace CondExprUtils {
 	void ParseAndOr(std::vector<sp::Token*>& input,std::vector<sp::Token*>& output, int index) {
 		int left_rparen = index - 1;
 		int right_lparen = index + 1;
-		std::cout << "ParseAndOr: " + std::to_string(right_lparen) + ", Vector: " + VectorToString(input) + ", Output: " + VectorToString(output) << std::endl;
+		//std::cout << "ParseAndOr: " + std::to_string(right_lparen) + ", Vector: " + VectorToString(input) + ", Output: " + VectorToString(output) << std::endl;
 
 		// Index has to be && of ||
 		if (!ParserUtils::isCondExprOps(input[index]->getType())) {
@@ -489,7 +436,7 @@ namespace CondExprUtils {
 			throw sp::UtilsException("ParseAndOr (LHS) expected RPAREN instead encountered: " + input[left_rparen]->getLiteral());
 		}
 		int left_lparen = SeekParenLeftCheck(input, left_rparen);
-		std::cout << "ParseAndOr :: left_lparen: " + std::to_string(left_lparen) + ", vector: " + VectorToString(input) << std::endl;
+		//std::cout << "ParseAndOr :: left_lparen: " + std::to_string(left_lparen) + ", vector: " + VectorToString(input) << std::endl;
 
 		// immediate Right of && has to be first LParen
 		//       && ( ...
@@ -519,11 +466,11 @@ namespace CondExprUtils {
 		if (input[right_lparen]->getType() != sp::Token::TokenType::LPAREN) {
 			throw sp::UtilsException("ParseNot (RHS) expected LPAREN instead encountered: " + input[right_lparen]->getLiteral());
 		}
-		std::cout << "ParseNot: " + std::to_string(right_lparen) + ", Vector: " + VectorToString(input) + ", Output: " + VectorToString(output) << std::endl;
+		//std::cout << "ParseNot: " + std::to_string(right_lparen) + ", Vector: " + VectorToString(input) + ", Output: " + VectorToString(output) << std::endl;
 
 		std::vector<sp::Token*> tmp_right;
 		int right_rparen = SeekParenRightCheck(input, tmp_right, right_lparen);
-		std::cout << "ParseNot: tmp_right :: " + VectorToString(tmp_right) << std::endl;
+		//std::cout << "ParseNot: tmp_right :: " + VectorToString(tmp_right) << std::endl;
 
 		// !( ... ) replace with
 		// BOOL
