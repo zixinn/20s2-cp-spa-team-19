@@ -254,6 +254,15 @@ namespace CondExprUtils {
 
 	// for use in ParseRelExpr
 	void CheckExpr(std::vector<sp::Token*> input, std::string comp) {
+
+		// ensure no foreign tokens in expr
+		for (sp::Token* tok : input) {
+			if (!ParserUtils::isInExpr(tok->getType())) {
+				throw sp::UtilsException("CheckExpr :: " + comp + " :: Invalid Symbol in Expr: " + tok->getLiteral());
+			}
+		}
+
+
 		// begin ritual
         auto l = new LexerStub(input);
         auto p = Parser(l);
@@ -315,6 +324,7 @@ namespace CondExprUtils {
 		// RHS expr check, right-1 to not inclide )
 		std::vector<sp::Token*> tmp_vec_rhs;
 		VectorSlice(input, tmp_vec_rhs, index+1, right-1);
+		std::cout << "XXXXX Check RHS vector: " + VectorToString(tmp_vec_rhs) << std::endl;
 		CheckExpr(tmp_vec_rhs, "ParseRelExpr (RHS)");
 
 		// copy over into return vector
@@ -420,7 +430,9 @@ namespace CondExprUtils {
 		// then call ParseCondExprInner, which dispatches between NOT and &&
 		std::vector<sp::Token*> tmp_out;
 		RelExprDispatch(input, tmp_out);
+		cout << "INNER (RelExpr) :: tmp_out: " + VectorToString(tmp_out) << endl;
 		CondExprDispatch(tmp_out, output);
+		CheckSubExpr(output);
 	}
 
 	void RelExprDispatch(std::vector<sp::Token*>& input, std::vector<sp::Token*>& output) {

@@ -7,6 +7,7 @@
 #include "AST/CondExpr.h"
 #include "AST/VarName.h"
 #include "AST/ConstVal.h"
+#include "SP/ParserUtils.h"
 
 // Interface CondExpr for booleans
 namespace ast {
@@ -14,8 +15,6 @@ namespace ast {
 	{
 		std::unordered_set<std::string> var_names;
 		std::unordered_set<std::string> const_vals;
-		//std::vector<std::string> vns;
-		//std::vector<std::string> cvs;
 		std::vector<sp::Token*> tokens;
 	public:
 		CondExprBag(sp::Token* token) :CondExpr(token) {};
@@ -48,7 +47,7 @@ namespace ast {
 		inline void pushVarName(std::string vn) { this->var_names.insert(vn);  }
 		inline void pushConstVal(std::string cv) { this->const_vals.insert(cv);  }
 		inline void pushToken(sp::Token* tok) { 
-			if (tok->getType() == sp::Token::TokenType::NAME) {
+			if (tok->getType() == sp::Token::TokenType::NAME || ParserUtils::isKeyword(tok->getType())) {
 				auto vn = tok->getLiteral();
 				pushVarName(vn);
 			}

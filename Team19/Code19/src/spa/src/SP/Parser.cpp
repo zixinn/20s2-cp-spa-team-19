@@ -304,7 +304,12 @@ ast::CondExpr* Parser::parseCondExpr(int precedence) {
 	std::cout << "Parser::ParseCondExpr :: vector: " + CondExprUtils::VectorToString(tokens)  << std::endl;
 
 	// check if legal or throw exception
-	CondExprUtils::ParseCondExpr(tokens);
+	try {
+		CondExprUtils::ParseCondExpr(tokens);
+	}
+	catch (sp::UtilsException& ex) {
+		throw this->genCondExprError(ex.what());
+	}
 	return ceb;
 }
 

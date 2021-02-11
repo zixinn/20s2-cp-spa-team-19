@@ -141,43 +141,44 @@ TEST_CASE("Parse Prog - Proc - Keyword Test") {
 
 }
 
-//TEST_CASE("ParseLexer Proc - Test 1, Test") {
-//    std::string input = "procedure star{ x = 1 + 2 * 3; while (a > b) { x = 2; } print p; read s; } ;";
-//    std::vector<std::pair<int, std::string>> tts{
-//        {1, "x = (1 + (2 * 3));"},
-//        {2, "while (a > b) {\n    x = 2;\n}\n"},
-//        {4, "print p;"},
-//        {5, "read s;"},
-//    };
-//
-//    /** begin ritual to Summon Parser **/
-//    std::vector<sp::Token> actual_tok;
-//    std::vector<sp::Token*> tok_ptrs;
-//    ParserUtils::StringToTokenPtrs(input, actual_tok, tok_ptrs);
-//    auto l = new LexerStub(tok_ptrs);
-//    auto p = Parser(l);
-//    /** Parser now ready for use      **/
-//
-//    try {
-//        ast::Proc* proc = p.parseProc();
-//        ast::StmtLst* stmt_lst = proc->getStmtLst();
-//        auto stmts = stmt_lst->getStatements();
-//        for (int i = 0; i < stmts.size(); ++i) {
-//            auto tt = tts[i];
-//            int expect_index = std::get<0>(tt);
-//            std::string expect_str = std::get<1>(tt);
-//            std::cout << std::to_string(stmts[i]->getIndex()) << " - " << stmts[i]->toString() << std::endl;
-//            INFO("TestCase: " + expect_str + ", got: " + stmts[i]->toString());
-//            REQUIRE(expect_str == stmts[i]->toString());
-//            REQUIRE(expect_index == stmts[i]->getIndex());
-//            //REQUIRE(false);
-//        }
-//    }
-//    catch (sp::ParserException &ex) {
-//        INFO(ex.what());
-//        //INFO("TestCase: " + input + ", Exception Thrown");
-//        REQUIRE(false);
-//    }
-//    
-//}
-//
+TEST_CASE("ParseLexer Proc - Test 1, Test") {
+    std::string input = "procedure star{ x = 1 + 2 * 3; while (a > b) { x = 2; } print p; read s; } ;";
+    std::vector<std::pair<int, std::string>> tts{
+        {1, "x = (1 + (2 * 3));"},
+        // note: CondExprBag just prints its tokens, which includes outermost ( ) from while
+        {2, "while (( a > b )) {\n    x = 2;\n}\n"},
+        {4, "print p;"},
+        {5, "read s;"},
+    };
+
+    /** begin ritual to Summon Parser **/
+    std::vector<sp::Token> actual_tok;
+    std::vector<sp::Token*> tok_ptrs;
+    ParserUtils::StringToTokenPtrs(input, actual_tok, tok_ptrs);
+    auto l = new LexerStub(tok_ptrs);
+    auto p = Parser(l);
+    /** Parser now ready for use      **/
+
+    try {
+        ast::Proc* proc = p.parseProc();
+        ast::StmtLst* stmt_lst = proc->getStmtLst();
+        auto stmts = stmt_lst->getStatements();
+        for (int i = 0; i < stmts.size(); ++i) {
+            auto tt = tts[i];
+            int expect_index = std::get<0>(tt);
+            std::string expect_str = std::get<1>(tt);
+            std::cout << std::to_string(stmts[i]->getIndex()) << " - " << stmts[i]->toString() << std::endl;
+            INFO("TestCase: " + expect_str + ", got: " + stmts[i]->toString());
+            REQUIRE(expect_str == stmts[i]->toString());
+            REQUIRE(expect_index == stmts[i]->getIndex());
+            //REQUIRE(false);
+        }
+    }
+    catch (sp::ParserException &ex) {
+        INFO(ex.what());
+        //INFO("TestCase: " + input + ", Exception Thrown");
+        REQUIRE(false);
+    }
+    
+}
+
