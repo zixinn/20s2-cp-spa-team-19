@@ -157,37 +157,4 @@ TEST_CASE("ParseLexer2 Expr - Keywords Test") {
 
 
 // no this doesnt work, parseExpr doesnt check entire string it seems
-//TEST_CASE("ParseLexer2 Expr - Exception Test") {
-//
-//    //std::string input = "if = v + x * y + z * t;";    // if not implemented yet
-//    std::vector<std::pair<std::string, std::string>> tests{
-//        {
-//            "1 && print;",
-//            "1 && print",
-//        },
-//    };
-//
-//    for (int i = 0; i < tests.size(); ++i) {
-//        std::string input = std::get<0>(tests[i]);
-//        std::string expected = std::get<1>(tests[i]);
-//
-//        // begin ritual to Summon Parser
-//        std::vector<sp::Token> actual_tok;
-//        std::vector<sp::Token*> tok_ptrs;
-//        ParserUtils::StringToTokenPtrs(input, actual_tok, tok_ptrs);
-//        auto l = new LexerStub(tok_ptrs);
-//        auto p = Parser(l);
-//        // Parser now ready for use
-//
-//        try {
-//            ast::Expr* ce = p.parseExpr(ParserUtils::ExprPrecedence::LOWEST);
-//            REQUIRE(ce->toString() == expected);
-//            REQUIRE(false);
-//        }
-//        catch (sp::ParseExprException& ex) {
-//            REQUIRE(true);
-//        }
-//    }
-//}
-
-
+// NOTE: "1 && print;" input for p.parseExpr() will not cause any errors, will return "1"
