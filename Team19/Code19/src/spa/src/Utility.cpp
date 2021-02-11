@@ -81,38 +81,3 @@ bool checkExpressionWithUnderscores(string s) {
     }
     return checkExpression(trim(s.substr(1, s.length() - 2)));
 }
-
-/* Pseudo code for comparing AST as SP hasn't finalise AST structure
-// Compares two ASTs, returns true if AST1 == AST2
-// This is a helper function for compareAst
-bool areIdentical(AST* root1, AST*, root2) {
-    // base cases
-    if (root1 == NULL && root2 == NULL)
-        return true;
-
-    if (root1 == NULL || root2 == NULL)
-        return false;
-
-    // Check if the data of both roots is same and data of left and right
-    // subtrees are also same
-    return (root1->data == root2->data &&
-        areIdentical(root1->left, root2->left) &&
-        areIdentical(root1->right, root2->right));
-}
-
-// Compares two ASTs, returns true if AST2 is a subexpression of AST1
-bool isSubtree(AST* root1, AST* root2) {
-    // base cases
-    if (root1 == NULL || root2 == NULL)
-        return true;
-
-    // Check the tree with root as current node
-    if (areIdentical(root1, root2))
-        return true;
-
-    // If the tree with root as current node doesn't match then try left
-    // and right subtrees one by one
-    return isSubtree(root1->left, root2) ||
-        isSubtree(root1->right, root2);
-}
-*/
