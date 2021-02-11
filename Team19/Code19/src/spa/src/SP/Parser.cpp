@@ -352,7 +352,7 @@ ast::CondExpr* Parser::parseCondExpr(int precedence) {
 	// expect first part to always be (
 	// since if ( ... )
 	if (!this->currTokenIs(sp::Token::TokenType::LPAREN)) {
-		throw this->genError("ParseCondExpr expected LPAREN instead encountered: " + this->currLiteral());
+		throw this->genCondExprError("ParseCondExpr expected LPAREN instead encountered: " + this->currLiteral());
 	}
 	ceb->pushToken(this->currToken);
 	this->nextToken();

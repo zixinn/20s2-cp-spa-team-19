@@ -214,21 +214,22 @@ TEST_CASE("ParseLexer CondExpr - Keywords Test") {
     }
 }
 
+// These were originally from parseLexer While
 TEST_CASE("ParseLexer CondExpr - Exceptions Test") {
 
     //std::string input = "if = v + x * y + z * t;";    // if not implemented yet
     std::vector<std::string> tests{
             "(a == b) && c < 5",
-            "(!(a + 1 > c % 2) || (a != b)",
-            // need parenthesis around !, for the ||
-            "!(a + 1 > c % 2) || (a != b)",
+            "1 == b;",
+            "!1 == b",
+            "a == b && c < 5",
+            "((a)) == b && c < 5",
+            "a == b && (c < 5)",
             // the following will cause an exception in parseIF or parseWHILE
             //"a == b) && (c < 5)",
-            "a == b && (c < 5)",
-            "((a)) == b && c < 5",
-            "a == b && c < 5",
-            "!1 == b",
-            "1 == b;",
+            // need parenthesis around !, for the ||
+            "!(a + 1 > c % 2) || (a != b)",
+            "(!(a + 1 > c % 2) || (a != b)",
     };
 
     for (int i = 0; i < tests.size(); ++i) {
