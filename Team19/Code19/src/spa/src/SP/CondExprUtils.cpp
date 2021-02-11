@@ -414,6 +414,42 @@ namespace CondExprUtils {
 		// find all relexpr and deal with those
 		// then call ParseCondExprInner, which dispatches between NOT and &&
 	}
+
+	void RelExprDispatch(std::vector<sp::Token*>& input, std::vector<sp::Token*>& output) {
+		std::vector<sp::Token*> tmp_in;
+		std::vector<sp::Token*> tmp_out;
+		VectorShallowCopy(input, tmp_in);
+		int ii = 0;
+
+		while (tmp_in.size() != tmp_out.size()) {
+			bool isClean = true;
+			tmp_out.clear();
+			cout << "RELEXPR DISPATCH:: tmp_in: " + VectorToString(tmp_in) + ", ii: " + to_string(ii) << endl;
+			for (int i = 0; i < tmp_in.size(); i++) {
+				auto tok = tmp_in[i];
+				if (ParserUtils::isRelOps(tok->getType())) {
+					ParseRelExpr(tmp_in, tmp_out, i);
+					isClean = false;
+					break;	// out of for, still in while
+				}
+			}
+			cout << "RELEXPR DISPATCH Exit FOR" << endl;
+			if (isClean) { 
+				// untouched, so tmp_out would be empty and we should copy it over
+				VectorShallowCopy(tmp_in, tmp_out);
+				break; 
+			}
+			// not needed since may have && or || or !
+			//if (CheckSubExprNoThrow(tmp_out)) { break; }
+			cout << "RELEXPR DISPATCH RESET BEGIN" << endl;
+			// reset
+			tmp_in.clear();
+			VectorShallowCopy(tmp_out, tmp_in);
+			tmp_out.clear();
+			ii++;
+		}
+		VectorShallowCopy(tmp_out, output);
+	}
 		
 
 	// index is the index of the && operator

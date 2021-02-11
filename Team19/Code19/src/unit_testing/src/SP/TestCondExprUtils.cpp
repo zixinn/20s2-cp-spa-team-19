@@ -89,6 +89,66 @@ TEST_CASE("CondExprUtils - ParseRelExpr Test") {
     }
 }
 
+TEST_CASE("CondExprUtils - RelExprDispatch Test") {
+
+    std::vector<std::pair<std::string, std::string>> tests{
+        {
+            "(flag >= b)",
+            "( BOOL )",
+        },
+        {
+            "(flag >= b) && (a + 3 != 52)",
+            "( BOOL ) && ( BOOL )",
+        },
+        {
+            "(flag >= b) && (a + 3 != 52) || (a < b)",
+            "( BOOL ) && ( BOOL ) || ( BOOL )",
+        },
+        {
+            "(flag >= b) && (a + 3 != 52) || !(a < b)",
+            "( BOOL ) && ( BOOL ) || ! ( BOOL )",
+        },
+        {
+            "(flag >= b) && (a + 3 != 52) || (!(a < b))",
+            "( BOOL ) && ( BOOL ) || ( ! ( BOOL ) )",
+        },
+        {
+            "(flag >= b) && (a + 3 != 52) || (!((a < b) && (!(3 + 1 == 2)))",
+            "( BOOL ) && ( BOOL ) || ( ! ( ( BOOL ) && ( ! ( BOOL ) ) )",
+        },
+    };
+
+    for (int ii = 0; ii < tests.size(); ii++) {
+        std::string input = std::get<0>(tests[ii]);
+        std::string expected = std::get<1>(tests[ii]);
+
+
+        //  generate token* vector from string
+        std::vector<sp::Token> actual_tok;
+        std::vector<sp::Token*> tok_ptrs;
+        ParserUtils::StringToTokenPtrs(input, actual_tok, tok_ptrs);
+        if (tok_ptrs.back()->getType() == sp::Token::TokenType::EOFF) { tok_ptrs.pop_back(); }
+        //
+
+        std::vector<sp::Token*> out_ptrs;
+        try {
+            CondExprUtils::RelExprDispatch(tok_ptrs, out_ptrs);
+            auto result = CondExprUtils::VectorToString(out_ptrs);
+            REQUIRE(result == expected);
+        }
+        catch (sp::UtilsException& ex) {
+            INFO(ex.what());
+            INFO("UE: Test case: " + input);
+            REQUIRE(false);
+        }
+        catch (sp::ParserException& ex) {
+            INFO(ex.what());
+            INFO("PE: Test case: " + input);
+            REQUIRE(false);
+        }
+    }
+}
+
 TEST_CASE("CondExprUtils - checkSubExpr - pass Test") {
 
     std::vector<std::vector<sp::Token*>> tests{

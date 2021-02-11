@@ -37,6 +37,7 @@ namespace CondExprUtils {
 
 	// called by ParseCondExpr, ParseNot, ParseAndOr
 	void CondExprDispatch(std::vector<sp::Token*>& input, std::vector<sp::Token*>& output);
+	void RelExprDispatch(std::vector<sp::Token*>& input, std::vector<sp::Token*>& output);
 
 	void ParseNot(std::vector<sp::Token*>& input, std::vector<sp::Token*>& output, int index);
 	void ParseAndOr(std::vector<sp::Token*>& input, std::vector<sp::Token*>& output, int index);
