@@ -156,3 +156,5 @@ TEST_CASE("ParseLexer2 Expr - Keywords Test") {
 }
 
 
+// no this doesnt work, parseExpr doesnt check entire string it seems
+// NOTE: "1 && print;" input for p.parseExpr() will not cause any errors, will return "1"

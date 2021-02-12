@@ -145,7 +145,8 @@ TEST_CASE("ParseLexer Proc - Test 1, Test") {
     std::string input = "procedure star{ x = 1 + 2 * 3; while (a > b) { x = 2; } print p; read s; } ;";
     std::vector<std::pair<int, std::string>> tts{
         {1, "x = (1 + (2 * 3));"},
-        {2, "while (a > b) {\n    x = 2;\n}\n"},
+        // note: CondExprBag just prints its tokens, which includes outermost ( ) from while
+        {2, "while (( a > b )) {\n    x = 2;\n}\n"},
         {4, "print p;"},
         {5, "read s;"},
     };

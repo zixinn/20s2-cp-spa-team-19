@@ -13,6 +13,7 @@
 
 #include "InfixExpr.h"
 
+#include "CondExprBag.h"
 #include "CondExprWrapper.h"
 #include "PrefixCondExpr.h"
 #include "InfixCondExpr.h"

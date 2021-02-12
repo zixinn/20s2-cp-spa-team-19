@@ -16,7 +16,8 @@ namespace sp {
 			EQ, NEQ, GT, GTE, LT, LTE,  //rel expr
 			NOT,  //prefix cond
 			SEMICOLON, LPAREN, RPAREN, LBRACE, RBRACE,  //delimiters
-			PROCNAME, CONSTNAME			// for parser use only
+			PROCNAME, CONSTNAME,			// for parser use only
+			BOOL,							// for parser use only
 		};
 
 		//default constructor for initialising
