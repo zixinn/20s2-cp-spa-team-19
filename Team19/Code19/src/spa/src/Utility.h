@@ -18,5 +18,3 @@ bool checkNameWithQuotes(std::string s);
 bool checkExpression(std::string s);
 
 bool checkExpressionWithUnderscores(std::string s);
-
-//bool compareAst(AST* root1, AST* root2);
