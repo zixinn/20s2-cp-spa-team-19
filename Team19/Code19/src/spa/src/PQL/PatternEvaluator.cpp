@@ -172,7 +172,8 @@ string trimQuotes(string s) {
 
 // trim string with quotes and underscore
 string trimQuotesUnderscore(string s) {
-    return trim(s.substr(2, s.size() - 4));
+    string underscoreRemoved = trim(s.substr(1, s.size() - 2));
+    return trim(underscoreRemoved.substr(1, underscoreRemoved.size() - 2));
 }
 
 // Will get all assignment stmts that matches variable name on LHS
