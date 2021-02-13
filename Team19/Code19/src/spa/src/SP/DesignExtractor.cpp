@@ -49,7 +49,7 @@ void DesignExtractor::exitProcedure() {
     addAllCurrentStmtLstUsesForProcedure();
 }
 
-void DesignExtractor::storeNewWhile(StmtNum startStmtNum, vector<STRING> condVarNames, vector<STRING> condConsts, Stmt* AST) {
+void DesignExtractor::storeNewWhile(StmtNum startStmtNum, vector<STRING> condVarNames, vector<STRING> condConsts, WhileStmt* AST) {
     // Store the conditional variables into PKB and receive the PKB-assigned ID
     for (STRING varName : condVarNames) {
         ID varID = PKB::varTable->storeVarName(varName);
@@ -79,7 +79,7 @@ void DesignExtractor::exitWhile() {
     popSavedState();                    // Reset to previous local state variables
 }
 
-void DesignExtractor::storeNewIf(StmtNum startStmtNum, vector<STRING> condVarNames, vector<STRING> condConsts, Stmt* AST) {
+void DesignExtractor::storeNewIf(StmtNum startStmtNum, vector<STRING> condVarNames, vector<STRING> condConsts, IfStmt* AST) {
     // Store the conditional variables into PKB and receive the PKB-assigned ID
     for (STRING varName : condVarNames) {
         ID varID = PKB::varTable->storeVarName(varName);

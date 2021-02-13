@@ -1,6 +1,4 @@
 #include "SP/DesignExtractor.h"
-#include "SP/Token.h"
-
 #include "PKB/PKB.h"
 #include "AST/Index.h"
 #include "SP/Parser.h"
@@ -8,21 +6,34 @@
 #include "catch.hpp"
 using namespace std;
 
-// No unit tests for AssignStmt
-// Stubs of Stmt Classes
-VarName *varName = new VarName(new sp::Token(sp::Token::TokenType::NAME, "test"), "test");
-CondExpr *condExpr; // = new CondExpr(new sp::Token(sp::Token::TokenType::NAME, "test")); // no condexpr token to use
+// Uses Parser directly
+// Utility functions
+PrintStmt* createPrint(STRING varName) {
+    std::vector<sp::Token*> printTokens{
+            // Print Stmt
+            new sp::Token(sp::Token::TokenType::PRINT, "print"),
+            new sp::Token(sp::Token::TokenType::NAME, varName),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto lprint = new LexerStub(printTokens);
 
-PrintStmt *printStmt = new ast::PrintStmt(1, new sp::Token(sp::Token::TokenType::PRINT, "pr"), varName);
-ReadStmt *readStmt =  new ast::ReadStmt(1, new sp::Token(sp::Token::TokenType::READ, "r"), varName);
+    Parser pprint = Parser(lprint);
+    ast::PrintStmt* printStmt = pprint.parsePrintStmt();
+    return printStmt;
+}
 
-std::vector<Stmt*> statements { printStmt, readStmt };
-// no stmtLst token to use
-StmtLst *stmtLst = new StmtLst(new sp::Token(sp::Token::TokenType::NAME, "test"), statements);
-WhileStmt *whileStmt = new ast::WhileStmt(1, new sp::Token(sp::Token::TokenType::WHILE, "w"), condExpr, stmtLst);
-WhileStmt *nestedWhileStmt =  new ast::WhileStmt(1, new sp::Token(sp::Token::TokenType::WHILE, "w"), condExpr, stmtLst);
-IfStmt *ifStmt =  new ast::IfStmt(1, new sp::Token(sp::Token::TokenType::IF, "i"), condExpr, stmtLst, stmtLst);
-IfStmt *nestedIfStmt =  new ast::IfStmt(1, new sp::Token(sp::Token::TokenType::IF, "i"), condExpr, stmtLst, stmtLst);
+ReadStmt* createRead(STRING varName) {
+    std::vector<sp::Token*> ReadTokens{
+            // Read Stmt
+            new sp::Token(sp::Token::TokenType::READ, "read"),
+            new sp::Token(sp::Token::TokenType::NAME, "varName"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto lread = new LexerStub(ReadTokens);
+    Parser pread = Parser(lread);
+    ast::ReadStmt* readStmt = pread.parseReadStmt();
+    return readStmt;
+}
 
 TEST_CASE("ONE PROCEDURE - storeNewProcedure and exitProcedure Test (no While/Ifs)") {
     DesignExtractor::signalReset();
@@ -42,14 +53,15 @@ TEST_CASE("ONE PROCEDURE - storeNewProcedure and exitProcedure Test (no While/If
             new sp::Token(sp::Token::TokenType::EOFF, "EOF")
     };
 
+
     auto lass = new LexerStub(stubAssignTokens);
     Parser pass = Parser(lass);
     ast::AssignStmt* assStmt = pass.parseAssignStmt();
 
     DesignExtractor::storeNewProcedure("strobelight");
 
-    DesignExtractor::storeNewPrint(1, "reason", printStmt);
-    DesignExtractor::storeNewRead(2, "dyed", readStmt);
+    DesignExtractor::storeNewPrint(1, "reason", createPrint("reason"));
+    DesignExtractor::storeNewRead(2, "dyed", createRead("dyed"));
     DesignExtractor::storeNewAssignment(3, "scaramouche", assStmt);
 
     DesignExtractor::exitProcedure();
@@ -206,7 +218,7 @@ TEST_CASE("storeNewAssignment InfixExpr containing VarNames and Consts Test") {
 TEST_CASE("storeNewRead Test") {
     DesignExtractor::signalReset();
 
-    DesignExtractor::storeNewRead(1, "procedure", readStmt);
+    DesignExtractor::storeNewRead(1, "procedure", createRead("procedure"));
 
     // Check varName
     ID varID = PKB::varTable->getVarID("procedure");
@@ -220,7 +232,7 @@ TEST_CASE("storeNewRead Test") {
 TEST_CASE("storeNewPrint Test") {
     DesignExtractor::signalReset();
 
-    DesignExtractor::storeNewPrint(1, "defenestration", printStmt);
+    DesignExtractor::storeNewPrint(1, "defenestration", createPrint("defenestration"));
 
     // Check varName
     ID varID = PKB::varTable->getVarID("defenestration");
@@ -233,6 +245,16 @@ TEST_CASE("storeNewPrint Test") {
 
 TEST_CASE("[SIMPLE, no nested while/if] storeNewWhile and exitWhile Test") {
     DesignExtractor::signalReset();
+    // Create While AST
+    // Note that the while loop's internal is empty, but the test itself adds statements inside this while loop
+    // This is because in this case, the AST itself has no bearing on the DE's actions (it is only stored into the PKB)
+    STRING input = "while ((x == 5) || (y > 10)) { }";
+    std::vector<sp::Token> actual_tok;
+    std::vector<sp::Token*> tok_ptrs;
+    ParserUtils::StringToTokenPtrs(input, actual_tok, tok_ptrs);
+    auto lwhile = new LexerStub(tok_ptrs);
+    auto pwhile = Parser(lwhile);
+    ast::WhileStmt* whileStmt = pwhile.parseWhileStmt();
 
     // Set up Assignment AST
     std::vector<sp::Token*> stubTokens{
@@ -250,7 +272,7 @@ TEST_CASE("[SIMPLE, no nested while/if] storeNewWhile and exitWhile Test") {
     DesignExtractor::storeNewProcedure("hana");
     DesignExtractor::storeNewWhile(1,condVarNames, condConsts, whileStmt);
     DesignExtractor::storeNewAssignment(2, "axel2", assignment);
-    DesignExtractor::storeNewRead(3, "shine", readStmt);
+    DesignExtractor::storeNewRead(3, "shine", createRead("shine"));
     DesignExtractor::exitWhile();
     DesignExtractor::exitProcedure();
 
@@ -306,6 +328,24 @@ TEST_CASE("[SIMPLE, no nested while/if] storeNewWhile and exitWhile Test") {
 
 TEST_CASE("[ONE NESTED WHILE] storeNewWhile and exitWhile Test") {
     DesignExtractor::signalReset();
+    // Create While AST
+    // Note that the while loop's internal is empty, but the test itself adds statements inside this while loop
+    // This is because in this case, the AST itself has no bearing on the DE's actions (it is only stored into the PKB)
+    STRING input = "while ((x == 5) || (y > 10)) { }";
+    std::vector<sp::Token> actual_tok;
+    std::vector<sp::Token*> tok_ptrs;
+    ParserUtils::StringToTokenPtrs(input, actual_tok, tok_ptrs);
+    auto lwhile = new LexerStub(tok_ptrs);
+    auto pwhile = Parser(lwhile);
+    ast::WhileStmt* whileStmt = pwhile.parseWhileStmt();
+
+    STRING input2 = "while ((a != 33) || (z > 1)) { }";
+    std::vector<sp::Token> actual_tok2;
+    std::vector<sp::Token*> tok_ptrs2;
+    ParserUtils::StringToTokenPtrs(input2, actual_tok2, tok_ptrs2);
+    auto lNestedWhile = new LexerStub(tok_ptrs2);
+    auto pNestedWhile = Parser(lNestedWhile);
+    ast::WhileStmt* nestedWhileStmt = pNestedWhile.parseWhileStmt();
 
     // Set up Assignment AST
     std::vector<sp::Token*> stubTokens{
@@ -326,7 +366,7 @@ TEST_CASE("[ONE NESTED WHILE] storeNewWhile and exitWhile Test") {
     DesignExtractor::storeNewWhile(1,condVarNames, condConsts, whileStmt);
     DesignExtractor::storeNewAssignment(2, "axel2", assignment);
     DesignExtractor::storeNewWhile(3,nestedCondVarNames, nestedCondConsts, nestedWhileStmt);
-    DesignExtractor::storeNewRead(4, "shine", readStmt);
+    DesignExtractor::storeNewRead(4, "shine", createRead("shine"));
     DesignExtractor::exitWhile();
     DesignExtractor::exitWhile();
     DesignExtractor::exitProcedure();
@@ -402,6 +442,16 @@ TEST_CASE("[ONE NESTED WHILE] storeNewWhile and exitWhile Test") {
 
 TEST_CASE("[SIMPLE, no nested if/while] storeNewIf and storeNewElse and endIfElse Test") {
     DesignExtractor::signalReset();
+    // Create If ASTs
+    // Note that the if stmt's internal is empty, but the test itself adds statements inside this if stmt
+    // This is because in this case, the AST itself has no bearing on the DE's actions (it is only stored into the PKB)
+    STRING input = "if ((x == 5) || (y > 10)) then { } else { }";
+    std::vector<sp::Token> actual_tok;
+    std::vector<sp::Token*> tok_ptrs;
+    ParserUtils::StringToTokenPtrs(input, actual_tok, tok_ptrs);
+    auto lif = new LexerStub(tok_ptrs);
+    auto pif = Parser(lif);
+    ast::IfStmt* ifStmt = pif.parseIfStmt();
 
     // Set up Assignment AST
     std::vector<sp::Token*> stubTokens{
@@ -431,7 +481,7 @@ TEST_CASE("[SIMPLE, no nested if/while] storeNewIf and storeNewElse and endIfEls
     DesignExtractor::storeNewIf(2,condVarNames, condConsts, ifStmt);    // If-then
     DesignExtractor::storeNewAssignment(3, "slalom", assignment2);
     DesignExtractor::storeNewElse();                                                    // Else
-    DesignExtractor::storeNewRead(4, "shine", readStmt);
+    DesignExtractor::storeNewRead(4, "shine", createRead("shine"));
     DesignExtractor::endIfElse();
     DesignExtractor::exitProcedure();
 
@@ -497,6 +547,25 @@ TEST_CASE("[SIMPLE, no nested if/while] storeNewIf and storeNewElse and endIfEls
 TEST_CASE("[ONE NESTED IF] storeNewIf and storeNewElse and endIfElse Test") {
     DesignExtractor::signalReset();
 
+    // Create If ASTs
+    // Note that the if stmt's internal is empty, but the test itself adds statements inside this if stmt
+    // This is because in this case, the AST itself has no bearing on the DE's actions (it is only stored into the PKB)
+    STRING input = "if ((x == 5) || (y > 10)) then { } else { }";
+    std::vector<sp::Token> actual_tok;
+    std::vector<sp::Token*> tok_ptrs;
+    ParserUtils::StringToTokenPtrs(input, actual_tok, tok_ptrs);
+    auto lif = new LexerStub(tok_ptrs);
+    auto pif = Parser(lif);
+    ast::IfStmt* ifStmt = pif.parseIfStmt();
+
+    STRING input2 = "if ((a != 33) || (z > 1)) then { } else { }";
+    std::vector<sp::Token> actual_tok2;
+    std::vector<sp::Token*> tok_ptrs2;
+    ParserUtils::StringToTokenPtrs(input2, actual_tok2, tok_ptrs2);
+    auto lNestedIf = new LexerStub(tok_ptrs2);
+    auto pNestedIf = Parser(lNestedIf);
+    ast::IfStmt* nestedIfStmt = pNestedIf.parseIfStmt();
+
     // Set up Assignment AST
     std::vector<sp::Token*> stubTokens{
             new sp::Token(sp::Token::TokenType::NAME, "axel2"),
@@ -551,7 +620,7 @@ TEST_CASE("[ONE NESTED IF] storeNewIf and storeNewElse and endIfElse Test") {
     DesignExtractor::storeNewAssignment(5, "quartz", assignment3);
     DesignExtractor::storeNewElse();                                                    // Nested Else
     DesignExtractor::storeNewAssignment(6, "sapphire", assignment4);
-    DesignExtractor::storeNewRead(7, "droning", readStmt);
+    DesignExtractor::storeNewRead(7, "droning", createRead("droning"));
     DesignExtractor::endIfElse();
     DesignExtractor::endIfElse();
     DesignExtractor::exitProcedure();
@@ -656,6 +725,25 @@ TEST_CASE("[ONE NESTED IF] storeNewIf and storeNewElse and endIfElse Test") {
 TEST_CASE("[WHILE-IF NESTING] storeNewWhile & storeNewIf Interaction Test") {
     DesignExtractor::signalReset();
 
+    // Create If AST
+    // Note that the if stmt's internal is empty, but the test itself adds statements inside this if stmt
+    // This is because in this case, the AST itself has no bearing on the DE's actions (it is only stored into the PKB)
+    STRING input = "if ((x == 5) || (y > 10)) then { } else { }";
+    std::vector<sp::Token> actual_tok;
+    std::vector<sp::Token*> tok_ptrs;
+    ParserUtils::StringToTokenPtrs(input, actual_tok, tok_ptrs);
+    auto lif = new LexerStub(tok_ptrs);
+    auto pif = Parser(lif);
+    ast::IfStmt* ifStmt = pif.parseIfStmt();
+
+    STRING input2 = "while ((a != 33) || (z > 1)) { }";
+    std::vector<sp::Token> actual_tok2;
+    std::vector<sp::Token*> tok_ptrs2;
+    ParserUtils::StringToTokenPtrs(input2, actual_tok2, tok_ptrs2);
+    auto lNestedWhile = new LexerStub(tok_ptrs2);
+    auto pNestedWhile = Parser(lNestedWhile);
+    ast::WhileStmt* nestedWhileStmt = pNestedWhile.parseWhileStmt();
+
     // Set up Assignment AST
     std::vector<sp::Token*> stubTokens{
             new sp::Token(sp::Token::TokenType::NAME, "axel2"),
@@ -709,7 +797,7 @@ TEST_CASE("[WHILE-IF NESTING] storeNewWhile & storeNewIf Interaction Test") {
     DesignExtractor::storeNewWhile(4,nestedCondVarNames, nestedCondConsts, nestedWhileStmt);    // Nested While
     DesignExtractor::storeNewAssignment(5, "quartz", assignment3);
     DesignExtractor::storeNewAssignment(6, "sapphire", assignment4);
-    DesignExtractor::storeNewRead(7, "droning", readStmt);
+    DesignExtractor::storeNewRead(7, "droning", createRead("droning"));
     DesignExtractor::exitWhile();
     DesignExtractor::endIfElse();
     DesignExtractor::exitProcedure();
@@ -810,71 +898,3 @@ TEST_CASE("[WHILE-IF NESTING] storeNewWhile & storeNewIf Interaction Test") {
     REQUIRE(PKB::modifies->getStmtsModifies(varID6) == unordered_set<ID>{ 2, 4, 6 });
     REQUIRE(PKB::modifies->getStmtsModifies(varID7) == unordered_set<ID>{ 2, 4, 7 });
 }
-
-// Test cases for stacks and related methods
-TEST_CASE("Generic Stack Operations Test") {
-    vector<vector<int>> stmtLstsStack;
-    vector<set<ID>> usesStack;
-    vector<set<ID>> modifiesStack;
-    vector<int> parentStack;
-
-    // Test stmtLstsStack
-    vector<ID> numbers{ 0, 1, 3, 400, 70000};
-    // -3 is an invalid stmtNum, but DesignExtractor assumes all inputs from Parser are valid.
-    vector<ID> numbers2{ INT_MAX, 0, 1, -3, 400, 809};
-    REQUIRE(stmtLstsStack.size() == 0);
-    DesignExtractor::DEStack<vector<int>>::stackPush(stmtLstsStack, numbers);
-    REQUIRE(stmtLstsStack.size() == 1);
-    REQUIRE(DesignExtractor::DEStack<vector<ID>>::stackPop(stmtLstsStack) == numbers);
-    REQUIRE_THROWS(DesignExtractor::DEStack<vector<ID>>::stackPop(stmtLstsStack),
-                   std::out_of_range("DE: attempted to pop an empty stack."));
-    DesignExtractor::DEStack<vector<int>>::stackPush(stmtLstsStack, numbers);
-    DesignExtractor::DEStack<vector<int>>::stackPush(stmtLstsStack, numbers);
-    DesignExtractor::DEStack<vector<int>>::stackPush(stmtLstsStack, numbers2);
-    REQUIRE(stmtLstsStack.size() == 3);
-    REQUIRE(DesignExtractor::DEStack<vector<ID>>::stackPop(stmtLstsStack) == numbers2);
-
-    // Test usesStack
-    set<ID> usesIDs{ 0, 1, 3, 400, 70000};
-    set<ID> usesIDs2{ INT_MAX, 0, 1, -3, 400, 809};
-    REQUIRE(usesStack.size() == 0);
-    DesignExtractor::DEStack<set<ID>>::stackPush(usesStack, usesIDs);
-    REQUIRE(usesStack.size() == 1);
-    REQUIRE(DesignExtractor::DEStack<set<ID>>::stackPop(usesStack) == usesIDs);
-    REQUIRE_THROWS(DesignExtractor::DEStack<set<ID>>::stackPop(usesStack),
-                   std::out_of_range("DE: attempted to pop an empty stack."));
-    DesignExtractor::DEStack<set<int>>::stackPush(usesStack, usesIDs);
-    DesignExtractor::DEStack<set<int>>::stackPush(usesStack, usesIDs);
-    DesignExtractor::DEStack<set<int>>::stackPush(usesStack, usesIDs2);
-    REQUIRE(usesStack.size() == 3);
-    REQUIRE(DesignExtractor::DEStack<set<ID>>::stackPop(usesStack) == usesIDs2);
-
-    // Test modifiesStack
-    set<ID> modifiesIDs{ 0, 1, 3, 400, 70000};
-    set<ID> modifiesIDs2{ INT_MAX, 0, 1, -3, 400, 809};
-    REQUIRE(modifiesStack.size() == 0);
-    DesignExtractor::DEStack<set<ID>>::stackPush(modifiesStack, usesIDs);
-    REQUIRE(modifiesStack.size() == 1);
-    REQUIRE(DesignExtractor::DEStack<set<ID>>::stackPop(modifiesStack) == usesIDs);
-    REQUIRE_THROWS(DesignExtractor::DEStack<set<ID>>::stackPop(modifiesStack),
-                   std::out_of_range("DE: attempted to pop an empty stack."));
-    DesignExtractor::DEStack<set<int>>::stackPush(modifiesStack, usesIDs);
-    DesignExtractor::DEStack<set<int>>::stackPush(modifiesStack, usesIDs);
-    DesignExtractor::DEStack<set<int>>::stackPush(modifiesStack, usesIDs2);
-    REQUIRE(modifiesStack.size() == 3);
-    REQUIRE(DesignExtractor::DEStack<set<ID>>::stackPop(modifiesStack) == usesIDs2);
-
-    // Test parentStack
-    REQUIRE(parentStack.size() == 0);
-    DesignExtractor::DEStack<ID>::stackPush(parentStack, 3);
-    REQUIRE(parentStack.size() == 1);
-    REQUIRE(DesignExtractor::DEStack<ID>::stackPop(parentStack) == 3);
-    REQUIRE_THROWS(DesignExtractor::DEStack<ID>::stackPop(parentStack),
-                   std::out_of_range("DE: attempted to pop an empty stack."));
-    DesignExtractor::DEStack<ID>::stackPush(parentStack, 5);
-    DesignExtractor::DEStack<ID>::stackPush(parentStack, 356);
-    DesignExtractor::DEStack<ID>::stackPush(parentStack, 909090);
-    REQUIRE(parentStack.size() == 3);
-    REQUIRE(DesignExtractor::DEStack<ID>::stackPop(parentStack) == 909090);
-}
-
