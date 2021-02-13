@@ -7,6 +7,15 @@
 #include "../AbstractAPI.h"
 #include "../Utility.h"
 #include "../PKB/PKB.h"
+#include "../SP/Lexer.h"
+
+bool checkNameWithQuotes(std::string s);
+
+bool isOperator(sp::Token::TokenType tokenType);
+
+bool checkExpression(std::string s);
+
+bool checkExpressionWithUnderscores(std::string s);
 
 bool checkSynonymDeclared(string synonym, unordered_map<string, string> declarations);
 

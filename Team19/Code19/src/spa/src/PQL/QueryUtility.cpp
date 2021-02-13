@@ -2,6 +2,87 @@
 
 using namespace std;
 
+// Checks if name with quotes conforms to naming standards
+// Returns true if name is valid, false otherwise
+bool checkNameWithQuotes(string s) {
+    if (s[0] != '\"' || s[s.length() - 1] != '\"') {
+        return false;
+    }
+    return checkName(trim(s.substr(1, s.length() - 2)));
+}
+
+// Returns true if the TokenType is an operator, false otherwise
+bool isOperator(sp::Token::TokenType tokenType) {
+    return tokenType ==  sp::Token::TokenType::PLUS || tokenType ==  sp::Token::TokenType::MINUS
+        || tokenType ==  sp::Token::TokenType::TIMES || tokenType ==  sp::Token::TokenType::DIV
+        || tokenType ==  sp::Token::TokenType::MOD;
+}
+
+// Check if expression is valid
+// Returns true if expression is valid, false otherwise
+bool checkExpression(string s) {
+    if (s[0] != '\"' || s[s.length() - 1] != '\"') {
+        return false;
+    }
+    string str = trim(s.substr(1, s.length() - 2));
+
+    vector<sp::Token> tokens;
+    bool b = Lexer::tokenise(str, tokens);
+    if (!b) {
+        return false;
+    }
+
+    sp::Token::TokenType firstTokenType = tokens.at(0).getType();
+    sp::Token::TokenType lastTokenType = tokens.at(tokens.size() - 1).getType();
+    if (isOperator(firstTokenType) || isOperator(lastTokenType)) {
+        return false;
+    }
+
+    int parenCount = 0;
+    bool isPrevOp = false;
+    bool isPrevLParen = false;
+
+    for (int i = 0; i < tokens.size(); i++) {
+        sp::Token::TokenType tokenType = tokens.at(i).getType();
+        string tokenLiteral = tokens.at(i).getLiteral();
+        if (tokenType == sp::Token::TokenType::LPAREN) {
+            parenCount++;
+            isPrevLParen = true;
+            continue;
+        } else if (tokenType == sp::Token::TokenType::RPAREN) {
+            if (parenCount <= 0 || isPrevOp || isPrevLParen) {
+                return false;
+            }
+            parenCount--;
+            continue;
+        } else if (isOperator(tokenType)) {
+            if (isPrevOp || isPrevLParen) {
+                return false;
+            }
+            isPrevOp = true;
+            continue;
+        } else if (!checkName(tokenLiteral) && !checkInteger(tokenLiteral))  {
+            return false;
+        }
+        isPrevOp = false;
+        isPrevLParen = false;
+    }
+
+    if (parenCount != 0 || isPrevOp || isPrevLParen) {
+        return false;
+    }
+    return true;
+}
+
+// Checks if expression with underscores is valid
+// Returns true if expression is valid, false otherwise
+bool checkExpressionWithUnderscores(string s) {
+    if (s[0] != '_' || s[s.length() - 1] != '_') {
+        return false;
+    }
+    return checkExpression(trim(s.substr(1, s.length() - 2)));
+}
+
 // Checks if the synonym has been declared in declarations
 bool checkSynonymDeclared(string synonym, unordered_map<string, string> declarations) {
     return declarations.find(synonym) != declarations.end();
