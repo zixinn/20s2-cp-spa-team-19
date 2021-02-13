@@ -45,16 +45,16 @@ bool QueryEvaluator::evaluateClause(Clause clause, unordered_map<string, vector<
         return FollowsEvaluator::evaluate(this->declarations, clause, tempResults);
     } else if (rel == "Follows*") {
         return FollowsTEvaluator::evaluate(this->declarations, clause, tempResults);
-//    } else if (rel == "Parent") {
-//        return ParentEvaluator::evaluate(this->declarations, clause, tempResults);
-//    } else if (rel == "Parent*") {
-//        return ParentTEvaluator::evaluate(this->declarations, clause, tempResults);
-//    } else if (rel == "Uses") {
-//        return UsesEvaluator::evaluate(this->declarations, clause, tempResults);
+    } else if (rel == "Parent") {
+        return ParentEvaluator::evaluate(this->declarations, clause, tempResults);
+    } else if (rel == "Parent*") {
+        return ParentTEvaluator::evaluate(this->declarations, clause, tempResults);
+    } else if (rel == "Uses") {
+        return UsesEvaluator::evaluate(this->declarations, clause, tempResults);
     } else if (rel == "Modifies") {
         return ModifiesEvaluator::evaluate(this->declarations, clause, tempResults);
-//    } else { // pattern
-//        return PatternEvaluator::evaluate(this->declarations, clause, tempResults);
+    } else { // pattern
+        return PatternEvaluator::evaluate(this->declarations, clause, tempResults);
     }
     return true;
 }

@@ -25,22 +25,138 @@ void setupQe() {
     PKB::constTable->storeConst("0");
     PKB::constTable->storeConst("1");
 
+    std::vector<sp::Token*> stubTokens1 {
+            new sp::Token(sp::Token::TokenType::NAME, "count"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::NAME, "0"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto l1 = new LexerStub(stubTokens1);
+    Parser p1 = Parser(l1);
+    ast::AssignStmt* stmt1 = p1.parseAssignStmt();
+
+    std::vector<sp::Token*> stubTokens2 {
+            new sp::Token(sp::Token::TokenType::NAME, "cenX"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::NAME, "0"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto l2 = new LexerStub(stubTokens2);
+    Parser p2 = Parser(l2);
+    ast::AssignStmt* stmt2 = p2.parseAssignStmt();
+
+    std::vector<sp::Token*> stubTokens3 {
+            new sp::Token(sp::Token::TokenType::NAME, "cenY"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::NAME, "0"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto l3 = new LexerStub(stubTokens3);
+    Parser p3 = Parser(l3);
+    ast::AssignStmt* stmt3 = p3.parseAssignStmt();
+
+    std::vector<sp::Token*> stubTokens6 {
+            new sp::Token(sp::Token::TokenType::NAME, "count"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::NAME, "count"),
+            new sp::Token(sp::Token::TokenType::PLUS, "+"),
+            new sp::Token(sp::Token::TokenType::CONST, "1"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto l6 = new LexerStub(stubTokens6);
+    Parser p6 = Parser(l6);
+    ast::AssignStmt* stmt6 = p6.parseAssignStmt();
+
+    std::vector<sp::Token*> stubTokens7 {
+            new sp::Token(sp::Token::TokenType::NAME, "cenX"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::NAME, "cenX"),
+            new sp::Token(sp::Token::TokenType::PLUS, "+"),
+            new sp::Token(sp::Token::TokenType::NAME, "x"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto l7 = new LexerStub(stubTokens7);
+    Parser p7 = Parser(l7);
+    ast::AssignStmt* stmt7 = p7.parseAssignStmt();
+
+    std::vector<sp::Token*> stubTokens8 {
+            new sp::Token(sp::Token::TokenType::NAME, "cenY"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::NAME, "cenY"),
+            new sp::Token(sp::Token::TokenType::PLUS, "+"),
+            new sp::Token(sp::Token::TokenType::NAME, "y"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto l8 = new LexerStub(stubTokens8);
+    Parser p8 = Parser(l8);
+    ast::AssignStmt* stmt8 = p8.parseAssignStmt();
+
+    std::vector<sp::Token*> stubTokens11 {
+            new sp::Token(sp::Token::TokenType::NAME, "flag"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::NAME, "1"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto l11 = new LexerStub(stubTokens7);
+    Parser p11 = Parser(l11);
+    ast::AssignStmt* stmt11 = p11.parseAssignStmt();
+
+    std::vector<sp::Token*> stubTokens12 {
+            new sp::Token(sp::Token::TokenType::NAME, "cenX"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::NAME, "cenX"),
+            new sp::Token(sp::Token::TokenType::DIV, "/"),
+            new sp::Token(sp::Token::TokenType::NAME, "count"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto l12 = new LexerStub(stubTokens12);
+    Parser p12 = Parser(l12);
+    ast::AssignStmt* stmt12 = p12.parseAssignStmt();
+
+    std::vector<sp::Token*> stubTokens13 {
+            new sp::Token(sp::Token::TokenType::NAME, "cenY"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::NAME, "cenY"),
+            new sp::Token(sp::Token::TokenType::DIV, "/"),
+            new sp::Token(sp::Token::TokenType::NAME, "count"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto l13 = new LexerStub(stubTokens13);
+    Parser p13 = Parser(l13);
+    ast::AssignStmt* stmt13 = p13.parseAssignStmt();
+
+    std::vector<sp::Token*> stubTokens14 {
+            new sp::Token(sp::Token::TokenType::NAME, "normSq"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::NAME, "cenX"),
+            new sp::Token(sp::Token::TokenType::TIMES, "*"),
+            new sp::Token(sp::Token::TokenType::NAME, "cenX"),
+            new sp::Token(sp::Token::TokenType::PLUS, "+"),
+            new sp::Token(sp::Token::TokenType::NAME, "cenY"),
+            new sp::Token(sp::Token::TokenType::TIMES, "*"),
+            new sp::Token(sp::Token::TokenType::NAME, "cenY"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto l14 = new LexerStub(stubTokens14);
+    Parser p14 = Parser(l14);
+    ast::AssignStmt* stmt14 = p14.parseAssignStmt();
+
     PKB::stmtTable = new StmtTable();
     ast::Stmt* stmtNodeStub = new StmtNodeStub(0);
-    PKB::stmtTable->storeStmt(1, stmtNodeStub, ASSIGN_);
-    PKB::stmtTable->storeStmt(2, stmtNodeStub, ASSIGN_);
-    PKB::stmtTable->storeStmt(3, stmtNodeStub, ASSIGN_);
+    PKB::stmtTable->storeStmt(1, stmt1, ASSIGN_);
+    PKB::stmtTable->storeStmt(2, stmt2, ASSIGN_);
+    PKB::stmtTable->storeStmt(3, stmt3, ASSIGN_);
     PKB::stmtTable->storeStmt(4, stmtNodeStub, CALL_);
     PKB::stmtTable->storeStmt(5, stmtNodeStub, WHILE_);
-    PKB::stmtTable->storeStmt(6, stmtNodeStub, ASSIGN_);
-    PKB::stmtTable->storeStmt(7, stmtNodeStub, ASSIGN_);
-    PKB::stmtTable->storeStmt(8, stmtNodeStub, ASSIGN_);
+    PKB::stmtTable->storeStmt(6, stmt6, ASSIGN_);
+    PKB::stmtTable->storeStmt(7, stmt7, ASSIGN_);
+    PKB::stmtTable->storeStmt(8, stmt8, ASSIGN_);
     PKB::stmtTable->storeStmt(9, stmtNodeStub, CALL_);
     PKB::stmtTable->storeStmt(10, stmtNodeStub, IF_);
-    PKB::stmtTable->storeStmt(11, stmtNodeStub, ASSIGN_);
-    PKB::stmtTable->storeStmt(12, stmtNodeStub, ASSIGN_);
-    PKB::stmtTable->storeStmt(13, stmtNodeStub, ASSIGN_);
-    PKB::stmtTable->storeStmt(14, stmtNodeStub, ASSIGN_);
+    PKB::stmtTable->storeStmt(11, stmt11, ASSIGN_);
+    PKB::stmtTable->storeStmt(12, stmt12, ASSIGN_);
+    PKB::stmtTable->storeStmt(13, stmt13, ASSIGN_);
+    PKB::stmtTable->storeStmt(14, stmt14, ASSIGN_);
 
     PKB::follows = new Follows();
     PKB::follows->storeFollows(1,2);
@@ -112,7 +228,6 @@ void setupQe() {
     PKB::modifies->storeStmtModifies(12, 1);
     PKB::modifies->storeStmtModifies(13, 2);
     PKB::modifies->storeStmtModifies(14, 6);
-
     PKB::modifies->storeProcModifies(0, 0);
     PKB::modifies->storeProcModifies(0, 1);
     PKB::modifies->storeProcModifies(0, 2);
@@ -186,28 +301,28 @@ TEST_CASE("QueryEvaluator evaluate query with one such that clause and synonym n
     REQUIRE(actual2 == expected2);
 }
 
-//TEST_CASE("QueryEvaluator evaluate query with one pattern clause") { // not tested
-//    setupQe();
-//    QueryEvaluator qe = QueryEvaluator();
-//
-//    // assign a; Select a pattern a(_, "count + 1")
-//    Clause c1 = Clause("a", vector<string>{"_", "\"count + 1\""});
-//    Query q1 = Query({{"a", ASSIGN_}}, "a", {c1}, true);
-//    list<string> list1 = qe.evaluate(q1);
-//    unordered_set<string> actual1(begin(list1), end(list1));
-//    unordered_set<string> expected1 = {"6"};
-//    REQUIRE(actual1.size() == list1.size());
-//    REQUIRE(actual1 == expected1);
-//
-//    // assign a; Select a pattern a("normSq", _"cenX * xenX"_)
-//    Clause c2 = Clause("a", vector<string>{"\"normSq\"", "_\"cenX * xenX\"_"});
-//    Query q2 = Query({{"a", ASSIGN_}}, "a", {c2}, true);
-//    list<string> list2 = qe.evaluate(q2);
-//    unordered_set<string> actual2(begin(list2), end(list2));
-//    unordered_set<string> expected2 = {"14"};
-//    REQUIRE(actual2.size() == list2.size());
-//    REQUIRE(actual2 == expected2);
-//}
+TEST_CASE("QueryEvaluator evaluate query with one pattern clause") {
+    setupQe();
+    QueryEvaluator qe = QueryEvaluator();
+
+    // assign a; Select a pattern a(_, "count + 1")
+    Clause c1 = Clause("a", vector<string>{"_", "\"count + 1\""});
+    Query q1 = Query({{"a", ASSIGN_}}, "a", {c1}, true);
+    list<string> list1 = qe.evaluate(q1);
+    unordered_set<string> actual1(begin(list1), end(list1));
+    unordered_set<string> expected1 = {"6"};
+    REQUIRE(actual1.size() == list1.size());
+    REQUIRE(actual1 == expected1);
+
+    // assign a; Select a pattern a("normSq", _"cenX * xenX"_)
+    Clause c2 = Clause("a", vector<string>{"\"normSq\"", "_\"cenX * cenX\"_"});
+    Query q2 = Query({{"a", ASSIGN_}}, "a", {c2}, true);
+    list<string> list2 = qe.evaluate(q2);
+    unordered_set<string> actual2(begin(list2), end(list2));
+    unordered_set<string> expected2 = {"14"};
+    REQUIRE(actual2.size() == list2.size());
+    REQUIRE(actual2 == expected2);
+}
 
 TEST_CASE("QueryEvaluator evaluate query with multiple such that clauses") {
     setupQe();
@@ -245,27 +360,27 @@ TEST_CASE("QueryEvaluator evaluate query with multiple such that clauses") {
     REQUIRE(actual3 == expected3);
 }
 
-//TEST_CASE("QueryEvaluator evaluate query with one such that and one pattern clause") { // not tested
-//    setupQe();
-//    QueryEvaluator qe = QueryEvaluator();
-//
-//    // assign a; variable v; Select a such that Uses(a, v) pattern a(v, _)
-//    Clause c11 = Clause("Uses", vector<string>{"a", "v"});
-//    Clause c12 = Clause("a", vector<string>{"v", "_"});
-//    Query q1 = Query({{"a", ASSIGN_}, {"v", VARIABLE_}}, "a", {c11, c12}, true);
-//    list<string> list1 = qe.evaluate(q1);
-//    unordered_set<string> actual1(begin(list1), end(list1));
-//    unordered_set<string> expected1 = {"6", "7", "8", "12", "13"};
-//    REQUIRE(actual1.size() == list1.size());
-//    REQUIRE(actual1 == expected1);
-//
-//    // assign a; while w; Select w such that Parent* (w, a) pattern a("count", _)
-//    Clause c21 = Clause("Parent*", vector<string>{"w", "a"});
-//    Clause c22 = Clause("a", vector<string>{"\"count\"", "_"});
-//    Query q2 = Query({{"a", ASSIGN_}}, "a", {c21, c22}, true);
-//    list<string> list2 = qe.evaluate(q2);
-//    unordered_set<string> actual2(begin(list2), end(list2));
-//    unordered_set<string> expected2 = {"5"};
-//    REQUIRE(actual2.size() == list2.size());
-//    REQUIRE(actual2 == expected2);
-//}
+TEST_CASE("QueryEvaluator evaluate query with one such that and one pattern clause") {
+    setupQe();
+    QueryEvaluator qe = QueryEvaluator();
+
+    // assign a; variable v; Select a such that Uses(a, v) pattern a(v, _)
+    Clause c11 = Clause("Uses", vector<string>{"a", "v"});
+    Clause c12 = Clause("a", vector<string>{"v", "_"});
+    Query q1 = Query({{"a", ASSIGN_}, {"v", VARIABLE_}}, "a", {c11, c12}, true);
+    list<string> list1 = qe.evaluate(q1);
+    unordered_set<string> actual1(begin(list1), end(list1));
+    unordered_set<string> expected1 = {"6", "7", "8", "12", "13"};
+    REQUIRE(actual1.size() == list1.size());
+    REQUIRE(actual1 == expected1);
+
+    // assign a; while w; Select w such that Parent* (w, a) pattern a("count", _)
+    Clause c21 = Clause("Parent*", vector<string>{"w", "a"});
+    Clause c22 = Clause("a", vector<string>{"\"count\"", "_"});
+    Query q2 = Query({{"a", ASSIGN_}, {"w", WHILE_}}, "w", {c21, c22}, true);
+    list<string> list2 = qe.evaluate(q2);
+    unordered_set<string> actual2(begin(list2), end(list2));
+    unordered_set<string> expected2 = {"5"};
+    REQUIRE(actual2.size() == list2.size());
+    REQUIRE(actual2 == expected2);
+}
