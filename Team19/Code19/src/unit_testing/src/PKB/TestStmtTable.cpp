@@ -108,4 +108,6 @@ TEST_CASE("getStmtNode Test") {
     StmtTable* stmtTable = setupStmtTestTable();
     REQUIRE(stmtTable->getStmtNode(1)->getIndex() == 1);
     REQUIRE(stmtTable->getStmtNode(2)->getIndex() == 2);
+    REQUIRE_THROWS_AS(stmtTable->getStmtNode(-1), std::exception);
+    REQUIRE_THROWS_AS(stmtTable->getStmtNode(7), std::exception);
 }

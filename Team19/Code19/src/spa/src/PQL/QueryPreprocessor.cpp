@@ -1,90 +1,57 @@
-#include <regex>
-
 #include "QueryPreprocessor.h"
-#include "../AbstractAPI.h"
-#include "../Utility.h"
 
 QueryPreprocessor::QueryPreprocessor() {
-    designEntities = {PROCEDURE_, STMTLST_, STMT_, READ_, PRINT_, ASSIGN_, CALL_, WHILE_, IF_, VARIABLE_, CONSTANT_ };
-    validSuchThatArgType["Follows"] = { {STMT_, READ_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, UNDERSCORE_ },
-                                   {     STMT_, READ_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, UNDERSCORE_ } };
-    validSuchThatArgType["Follows*"] = { {STMT_, READ_, PRINT_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, UNDERSCORE_ },
-                                   {      STMT_, READ_, PRINT_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, UNDERSCORE_ } };
-    validSuchThatArgType["Parent"] = { {STMT_, WHILE_, IF_,    INTEGER_,   UNDERSCORE_ },
-                                   {    STMT_, READ_,  PRINT_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, UNDERSCORE_ } };
-    validSuchThatArgType["Parent*"] = { {STMT_, WHILE_, IF_,    INTEGER_,   UNDERSCORE_ },
-                                   {     STMT_, READ_,  PRINT_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, UNDERSCORE_ } };
-    validSuchThatArgType["Uses"] = { {STMT_,     PRINT_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, NAME_ },
-                                   {  VARIABLE_, NAME_,  UNDERSCORE_ } };
-    validSuchThatArgType["Modifies"] = { {STMT_,     READ_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, NAME_ },
-                                {         VARIABLE_, NAME_, UNDERSCORE_ } };
-    validPatternArgType["assign"] = { {VARIABLE_,   NAME_, UNDERSCORE_ },
-                                {      UNDERSCORE_, NAME_, EXPRESSION_, EXPRESSIONWITHUNDERSCORE_ } };
-}
-
-bool QueryPreprocessor::checkSynonymDeclared(string synonym) {
-    return this->declarations.find(synonym) != this->declarations.end();
-}
-
-string QueryPreprocessor::getArgType(string synonym) {
-    if (checkSynonymDeclared(synonym)) {
-        return this->declarations[synonym];
-    } else if (checkInteger(synonym)) {
-        return INTEGER_;
-    } else if (synonym == "_") {
-        return UNDERSCORE_;
-    } else if (checkNameWithQuotes(synonym)) {
-        return NAME_;
-    } else if (checkExpression(synonym)) {
-        return EXPRESSION_;
-    } else if (checkExpressionWithUnderscores(synonym)) {
-        return EXPRESSIONWITHUNDERSCORE_;
-    } else {
-        return "";
-    }
+    designEntities = { PROCEDURE_, STMTLST_, STMT_, READ_, PRINT_, ASSIGN_, CALL_, WHILE_, IF_, VARIABLE_, CONSTANT_ };
+    validSuchThatArgType["Follows"] = { { STMT_, READ_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, UNDERSCORE_ },
+                                        { STMT_, READ_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, UNDERSCORE_ } };
+    validSuchThatArgType["Follows*"] = { { STMT_, READ_, PRINT_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, UNDERSCORE_ },
+                                         { STMT_, READ_, PRINT_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, UNDERSCORE_ } };
+    validSuchThatArgType["Parent"] = { { STMT_, WHILE_, IF_, INTEGER_, UNDERSCORE_ },
+                                       { STMT_, READ_, PRINT_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, UNDERSCORE_ } };
+    validSuchThatArgType["Parent*"] = { { STMT_, WHILE_, IF_, INTEGER_, UNDERSCORE_ },
+                                        { STMT_, READ_, PRINT_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, UNDERSCORE_ } };
+    validSuchThatArgType["Uses"] = { { STMT_, PRINT_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, NAME_ },
+                                     { VARIABLE_, NAME_, UNDERSCORE_ } };
+    validSuchThatArgType["Modifies"] = { { STMT_, READ_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, NAME_ },
+                                         { VARIABLE_, NAME_, UNDERSCORE_ } };
+    validPatternArgType["assign"] = { { VARIABLE_, NAME_, UNDERSCORE_ },
+                                      { UNDERSCORE_, NAME_, EXPRESSION_, EXPRESSIONWITHUNDERSCORE_ } };
 }
 
 Query QueryPreprocessor::process(string query) {
     this->declarations.clear();
     this->toSelect = "";
-    this->suchThatClauses.clear();
-    this->patternClauses.clear();
+    this->clauses.clear();
     this->isValid = true;
 
-    vector<string> statements = split(query, ";");
-
-    bool selectFound = false;
-    bool multipleSelect = false;
-    for (int i = 0; i < statements.size(); i++) {
-        if (statements[i].find("Select ") == 0) {
-            if (selectFound) {
-                multipleSelect = true;
-                break;
-            }
-            selectFound = true;
-        }
-    }
-    if (!selectFound || multipleSelect) {
+    if (query.empty() || query.at(query.length() - 1) == ';') {
         this->isValid = false;
     }
 
-    for (int i = 0; i < statements.size() && this->isValid; i++) {
-        if (statements[i].find("Select ") != 0) {
-            if (!regex_match(statements[i], regex("^.*\\s.*$"))) {
-                this->isValid = false;
-                break;
-            }
-
-            int space = statements[i].find(' ');
-            string designEntity = trim(statements[i].substr(0, space));
-            string synonyms = trim(statements[i].substr(space + 1));
-            parseDeclaration(designEntity, synonyms);
-        } else {
-            parseSelect(trim(statements[i].substr(7)));
+    vector<string> statements;
+    if (this->isValid) {
+        statements = split(query, ";");
+        if (statements[statements.size() - 1].find("Select ") != 0) {
+            this->isValid = false;
         }
     }
 
-    return Query(this->declarations, this->toSelect, this->suchThatClauses, this->patternClauses, this->isValid);
+    for (int i = 0; i < statements.size() - 1 && this->isValid; i++) {
+        if (!regex_match(statements[i], regex("^.*\\s.*$"))) {
+            this->isValid = false;
+            break;
+        }
+        int space = statements[i].find(' ');
+        string designEntity = trim(statements[i].substr(0, space));
+        string synonyms = trim(statements[i].substr(space + 1));
+        parseDeclaration(designEntity, synonyms);
+    }
+
+    if (this->isValid) {
+        parseSelect(trim(statements[statements.size() - 1].substr(7)));
+    }
+
+    return Query(this->declarations, this->toSelect, this->clauses, this->isValid);
 }
 
 bool QueryPreprocessor::parseDeclaration(string designEntity, string synonyms) {
@@ -94,7 +61,7 @@ bool QueryPreprocessor::parseDeclaration(string designEntity, string synonyms) {
     }
     vector<string> synonymsVector = split(synonyms, ",");
     for (string synonym : synonymsVector) {
-        if (checkSynonymDeclared(synonym) || !checkName(synonym)) {
+        if (checkSynonymDeclared(synonym, this->declarations) || !checkName(synonym)) {
             this->isValid = false;
             return false;
         }
@@ -133,7 +100,7 @@ bool QueryPreprocessor::parseSelect(string select) {
 }
 
 bool QueryPreprocessor::parseToSelect(string synonym) {
-    if (!checkSynonymDeclared(synonym) || !checkName(synonym)) {
+    if (!checkSynonymDeclared(synonym, this->declarations)) {
         this->isValid = false;
         return false;
     }
@@ -160,7 +127,7 @@ bool QueryPreprocessor::parseSuchThatClause(string clause) {
         return false;
     }
 
-    this->suchThatClauses.push_back(Clause(rel, { firstArg, secondArg }));
+    this->clauses.push_back(Clause(rel, { firstArg, secondArg }));
     return true;
 }
 
@@ -172,7 +139,7 @@ bool QueryPreprocessor::checkSuchThatClause(string rel, vector<string> args) {
 
     vector<unordered_set<string>> validArgType = this->validSuchThatArgType.find(rel)->second;
     for (int i = 0; i < 2; i++) {
-        if (validArgType[i].find(getArgType(args[i])) == validArgType[i].end()) {
+        if (validArgType[i].find(getArgType(args[i], this->declarations)) == validArgType[i].end()) {
             this->isValid = false;
             return false;
         }
@@ -199,19 +166,19 @@ bool QueryPreprocessor::parsePatternClause(string clause) {
         return false;
     }
 
-    this->patternClauses.push_back(Clause(syn, { firstArg, secondArg }));
+    this->clauses.push_back(Clause(syn, { firstArg, secondArg }));
     return true;
 }
 
 bool QueryPreprocessor::checkPatternClause(string syn, vector<string> args) {
-    string argType = getArgType(syn);
-    if (argType != "assign") {
+    string argType = getArgType(syn, this->declarations);
+    if (argType != ASSIGN_) {
         this->isValid = false;
         return false;
     }
     vector<unordered_set<string>> validArgType = this->validPatternArgType.find(argType)->second;
     for (int i = 0; i < 2; i++) {
-        if (validArgType[i].find(getArgType(args[i])) == validArgType[i].end()) {
+        if (validArgType[i].find(getArgType(args[i], this->declarations)) == validArgType[i].end()) {
             this->isValid = false;
             return false;
         }

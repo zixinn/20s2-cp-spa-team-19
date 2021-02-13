@@ -93,7 +93,6 @@ void Follows::populateFollowsStar() {
     StmtNum curr;
     for (auto &it : followsMap) {
         curr = it.first;
-        s1 = curr;
         s2 = it.second;
         do {
             storeFollowsStar(curr, s2);
