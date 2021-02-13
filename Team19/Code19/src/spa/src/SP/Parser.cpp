@@ -5,12 +5,13 @@
 
 using namespace std;
 #include "SP/Parser.h"
+#include "SP/DesignExtractor.h"
 
 namespace TokenUtils {
 
 }
 
-Parser::Parser(LexerStub* l_ptr) : l_ptr{l_ptr} {
+Parser::Parser(LexerStub* l_ptr) : l_ptr{ l_ptr } {
 	//this->registerInfixExpr(sp::Token::TokenType::NAME, &Parser::parseVarNameExpr);
 	this->nextToken();
 	this->nextToken();
@@ -21,6 +22,81 @@ void Parser::nextToken() {
 	peekToken = (*l_ptr).nextToken();
 };
 
+bool Parser::parse() {
+	try {
+		DesignExtractor::signalReset();
+		ast::Program* prog = this->parseProgram();
+		vector<ast::Proc*> procs = prog->getProcedures();
+		for (int i = 0; i < procs.size(); i++) {
+			ast::Proc* procedure = procs[i];
+			//store new procedure
+
+			DesignExtractor::storeNewProcedure(procedure->getName()->getVal());
+			vector<ast::Stmt*> stmts = procedure->getStmtLst()->getStatements();
+			addStmtLstToDE(stmts);
+
+			DesignExtractor::exitProcedure();
+		}
+
+		//end of populating DE
+		DesignExtractor::signalEnd();
+		
+
+	} catch (...) {
+		//error encountered so reset PKB and DE
+		DesignExtractor::signalReset();
+		return false;
+	}
+
+	return true;
+}
+
+void Parser::addStmtLstToDE(vector<ast::Stmt*> stmts) {
+
+	for (int i = 0; i < stmts.size(); i++) {
+		ast::Stmt* stmt = stmts[i];
+		
+		sp::Token::TokenType type = stmt->getToken()->getType();
+		if (type == sp::Token::TokenType::ASSIGN) {
+			ast::AssignStmt* ass = (ast::AssignStmt*)stmt;
+
+			DesignExtractor::storeNewAssignment(ass->getIndex(), ass->getName()->getVal(), ass);
+		} else if (type == sp::Token::TokenType::READ) {
+			ast::ReadStmt* read = (ast::ReadStmt*)stmt;
+			DesignExtractor::storeNewRead(read->getIndex(), read->getName()->getVal(), read);
+		} else if (type == sp::Token::TokenType::PRINT) {
+			ast::PrintStmt* print = (ast::PrintStmt*)stmt;
+
+			DesignExtractor::storeNewPrint(print->getIndex(), print->getName()->getVal(), print);
+		} else if (type == sp::Token::TokenType::WHILE) {
+			ast::WhileStmt* whi = (ast::WhileStmt*)stmt;
+			ast::CondExprBag* ce = (ast::CondExprBag*) whi->getCondExpr();
+			DesignExtractor::storeNewWhile(whi->getIndex(), ce->getVarNames(), ce->getConstVal(), stmt);
+			vector<ast::Stmt*> whileStmts = whi->getStmtLst()->getStatements();
+			addStmtLstToDE(whileStmts);
+			DesignExtractor::exitWhile();
+		} else if (type == sp::Token::TokenType::IF) {
+
+			ast::IfStmt* iff = (ast::IfStmt*)stmt;
+			ast::CondExprBag* ce = (ast::CondExprBag*)iff->getCondExpr();
+			DesignExtractor::storeNewIf(iff->getIndex(), ce->getVarNames(), ce->getConstVal(), stmt);
+			vector<ast::Stmt*> ifCon = iff->getConsequence()->getStatements();
+			addStmtLstToDE(ifCon);
+
+			DesignExtractor::storeNewElse();
+			vector<ast::Stmt*> ifAlt = iff->getAlternative()->getStatements();
+			addStmtLstToDE(ifAlt);
+			DesignExtractor::endIfElse();
+
+		} else if (type == sp::Token::TokenType::CALL) {
+			throw "NOT READY";
+		} else {
+			throw this->genError("Unknown statement");
+		}
+	}
+}
+
+
 
 ast::Program* Parser::parseProgram() {
 	std::vector<ast::Proc*> procs{};
@@ -28,7 +104,7 @@ ast::Program* Parser::parseProgram() {
 		ast::Proc* proc = this->parseProc();
 		if (!proc) { throw this->genError("ParseProc error"); }
 		procs.push_back(proc);
-		
+
 	}
 	if (procs.size() == 0) {
 		throw this->genError("Expect at least one procedure");
@@ -50,7 +126,7 @@ ast::Proc* Parser::parseProc() {
 	ast::ProcName* pn = this->parseProcName();
 
 	if (!this->expectPeek(sp::Token::TokenType::LBRACE)) {
-		throw this->genError("ParseProc expected a LBRACE, got: " + this->peekLiteral()); 
+		throw this->genError("ParseProc expected a LBRACE, got: " + this->peekLiteral());
 	}
 
 	//current token is {
@@ -59,7 +135,7 @@ ast::Proc* Parser::parseProc() {
 	ast::StmtLst* stmtlst = this->parseStmtLst();
 
 	if (!this->currTokenIs(sp::Token::TokenType::RBRACE)) {
-		throw this->genError("ParseProc expected a RBRACE, got: " + this->peekLiteral()); 
+		throw this->genError("ParseProc expected a RBRACE, got: " + this->peekLiteral());
 	}
 	//current token is }
 	this->nextToken();
@@ -78,12 +154,12 @@ ast::StmtLst* Parser::parseStmtLst() {
 		ast::Stmt* stmt = this->parseStmt();
 		if (!stmt) { throw this->genError("ParseStmtLst error"); }
 		xs.push_back(stmt);
-		// currToken is semicolon
-		// shuold i also check for } ?
-		if (!this->currTokenIs(sp::Token::TokenType::SEMICOLON)) { 
+
+		// currToken is semicolon or RBRACE (if WHILE or IF which dont end with ;)
+		if (!this->currTokenIs(sp::Token::TokenType::SEMICOLON) && !this->currTokenIs(sp::Token::TokenType::RBRACE)) {
 			throw this->genError("ParseStmtLst expected Semicolon, got: " + this->currLiteral());
 		}
-		this->nextToken();		
+		this->nextToken();
 	}
 	ast::StmtLst* stmt_lst = new ast::StmtLst(new sp::Token(sp::Token::TokenType::LBRACE, "PLACEHOLDER"), xs);
 	return stmt_lst;
@@ -102,6 +178,10 @@ ast::Stmt* Parser::parseStmt() {
 		return this->parsePrintStmt();
 	} else if (this->currTokenIs(sp::Token::TokenType::READ)) {
 		return this->parseReadStmt();
+	} else if (this->currTokenIs(sp::Token::TokenType::WHILE)) {
+		return this->parseWhileStmt();
+	} else if (this->currTokenIs(sp::Token::TokenType::IF)) {
+		return this->parseIfStmt();
 	}
 	throw this->genError("ParseStmt received unexpected token: " + this->currLiteral());
 }
@@ -113,7 +193,7 @@ ast::CallStmt* Parser::parseCallStmt() {
 		throw this->genError("ParseCall expected a CALL, got: " + this->currLiteral());
 	}
 	sp::Token* call_tok = this->currToken;
-	
+
 	if (!this->expectPeekIsNameOrKeyword()) {
 		throw this->genError("ParseCall expected a NAME or Keyword, got: " + this->peekLiteral());
 	}
@@ -131,7 +211,7 @@ ast::ReadStmt* Parser::parseReadStmt() {
 		throw this->genError("ParseRead expected a READ, got: " + this->currLiteral());
 	}
 	sp::Token* read_tok = this->currToken;
-	
+
 	if (!this->expectPeekIsNameOrKeyword()) {
 		throw this->genError("ParseRead expected a NAME or Keyword, got: " + this->peekLiteral());
 	}
@@ -149,7 +229,7 @@ ast::PrintStmt* Parser::parsePrintStmt() {
 		throw this->genError("ParsePrint expected a PRINT, got: " + this->currLiteral());
 	}
 	sp::Token* print_tok = this->currToken;
-	
+
 	if (!this->expectPeekIsNameOrKeyword()) {
 		throw this->genError("ParsePrint expected a NAME or Keyword, got: " + this->peekLiteral());
 	}
@@ -187,7 +267,7 @@ ast::AssignStmt* Parser::parseAssignStmt() {
 
 
 	// when returning, currToken must be semicolon
-	if (!this->currTokenIs(sp::Token::TokenType::SEMICOLON)) { 
+	if (!this->currTokenIs(sp::Token::TokenType::SEMICOLON)) {
 		throw this->genError("ParseAssign expected Semicolon, got: " + this->currLiteral());
 	}
 	// this is here instead of lower to ensure StmtNum is more accurate
@@ -219,23 +299,22 @@ ast::Expr* Parser::parseExpr(int precedence) {
 // basically a switch for choosing parsing VarName or ConstVal
 ast::Expr* Parser::parsePrefixExpr(sp::Token* tok) {
 	//throw "NOT READY";
-	if (tok->getType() == sp::Token::TokenType::NAME) {
+	//if (tok->getType() == sp::Token::TokenType::NAME) {
+	if (this->currTokenIsNameOrKeyword()) {
 		return parseVarName();
-	}
-	else if (tok->getType() == sp::Token::TokenType::CONST) {
+	} else if (tok->getType() == sp::Token::TokenType::CONST) {
 		return parseConstVal();
-	}
-	else if (tok->getType() == sp::Token::TokenType::LPAREN) {
+	} else if (tok->getType() == sp::Token::TokenType::LPAREN) {
 		return parseLParenPrefixExpr();
 	}
-	throw this->genError("ParsePrefixExpr expected a Prefix, NAME or CONST got: " + tok->getLiteral());
+	throw this->genExprError("ParsePrefixExpr expected a Prefix, NAME or CONST got: " + tok->getLiteral());
 }
 
 ast::Expr* Parser::parseInfixExpr(ast::Expr* left_expr) {
 	//throw "NOT READY";
 	auto tok = this->currToken;
 	if (!ParserUtils::hasExprRank(tok->getType())) {
-		throw this->genError("ParsePrefixExpr expected a Infix Operator, got: " + tok->getLiteral());
+		throw this->genExprError("ParseInfixExpr expected a Infix Operator, got: " + tok->getLiteral());
 	}
 	// expr is a valid infix expr
 
@@ -258,13 +337,146 @@ ast::Expr* Parser::parseLParenPrefixExpr() {
 
 	// the currToken should be RPAREN, since we just shifted away the last expr in RParen
 	if (!this->currTokenIs(sp::Token::TokenType::RPAREN)) {
-		throw this->genError("ParseLParen expected RPAREN instead encountered: " + this->currLiteral());
+		throw this->genExprError("ParseLParen expected RPAREN instead encountered: " + this->currLiteral());
 	}
 	return expr;
 }
 
-std::string Parser::genError(std::string str) {
-	return "StmtNum: " + std::to_string(this->pc) + " - " + str;
+// honestly no idea if this is even needed
+// for test case to catch `a == b) && (c < 5)` output is `a == b` but wont other parts of parser catch?
+ast::CondExpr* Parser::parseCondExpr(int precedence) {
+	//throw "NOT READY";
+	ast::CondExprBag* ceb = new ast::CondExprBag(new sp::Token(sp::Token::TokenType::BOOL, "COND_EXPR_BAG"));
+
+	// expect first part to always be (
+	// since if ( ... )
+	if (!this->currTokenIs(sp::Token::TokenType::LPAREN)) {
+		throw this->genCondExprError("ParseCondExpr expected LPAREN instead encountered: " + this->currLiteral());
+	}
+	ceb->pushToken(this->currToken);
+	this->nextToken();
+
+	int l_parens = 1;
+	while (l_parens > 0) {
+		if (this->currTokenIs(sp::Token::TokenType::EOFF)) { break; }
+		auto tok = this->currToken;
+		if (this->currTokenIs(sp::Token::TokenType::LPAREN)) { l_parens++; }
+		if (this->currTokenIs(sp::Token::TokenType::RPAREN)) { l_parens--; }
+		if (l_parens <= 0) { break; }	// dont add to bag
+		//tokens.push_back(tok);
+		ceb->pushToken(tok);
+		// nextToken
+		this->nextToken();
+	}
+	if (!this->currTokenIs(sp::Token::TokenType::RPAREN)) {
+		throw this->genError("ParseCondExpr expected RPAREN instead encountered: " + this->currLiteral());
+	}
+	ceb->pushToken(this->currToken);
+	std::vector<sp::Token*> tokens;
+	CondExprUtils::VectorShallowCopy(ceb->getTokens(), tokens);
+	//std::cout << ceb->toString() << std::endl;
+	//std::cout << "Parser::ParseCondExpr :: vector: " + CondExprUtils::VectorToString(tokens)  << std::endl;
+
+	// check if legal or throw exception
+	try {
+		CondExprUtils::ParseCondExpr(tokens);
+	}
+	catch (sp::UtilsException& ex) {
+		throw this->genCondExprError(ex.what());
+	}
+	return ceb;
+}
+
+ast::WhileStmt* Parser::parseWhileStmt() {
+	int curr_index = this->getPlusPC();
+	auto tok = this->currToken;
+	if (!this->currTokenIs(sp::Token::TokenType::WHILE)) {
+		throw this->genError("ParseWhile expected WHILE, encountered: " + this->currLiteral());
+	}
+	if (!this->expectPeek(sp::Token::TokenType::LPAREN)) {
+		throw this->genError("ParseWhile expected LPAREN (, encountered: " + this->peekToken->getLiteral());
+	}
+	auto cond_expr = this->parseCondExpr(ParserUtils::CondExprPrecedence::LOWEST);
+
+	if (!this->currTokenIs(sp::Token::TokenType::RPAREN)) {
+		throw this->genError("ParseWhile expected RPAREN ), encountered: " + this->currLiteral());
+	}
+
+	if (!this->expectPeek(sp::Token::TokenType::LBRACE)) {
+		throw this->genError("ParseWhile expected LBRACE {, encountered: " + this->peekToken->getLiteral());
+	}
+	this->nextToken();
+
+	auto stmt_lst = this->parseStmtLst();
+
+	if (!this->currTokenIs(sp::Token::TokenType::RBRACE)) {
+		throw this->genError("ParseWhile expected RBRACE }, encountered: " + this->currLiteral());
+	}
+
+	return new ast::WhileStmt(curr_index, tok, cond_expr, stmt_lst);
+}
+
+ast::IfStmt* Parser::parseIfStmt() {
+	//throw "NOT READY";
+	auto tok = this->currToken;
+	int curr_index = this->getPlusPC();
+	if (!this->currTokenIs(sp::Token::TokenType::IF)) {
+		throw this->genError("ParseIf expected IF, encountered: " + this->currLiteral());
+	}
+	if (!this->expectPeek(sp::Token::TokenType::LPAREN)) {
+		throw this->genError("ParseIf expected LPAREN (, encountered: " + this->peekToken->getLiteral());
+	}
+	auto cond_expr = this->parseCondExpr(ParserUtils::CondExprPrecedence::LOWEST);
+
+	if (!this->currTokenIs(sp::Token::TokenType::RPAREN)) {
+		throw this->genError("ParseIf expected RPAREN ), encountered: " + this->currLiteral());
+	}
+
+	if (!this->expectPeek(sp::Token::TokenType::THEN)) {
+		throw this->genError("ParseIf expected THEN, encountered: " + this->peekToken->getLiteral());
+	}
+
+	if (!this->expectPeek(sp::Token::TokenType::LBRACE)) {
+		throw this->genError("ParseIf expected LBRACE {, encountered: " + this->peekToken->getLiteral());
+	}
+	this->nextToken();
+
+	auto csq_lst = this->parseStmtLst();
+
+	if (!this->currTokenIs(sp::Token::TokenType::RBRACE)) {
+		throw this->genError("ParseIf expected RBRACE }, encountered: " + this->currLiteral());
+	}
+
+	if (!this->expectPeek(sp::Token::TokenType::ELSE)) {
+		throw this->genError("ParseIf expected ELSE, encountered: " + this->peekToken->getLiteral());
+	}
+
+	if (!this->expectPeek(sp::Token::TokenType::LBRACE)) {
+		throw this->genError("ParseWhile expected LBRACE {, encountered: " + this->peekToken->getLiteral());
+	}
+	this->nextToken();
+
+	auto alt_lst = this->parseStmtLst();
+
+	if (!this->currTokenIs(sp::Token::TokenType::RBRACE)) {
+		throw this->genError("ParseWhile expected RBRACE }, encountered: " + this->currLiteral());
+	}
+
+	return new ast::IfStmt(curr_index, tok, cond_expr, csq_lst, alt_lst);
+}
+
+//std::string Parser::genError(std::string str) {
+sp::ParserException Parser::genError(std::string str) {
+	//return "StmtNum: " + std::to_string(this->pc) + " - " + str;
+	return sp::ParserException(this->pc, str);
+}
+
+sp::ParserException Parser::genExprError(std::string str) {
+	return sp::ParseExprException(this->pc, str);
+}
+
+sp::ParserException Parser::genCondExprError(std::string str) {
+	return sp::ParseCondExprException(this->pc, str);
 }
 
 int Parser::getPlusPC() {

@@ -11,5 +11,6 @@ namespace ast {
 		Expr(sp::Token* token) :Node{ token } {};
 		virtual bool compare(Expr* expr) = 0;
 		virtual std::string toString() = 0;
+		~Expr() {};
 	};
 }

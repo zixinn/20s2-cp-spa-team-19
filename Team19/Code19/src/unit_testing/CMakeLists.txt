@@ -5,7 +5,11 @@ add_executable(unit_testing ${srcs}
 	src/SP/TestParseReadStmt.cpp
 	src/SP/TestParseAssignStmt.cpp
 	src/SP/TestParseExpr.cpp
+	src/SP/TestParseCondExpr.cpp
 	src/SP/TestLexerParser.cpp
+	src/SP/TestParseWhile.cpp
+	src/SP/TestParseIf.cpp
+	src/SP/TestCondExprUtils.cpp
 )
 
 target_link_libraries(unit_testing spa)

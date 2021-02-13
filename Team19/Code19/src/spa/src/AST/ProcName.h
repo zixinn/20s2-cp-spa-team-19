@@ -20,5 +20,6 @@ namespace ast {
 		};
 
 		std::string getVal() { return val; }
+		~ProcName() {};
 	};
 }
