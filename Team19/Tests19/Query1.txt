@@ -1,0 +1,375 @@
+1 - No clause stmt
+stmt s;
+Select s
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+5000
+2 - No clause read
+read r;
+Select r
+1, 2
+5000
+3 - No clause print
+print p;
+Select p
+11, 12
+5000
+4 - No clause assign
+assign a;
+Select a
+3, 4, 6, 7, 8, 10
+5000
+5 - No clause if
+if ifs;
+Select ifs
+5
+5000
+6 - No clause while
+while w;
+Select w
+9
+5000
+7 - No clause proc
+procedure p;
+Select p
+Test1
+5000
+8 - No clause var
+variable v;
+Select v
+a, b, x, y, z
+5000
+9 - No clause const
+constant c;
+Select c
+123, 3, 1, 4
+5000
+10 - Parent
+assign a;
+Select a such that Parent(_, _)
+3, 4, 6, 7, 8, 10
+5000
+11 - Parent
+assign a;
+Select a such that Parent(_, a)
+6, 7, 10
+5000
+12 - Parent
+assign a;
+Select a such that Parent(_, 6)
+3, 4, 6, 7, 8, 10
+5000
+13 - Parent
+assign a;
+Select a such that Parent(_, 5)
+none
+5000
+14 - Parent
+if ifs;
+Select ifs such that Parent(9, _)
+5
+5000
+15 - Parent
+if ifs;
+Select ifs such that Parent(ifs, _)
+5
+5000
+16 - Parent
+procedure proc;
+Select proc such that Parent(9, 10)
+Test1
+5000
+17 - Parent
+stmt s;
+Select s such that Parent(5, 4)
+none
+5000
+18 - Parent
+stmt s;
+Select s such that Parent(5, 5)
+none
+5000
+19 - Parent
+assign a;
+Select a such that Parent(5, a)
+6, 7
+5000
+20 - Parent
+print p;
+Select p such that Parent(9, p)
+none
+5000
+21 - Parent
+stmt s;
+Select s such that Parent(s, 7)
+5
+5000
+22 - Parent
+while w;
+Select w such that Parent(w, 10)
+9
+5000
+23 - Parent
+stmt s; while w;
+Select s such that Parent(w, s)
+10
+5000
+24 - Parent
+stmt s; assign a;
+Select a such that Parent(s, a)
+6, 7, 10
+5000
+25 - Parent
+stmt s; assign a;
+Select s such that Parent(s, a)
+5, 9
+5000
+26 - Parent
+stmt s, s1;
+Select s1 such that Parent(s, s1)
+6, 7, 10
+5000
+27 - ParentT
+read r;
+Select r such that Parent*(_, _)
+1, 2
+5000
+28 - ParentT
+stmt s;
+Select s such that Parent*(_, 10)
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+5000
+29 - ParentT
+assign a;
+Select a such that Parent*(_, 3)
+none
+5000
+30 - ParentT
+stmt s;
+Select s such that Parent*(_, s)
+6, 7, 10
+5000
+31 - ParentT
+print p;
+Select p such that Parent*(5, _)
+11, 12
+5000
+32 - ParentT
+while w;
+Select w such that Parent*(w, _)
+9
+5000
+33 - ParentT
+procedure proc;
+Select proc such that Parent*(5, 7)
+Test1
+5000
+34 - ParentT
+procedure proc;
+Select proc such that Parent*(7, 5)
+none
+5000
+35 - ParentT
+assign a;
+Select a such that Parent*(5, a)
+6, 7
+5000
+36 - ParentT
+while w;
+Select w such that Parent*(w, 10)
+9
+5000
+37 - ParentT
+if ifs; stmt s;
+Select ifs such that Parent*(ifs, s)
+5
+5000
+38 - ParentT
+if ifs; stmt s;
+Select s such that Parent*(ifs, s)
+6, 7
+5000
+39 - ParentT
+constant c; while w; stmt s;
+Select c such that Parent*(w, s)
+123, 3, 1, 4
+5000
+40 - Follows 
+print p;
+Select p such that Follows(_, _)
+11, 12
+5000
+41 - Follows 
+assign a;
+Select a such that Follows(_, 6)
+none
+5000
+42 - Follows 
+assign a;
+Select a such that Follows(_, 8)
+3, 4, 6, 7, 8, 10
+5000
+43 - Follows
+while w;
+Select w such that Follows(7, _)
+none
+5000
+44 - Follows
+while w;
+Select w such that Follows(8, _)
+9
+5000
+45 - Follows
+procedure proc;
+Select proc such that Follows(6, 7)
+none
+5000
+46 - Follows
+read r;
+Select r such that Follows(3, 4)
+1, 2
+5000
+47 - Follows
+read r;
+Select r such that Follows(4, 3)
+none
+5000
+48 - Follows
+print p;
+Select p such that Follows(9, p)
+11
+5000
+49 - Follows
+assign a;
+Select a such that Follows(10, a)
+none
+5000
+50 - Follows
+stmt s;
+Select s such that Follows(s, 7)
+none
+5000
+51 - Follows
+stmt s;
+Select s such that Follows(s, 12)
+11
+5000
+52 - Follows
+constant c; stmt s;
+Select c such that Follows(s, 8)
+123, 1, 3, 4
+5000
+53 - Follows
+stmt s; read r;
+Select r such that Follows(s, r)
+2
+5000
+54 - Follows
+assign a; stmt s;
+Select a such that Follows(s, a)
+3, 4, 8
+5000
+55 - Follows
+stmt s; assign a;
+Select s such that Follows(s, a)
+2, 3, 5
+5000
+56 - Follows
+procedure proc; stmt s; print p;
+Select proc such that Follows(s, p)
+Test1
+5000
+57 - Follows
+stmt s;
+Select s such that Follows(s, s)
+none
+5000
+58 - FollowsT
+print p;
+Select p such that Follows*(_, _)
+11, 12
+5000
+59 - FollowsT 
+assign a;
+Select a such that Follows*(_, 6)
+none
+5000
+60 - FollowsT 
+assign a;
+Select a such that Follows*(_, 8)
+3, 4, 6, 7, 8, 10
+5000
+61 - FollowsT
+while w;
+Select w such that Follows*(7, _)
+none
+5000
+62 - FollowsT
+while w;
+Select w such that Follows*(8, _)
+9
+5000
+63 - FollowsT
+procedure proc;
+Select proc such that Follows*(6, 7)
+none
+5000
+64 - FollowsT
+read r;
+Select r such that Follows*(3, 4)
+1, 2
+5000
+65 - FollowsT
+read r;
+Select r such that Follows*(4, 3)
+none
+5000
+66 - FollowsT
+print p;
+Select p such that Follows*(9, p)
+11, 12
+5000
+67 - FollowsT
+assign a;
+Select a such that Follows*(10, a)
+none
+5000
+68 - FollowsT
+stmt s;
+Select s such that Follows*(s, 7)
+none
+5000
+69 - FollowsT
+stmt s;
+Select s such that Follows*(s, 12)
+1, 2, 3, 4, 5, 8, 9, 11
+5000
+70 - FollowsT
+constant c; stmt s;
+Select c such that Follows*(s, 8)
+123, 1, 3, 4
+5000
+71 - FollowsT
+stmt s; read r;
+Select r such that Follows*(s, r)
+2
+5000
+72 - FollowsT
+assign a; stmt s;
+Select a such that Follows*(s, a)
+3, 4, 8
+5000
+73 - FollowsT
+stmt s; assign a;
+Select a such that Follows*(s, a)
+3, 4, 8
+5000
+74 - FollowsT
+procedure proc; stmt s; print p;
+Select proc such that Follows*(s, p)
+Test1
+5000
+75 - FollowsT
+stmt s;
+Select s such that Follows*(s, s)
+none
+5000
