@@ -14,27 +14,6 @@ Follows* setUpFollowsTest() {
     return follows;
 }
 
-Follows* setUpFollowsStarTest() {
-    Follows* follows = new Follows();
-    follows->storeFollows(1,2);
-    follows->storeFollows(2,3);
-    follows->storeFollows(3,4);
-    follows->storeFollows(6,7);
-    follows->storeFollows(8,9);
-    follows->storeFollows(9,10);
-    follows->storeFollowsStar(1,2);
-    follows->storeFollowsStar(2,3);
-    follows->storeFollowsStar(3,4);
-    follows->storeFollowsStar(1,3);
-    follows->storeFollowsStar(1,4);
-    follows->storeFollowsStar(2,4);
-    follows->storeFollowsStar(6,7);
-    follows->storeFollowsStar(8,9);
-    follows->storeFollowsStar(9,10);
-    follows->storeFollowsStar(8,10);
-    return follows;
-}
-
 TEST_CASE("storeFollows Test") {
     Follows* follows = new Follows();
     REQUIRE(follows->storeFollows(1,2));
@@ -44,15 +23,23 @@ TEST_CASE("storeFollows Test") {
     REQUIRE_FALSE(follows->storeFollows(2,4));
 }
 
-TEST_CASE("storeFollowsStar Test") {
-    Follows* follows = new Follows();
-    REQUIRE(follows->storeFollowsStar(1,2));
-    REQUIRE(follows->storeFollowsStar(2,3));
-    REQUIRE(follows->storeFollowsStar(3,4));
-    REQUIRE(follows->storeFollowsStar(1,3));
-    REQUIRE(follows->storeFollowsStar(2,4));
-    REQUIRE_FALSE(follows->storeFollowsStar(1,2));
-    REQUIRE_FALSE(follows->storeFollowsStar(1,3));
+TEST_CASE("populateFollowStar Test") {
+    Follows* follows = setUpFollowsTest();
+    follows->populateFollowsStar();
+    REQUIRE(follows->getFollowerStar(1) == unordered_set<StmtNum>({2,3,4}));
+    REQUIRE(follows->getFollowerStar(2) == unordered_set<StmtNum>({3,4}));
+    REQUIRE(follows->getFollowerStar(3) == unordered_set<StmtNum>({4}));
+    REQUIRE(follows->getFollowerStar(6) == unordered_set<StmtNum>({7}));
+    REQUIRE(follows->getFollowerStar(8) == unordered_set<StmtNum>({9,10}));
+    REQUIRE(follows->getFollowerStar(9) == unordered_set<StmtNum>({10}));
+    REQUIRE(follows->getFollowerStar(10).empty());
+    REQUIRE(follows->getFolloweeStar(1).empty());
+    REQUIRE(follows->getFolloweeStar(2) == unordered_set<StmtNum>({1}));
+    REQUIRE(follows->getFolloweeStar(3) == unordered_set<StmtNum>({1,2}));
+    REQUIRE(follows->getFolloweeStar(4) == unordered_set<StmtNum>({1,2,3}));
+    REQUIRE(follows->getFolloweeStar(7) == unordered_set<StmtNum>({6}));
+    REQUIRE(follows->getFolloweeStar(9) == unordered_set<StmtNum>({8}));
+    REQUIRE(follows->getFolloweeStar(10) == unordered_set<StmtNum>({8,9}));
 }
 
 TEST_CASE("getFollowsSize Test") {
@@ -63,7 +50,8 @@ TEST_CASE("getFollowsSize Test") {
 }
 
 TEST_CASE("getFollowsStarSize Test") {
-    Follows* follows = setUpFollowsStarTest();
+    Follows* follows = setUpFollowsTest();
+    follows->populateFollowsStar();
     REQUIRE(follows->getFollowsStarSize() == 10);
 }
 
@@ -79,7 +67,8 @@ TEST_CASE("isFollows Test") {
 }
 
 TEST_CASE("isFollowsStar Test") {
-    Follows* follows = setUpFollowsStarTest();
+    Follows* follows = setUpFollowsTest();
+    follows->populateFollowsStar();
     REQUIRE(follows->isFollowsStar(1,2));
     REQUIRE(follows->isFollowsStar(2,3));
     REQUIRE(follows->isFollowsStar(3,4));
@@ -123,6 +112,7 @@ TEST_CASE("getFollower Test") {
     REQUIRE(follows->getFollower(6) == 7);
     REQUIRE(follows->getFollower(8) == 9);
     REQUIRE(follows->getFollower(9) == 10);
+    REQUIRE(follows->getFollower(10) == -1);
 }
 
 TEST_CASE("getFollowee Test") {
@@ -133,10 +123,12 @@ TEST_CASE("getFollowee Test") {
     REQUIRE(follows->getFollowee(7) == 6);
     REQUIRE(follows->getFollowee(9) == 8);
     REQUIRE(follows->getFollowee(10) == 9);
+    REQUIRE(follows->getFollowee(1) == -1);
 }
 
 TEST_CASE("getFollowerStar test") {
-    Follows* follows = setUpFollowsStarTest();
+    Follows* follows = setUpFollowsTest();
+    follows->populateFollowsStar();
     REQUIRE(follows->getFollowerStar(1) == unordered_set<StmtNum>({2,3,4}));
     REQUIRE(follows->getFollowerStar(2) == unordered_set<StmtNum>({3,4}));
     REQUIRE(follows->getFollowerStar(3) == unordered_set<StmtNum>({4}));
@@ -147,7 +139,8 @@ TEST_CASE("getFollowerStar test") {
 }
 
 TEST_CASE("getFolloweeStar Test") {
-    Follows* follows = setUpFollowsStarTest();
+    Follows* follows = setUpFollowsTest();
+    follows->populateFollowsStar();
     REQUIRE(follows->getFolloweeStar(1).empty());
     REQUIRE(follows->getFolloweeStar(2) == unordered_set<StmtNum>({1}));
     REQUIRE(follows->getFolloweeStar(3) == unordered_set<StmtNum>({1,2}));
@@ -173,7 +166,8 @@ TEST_CASE("getAllFollows Test") {
 }
 
 TEST_CASE("getAllFollowsStar Test") {
-    Follows* follows = setUpFollowsStarTest();
+    Follows* follows = setUpFollowsTest();
+    follows->populateFollowsStar();
     pair<vector<StmtNum>, vector<StmtNum> > result = follows->getAllFollowsStar();
     vector<StmtNum> s1s = result.first;
     vector<StmtNum> s2s = result.second;
@@ -185,22 +179,4 @@ TEST_CASE("getAllFollowsStar Test") {
     for (int i = 0; i < num_pairs; i++) {
         REQUIRE(follows->isFollowsStar(s1s.at(i), s2s.at(i)));
     }
-}
-
-TEST_CASE("populateFollowStar Test") {
-    Follows* follows = setUpFollowsTest();
-    follows->populateFollowsStar();
-    REQUIRE(follows->getFollowerStar(1) == unordered_set<StmtNum>({2,3,4}));
-    REQUIRE(follows->getFollowerStar(2) == unordered_set<StmtNum>({3,4}));
-    REQUIRE(follows->getFollowerStar(3) == unordered_set<StmtNum>({4}));
-    REQUIRE(follows->getFollowerStar(6) == unordered_set<StmtNum>({7}));
-    REQUIRE(follows->getFollowerStar(8) == unordered_set<StmtNum>({9,10}));
-    REQUIRE(follows->getFollowerStar(9) == unordered_set<StmtNum>({10}));
-    REQUIRE(follows->getFolloweeStar(1).empty());
-    REQUIRE(follows->getFolloweeStar(2) == unordered_set<StmtNum>({1}));
-    REQUIRE(follows->getFolloweeStar(3) == unordered_set<StmtNum>({1,2}));
-    REQUIRE(follows->getFolloweeStar(4) == unordered_set<StmtNum>({1,2,3}));
-    REQUIRE(follows->getFolloweeStar(7) == unordered_set<StmtNum>({6}));
-    REQUIRE(follows->getFolloweeStar(9) == unordered_set<StmtNum>({8}));
-    REQUIRE(follows->getFolloweeStar(10) == unordered_set<StmtNum>({8,9}));
 }

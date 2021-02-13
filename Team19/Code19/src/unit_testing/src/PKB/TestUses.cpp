@@ -71,6 +71,7 @@ TEST_CASE("stmtUsesVar Test") {
     REQUIRE(uses->stmtUsesVar(2,1));
     REQUIRE(uses->stmtUsesVar(2,3));
     REQUIRE(uses->stmtUsesVar(3,1));
+    REQUIRE_FALSE(uses->stmtUsesVar(1,4));
 }
 
 TEST_CASE("procUsesVar Test") {
@@ -81,6 +82,7 @@ TEST_CASE("procUsesVar Test") {
     REQUIRE(uses->procUsesVar(2,1));
     REQUIRE(uses->procUsesVar(2,3));
     REQUIRE(uses->procUsesVar(3,4));
+    REQUIRE_FALSE(uses->procUsesVar(1,5));
 }
 
 TEST_CASE("getVarsUsedByStmt Test") {

@@ -14,27 +14,6 @@ Parent* setUpParentTest() {
     return parent;                    // 7.     e = 6; }
 }
 
-Parent* setUpParentStarTest() {
-    Parent* parent = new Parent();
-    parent->storeParent(1,2);       // 1. while (...) {
-    parent->storeParent(2,3);       // 2.    while (...) {
-    parent->storeParent(3,4);       // 3.        while (...) {
-    parent->storeParent(2,5);       // 4.            b = 2; }
-    parent->storeParent(1,6);       // 5.        c = 3; }
-    parent->storeParent(1,7);       // 6.     d = 5;
-    parent->storeParentStar(1,2);   // 7.     e = 6; }
-    parent->storeParentStar(2,3);
-    parent->storeParentStar(3,4);
-    parent->storeParentStar(2,5);
-    parent->storeParentStar(1,6);
-    parent->storeParentStar(1,7);
-    parent->storeParentStar(1,3);
-    parent->storeParentStar(1,4);
-    parent->storeParentStar(1,5);
-    parent->storeParentStar(2, 4);
-    return parent;
-}
-
 TEST_CASE("storeParent Test") {
     Parent* parent = new Parent();
     REQUIRE(parent->storeParent(1,2));// 1. while (...) {
@@ -49,20 +28,20 @@ TEST_CASE("storeParent Test") {
     REQUIRE_FALSE(parent->storeParent(1,2)); // already stored
 }
 
-TEST_CASE("storeParentStar Test") {
-    Parent* parent = new Parent();
-    parent->storeParentStar(1,2);// 1. while (...) {
-    parent->storeParentStar(2,3);// 2.    while (...) {
-    parent->storeParentStar(3,4);// 3.        while (...) {
-    parent->storeParentStar(2,5);// 4.            b = 2; }
-    parent->storeParentStar(1,6);// 5.        c = 3; }
-    parent->storeParentStar(1,7);// 6.     d = 5;
-    parent->storeParentStar(1,3);// 7.     e = 6; }
-    parent->storeParentStar(1,4);
-    parent->storeParentStar(1,5);
-    parent->storeParentStar(2, 4);
-    REQUIRE_FALSE(parent->storeParentStar(1,2)); // already in parentStar
-    REQUIRE_FALSE(parent->storeParentStar(2,3)); // already in parentStar
+TEST_CASE("populateParentStar Test") {
+    Parent* parent = setUpParentTest();
+    parent->populateParentStar();
+    REQUIRE(parent->getChildrenStar(1) == unordered_set<StmtNum>({2,3,4,5,6,7}));
+    REQUIRE(parent->getChildrenStar(2) == unordered_set<StmtNum>({3,4,5}));
+    REQUIRE(parent->getChildrenStar(3) == unordered_set<StmtNum>({4}));
+    REQUIRE(parent->getChildrenStar(7).empty());
+    REQUIRE(parent->getParentStar(1).empty());
+    REQUIRE(parent->getParentStar(2) == unordered_set<StmtNum>({1}));
+    REQUIRE(parent->getParentStar(3) == unordered_set<StmtNum>({1,2}));
+    REQUIRE(parent->getParentStar(4) == unordered_set<StmtNum>({1,2,3}));
+    REQUIRE(parent->getParentStar(5) == unordered_set<StmtNum>({1,2}));
+    REQUIRE(parent->getParentStar(6) == unordered_set<StmtNum>({1}));
+    REQUIRE(parent->getParentStar(7) == unordered_set<StmtNum>({1}));
 }
 
 TEST_CASE("getParentSize Test") {
@@ -73,7 +52,8 @@ TEST_CASE("getParentSize Test") {
 }
 
 TEST_CASE("getParentStarSize Test") {
-    Parent* parent = setUpParentStarTest();
+    Parent* parent = setUpParentTest();
+    parent->populateParentStar();
     REQUIRE(parent->getParentStarSize() == 10);
 }
 
@@ -90,7 +70,8 @@ TEST_CASE("isParent Test") {
 }
 
 TEST_CASE("isParentStar Test") {
-    Parent* parent = setUpParentStarTest();
+    Parent* parent = setUpParentTest();
+    parent->populateParentStar();
     REQUIRE(parent->isParentStar(1,2));
     REQUIRE(parent->isParentStar(2,3));
     REQUIRE(parent->isParentStar(3,4));
@@ -136,6 +117,7 @@ TEST_CASE("getChildren Test") {
 
 TEST_CASE("getParent Test") {
     Parent* parent = setUpParentTest();
+    REQUIRE(parent->getParent(1) == -1);
     REQUIRE(parent->getParent(2) == 1);
     REQUIRE(parent->getParent(3) == 2);
     REQUIRE(parent->getParent(4) == 3);
@@ -145,7 +127,8 @@ TEST_CASE("getParent Test") {
 }
 
 TEST_CASE("getChildrenStar test") {
-    Parent* parent = setUpParentStarTest();
+    Parent* parent = setUpParentTest();
+    parent->populateParentStar();
     REQUIRE(parent->getChildrenStar(1) == unordered_set<StmtNum>({2,3,4,5,6,7}));
     REQUIRE(parent->getChildrenStar(2) == unordered_set<StmtNum>({3,4,5}));
     REQUIRE(parent->getChildrenStar(3) == unordered_set<StmtNum>({4}));
@@ -153,7 +136,8 @@ TEST_CASE("getChildrenStar test") {
 }
 
 TEST_CASE("getParentStar Test") {
-    Parent* parent = setUpParentStarTest();
+    Parent* parent = setUpParentTest();
+    parent->populateParentStar();
     REQUIRE(parent->getParentStar(1).empty());
     REQUIRE(parent->getParentStar(2) == unordered_set<StmtNum>({1}));
     REQUIRE(parent->getParentStar(3) == unordered_set<StmtNum>({1,2}));
@@ -179,7 +163,8 @@ TEST_CASE("getAllParent Test") {
 }
 
 TEST_CASE("getAllParentStar Test") {
-    Parent* parent = setUpParentStarTest();
+    Parent* parent = setUpParentTest();
+    parent->populateParentStar();
     pair<vector<StmtNum>, vector<StmtNum> > result = parent->getAllParentStar();
     vector<StmtNum> s1s = result.first;
     vector<StmtNum> s2s = result.second;
@@ -193,18 +178,3 @@ TEST_CASE("getAllParentStar Test") {
     }
 }
 
-TEST_CASE("populateParentStar Test") {
-    Parent* parent = setUpParentTest();
-    parent->populateParentStar();
-    REQUIRE(parent->getChildrenStar(1) == unordered_set<StmtNum>({2,3,4,5,6,7}));
-    REQUIRE(parent->getChildrenStar(2) == unordered_set<StmtNum>({3,4,5}));
-    REQUIRE(parent->getChildrenStar(3) == unordered_set<StmtNum>({4}));
-    REQUIRE(parent->getChildrenStar(10).empty());
-    REQUIRE(parent->getParentStar(1).empty());
-    REQUIRE(parent->getParentStar(2) == unordered_set<StmtNum>({1}));
-    REQUIRE(parent->getParentStar(3) == unordered_set<StmtNum>({1,2}));
-    REQUIRE(parent->getParentStar(4) == unordered_set<StmtNum>({1,2,3}));
-    REQUIRE(parent->getParentStar(5) == unordered_set<StmtNum>({1,2}));
-    REQUIRE(parent->getParentStar(6) == unordered_set<StmtNum>({1}));
-    REQUIRE(parent->getParentStar(7) == unordered_set<StmtNum>({1}));
-}
