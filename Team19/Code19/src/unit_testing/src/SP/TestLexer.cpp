@@ -184,6 +184,17 @@ TEST_CASE("Tokenise - Invalid Test") {
 		REQUIRE(expected4[i].getType() == actual[i].getType());
 	}
 
+	//invalid characters eg ", [, $
+	vector<string> test5{
+		"\"",
+		"[a",
+		"$rr"
+	};
+	for (int i = 0; i < test5.size(); i++) {
+		actual.clear();
+		REQUIRE_FALSE(Lexer::tokenise(test5[i], actual));
+		REQUIRE(actual.size() == 0);
+	}
 
 }
 

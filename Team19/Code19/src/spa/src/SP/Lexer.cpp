@@ -147,7 +147,11 @@ sp::Token Lexer::nextToken(string::iterator& it, string::iterator end) {
 			}
 			break;
 		default:
-			token = makeNameConstKeyToken(it, end);
+			if (isdigit(*it) || isalpha(*it)) {
+				token = makeNameConstKeyToken(it, end);
+			} else {
+				token = sp::Token(sp::Token::TokenType::ERROR, to_string(*it));
+			}
 			break;
 	}
 	return token;
