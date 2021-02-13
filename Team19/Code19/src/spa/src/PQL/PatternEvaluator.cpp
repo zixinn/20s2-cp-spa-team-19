@@ -107,8 +107,8 @@ bool PatternEvaluator::areIdentical(ast::InfixExpr* root1, ast::InfixExpr* root2
     // Check if the data of both roots is same and data of left and right
     // subtrees are also same
     return (root1->getTokenLiteral() == root2->getTokenLiteral() &&
-        exprAreIdentical(root1->getLeft(), root2->getLeft()) &&
-        exprAreIdentical(root1->getRight(), root2->getRight()));
+        exprToSubExpr(root1->getLeft(), root2->getLeft(), true) &&
+        exprToSubExpr(root1->getRight(), root2->getRight(), true));
 }
 
 // Compares two ASTs, returns true if AST2 is a subexpression of AST1
@@ -121,11 +121,12 @@ bool PatternEvaluator::isSubtree(ast::InfixExpr* root1, ast::InfixExpr* root2) {
     
     // If the tree with root as current node doesn't match then try left
     // and right subtrees one by one
-    return (exprIsSubtree(root1->getLeft(), root2) ||
-        exprIsSubtree(root1->getRight(), root2));
+    return (exprToSubExpr(root1->getLeft(), root2, false) ||
+        exprToSubExpr(root1->getRight(), root2, false));
 }
 
-bool PatternEvaluator::exprIsSubtree(ast::Expr* expr1, ast::Expr* expr2) {
+
+bool PatternEvaluator::exprToSubExpr(ast::Expr* expr1, ast::Expr* expr2, bool checkIfIdentical) {
     ast::InfixExpr* infixExpr1 = dynamic_cast<ast::InfixExpr*>(expr1);
     ast::ConstVal* constValExpr1 = dynamic_cast<ast::ConstVal*>(expr1);
     ast::VarName* varNameExpr1 = dynamic_cast<ast::VarName*>(expr1);
@@ -134,27 +135,7 @@ bool PatternEvaluator::exprIsSubtree(ast::Expr* expr1, ast::Expr* expr2) {
     ast::VarName* varNameExpr2 = dynamic_cast<ast::VarName*>(expr2);
 
     if (infixExpr1 != nullptr && infixExpr2 != nullptr) {
-        return isSubtree(infixExpr1, infixExpr2);
-    }
-    else if (constValExpr1 != nullptr && constValExpr2 != nullptr) {
-        return (constValExpr1->getVal() == constValExpr2->getVal());
-    }
-    else if (varNameExpr1 != nullptr && varNameExpr2 != nullptr) {
-        return (varNameExpr1->getVal() == varNameExpr2->getVal());
-    }
-    return false;
-}
-
-bool PatternEvaluator::exprAreIdentical(ast::Expr* expr1, ast::Expr* expr2) {
-    ast::InfixExpr* infixExpr1 = dynamic_cast<ast::InfixExpr*>(expr1);
-    ast::ConstVal* constValExpr1 = dynamic_cast<ast::ConstVal*>(expr1);
-    ast::VarName* varNameExpr1 = dynamic_cast<ast::VarName*>(expr1);
-    ast::InfixExpr* infixExpr2 = dynamic_cast<ast::InfixExpr*>(expr2);
-    ast::ConstVal* constValExpr2 = dynamic_cast<ast::ConstVal*>(expr2);
-    ast::VarName* varNameExpr2 = dynamic_cast<ast::VarName*>(expr2);
-
-    if (infixExpr1 != nullptr && infixExpr2 != nullptr) {
-        return areIdentical(infixExpr1, infixExpr2);
+        return checkIfIdentical? areIdentical(infixExpr1, infixExpr2) : isSubtree(infixExpr1, infixExpr2);
     }
     else if (constValExpr1 != nullptr && constValExpr2 != nullptr) {
         return (constValExpr1->getVal() == constValExpr2->getVal());
@@ -210,7 +191,7 @@ bool PatternEvaluator::evaluateNameExpression(vector<int> stmtNums, string varNa
         int precedence = ParserUtils::ExprPrecedence::LOWEST;
         ast::Expr* expr2 = parserObj.parseExpr(precedence);
 
-        bool secondArgMatch = exprAreIdentical(expr1, expr2);
+        bool secondArgMatch = exprToSubExpr(expr1, expr2, true);
         if (firstArgMatch && secondArgMatch) {
             tempResults[varName].push_back(*it);
         }
@@ -240,7 +221,7 @@ bool PatternEvaluator::evaluateNameExpressionWithUnderscore(vector<int> stmtNums
         int precedence = ParserUtils::ExprPrecedence::LOWEST;
         ast::Expr* expr2 = parserObj.parseExpr(precedence);
 
-        bool secondArgMatch = exprIsSubtree(expr1, expr2);
+        bool secondArgMatch = exprToSubExpr(expr1, expr2, false);
         if (firstArgMatch && secondArgMatch) {
             tempResults[varName].push_back(*it);
         }
@@ -285,7 +266,7 @@ bool PatternEvaluator::evaluateVarExpression(vector<int> stmtNums, string varNam
         int precedence = ParserUtils::ExprPrecedence::LOWEST;
         ast::Expr* expr2 = parserObj.parseExpr(precedence);
 
-        bool secondArgMatch = exprAreIdentical(expr1, expr2);
+        bool secondArgMatch = exprToSubExpr(expr1, expr2, true);
         if (secondArgMatch) {
             string var = stmt->getName()->getVal();
             tempResults[firstArg].push_back(PKB::varTable->getVarID(var)); // store varID of var on LHS
@@ -316,7 +297,7 @@ bool PatternEvaluator::evaluateVarExpressionWithUnderscore(vector<int> stmtNums,
         int precedence = ParserUtils::ExprPrecedence::LOWEST;
         ast::Expr* expr2 = parserObj.parseExpr(precedence);
 
-        bool secondArgMatch = exprIsSubtree(expr1, expr2);
+        bool secondArgMatch = exprToSubExpr(expr1, expr2, false);
         if (secondArgMatch) {
             string var = stmt->getName()->getVal();
             tempResults[firstArg].push_back(PKB::varTable->getVarID(var)); // store varID of var on LHS
@@ -361,7 +342,7 @@ bool PatternEvaluator::evaluateUnderscoreExpression(vector<int> stmtNums, string
         int precedence = ParserUtils::ExprPrecedence::LOWEST;
         ast::Expr* expr2 = parserObj.parseExpr(precedence);
 
-        bool secondArgMatch = exprAreIdentical(expr1, expr2);
+        bool secondArgMatch = exprToSubExpr(expr1, expr2, true);
         if (secondArgMatch) {
             tempResults[varName].push_back(*it); // store stmtNum
         }
@@ -390,7 +371,7 @@ bool PatternEvaluator::evaluateUnderscoreExpressionWithUnderscore(vector<int> st
         int precedence = ParserUtils::ExprPrecedence::LOWEST;
         ast::Expr* expr2 = parserObj.parseExpr(precedence);
 
-        bool secondArgMatch = exprIsSubtree(expr1, expr2);
+        bool secondArgMatch = exprToSubExpr(expr1, expr2, false);
         if (secondArgMatch) {
             tempResults[varName].push_back(*it); // store stmtNum
         }

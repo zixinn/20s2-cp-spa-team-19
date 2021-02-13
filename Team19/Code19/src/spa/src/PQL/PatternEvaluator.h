@@ -38,8 +38,7 @@ private:
     static ast::Expr* parseStringToExpr(string input);
     static bool areIdentical(ast::InfixExpr* root1, ast::InfixExpr* root2);
     static bool isSubtree(ast::InfixExpr* root1, ast::InfixExpr* root2);
-    static bool exprIsSubtree(ast::Expr* expr1, ast::Expr* expr2);
-    static bool exprAreIdentical(ast::Expr* expr1, ast::Expr* expr2);
+    static bool exprToSubExpr(ast::Expr* expr1, ast::Expr* expr2, bool areIdentical);
 
     static bool evaluateNameUnderscore(vector<int> stmtNums, string varName, string firstArg,
         unordered_map<string, vector<int>>& tempResults);
