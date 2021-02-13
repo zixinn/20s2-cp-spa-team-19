@@ -51,33 +51,3 @@ bool checkName(string s) {
 bool checkInteger(string s) {
     return !s.empty() && all_of(s.begin(), s.end(), ::isdigit);
 }
-
-// Checks if name with quotes conforms to naming standards
-// Returns true if name is valid, false otherwise
-bool checkNameWithQuotes(string s) {
-    if (s[0] != '\"' || s[s.length() - 1] != '\"') {
-        return false;
-    }
-    return checkName(trim(s.substr(1, s.length() - 2)));
-}
-
-// Check if expression is valid
-// Returns true if expression is valid, false otherwise
-bool checkExpression(string s) {
-    // This is just a stub, SP will be implementing it
-    if (s[0] != '\"' || s[s.length() - 1] != '\"') {
-        return false;
-    }
-    string str = trim(s.substr(1, s.length() - 2));
-    // TODO
-    return true;
-}
-
-// Checks if expression with underscores is valid
-// Returns true if expression is valid, false otherwise
-bool checkExpressionWithUnderscores(string s) {
-    if (s[0] != '_' || s[s.length() - 1] != '_') {
-        return false;
-    }
-    return checkExpression(trim(s.substr(1, s.length() - 2)));
-}
