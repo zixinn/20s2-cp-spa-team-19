@@ -77,26 +77,43 @@ bool QueryPreprocessor::checkDesignEntity(string designEntity) {
 bool QueryPreprocessor::parseSelect(string select) {
     int suchThatPos = select.find(" such that ");
     int patternPos = select.find(" pattern ");
+    int nextPos = getNextPos(vector<int>{suchThatPos, patternPos});
+    int minPos = nextPos;
 
-    if (suchThatPos == string::npos && patternPos == string::npos) { // no such that and pattern clause
+    if (nextPos == -1) {
         return parseToSelect(select);
-    } else if (patternPos == string::npos) { // no pattern clause
-        return parseToSelect(trim(select.substr(0, suchThatPos)))
-                && parseSuchThatClause(trim(select.substr(suchThatPos + 11)));
-    } else if (suchThatPos == string::npos) { // no such that clause
-        return parseToSelect(trim(select.substr(0, patternPos)))
-               && parsePatternClause(trim(select.substr(patternPos + 9)));
-    } else { // both such that and pattern clause
-        if (suchThatPos < patternPos) { // such that before pattern
-            return parseToSelect(trim(select.substr(0, suchThatPos)))
-                   && parseSuchThatClause(trim(select.substr(suchThatPos + 11, patternPos - suchThatPos - 11)))
-                   && parsePatternClause(trim(select.substr(patternPos + 9)));
-        } else { // pattern before such that
-            return parseToSelect(trim(select.substr(0, patternPos)))
-                   && parsePatternClause(trim(select.substr(patternPos + 9, suchThatPos - patternPos - 9)))
-                   && parseSuchThatClause(trim(select.substr(suchThatPos + 11)));
+    }
+    if (!parseToSelect(trim(select.substr(0, nextPos)))) {
+        return false;
+    }
+
+    while (nextPos != -1) {
+        if (minPos == suchThatPos) {
+            suchThatPos = select.find(" such that ", suchThatPos + 1);
+            nextPos = getNextPos(vector<int>{suchThatPos, patternPos});
+            if (!parseSuchThatClause(trim(select.substr(minPos + 11, nextPos - minPos - 11)))) {
+                return false;
+            }
+        } else if (minPos == patternPos) {
+            patternPos = select.find(" pattern ", patternPos + 1);
+            nextPos = getNextPos(vector<int>{suchThatPos, patternPos});
+            if (!parsePatternClause(trim(select.substr(minPos + 9, nextPos - minPos - 9)))) {
+                return false;
+            }
+        }
+        minPos = nextPos;
+    }
+    return true;
+}
+
+int QueryPreprocessor::getNextPos(vector<int> pos) {
+    int next = INT_MAX;
+    for (int po : pos) {
+        if (po != -1 && po < next) {
+            next = po;
         }
     }
+    return next == INT_MAX ?  -1 : next;
 }
 
 bool QueryPreprocessor::parseToSelect(string synonym) {

@@ -171,3 +171,18 @@ TEST_CASE("process valid query with such that and pattern clause") {
     expected = Query(declarations1, "a", { c1, c2 }, true);
     REQUIRE(actual == expected);
 }
+
+TEST_CASE("process valid query with multiple clauses") {
+    QueryPreprocessor qp = QueryPreprocessor();
+    string query = "assign a; while w;\nSelect a pattern a (_, \"x + 1\") such that Parent (w, a) such that Uses (a, \"x\") pattern a (\"x\", _) ";
+    Query actual = qp.process(query);
+    Clause c1 = Clause("a", { "_", "\"x + 1\"" });
+    Clause c2 = Clause("Parent", { "w", "a" });
+    Clause c3 = Clause("Uses", { "a", "\"x\"" });
+    Clause c4 = Clause("a", { "\"x\"", "_" });
+    unordered_map<string, string> declarations;
+    declarations["a"] = "assign";
+    declarations["w"] = "while";
+    Query expected = Query(declarations, "a", { c1, c2, c3, c4 }, true);
+    REQUIRE(actual == expected);
+}

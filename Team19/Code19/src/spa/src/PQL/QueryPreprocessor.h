@@ -31,6 +31,7 @@ private:
     bool checkDesignEntity(string designEntity);
 
     bool parseSelect(string select);
+    int getNextPos(vector<int> pos);
 
     bool parseToSelect(string synonym);
 
