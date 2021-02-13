@@ -11,7 +11,7 @@ namespace CondExprUtils {
 	// helper functions
 	std::string VectorToString(std::vector<sp::Token*>& input);
 	void VectorSlice(std::vector<sp::Token*>& input, std::vector<sp::Token*>& output, int left, int right);
-	void VectorShallowCopy(std::vector<sp::Token*>& input, std::vector<sp::Token*>& output);
+	void VectorShallowCopy(std::vector<sp::Token*> input, std::vector<sp::Token*>& output);
 
 	// l_paren++ for LParen, l_paren-- for RParen
 	// example start: x-1, start_lparen:  0, target_lparen:  1 := `( ...   left_start` for <

@@ -29,7 +29,7 @@ namespace CondExprUtils {
 		}
 	}
 
-	void VectorShallowCopy(std::vector<sp::Token*>& input, std::vector<sp::Token*>& output) {
+	void VectorShallowCopy(std::vector<sp::Token*> input, std::vector<sp::Token*>& output) {
 		for (int i = 0; i < input.size(); ++i) {
 			output.push_back(input[i]);
 		}
