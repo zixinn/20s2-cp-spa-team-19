@@ -48,18 +48,13 @@ public:
     // Returns true if info is successfully added.
     bool storeParent(StmtNum s1, StmtNum s2);
 
-    // Stores <s1, s2> in the parentStarMap.
-    // Stores <s2, s1> in reverseParentStarMap
-    // Returns true if info is successfully added.
-    bool storeParentStar(StmtNum s1, StmtNum s2);
-
     // Returns true if there is a statement s2 such that Parent(s1, s2)
     bool hasChild(StmtNum s1) const;
 
     // Returns true if there is a statement s1 such that Parent(s1, s2)
     bool hasParent(StmtNum s2) const;
 
-    // calculate all Parent* relationships from the ParentMap, then populate the ParentStarMap and ReverseParentStarMap
+    // calculate all Parent* relationships from the ParentMap using BFS and populate the ParentStarMap and ReverseParentStarMap
     void populateParentStar();
 
 private:
@@ -75,5 +70,10 @@ private:
 
     // Stores <s2, set of s1's> where Parent*<s1, s2);
     unordered_map<StmtNum, unordered_set<StmtNum> > reverseParentStarMap;
+
+    // Stores <s1, s2> in the parentStarMap.
+    // Stores <s2, s1> in reverseParentStarMap
+    // Returns true if info is successfully added.
+    bool storeParentStar(StmtNum s1, StmtNum s2);
 };
 

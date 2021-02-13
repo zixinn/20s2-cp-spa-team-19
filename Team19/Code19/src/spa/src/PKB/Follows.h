@@ -48,18 +48,13 @@ public:
     // Returns true if info is successfully added.
     bool storeFollows(StmtNum s1, StmtNum s2);
 
-    // Stores <s1, s2> in the followsStarMap.
-    // Stores <s2, s1> in reverseFollowsStarMap
-    // Returns true if info is successfully added.
-    bool storeFollowsStar(StmtNum s1, StmtNum s2);
-
     // Returns true if there is a statement s2 such that Follows(s1, s2)
     bool hasFollower(StmtNum s1) const;
 
     // Returns true if there is a statement s1 such that Follows(s1, s2)
     bool hasFollowee(StmtNum s2) const;
 
-    // calculate all Follows* relationships from the FollowsMap, then populate the FollowsStarMap and ReverseFollowsStarMap
+    // calculate all Follows* relationships from the FollowsMap using implicit dfs and populate the FollowsStarMap and ReverseFollowsStarMap
     void populateFollowsStar();
 
 private:
@@ -75,6 +70,11 @@ private:
 
     // Stores <s2, set of s1's> where Follows*<s1, s2);
     unordered_map<StmtNum, unordered_set<StmtNum> > reverseFollowsStarMap;
+
+    // Stores <s1, s2> in the followsStarMap.
+    // Stores <s2, s1> in reverseFollowsStarMap
+    // Returns true if info is successfully added.
+    bool storeFollowsStar(StmtNum s1, StmtNum s2);
 
 };
 

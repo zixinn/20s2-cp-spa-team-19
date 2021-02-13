@@ -71,6 +71,7 @@ TEST_CASE("stmtModifiesVar Test") {
     REQUIRE(modifies->stmtModifiesVar(2,1));
     REQUIRE(modifies->stmtModifiesVar(2,3));
     REQUIRE(modifies->stmtModifiesVar(3,1));
+    REQUIRE_FALSE(modifies->stmtModifiesVar(1,4));
 }
 
 TEST_CASE("procModifiesVar Test") {
@@ -81,6 +82,7 @@ TEST_CASE("procModifiesVar Test") {
     REQUIRE(modifies->procModifiesVar(2,1));
     REQUIRE(modifies->procModifiesVar(2,3));
     REQUIRE(modifies->procModifiesVar(3,4));
+    REQUIRE_FALSE(modifies->procModifiesVar(1,5));
 }
 
 TEST_CASE("getVarsModifiedByStmt Test") {
