@@ -62,6 +62,7 @@ TEST_CASE("getProcID Test") {
     procTable->storeProcName("b");
     REQUIRE(procTable->getProcID("a") == 0);
     REQUIRE(procTable->getProcID("b") == 1);
+    REQUIRE(procTable->getProcID("c") == -1);
 }
 
 TEST_CASE("getProcName Test") {
