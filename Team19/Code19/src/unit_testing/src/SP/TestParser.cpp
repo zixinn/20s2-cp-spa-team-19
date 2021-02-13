@@ -143,7 +143,7 @@ TEST_CASE("Call DE Test") {
      8   read s;
       }
      */
-    string input = "procedure star { x = 1 + 2 * a; while (a > b) { x = 2; if(a==b)then{c = a;}else{ b = 2;}} print p; read s; } ";
+    string input = "procedure star { x = 1 + 2 * a; while (v > 1) { x = 2; if(v==1)then{c = a;}else{ b = 2;}} print p; read s; } ";
     std::vector<sp::Token> actual_tok;
     std::vector<sp::Token*> tok_ptrs;
     ParserUtils::StringToTokenPtrs(input, actual_tok, tok_ptrs);
@@ -153,9 +153,9 @@ TEST_CASE("Call DE Test") {
     REQUIRE(p.parse());
 
     // Check StmtLst
-    REQUIRE(PKB::stmtLstTable->hasStmtLst(1) == true);  // Procedure's stmtLst
-    REQUIRE(PKB::stmtLstTable->hasStmtLst(2) == false); // while stmt itself
-    REQUIRE(PKB::stmtLstTable->hasStmtLst(3) == true); // If stmt's stmtLst
+    REQUIRE(PKB::stmtLstTable->hasStmtLst(1) == true);  
+    REQUIRE(PKB::stmtLstTable->hasStmtLst(2) == false); 
+    REQUIRE(PKB::stmtLstTable->hasStmtLst(3) == true); 
     REQUIRE(PKB::stmtLstTable->hasStmtLst(4) == false); 
     REQUIRE(PKB::stmtLstTable->hasStmtLst(5) == true); 
     REQUIRE(PKB::stmtLstTable->hasStmtLst(6) == true);
@@ -232,4 +232,28 @@ TEST_CASE("Call DE Test") {
     REQUIRE(PKB::modifies->getStmtsModifies(varID1) == unordered_set<ID>{  });
 
 
+}
+
+TEST_CASE("Call DE - Exceptions Test") {
+    vector<string> inputs{
+        //syntax error
+        "procedure star { x = 1 + 2 * a; while (v > 1) { x = 2 if(v==1)then{c = a;}else{ b = 2;}} print p; read s; } ",
+        //invalid simple
+        "abc",
+        //invalid expression
+        "procedure moon { x = (1+2) ** 3; }",
+        //invalid cond expresion
+        "procedure moon { if((x+1) > 3 || (a < b)) then {c=a;}else{ b = 2;}}"
+
+    };
+
+    for (int i = 0; i < inputs.size(); i++) {
+        string input = inputs[i];
+        std::vector<sp::Token> actual_tok;
+        std::vector<sp::Token*> tok_ptrs;
+        ParserUtils::StringToTokenPtrs(input, actual_tok, tok_ptrs);
+        auto l = new LexerStub(tok_ptrs);
+        auto p = Parser(l);
+        REQUIRE_FALSE(p.parse());
+    }
 }

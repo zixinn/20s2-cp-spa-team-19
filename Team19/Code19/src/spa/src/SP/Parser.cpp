@@ -42,10 +42,9 @@ bool Parser::parse() {
 		DesignExtractor::signalEnd();
 		
 
-	} catch (sp::ParserException& e) {
+	} catch (...) {
 		//error encountered so reset PKB and DE
 		DesignExtractor::signalReset();
-		cout << e.what() << endl;
 		return false;
 	}
 
@@ -71,16 +70,16 @@ void Parser::addStmtLstToDE(vector<ast::Stmt*> stmts) {
 			DesignExtractor::storeNewPrint(print->getIndex(), print->getName()->getVal(), print);
 		} else if (type == sp::Token::TokenType::WHILE) {
 			ast::WhileStmt* whi = (ast::WhileStmt*)stmt;
-			//v and 1 placeholder
-			DesignExtractor::storeNewWhile(whi->getIndex(), { "v" }, { "1" }, stmt);
+			ast::CondExprBag* ce = (ast::CondExprBag*) whi->getCondExpr();
+			DesignExtractor::storeNewWhile(whi->getIndex(), ce->getVarNames(), ce->getConstVal(), stmt);
 			vector<ast::Stmt*> whileStmts = whi->getStmtLst()->getStatements();
 			addStmtLstToDE(whileStmts);
 			DesignExtractor::exitWhile();
 		} else if (type == sp::Token::TokenType::IF) {
 
 			ast::IfStmt* iff = (ast::IfStmt*)stmt;
-			//v and 1 placeholder
-			DesignExtractor::storeNewIf(iff->getIndex(), { "v" }, { "1" }, stmt);
+			ast::CondExprBag* ce = (ast::CondExprBag*)iff->getCondExpr();
+			DesignExtractor::storeNewIf(iff->getIndex(), ce->getVarNames(), ce->getConstVal(), stmt);
 			vector<ast::Stmt*> ifCon = iff->getConsequence()->getStatements();
 			addStmtLstToDE(ifCon);
 
