@@ -59,7 +59,6 @@ void TestWrapper::evaluate(std::string query, std::list<std::string>& results){
         QueryEvaluator qe = QueryEvaluator();
         results = qe.evaluate(q);
     }
-    
     // store the answers to the query in the results list (it is initially empty)
     // each result must be a string.
 }

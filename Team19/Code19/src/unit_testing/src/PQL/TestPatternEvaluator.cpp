@@ -325,7 +325,7 @@ TEST_CASE("PatternEvaluator evaluate stmt Variable ExpressionWithUnderscore") {
 	bool result5 = PatternEvaluator::evaluate({ {"a", VARIABLE_},  {"v", VARIABLE_}}, Clause("a", vector<string>{"v", "_\"y\"_"}), tempResults4);
 	unordered_set<int> actual7(tempResults4["a"].begin(), tempResults4["a"].end());
 	unordered_set<int> actual8(tempResults4["v"].begin(), tempResults4["v"].end());
-	unordered_set<int> expected7{ 7, 21 };
+	unordered_set<int> expected7{ 1, 7, 21 };
 	unordered_set<int> expected8{ 0, 3 };
 	REQUIRE(actual7 == expected7);
 	REQUIRE(actual8 == expected8);
@@ -411,7 +411,7 @@ TEST_CASE("PatternEvaluator evaluate stmt Underscore ExpressionWithUnderscore") 
 	unordered_map<string, vector<int>> tempResults1;
 	bool result1 = PatternEvaluator::evaluate({ {"a", VARIABLE_} }, Clause("a", vector<string>{"_", "_\"y\"_"}), tempResults1);
 	unordered_set<int> actual1(tempResults1["a"].begin(), tempResults1["a"].end());
-	unordered_set<int> expected1{ 7, 21 };
+	unordered_set<int> expected1{ 1, 7, 21 };
 	REQUIRE(actual1 == expected1);
 	REQUIRE(result1);
 
