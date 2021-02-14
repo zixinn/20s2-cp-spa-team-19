@@ -47,6 +47,13 @@ TEST_CASE("storeStmt Test") {
     REQUIRE_FALSE(stmtTable->storeStmt(1, stmtNodeStub1, "assign"));
 }
 
+TEST_CASE("storeAssignExpr Test") {
+    StmtTable* stmtTable = new StmtTable();
+    REQUIRE(stmtTable->storeAssignExpr(1, "v", "1+2"));
+    REQUIRE(stmtTable->storeAssignExpr(2, "a", "a+b"));
+    REQUIRE_FALSE(stmtTable->storeAssignExpr(1, "c", "a+b"));
+}
+
 TEST_CASE("getSize Test [StmtTable]") {
     StmtTable* stmtTable = setupStmtTestTable();
     REQUIRE(stmtTable->getSize() == 6);
@@ -110,4 +117,16 @@ TEST_CASE("getStmtNode Test") {
     REQUIRE(stmtTable->getStmtNode(2)->getIndex() == 2);
     REQUIRE_THROWS_AS(stmtTable->getStmtNode(-1), std::exception);
     REQUIRE_THROWS_AS(stmtTable->getStmtNode(7), std::exception);
+}
+
+TEST_CASE("getAssignExpr Test") {
+    StmtTable* stmtTable = new StmtTable();
+    stmtTable->storeAssignExpr(1, "v", "1+2");
+    stmtTable->storeAssignExpr(2, "a", "a+b");
+    pair<STRING, STRING> result1 = stmtTable->getAssignExpr(1);
+    REQUIRE(result1.first == "v");
+    REQUIRE(result1.second == "1+2");
+    pair<STRING, STRING> result2 = stmtTable->getAssignExpr(2);
+    REQUIRE(result2.first == "a");
+    REQUIRE(result2.second == "a+b");
 }
