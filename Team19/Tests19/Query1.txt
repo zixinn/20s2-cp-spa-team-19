@@ -594,11 +594,16 @@ Select v pattern a (v, _"y"_)
 z
 5000
 119 - Pattern
+assign a; variable v;
+Select v pattern a (v, _"b + 123"_)
+none
+5000
+120 - Pattern
 procedure proc; assign a; variable v;
 Select proc pattern a (v, _"b"_)
 Test1
 5000
-120 - Follows and Pattern
+121 - Follows and Pattern
 assign a; if ifs;
 Select a such that Follows (ifs, a) pattern a ("a", _"a"_)
 8
@@ -608,78 +613,123 @@ assign a; if ifs;
 Select a pattern a ("a", _"a * b"_) such that Follows (ifs, a)
 none
 5000
-122 - Follows and Pattern
+123 - Follows and Pattern
 constant c; assign a; if ifs;
 Select c such that Follows (ifs, a) pattern a ("a", _"a"_)
 123, 3, 1, 4
 5000
-123 - FollowsT and Pattern
+124 - Follows and Pattern
+assign a, a1; if ifs; variable v;
+Select a such that Follows (a, ifs) pattern a1 (v, _"a"_)
+4
+5000
+125 - FollowsT and Pattern
 assign a, a1; if ifs;
 Select a pattern a1 ("a", _) such that Follows* (a, a1)
 3, 4
 5000
-124 - FollowsT and Pattern
+126 - FollowsT and Pattern
 assign a, a1; if ifs;
 Select a such that Follows* (a, a1) pattern a1 ("a", "a")
 none
 5000
-125 - Parent and Pattern
+127 - Parent and Pattern
 assign a; if ifs;
 Select a pattern a (_, _) such that Parent (ifs, a)
 6, 7
 5000
-126 - Parent and Pattern
+128 - Parent and Pattern
 assign a; if ifs;
 Select a such that Parent (ifs, a) pattern a ("z", _)
 6, 7
 5000
-127 - Parent and Pattern
+129 - Parent and Pattern
 assign a; if ifs;
 Select a pattern a ("x", _) such that Parent (ifs, a) 
 none
 5000
-128 - Parent and Pattern
+130 - Parent and Pattern
 assign a; while w;
 Select a such that Parent (w, a) pattern a (_, "x - 1")
 10
 5000
-129 - ParentT and Pattern
+131 - ParentT and Pattern
 assign a; if ifs;
 Select a pattern a ("x", _) such that Parent* (ifs, a) 
 none
 5000
-130 - ParentT and Pattern
+132 - ParentT and Pattern
 assign a; while w;
 Select a such that Parent* (w, a) pattern a (_, "x - 1")
 10
 5000
-131 - Uses and Pattern
+133 - Uses and Pattern
 assign a;
 Select a pattern a ("x", _) such that Uses (a, "a") 
 3
 5000
-132 - Uses and Pattern
+134 - Uses and Pattern
 assign a;
-Select a such that Uses (a, "b") pattern a (_, "a*b+123")
+Select a such that Uses (a, "b") pattern a (_, "a*b+123-a")
 3
 5000
-133 - Uses and Pattern
+135 - Uses and Pattern
+assign a;
+Select a such that Uses (a, "b") pattern a (_, "b + 123 - a")
+none
+5000
+136 - Uses and Pattern
 assign a;
 Select a pattern a (_, _"a * b"_) such that Uses (a, "x") 
 none
 5000
-134 - Modifies and Pattern
+137 - Uses and Pattern
+assign a; variable v;
+Select a such that Uses (a, v) pattern a (v, _)
+8, 10
+5000
+138 - Modifies and Pattern
 assign a;
 Select a such that Modifies (a, "y") pattern a (_, _"x"_)
 4
 5000
-135 - Modifies and Pattern
+139 - Modifies and Pattern
 assign a;
 Select a pattern a (_, _"x"_) such that Modifies (a, "z") 
 6, 7
 5000
-136 - Modifies and Pattern
+140 - Modifies and Pattern
 assign a;
 Select a such that Modifies (a, "a") pattern a (_, _"x"_)
 none
+5000
+141 - Modifies and Pattern
+assign a; variable v;
+Select a such that Modifies (a, v) pattern a (v, _"x"_)
+4, 6, 7, 10
+5000
+142 - Modifies and Pattern
+assign a; variable v;
+Select a such that Modifies (a, v) pattern a (v, _"c"_)
+none
+5000
+143 - long synonym
+assign abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz;
+Select abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
+3, 4, 6, 7, 8, 10
+5000
+144 - long synonym
+assign abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz;
+Select abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz pattern abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz(_, _"a"_)
+3, 8
+5000
+145 - synonym same as design entity
+procedure procedure;
+Select procedure
+Test1
+5000
+146 - unused declarations
+stmt s1, s2, s3; if ifs1, ifs2, ifs3; while w1, w2, w3; assign a1, a2, a3; 
+Select s2
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
 5000

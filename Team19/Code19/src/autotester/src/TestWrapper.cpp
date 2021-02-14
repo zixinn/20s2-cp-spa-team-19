@@ -54,7 +54,7 @@ void TestWrapper::evaluate(std::string query, std::list<std::string>& results){
     // ...code to evaluate query...
     if (valid) {
         QueryPreprocessor qp = QueryPreprocessor();
-        Query q = qp.process(query);
+        Query q = qp.process(trim(query));
 
         QueryEvaluator qe = QueryEvaluator();
         results = qe.evaluate(q);
