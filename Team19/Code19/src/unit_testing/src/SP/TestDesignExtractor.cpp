@@ -8,11 +8,10 @@
 #include "catch.hpp"
 using namespace std;
 
-// No unit tests for AssignStmt
+// AssignStmt and PKB is not stubbed
 // Stubs of Stmt Classes
 VarName *varName = new VarName(new sp::Token(sp::Token::TokenType::NAME, "test"), "test");
 CondExpr *condExpr; // = new CondExpr(new sp::Token(sp::Token::TokenType::NAME, "test")); // no condexpr token to use
-
 PrintStmt *printStmt = new ast::PrintStmt(1, new sp::Token(sp::Token::TokenType::PRINT, "pr"), varName);
 ReadStmt *readStmt =  new ast::ReadStmt(1, new sp::Token(sp::Token::TokenType::READ, "r"), varName);
 
@@ -41,17 +40,14 @@ TEST_CASE("ONE PROCEDURE - storeNewProcedure and exitProcedure Test (no While/If
             new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
             new sp::Token(sp::Token::TokenType::EOFF, "EOF")
     };
-
     auto lass = new LexerStub(stubAssignTokens);
     Parser pass = Parser(lass);
     ast::AssignStmt* assStmt = pass.parseAssignStmt();
 
     DesignExtractor::storeNewProcedure("strobelight");
-
     DesignExtractor::storeNewPrint(1, "reason", printStmt);
     DesignExtractor::storeNewRead(2, "dyed", readStmt);
     DesignExtractor::storeNewAssignment(3, "scaramouche", assStmt);
-
     DesignExtractor::exitProcedure();
 
     // Check procTable
