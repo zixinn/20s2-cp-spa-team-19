@@ -598,14 +598,88 @@ procedure proc; assign a; variable v;
 Select proc pattern a (v, _"b"_)
 Test1
 5000
-
-
-
-
-
-
-
-
-
-
-
+120 - Follows and Pattern
+assign a; if ifs;
+Select a such that Follows (ifs, a) pattern a ("a", _"a"_)
+8
+5000
+121 - Follows and Pattern
+assign a; if ifs;
+Select a pattern a ("a", _"a * b"_) such that Follows (ifs, a)
+none
+5000
+122 - Follows and Pattern
+constant c; assign a; if ifs;
+Select c such that Follows (ifs, a) pattern a ("a", _"a"_)
+123, 3, 1, 4
+5000
+123 - FollowsT and Pattern
+assign a, a1; if ifs;
+Select a pattern a1 ("a", _) such that Follows* (a, a1)
+3, 4
+5000
+124 - FollowsT and Pattern
+assign a, a1; if ifs;
+Select a such that Follows* (a, a1) pattern a1 ("a", "a")
+none
+5000
+125 - Parent and Pattern
+assign a; if ifs;
+Select a pattern a (_, _) such that Parent (ifs, a)
+6, 7
+5000
+126 - Parent and Pattern
+assign a; if ifs;
+Select a such that Parent (ifs, a) pattern a ("z", _)
+6, 7
+5000
+127 - Parent and Pattern
+assign a; if ifs;
+Select a pattern a ("x", _) such that Parent (ifs, a) 
+none
+5000
+128 - Parent and Pattern
+assign a; while w;
+Select a such that Parent (w, a) pattern a (_, "x - 1")
+10
+5000
+129 - ParentT and Pattern
+assign a; if ifs;
+Select a pattern a ("x", _) such that Parent* (ifs, a) 
+none
+5000
+130 - ParentT and Pattern
+assign a; while w;
+Select a such that Parent* (w, a) pattern a (_, "x - 1")
+10
+5000
+131 - Uses and Pattern
+assign a;
+Select a pattern a ("x", _) such that Uses (a, "a") 
+3
+5000
+132 - Uses and Pattern
+assign a;
+Select a such that Uses (a, "b") pattern a (_, "a*b+123")
+3
+5000
+133 - Uses and Pattern
+assign a;
+Select a pattern a (_, _"a * b"_) such that Uses (a, "x") 
+none
+5000
+134 - Modifies and Pattern
+assign a;
+Select a such that Modifies (a, "y") pattern a (_, _"x"_)
+4
+5000
+135 - Modifies and Pattern
+assign a;
+Select a pattern a (_, _"x"_) such that Modifies (a, "z") 
+6, 7
+5000
+136 - Modifies and Pattern
+assign a;
+Select a such that Modifies (a, "a") pattern a (_, _"x"_)
+none
+5000
