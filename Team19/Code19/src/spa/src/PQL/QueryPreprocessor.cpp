@@ -59,6 +59,9 @@ bool QueryPreprocessor::parseDeclaration(string designEntity, string synonyms) {
         this->isValid = false;
         return false;
     }
+    if (synonyms.at(synonyms.length() - 1) == ',') {
+        return false;
+    }
     vector<string> synonymsVector = split(synonyms, ",");
     for (string synonym : synonymsVector) {
         if (checkSynonymDeclared(synonym, this->declarations) || !checkName(synonym)) {
