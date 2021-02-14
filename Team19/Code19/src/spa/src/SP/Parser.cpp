@@ -71,7 +71,7 @@ void Parser::addStmtLstToDE(vector<ast::Stmt*> stmts) {
 		} else if (type == sp::Token::TokenType::WHILE) {
 			ast::WhileStmt* whi = (ast::WhileStmt*)stmt;
 			ast::CondExprBag* ce = (ast::CondExprBag*) whi->getCondExpr();
-			DesignExtractor::storeNewWhile(whi->getIndex(), ce->getVarNames(), ce->getConstVal(), stmt);
+			DesignExtractor::storeNewWhile(whi->getIndex(), ce->getVarNames(), ce->getConstVal(), whi);
 			vector<ast::Stmt*> whileStmts = whi->getStmtLst()->getStatements();
 			addStmtLstToDE(whileStmts);
 			DesignExtractor::exitWhile();
@@ -79,7 +79,7 @@ void Parser::addStmtLstToDE(vector<ast::Stmt*> stmts) {
 
 			ast::IfStmt* iff = (ast::IfStmt*)stmt;
 			ast::CondExprBag* ce = (ast::CondExprBag*)iff->getCondExpr();
-			DesignExtractor::storeNewIf(iff->getIndex(), ce->getVarNames(), ce->getConstVal(), stmt);
+			DesignExtractor::storeNewIf(iff->getIndex(), ce->getVarNames(), ce->getConstVal(), iff);
 			vector<ast::Stmt*> ifCon = iff->getConsequence()->getStatements();
 			addStmtLstToDE(ifCon);
 
