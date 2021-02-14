@@ -16,7 +16,7 @@ procedure Test2 {
             while(print<=read){
                 assign = assign - variable;
                 call = 1;
-                if((!(if<read  + 3/(a+b)) || (!((print/read <= 6) && (print + statement > 5)) && ((if-read) != (a*(procedure + statement) - (statement+b)%4))) || (call>=statement) then {
+                if(((!(if<read  + 3/(a+b))) || ((!(print/read <= 6)) && (print + statement > 5))) && (((if-read) != (a*(procedure + statement) - (statement+b)%4)) || (call>=statement))) then {
                     call = 1 + 2 * 3;
                 } else {
                     a = call;
