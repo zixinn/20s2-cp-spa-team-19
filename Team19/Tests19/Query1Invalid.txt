@@ -633,27 +633,32 @@ assign a;
 Select a pattern a(_, _a_)
 none
 5000
-128 - invalid query
-stmt s;
-Select s pattern such that Follows(_, 2)
+128 - invalid pattern
+variable v;
+Select v pattern _(v, _"x"_)
 none
 5000
 129 - invalid query
 stmt s;
-Select s such that Follows(_, 2) pattern
+Select s pattern such that Follows(_, 2)
 none
 5000
 130 - invalid query
+stmt s;
+Select s such that Follows(_, 2) pattern
+none
+5000
+131 - invalid query
 stmt s; assign a;
 Select s such that Follows(_, 2) abc pattern a("y", _)
 none
 5000
-131 - synonym not declared
+132 - synonym not declared
 assign a;
 Select a such that Parent(w, a)
 none
 5000
-132 - synonym not declared
+133 - synonym not declared
 stmt s;
 Select s such that pattern a(_, _)
 none
