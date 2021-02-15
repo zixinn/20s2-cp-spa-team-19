@@ -723,3 +723,153 @@ assign a; constant c;
 Select c pattern a(_, _)
 1, 2, 3, 4, 5, 6, 0
 5000
+146 - Follows and Pattern (1 overlap with select)
+assign a, a1; if ifs;
+Select a such that Follows(ifs, a) pattern a1("variable", _"assign *  5"_)
+27
+5000
+147 - Follows and Pattern (1 overlap with select and clause)
+assign a; stmt s;
+Select a such that Follows(s, a) pattern a("true", _)
+29
+5000
+148 - Follows and Pattern (1 overlap with select and 1 overlap in clauses)
+assign a, a1; variable v; 
+Select v pattern a(v, _"1"_) such that Follows(a1, a)
+call, while, true
+5000
+149 - Follows and Pattern (1 overlap in clauses)
+procedure proc; read r; assign a;
+Select proc such that Follows(a,  25) pattern a("print", _)
+Test2
+5000
+150 - Follows and Pattern (exact)
+constant c; assign a;
+Select c pattern a("true", _"false * variable"_) such that Follows(29, 30)
+0, 1, 2, 3, 4, 5, 6
+5000
+151 - FollowsT and Pattern (1 overlap with select)
+read r; assign a; if ifs;
+Select r such that Follows*(r, ifs) pattern a("a", "call")
+1, 2, 10
+5000
+152 - FollowsT and Pattern (1 overlap with select and clause)
+assign a; while w;
+Select a such that Follows*(a, w) pattern a("else", _)
+28, 34
+5000
+153 - FollowsT and Pattern (1 overlap with select and 1 ovelap in clauses)
+variable v; assign a; print p;
+Select v such that Follows*(a, p) pattern a (v, _"print"_)
+b
+5000
+154 - FollowsT and Pattern (1 overlap in clauses)
+print p; assign a;
+Select p such that Follows*(a, _) pattern a("call", _"procedure/statement"_)
+none
+5000
+155 - FollowsT and Pattern (exact)
+procedure proc; assign a;
+Select proc such that Follows*(1, 42) pattern a("true", _"false * variable    + print"_)
+Test2
+5000
+156 - Parent and Pattern (1 overlap with select)
+assign a, a1; if ifs;
+Select a such that Parent(ifs, a) pattern a1("b", _)
+12, 18, 19, 20, 22, 27, 28, 29, 34, 38, 39, 40
+5000
+157 - Parent and Pattern (1 overlap with select and clause)
+assign a; while w;
+Select a such that Parent(w, a) pattern a("true", _)
+31, 36
+5000
+158 - Parent and Pattern (1 overlap with select and 1 overlap in clauses)
+assign a; variable v; stmt s; 
+Select v pattern a(v, _"2"_) such that Parent(s, a)
+call, b, variable
+5000
+159 - Parent and Pattern (1 overlap in clauses)
+procedure proc; read r; assign a;
+Select proc such that Parent(23,  a) pattern a("print", _"print/print"_)
+Test2
+5000
+160 - Parent and Pattern (exact)
+print p; assign a;
+Select p pattern a("while", _) such that Parent(35, 37)
+26, 41
+5000
+161 - ParentT and Pattern (1 overlap with select)
+assign a, a1; if ifs;
+Select ifs such that Parent*(ifs, a) pattern a1("true", _"false"_)
+11, 13, 17, 21, 33, 37
+5000
+162 - ParentT and Pattern (1 overlap with select and clause)
+assign a; while w;
+Select a such that Parent*(w, a) pattern a("assign", "if/3")
+39
+5000
+163 - ParentT and Pattern (1 overlap with select and 1 overlap in clauses)
+assign a; variable v; while w; 
+Select v pattern a(v, _"variable"_) such that Parent*(w, a)
+assign, true 
+5000
+164 - ParentT and Pattern (1 overlap in clauses)
+procedure proc; variable v; assign a;
+Select proc such that Parent*(30,  a) pattern a(v, _"print%print"_)
+none
+5000
+165 - ParentT and Pattern (exact)
+procedure proc; assign a;
+Select proc pattern a("while", "while		+ 1") such that Parent*(11, 39)
+Test2
+5000
+166 - Uses and Pattern (1 overlap with select)
+variable v; while w; assign a;
+Select w such that Uses(w, "variable") pattern a(v, _"print % 2"_)
+14, 30, 35
+5000
+167 - Uses and Pattern (1 overlap with select and clause)
+assign a;    variable v;
+Select a such that Uses(a, _) pattern a(v, _"statement"_)
+12, 27, 34, 40 
+5000
+168 - Uses and Pattern (1 overlap with select and 1 overlap in clauses)
+assign a; variable v; print p; 
+Select a pattern a(v, _"variable"_) such that Uses(p, v)
+22
+5000
+169 - Uses and Pattern (1 overlap in clauses)
+procedure proc; variable v; assign a;
+Select proc such that Uses(21,  v) pattern a(v, _"print + print*print"_)
+Test2
+5000
+170 - Uses and Pattern (exact)
+variable v; assign a;
+Select v pattern a("true", "  0") such that Uses(29, "11")
+none
+5000
+171 - Modifies and Pattern (1 overlap with select)
+assign a; if ifs;
+Select ifs such that Modifies(ifs, "call") pattern a(_, "call")
+11, 13, 17, 33, 37
+5000
+172 - Modifies and Pattern (1 overlap with select and clause)
+variable v; assign a; procedure proc;
+Select v such that Modifies(proc, v) pattern a(v, _"statement/a"_)
+variable
+5000
+173 - Modifies and Pattern (1 overlap with select and 1 overlap in clauses)
+assign a; variable v; read r; 
+Select r pattern a(v, _"3"_) such that Modifies(r, v)
+42
+5000
+174 - Modifies and Pattern (1 overlap in clauses)
+procedure proc; variable v; assign a;
+Select proc such that Modifies(33,  v) pattern a(v, _"if + 3"_)
+none
+5000
+175 - Modifies and Pattern (exact)
+constant c; assign a;
+Select c pattern a("call", _"2*3"_) such that Modifies(14, "call")
+0, 1, 2, 3, 4, 5, 6
+5000
