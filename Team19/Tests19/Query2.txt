@@ -660,22 +660,22 @@ none
 5000
 133 - Patterns (variable, exact)
 assign a; variable v;
-Select v pattern a(v, "print + print * print - print / print % print")
+Select v pattern a(v, "print + print * print - print / (print % print)")
 print
 5000
 134 - Patterns (variable, partial)
 assign a; variable v;
-Select v pattern a(v, _"2*3"_)
+Select v pattern a(v, _"1+2"_)
 call
 5000
 135 - Patterns (variable, partial)
 assign a; variable v;
-Select v pattern a(v, _"print % print"_)
+Select v pattern a(v, _"print / print"_)
 none
 5000
 136 - Patterns (variable, partial)
 assign a; variable v;
-Select a pattern a(v, _"print         / print % print          "_)
+Select a pattern a(v, _"print         / (print % print)          "_)
 24
 5000
 137 - Patterns (variable, partial)
@@ -700,7 +700,7 @@ Select a pattern a(_, "procedure * statement")
 5000
 141 - Patterns (_, exact)
 assign a; read r;
-Select r pattern a(_, "read % 5")
+Select r pattern a(_, "(read) % 5")
 1, 2, 10, 42
 5000
 142 - Patterns (_, partial)
@@ -725,7 +725,7 @@ Select c pattern a(_, _)
 5000
 146 - Follows and Pattern (1 overlap with select)
 assign a, a1; if ifs;
-Select a such that Follows(ifs, a) pattern a1("variable", _"assign *  5"_)
+Select a such that Follows(ifs, a) pattern a1("variable", _"(a - assign) *  5"_)
 27
 5000
 147 - Follows and Pattern (1 overlap with select and clause)
@@ -790,7 +790,7 @@ call, b, variable
 5000
 159 - Parent and Pattern (1 overlap in clauses)
 procedure proc; read r; assign a;
-Select proc such that Parent(23,  a) pattern a("print", _"print/print"_)
+Select proc such that Parent(23,  a) pattern a("print", _"print*print"_)
 Test2
 5000
 160 - Parent and Pattern (exact)
@@ -855,8 +855,8 @@ Select ifs such that Modifies(ifs, "call") pattern a(_, "call")
 5000
 172 - Modifies and Pattern (1 overlap with select and clause)
 variable v; assign a; procedure proc;
-Select v such that Modifies(proc, v) pattern a(v, _"statement/a"_)
-variable
+Select v such that Modifies(proc, v) pattern a(v, _"assign * 5"_)
+none
 5000
 173 - Modifies and Pattern (1 overlap with select and 1 overlap in clauses)
 assign a; variable v; read r; 
@@ -870,6 +870,6 @@ none
 5000
 175 - Modifies and Pattern (exact)
 constant c; assign a;
-Select c pattern a("call", _"2*3"_) such that Modifies(14, "call")
+Select c pattern a("call", _"((1+2)*3)"_) such that Modifies(14, "call")
 0, 1, 2, 3, 4, 5, 6
 5000

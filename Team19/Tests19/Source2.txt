@@ -17,7 +17,7 @@ procedure Test2 {
                 assign = assign - variable;
                 call = 1;
                 if(((!(if<read  + 3/(a+b))) || ((!(print/read <= 6)) && (print + statement > 5))) && (((if-read) != (a*(procedure + statement) - (statement+b)%4)) || (call>=statement))) then {
-                    call = 1 + 2 * 3;
+                    call = (1 + 2) * 3;
                 } else {
                     a = call;
                 }
@@ -28,13 +28,13 @@ procedure Test2 {
                 variable=variable;
             } else {
                 while (while != if) {
-                    print = print + print * print - print / print % print;
+                    print = print + (print) * print - print / (print % print);
                     while = while + 1;
                 }
             }
             print print;
         }
-        variable = statement / a - assign * 5/2;
+        variable = statement / ((a - assign) * 5)/2;
     } else {
         else = read % 5;
         true = 1;
