@@ -62,6 +62,11 @@ TEST_CASE("process invalid synonym in declaration") {
     Query actual = qp.process(query);
     Query expected = Query({}, "", {}, false);
     REQUIRE(actual == expected);
+
+    query = "stmt s, ; \nSelect s";
+    actual = qp.process(query);
+    expected = Query({}, "", {}, false);
+    REQUIRE(actual == expected);
 }
 
 TEST_CASE("process synonym not declared") {

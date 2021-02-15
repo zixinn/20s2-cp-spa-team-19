@@ -1,0 +1,45 @@
+1 - No clause stmt
+stmt s;
+Select s
+none
+5000
+2 - No clause read
+read r;
+Select r
+none
+5000
+3 - No clause print
+print p;
+Select p
+none
+5000
+4 - No clause assign
+assign a;
+Select a
+none
+5000
+5 - No clause if
+if ifs;
+Select ifs
+none
+5000
+6 - No clause while
+while w;
+Select w
+none
+5000
+7 - No clause proc
+procedure p;
+Select p
+none
+5000
+8 - No clause var
+variable v;
+Select v
+none
+5000
+9 - No clause const
+constant c;
+Select c
+none
+5000

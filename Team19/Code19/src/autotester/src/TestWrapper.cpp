@@ -35,7 +35,7 @@ void TestWrapper::parse(std::string filename) {
         input += line + "\n";
     }
     theFile.close();
-    cout << input << endl;
+   // cout << input << endl;
     try {
         std::vector<sp::Token> actual_tok;
         std::vector<sp::Token*> tok_ptrs;
@@ -54,12 +54,11 @@ void TestWrapper::evaluate(std::string query, std::list<std::string>& results){
     // ...code to evaluate query...
     if (valid) {
         QueryPreprocessor qp = QueryPreprocessor();
-        Query q = qp.process(query);
+        Query q = qp.process(trim(query));
 
         QueryEvaluator qe = QueryEvaluator();
         results = qe.evaluate(q);
     }
-    
     // store the answers to the query in the results list (it is initially empty)
     // each result must be a string.
 }

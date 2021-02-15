@@ -14,6 +14,7 @@ public:
 		Clause clause, unordered_map<string, vector<int>>& tempResults);
 
 	~PatternEvaluator();
+
 private:
     enum queryTypes {
         varUnderscore = 0,
@@ -32,13 +33,7 @@ private:
 
     static int getIndex(vector<string> v, string s);
     static int getQueryType(string firstType, string secondType);
-    
-    static ast::AssignStmt* typeCastAssignStmt(ast::Stmt* stmt);
-    static ast::InfixExpr* typeCastInfixExpr(ast::Expr* expr);
-    static ast::Expr* parseStringToExpr(string input);
-    static bool areIdentical(ast::InfixExpr* root1, ast::InfixExpr* root2);
-    static bool isSubtree(ast::InfixExpr* root1, ast::InfixExpr* root2);
-    static bool exprToSubExpr(ast::Expr* expr1, ast::Expr* expr2, bool areIdentical);
+    static string parseExprToExprStr(string input);
 
     static bool evaluateNameUnderscore(vector<int> stmtNums, string varName, string firstArg,
         unordered_map<string, vector<int>>& tempResults);

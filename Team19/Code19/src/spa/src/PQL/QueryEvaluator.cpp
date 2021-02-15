@@ -56,7 +56,6 @@ bool QueryEvaluator::evaluateClause(Clause clause, unordered_map<string, vector<
     } else { // pattern
         return PatternEvaluator::evaluate(this->declarations, clause, tempResults);
     }
-    return true;
 }
 
 // Joins table and results based on common synonyms (if any) and assigns the newResults to results

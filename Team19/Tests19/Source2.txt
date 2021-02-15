@@ -1,0 +1,61 @@
+procedure Test2 {
+    read a;
+    read b;
+    assign = 1;
+    variable = 2;
+    statement = 3;
+    procedure = 4;
+    while = 5;
+    if = 6;
+    print = a;
+    read read;
+    if (
+        while == if     )     then {
+        variable = statement + procedure;
+        if (if == 6) then {
+            while(print<=read){
+                assign = assign - variable;
+                call = 1;
+                if(((!(if<read  + 3/(a+b))) || ((!(print/read <= 6)) && (print + statement > 5))) && (((if-read) != (a*(procedure + statement) - (statement+b)%4)) || (call>=statement))) then {
+                    call = 1 + 2 * 3;
+                } else {
+                    a = call;
+                }
+            }
+        } else {
+            b = print % 2;
+            if(b > procedure)then{
+                variable=variable;
+            } else {
+                while (while != if) {
+                    print = print + print * print - print / print % print;
+                    while = while + 1;
+                }
+            }
+            print print;
+        }
+        variable = statement / a - assign * 5/2;
+    } else {
+        else = read % 5;
+        true = 1;
+        while (true     == 1) {
+            true = 0;
+            false = 0;
+            if(true ==  false) then{
+                else = procedure * statement;
+                while (else <= true) {
+                    true = true - false;
+                    if (true !=false) then      {
+                        true = false * variable + print;
+                        assign = if / 3;
+                    } else {
+                        call = procedure / statement;
+                    }
+                }
+            } else {
+                print variable;
+            }
+        }
+    }
+    read statement;
+}
