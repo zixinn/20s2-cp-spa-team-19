@@ -35,7 +35,7 @@ void TestWrapper::parse(std::string filename) {
         input += line + "\n";
     }
     theFile.close();
-    cout << input << endl;
+   // cout << input << endl;
     try {
         std::vector<sp::Token> actual_tok;
         std::vector<sp::Token*> tok_ptrs;
