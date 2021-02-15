@@ -136,7 +136,7 @@ bool QueryPreprocessor::parseSuchThatClause(string clause) {
 
     int left = clause.find('(');
     int comma = clause.find(',');
-    int right = clause.find(')');
+    int right = clause.length() - 1;
 
     string rel = trim(clause.substr(0, left));
     string firstArg = trim(clause.substr(left + 1, comma - left - 1));
@@ -176,7 +176,7 @@ bool QueryPreprocessor::parsePatternClause(string clause) {
 
     int left = clause.find('(');
     int comma = clause.find(',');
-    int right = clause.find(')');
+    int right = clause.length() - 1;
 
     string syn = trim(clause.substr(0, left));
     string firstArg = trim(clause.substr(left + 1, comma - left - 1));
