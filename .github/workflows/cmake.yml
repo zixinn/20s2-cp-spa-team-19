@@ -45,3 +45,7 @@ jobs:
       working-directory: ${{ github.workspace }}/Team19/Code19/build/src/unit_testing
       run: ./unit_testing.exe
       
+    - name: Run integration tests
+      working-directory: ${{ github.workspace }}/Team19/Code19/build/src/integration_testing
+      run: ./integration_testing.exe
+      
