@@ -183,7 +183,7 @@ assign a;
 Select a such that Follows(1, 2, 3)
 none
 5000
-38 - invalid FollowsT
+38 - invalid Follows*
 variable v;
 Select v such that Follows*(v, _)
 none
@@ -650,15 +650,50 @@ none
 5000
 131 - invalid query
 stmt s; assign a;
+Select s such that Follows pattern a("y", _)
+none
+5000
+132 - invalid query
+stmt s; assign a;
+Select s pattern a("y", _) such that Follows
+none
+5000
+133 - invalid query
+stmt s; assign a;
 Select s such that Follows(_, 2) abc pattern a("y", _)
 none
 5000
-132 - synonym not declared
+134 - invalid query
+stmt s; assign a;
+Select s pattern a("y", _) xyz such that Follows(_, 2)
+none
+5000
+135 - invalid query
+stmt s; assign a;
+Select s such that Follows(_, 2) pattern a("y", _) abc
+none
+5000
+136 - invalid query
+stmt s; assign a;
+Select s pattern a("y", _) such that Follows(_, 2) xyz
+none
+5000
+137 - invalid query
+stmt s; assign a;
+Select s such that pattern a("y", _)
+none
+5000
+138 - invalid query
+stmt s; assign a;
+Select s pattern Follows(_, 2)
+none
+5000
+139 - synonym not declared
 assign a;
 Select a such that Parent(w, a)
 none
 5000
-133 - synonym not declared
+140 - synonym not declared
 stmt s;
 Select s such that pattern a(_, _)
 none
