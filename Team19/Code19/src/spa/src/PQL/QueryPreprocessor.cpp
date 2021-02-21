@@ -2,8 +2,8 @@
 
 QueryPreprocessor::QueryPreprocessor() {
     designEntities = { PROCEDURE_, STMTLST_, STMT_, READ_, PRINT_, ASSIGN_, CALL_, WHILE_, IF_, VARIABLE_, CONSTANT_ };
-    validSuchThatArgType["Follows"] = { { STMT_, READ_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, UNDERSCORE_ },
-                                        { STMT_, READ_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, UNDERSCORE_ } };
+    validSuchThatArgType["Follows"] = { { STMT_, READ_, PRINT_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, UNDERSCORE_ },
+                                        { STMT_, READ_, PRINT_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, UNDERSCORE_ } };
     validSuchThatArgType["Follows*"] = { { STMT_, READ_, PRINT_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, UNDERSCORE_ },
                                          { STMT_, READ_, PRINT_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, UNDERSCORE_ } };
     validSuchThatArgType["Parent"] = { { STMT_, WHILE_, IF_, INTEGER_, UNDERSCORE_ },
@@ -57,6 +57,9 @@ Query QueryPreprocessor::process(string query) {
 bool QueryPreprocessor::parseDeclaration(string designEntity, string synonyms) {
     if (!checkDesignEntity(designEntity)) {
         this->isValid = false;
+        return false;
+    }
+    if (synonyms.at(synonyms.length() - 1) == ',') {
         return false;
     }
     vector<string> synonymsVector = split(synonyms, ",");
@@ -133,7 +136,7 @@ bool QueryPreprocessor::parseSuchThatClause(string clause) {
 
     int left = clause.find('(');
     int comma = clause.find(',');
-    int right = clause.find(')');
+    int right = clause.length() - 1;
 
     string rel = trim(clause.substr(0, left));
     string firstArg = trim(clause.substr(left + 1, comma - left - 1));
@@ -173,7 +176,7 @@ bool QueryPreprocessor::parsePatternClause(string clause) {
 
     int left = clause.find('(');
     int comma = clause.find(',');
-    int right = clause.find(')');
+    int right = clause.length() - 1;
 
     string syn = trim(clause.substr(0, left));
     string firstArg = trim(clause.substr(left + 1, comma - left - 1));
