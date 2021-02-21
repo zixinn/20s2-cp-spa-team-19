@@ -49,5 +49,8 @@ bool checkName(string s) {
 // Checks DIGIT +
 // Returns true if integer is valid, false otherwise
 bool checkInteger(string s) {
+    if (s.length() > 1 && s.at(0) == '0') {
+        return false;
+    }
     return !s.empty() && all_of(s.begin(), s.end(), ::isdigit);
 }

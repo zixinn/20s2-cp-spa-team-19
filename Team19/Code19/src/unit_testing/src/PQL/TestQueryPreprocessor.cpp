@@ -27,7 +27,7 @@ TEST_CASE("process missing select clause") {
     REQUIRE(actual == expected);
 }
 
-/*TEST_CASE("process multiple select clause") {
+TEST_CASE("process multiple select clause") {
     QueryPreprocessor qp = QueryPreprocessor();
     string query = "assign a; while w; \nSelect w such that Parent* (w, a); Select w pattern a (\"count\", _)";
     Query actual = qp.process(query);
@@ -36,7 +36,7 @@ TEST_CASE("process missing select clause") {
     declarations["w"] = "while";
     Query expected = Query(declarations, "", {}, false);
     REQUIRE(actual == expected);
-}*/
+}
 
 TEST_CASE("process query not ending with Select clause") {
     QueryPreprocessor qp = QueryPreprocessor();
