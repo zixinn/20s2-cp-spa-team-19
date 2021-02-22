@@ -77,7 +77,7 @@ bool QueryPreprocessor::checkDesignEntity(string designEntity) {
     return this->designEntities.find(designEntity) != this->designEntities.end();
 }
 
-bool QueryPreprocessor::parseSelect(string select) {
+/*bool QueryPreprocessor::parseSelect(string select) {
     int suchThatPos = select.find(" such that ");
     int patternPos = select.find(" pattern ");
     int nextPos = getNextPos(vector<int>{suchThatPos, patternPos});
@@ -107,6 +107,36 @@ bool QueryPreprocessor::parseSelect(string select) {
         minPos = nextPos;
     }
     return true;
+}*/
+
+bool QueryPreprocessor::parseSelect(string select) {
+    int suchThatPos = select.find(" such that ");
+    int patternPos = select.find(" pattern ");
+
+    if (suchThatPos == string::npos && patternPos == string::npos) { // no such that and pattern clause
+        return parseToSelect(select);
+    }
+    else if (patternPos == string::npos) { // no pattern clause
+        return parseToSelect(trim(select.substr(0, suchThatPos)))
+            && parseSuchThatClause(trim(select.substr(suchThatPos + 11)));
+    }
+    else if (suchThatPos == string::npos) { // no such that clause
+        return parseToSelect(trim(select.substr(0, patternPos)))
+            && parsePatternClause(trim(select.substr(patternPos + 9)));
+
+    }
+    else { // both such that and pattern clause
+        if (suchThatPos < patternPos) { // such that before pattern
+            return parseToSelect(trim(select.substr(0, suchThatPos)))
+                && parseSuchThatClause(trim(select.substr(suchThatPos + 11, patternPos - suchThatPos - 11)))
+                && parsePatternClause(trim(select.substr(patternPos + 9)));
+        }
+        else { // pattern before such that
+            return parseToSelect(trim(select.substr(0, patternPos)))
+                && parsePatternClause(trim(select.substr(patternPos + 9, suchThatPos - patternPos - 9)))
+                && parseSuchThatClause(trim(select.substr(suchThatPos + 11)));
+        }
+    }
 }
 
 int QueryPreprocessor::getNextPos(vector<int> pos) {

@@ -344,7 +344,7 @@ TEST_CASE("QueryPreprocessor evaluate query with one such that and one pattern c
     REQUIRE(actual3 == expected3);
 }
 
-TEST_CASE("QueryEvaluator evaluate query with multiple such that clauses") {
+/*TEST_CASE("QueryEvaluator evaluate query with multiple such that clauses") {
     setupQp();
 
     QueryPreprocessor qp = QueryPreprocessor();
@@ -373,7 +373,7 @@ TEST_CASE("QueryEvaluator evaluate query with multiple such that clauses") {
     unordered_set<string> expected3 = { "2", "4", "5", "7", "12" };
     REQUIRE(actual3.size() == list3.size());
     REQUIRE(actual3 == expected3);
-}
+}*/
 
 TEST_CASE("QueryEvaluator evaluate query for nested statements") {
     setupQp2();
