@@ -83,7 +83,7 @@ TEST_CASE("Parse Assign Expr - Mid Test") {
     auto l = new LexerStub(stubTokens);     //new keyword gets me a ptr to LexerStub
     Parser p = Parser(l);
     ast::AssignStmt* ass = p.parseAssignStmt();
-    REQUIRE(ass->toString() == "x = ((v + (x * y)) + (z * t));");
+    REQUIRE(ass->toString() == "(x) = (((v) + ((x) * (y))) + ((z) * (t)));");
 }
 
 TEST_CASE("Parse Assign Expr - With Paren Test") {
@@ -105,5 +105,5 @@ TEST_CASE("Parse Assign Expr - With Paren Test") {
     auto l = new LexerStub(stubTokens);
     Parser p = Parser(l);
     ast::AssignStmt* ass = p.parseAssignStmt();
-    REQUIRE(ass->toString() == "x = ((y + 5) * 3);");
+    REQUIRE(ass->toString() == "(x) = (((y) + (5)) * (3));");
 }
