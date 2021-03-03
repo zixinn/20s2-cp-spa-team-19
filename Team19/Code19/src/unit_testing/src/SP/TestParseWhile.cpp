@@ -24,11 +24,11 @@ TEST_CASE("ParseLexer While - Test") {
         },
         {
             "while ((flag == 1) || (5 > 3)) { asd = 23; b = 2 + sdf; }",
-            "while (( ( flag == 1 ) || ( 5 > 3 ) )) {\n    asd = 23;\n    b = (2 + sdf);\n}\n",
+            "while (( ( flag == 1 ) || ( 5 > 3 ) )) {\n    (asd) = (23);\n    (b) = ((2) + (sdf));\n}\n",
         },
         {
             "while ((flag == 1) || (5 > 3)) { asd = 23; b = 2 + sdf; while (a + 1 > c % 2) { sss = 123 + 22; call beef; print while; call beef; }}",
-            "while (( ( flag == 1 ) || ( 5 > 3 ) )) {\n    asd = 23;\n    b = (2 + sdf);\n    while (( a + 1 > c % 2 )) {\n    sss = (123 + 22);\n    call beef;\n    print while;\n    call beef;\n}\n\n}\n",
+            "while (( ( flag == 1 ) || ( 5 > 3 ) )) {\n    (asd) = (23);\n    (b) = ((2) + (sdf));\n    while (( a + 1 > c % 2 )) {\n    (sss) = ((123) + (22));\n    call beef;\n    print (while);\n    call beef;\n}\n\n}\n",
         },
     };
 
