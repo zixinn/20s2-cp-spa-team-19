@@ -42,16 +42,16 @@ void setupQe() {
     PKB::stmtTable->storeStmt(13, stmtNodeStub, ASSIGN_);
     PKB::stmtTable->storeStmt(14, stmtNodeStub, ASSIGN_);
 
-    PKB::stmtTable->storeAssignExpr(1, "count", "0");
-    PKB::stmtTable->storeAssignExpr(2, "cenX", "0");
-    PKB::stmtTable->storeAssignExpr(3, "cenY", "0");
-    PKB::stmtTable->storeAssignExpr(6, "count", "(count + 1)");
-    PKB::stmtTable->storeAssignExpr(7, "cenX", "(cenX + x)");
-    PKB::stmtTable->storeAssignExpr(8, "cenY", "(cenY + y)");
-    PKB::stmtTable->storeAssignExpr(11, "flag", "1");
-    PKB::stmtTable->storeAssignExpr(12, "cenX", "(cenX / count)");
-    PKB::stmtTable->storeAssignExpr(13, "cenY", "(cenY / count)");
-    PKB::stmtTable->storeAssignExpr(14, "normSq", "((cenX * cenX) + (cenY * cenY))");
+    PKB::stmtTable->storeAssignExpr(1, "count", "(0)");
+    PKB::stmtTable->storeAssignExpr(2, "cenX", "(0)");
+    PKB::stmtTable->storeAssignExpr(3, "cenY", "(0)");
+    PKB::stmtTable->storeAssignExpr(6, "count", "((count) + (1))");
+    PKB::stmtTable->storeAssignExpr(7, "cenX", "((cenX) + (x))");
+    PKB::stmtTable->storeAssignExpr(8, "cenY", "((cenY) + (y))");
+    PKB::stmtTable->storeAssignExpr(11, "flag", "(1)");
+    PKB::stmtTable->storeAssignExpr(12, "cenX", "((cenX) / (count))");
+    PKB::stmtTable->storeAssignExpr(13, "cenY", "((cenY) / (count))");
+    PKB::stmtTable->storeAssignExpr(14, "normSq", "(((cenX) * (cenX)) + ((cenY) * (cenY)))");
 
     PKB::follows = new Follows();
     PKB::follows->storeFollows(1,2);
