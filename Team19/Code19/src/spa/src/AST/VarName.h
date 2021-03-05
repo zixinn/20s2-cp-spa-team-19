@@ -11,7 +11,7 @@ namespace ast {
 		const std::string val;
 
 		VarName(sp::Token* token, std::string val) :Expr{ token }, val{ val } {}
-		std::string toString() override { return this->val; };
+		std::string toString() override { return "(" + this->val + ")"; };
 		std::string getVal() { return val; }
 
 		// DO NOT TRUST THIS, IF YOU ARE USING THIS METHOD LET ME KNOW

@@ -60,11 +60,11 @@ TEST_CASE("Parse Infix Expr - Basic Plus Test") {
     };
 
     std::vector<std::string> str_rep{
-        "(11 + 22)",
-        "(11 - 22)",
-        "(11 * 22)",
-        "(11 / 22)",
-        "(11 % 22)",
+        "((11) + (22))",
+        "((11) - (22))",
+        "((11) * (22))",
+        "((11) / (22))",
+        "((11) % (22))",
     };
 
     for (int i = 0; i < operators.size(); i++) {
@@ -115,7 +115,7 @@ TEST_CASE("Parse Infix Expr - Mid Test") {
     auto l = new LexerStub(stubTokens);     //new keyword gets me a ptr to LexerStub
     Parser p = Parser(l);
     ast::Expr* expr = p.parseExpr(ParserUtils::ExprPrecedence::LOWEST);
-    REQUIRE(expr->toString() == "((v + (x * y)) + (z * t))");
+    REQUIRE(expr->toString() == "(((v) + ((x) * (y))) + ((z) * (t)))");
 }
 
 // test use of Keywords in Expressions
@@ -126,15 +126,15 @@ TEST_CASE("ParseLexer2 Expr - Keywords Test") {
     std::vector<std::pair<std::string, std::string>> tests{
         {
             "1 + print;",
-            "(1 + print)",
+            "((1) + (print))",
         },
         {
             "call;",
-            "call",
+            "(call)",
         },
         {
             "(5 + read) * if / then + else;",
-            "((((5 + read) * if) / then) + else)",
+            "(((((5) + (read)) * (if)) / (then)) + (else))",
         },
     };
 

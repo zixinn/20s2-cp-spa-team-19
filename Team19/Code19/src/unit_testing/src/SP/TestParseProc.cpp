@@ -35,7 +35,7 @@ TEST_CASE("Parse Proc Test") {
     ast::StmtLst* stmt_lst = proc->getStmtLst();
     REQUIRE((*stmt_lst).getStatements().size() == 2);
     
-    std::string expectedString = "{\n    print sun;\n    read ttt;\n}\n";
+    std::string expectedString = "{\n    print (sun);\n    read (ttt);\n}\n";
     REQUIRE(stmt_lst->toString() == expectedString);
 }
 
@@ -74,7 +74,7 @@ TEST_CASE("Parse Prog - Proc Test") {
         ast::StmtLst* stmt_lst = proc->getStmtLst();
         REQUIRE((*stmt_lst).getStatements().size() == 1);
 
-        std::string expectedString = "{\n    x = 1;\n}\n";
+        std::string expectedString = "{\n    (x) = (1);\n}\n";
         REQUIRE(stmt_lst->toString() == expectedString);
 
     }
@@ -144,11 +144,11 @@ TEST_CASE("Parse Prog - Proc - Keyword Test") {
 TEST_CASE("ParseLexer Proc - Test 1, Test") {
     std::string input = "procedure star{ x = 1 + 2 * 3; while (a > b) { x = 2; } print p; read s; } ;";
     std::vector<std::pair<int, std::string>> tts{
-        {1, "x = (1 + (2 * 3));"},
+        {1, "(x) = ((1) + ((2) * (3)));"},
         // note: CondExprBag just prints its tokens, which includes outermost ( ) from while
-        {2, "while (( a > b )) {\n    x = 2;\n}\n"},
-        {4, "print p;"},
-        {5, "read s;"},
+        {2, "while (( a > b )) {\n    (x) = (2);\n}\n"},
+        {4, "print (p);"},
+        {5, "read (s);"},
     };
 
     /** begin ritual to Summon Parser **/

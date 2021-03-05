@@ -24,11 +24,11 @@ TEST_CASE("ParseLexer If - Test") {
         },
         {
             "if ((flag == (1 * 5))|| (3 > 2)) then { x = (2 + 1); } else { print call; }\n",
-            "if (( ( flag == ( 1 * 5 ) ) || ( 3 > 2 ) )) then {\n    x = (2 + 1);\n}\nelse {\n    print call;\n}\n",
+            "if (( ( flag == ( 1 * 5 ) ) || ( 3 > 2 ) )) then {\n    (x) = ((2) + (1));\n}\nelse {\n    print (call);\n}\n",
         },
         {
             "if (flag == 1) then {while ((a + b) > c) { bb = dd;}} else {}",
-            "if (( flag == 1 )) then {\n    while (( ( a + b ) > c )) {\n    bb = dd;\n}\n\n}\nelse {\n}\n",
+            "if (( flag == 1 )) then {\n    while (( ( a + b ) > c )) {\n    (bb) = (dd);\n}\n\n}\nelse {\n}\n",
         },
     };
 
