@@ -16,6 +16,11 @@ QueryPreprocessor::QueryPreprocessor() {
                                          { VARIABLE_, NAME_, UNDERSCORE_ } };
     validPatternArgType["assign"] = { { VARIABLE_, NAME_, UNDERSCORE_ },
                                       { UNDERSCORE_, NAME_, EXPRESSION_, EXPRESSIONWITHUNDERSCORE_ } };
+    validPatternArgType["while"] = { { VARIABLE_, NAME_, UNDERSCORE_ },
+                                     { UNDERSCORE_ } };
+    validPatternArgType["if"] = { { VARIABLE_, NAME_, UNDERSCORE_ },
+                                      { UNDERSCORE_ },
+                                      { UNDERSCORE_ } };
 }
 
 Query QueryPreprocessor::process(string query) {
@@ -169,35 +174,54 @@ bool QueryPreprocessor::checkSuchThatClause(string rel, vector<string> args) {
 }
 
 bool QueryPreprocessor::parsePatternClause(string clause) {
-    if (!regex_match(clause, regex("^.*\\(.*,.*\\)$"))) {
+    if (!regex_match(clause, regex("^.*\\(.*,.*\\)$")) && !regex_match(clause, regex("^.*\\(.*,.*,.*\\)$"))) {
         this->isValid = false;
         return false;
     }
 
     int left = clause.find('(');
     int comma = clause.find(',');
+    int comma2 = clause.find(',', comma + 1);
     int right = clause.length() - 1;
 
     string syn = trim(clause.substr(0, left));
     string firstArg = trim(clause.substr(left + 1, comma - left - 1));
-    string secondArg = trim(clause.substr(comma + 1, right - comma - 1));
-    if (!checkPatternClause(syn, { firstArg, secondArg })) {
-        this->isValid = false;
-        return false;
+
+    if (comma2 == string::npos) { // assign, while
+        string secondArg = trim(clause.substr(comma + 1, right - comma - 1));
+        if (!checkPatternClause(syn, { firstArg, secondArg })) {
+            this->isValid = false;
+            return false;
+        }
+        this->clauses.push_back(Clause(syn, { firstArg, secondArg }));
+
+    } else { // if
+        string secondArg = trim(clause.substr(comma + 1, comma2 - comma - 1));
+        string thirdArg = trim(clause.substr(comma2 + 1, right - comma2 - 1));
+        if (!checkPatternClause(syn, { firstArg, secondArg, thirdArg })) {
+            this->isValid = false;
+            return false;
+        }
+        this->clauses.push_back(Clause(syn, { firstArg, secondArg, thirdArg }));
     }
 
-    this->clauses.push_back(Clause(syn, { firstArg, secondArg }));
     return true;
 }
 
 bool QueryPreprocessor::checkPatternClause(string syn, vector<string> args) {
     string argType = getArgType(syn, this->declarations);
-    if (argType != ASSIGN_) {
+    if (argType != ASSIGN_ && argType != WHILE_ && argType != IF_) {
         this->isValid = false;
         return false;
     }
+
     vector<unordered_set<string>> validArgType = this->validPatternArgType.find(argType)->second;
-    for (int i = 0; i < 2; i++) {
+    if (args.size() != validArgType.size()) {
+        this->isValid = false;
+        return false;
+    }
+
+    for (int i = 0; i < validArgType.size(); i++) {
         if (validArgType[i].find(getArgType(args[i], this->declarations)) == validArgType[i].end()) {
             this->isValid = false;
             return false;

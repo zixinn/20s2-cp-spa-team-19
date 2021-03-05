@@ -107,6 +107,21 @@ TEST_CASE("process invalid pattern clause") {
     declarations["a"] = "assign";
     Query expected = Query(declarations, "a", {}, false);
     REQUIRE(actual == expected);
+
+    query = "stmt s; while w; \nSelect w pattern w (\"x\", s)";
+    actual = qp.process(query);
+    unordered_map<string, string> declarations1;
+    declarations1["s"] = "stmt";
+    declarations1["w"] = "while";
+    expected = Query(declarations1, "w", {}, false);
+    REQUIRE(actual == expected);
+
+    query = "if ifs; \nSelect ifs pattern ifs (\"count\", _)";
+    actual = qp.process(query);
+    unordered_map<string, string> declarations2;
+    declarations2["ifs"] = "if";
+    expected = Query(declarations2, "ifs", {}, false);
+    REQUIRE(actual == expected);
 }
 
 TEST_CASE("process valid query with no such that and pattern clause") {
@@ -169,6 +184,22 @@ TEST_CASE("process valid query with pattern clause") {
     unordered_map<string, string> declarations;
     declarations["a"] = "assign";
     Query expected = Query(declarations, "a", { c }, true);
+    REQUIRE(actual == expected);
+
+    query = "while w; \nSelect w pattern w (\"x\", _)";
+    actual = qp.process(query);
+    c = Clause("w", { "\"x\"", "_" });
+    unordered_map<string, string> declarations1;
+    declarations1["w"] = "while";
+    expected = Query(declarations1, "w", { c }, true);
+    REQUIRE(actual == expected);
+
+    query = "if ifs; \nSelect ifs pattern ifs (\"count\", _, _)";
+    actual = qp.process(query);
+    c = Clause("ifs", { "\"count\"", "_", "_" });
+    unordered_map<string, string> declarations2;
+    declarations2["ifs"] = "if";
+    expected = Query(declarations2, "ifs", { c }, true);
     REQUIRE(actual == expected);
 }
 
