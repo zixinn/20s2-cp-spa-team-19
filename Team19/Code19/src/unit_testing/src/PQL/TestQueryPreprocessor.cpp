@@ -195,7 +195,7 @@ TEST_CASE("process valid query with such that and pattern clause") {
     REQUIRE(actual == expected);
 }
 
-/*TEST_CASE("process valid query with multiple clauses") {
+TEST_CASE("process valid query with multiple clauses") {
     QueryPreprocessor qp = QueryPreprocessor();
     string query = "assign a; while w;\nSelect a pattern a (_, \"x + 1\") such that Parent (w, a) such that Uses (a, \"x\") pattern a (\"x\", _) ";
     Query actual = qp.process(query);
@@ -208,4 +208,4 @@ TEST_CASE("process valid query with such that and pattern clause") {
     declarations["w"] = "while";
     Query expected = Query(declarations, "a", { c1, c2, c3, c4 }, true);
     REQUIRE(actual == expected);
-}*/
+}
