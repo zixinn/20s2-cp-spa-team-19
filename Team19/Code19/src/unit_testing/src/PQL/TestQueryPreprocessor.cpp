@@ -141,6 +141,24 @@ TEST_CASE("process valid query with such that clause") {
     declarations["w"] = "while";
     Query expected = Query(declarations, "w", { c }, true);
     REQUIRE(actual == expected);
+
+    query = "variable v; procedure p;\nSelect p such that Modifies (p, \"x\")";
+    actual = qp.process(query);
+    c = Clause("Modifies", { "p", "\"x\"" });
+    unordered_map<string, string> declarations1;
+    declarations1["v"] = "variable";
+    declarations1["p"] = "procedure";
+    expected = Query(declarations1, "p", { c }, true);
+    REQUIRE(actual == expected);
+
+    query = "prog_line n; stmt s; \nSelect s such that Follows* (s, n)";
+    actual = qp.process(query);
+    c = Clause("Follows*", { "s", "n" });
+    unordered_map<string, string> declarations2;
+    declarations2["n"] = "prog_line";
+    declarations2["s"] = "stmt";
+    expected = Query(declarations2, "s", { c }, true);
+    REQUIRE(actual == expected);
 }
 
 TEST_CASE("process valid query with pattern clause") {

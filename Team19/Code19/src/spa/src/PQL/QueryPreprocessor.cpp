@@ -1,18 +1,18 @@
 #include "QueryPreprocessor.h"
 
 QueryPreprocessor::QueryPreprocessor() {
-    designEntities = { PROCEDURE_, STMTLST_, STMT_, READ_, PRINT_, ASSIGN_, CALL_, WHILE_, IF_, VARIABLE_, CONSTANT_ };
-    validSuchThatArgType["Follows"] = { { STMT_, READ_, PRINT_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, UNDERSCORE_ },
-                                        { STMT_, READ_, PRINT_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, UNDERSCORE_ } };
-    validSuchThatArgType["Follows*"] = { { STMT_, READ_, PRINT_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, UNDERSCORE_ },
-                                         { STMT_, READ_, PRINT_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, UNDERSCORE_ } };
-    validSuchThatArgType["Parent"] = { { STMT_, WHILE_, IF_, INTEGER_, UNDERSCORE_ },
-                                       { STMT_, READ_, PRINT_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, UNDERSCORE_ } };
-    validSuchThatArgType["Parent*"] = { { STMT_, WHILE_, IF_, INTEGER_, UNDERSCORE_ },
-                                        { STMT_, READ_, PRINT_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, UNDERSCORE_ } };
-    validSuchThatArgType["Uses"] = { { STMT_, PRINT_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, NAME_ },
+    designEntities = { STMT_, READ_, PRINT_, ASSIGN_, CALL_, WHILE_, IF_, VARIABLE_, CONSTANT_, PROCEDURE_, PROGLINE_ };
+    validSuchThatArgType["Follows"] = { { STMT_, READ_, PRINT_, ASSIGN_, CALL_, WHILE_, IF_, PROGLINE_, INTEGER_, UNDERSCORE_ },
+                                        { STMT_, READ_, PRINT_, ASSIGN_, CALL_, WHILE_, IF_, PROGLINE_, INTEGER_, UNDERSCORE_ } };
+    validSuchThatArgType["Follows*"] = { { STMT_, READ_, PRINT_, ASSIGN_, CALL_, WHILE_, IF_, PROGLINE_, INTEGER_, UNDERSCORE_ },
+                                         { STMT_, READ_, PRINT_, ASSIGN_, CALL_, WHILE_, IF_, PROGLINE_, INTEGER_, UNDERSCORE_ } };
+    validSuchThatArgType["Parent"] = { { STMT_, WHILE_, IF_, PROGLINE_, INTEGER_, UNDERSCORE_ },
+                                       { STMT_, READ_, PRINT_, ASSIGN_, CALL_, WHILE_, IF_, PROGLINE_, INTEGER_, UNDERSCORE_ } };
+    validSuchThatArgType["Parent*"] = { { STMT_, WHILE_, IF_, PROGLINE_, INTEGER_, UNDERSCORE_ },
+                                        { STMT_, READ_, PRINT_, ASSIGN_, CALL_, WHILE_, IF_, PROGLINE_, INTEGER_, UNDERSCORE_ } };
+    validSuchThatArgType["Uses"] = { { STMT_, PRINT_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, PROGLINE_, INTEGER_, NAME_ },
                                      { VARIABLE_, NAME_, UNDERSCORE_ } };
-    validSuchThatArgType["Modifies"] = { { STMT_, READ_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, NAME_ },
+    validSuchThatArgType["Modifies"] = { { STMT_, READ_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, PROGLINE_, INTEGER_, NAME_ },
                                          { VARIABLE_, NAME_, UNDERSCORE_ } };
     validPatternArgType["assign"] = { { VARIABLE_, NAME_, UNDERSCORE_ },
                                       { UNDERSCORE_, NAME_, EXPRESSION_, EXPRESSIONWITHUNDERSCORE_ } };
