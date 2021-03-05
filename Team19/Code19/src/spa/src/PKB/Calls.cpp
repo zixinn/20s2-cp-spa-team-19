@@ -207,7 +207,7 @@ void Calls::populateCallsStar() {
 
 void Calls::updateAllUsesAndModifies() {
     // For each callers p that we have, find out who their direct callees q's are
-    // For each callee procedure q, process q first (DFS)
+    // For each callee procedure q, process q first (DFS with implicit stack)
     // Find the stmtNums where the Calls(p, q) occurs
     // For each stmtNum, storeUsesModifies(stmtNum, p, q)
     for (ID p : getAllCalls().first) {
@@ -217,9 +217,6 @@ void Calls::updateAllUsesAndModifies() {
 
 void Calls::updateUsesAndModifiesForProcedure(ID p) {
     processedProcedures.insert(p);
-    //stack.push_back(p);
-    //ID curr = stack.back();
-    //stack.pop_back();
     for (ID q : getCallees(p)) {
         if (processedProcedures.find(q) == processedProcedures.end()) {
             processedProcedures.insert(q);
@@ -227,7 +224,6 @@ void Calls::updateUsesAndModifiesForProcedure(ID p) {
             for (StmtNum stmtNum : getStmtsOfCalls(p, q)) {
                 storeUsesAndModifies(stmtNum, p, q);
             }
-            //stack.push_back(u);
         }
     }
 }

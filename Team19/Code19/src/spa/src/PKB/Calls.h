@@ -74,7 +74,6 @@ private:
     // Stores p as key, an unordered map (q as key, stmtNum as value) as value
     unordered_map<ID, unordered_map<ID, unordered_set<StmtNum> > > callsStmtMap;
 
-    // TODO getter?
     // Stores StmtNum where Calls(p,q) occurs as key, q as value.
     unordered_map<StmtNum, ID> callsStmtCalleeMap;
 
@@ -101,6 +100,10 @@ private:
     // calculate all Calls* relationships from the callsMap using BFS and populate the callsStarMap and reverseCallsStarMap
     void populateCallsStar();
 
+    // For each callers p that we have, find out who their direct callees q's are
+    // For each callee procedure q, process q first (DFS with implicit stack)
+    // Find the stmtNums where the Calls(p, q) occurs
+    // For each stmtNum, storeUsesModifies(stmtNum, p, q)
     void updateAllUsesAndModifies();
 
     void updateUsesAndModifiesForProcedure(ID p);

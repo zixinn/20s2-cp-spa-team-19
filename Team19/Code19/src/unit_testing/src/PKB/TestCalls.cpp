@@ -107,6 +107,7 @@ TEST_CASE("getCalleeInStmt Test") {
     REQUIRE(PKB::calls->getCalleeInStmt(3) == 3);
     REQUIRE(PKB::calls->getCalleeInStmt(5) == 1);
     REQUIRE(PKB::calls->getCalleeInStmt(6) == 1);
+    REQUIRE(PKB::calls->getCalleeInStmt(2) == -1); // Not a call statement
 }
 
 TEST_CASE("getCallers Test") {
@@ -240,4 +241,64 @@ TEST_CASE("check uses and modifies") {
     REQUIRE(PKB::modifies->getStmtsModifies(2).empty()); // no statement modifies b
     REQUIRE(PKB::modifies->getStmtsModifies(3) == unordered_set<ID>({1, 3, 4})); // statement 1,3,4 modify c
     REQUIRE(PKB::modifies->getStmtsModifies(4).empty()); // no statement modifies d
+}
+
+TEST_CASE("check uses and modifies – with containers") {
+//       procedure p {
+//    1.     while (d == 3) { --> Uses(1, d), Uses(p, d), Uses(1, e), Uses(p, e), Uses(p, b), Modifies(p, a), Uses(1, b), Modifies(1, a), Modifies(p, c), Modifies(1, c)
+//    2.         if (e == 2) { --> Uses(2, e), Uses(p, e), Uses(p, b), Modifies(p, a), Uses(2, b), Modifies(2, a), Modifies(p, c), Modifies(2, c)
+//    3.             call q; --> Uses(p, b), Modifies(p, a), Uses(3, b), Modifies(3, a), Modifies(p, c), Modifies(3, c)
+//               }
+//           }
+//       }
+//
+//       procedure q {
+//    4.     a = b + 1; --> Uses(q, b), Modifies(q, a), Uses(4, b), Modifies(4, a)
+//    5.     call r;    --> Modifies(q, c), Modifies(5, c)
+//       }
+//
+//       procedure r {
+//    6.     c = 1;     --> Modifies(r, c), Modifies(6, c)
+//       }
+    PKB::resetPKB();
+    PKB::calls->storeCalls(3, 1, 2);
+    PKB::calls->storeCalls(5, 2, 3);
+    PKB::parent->storeParent(1, 2);
+    PKB::parent->storeParent(2, 3);
+    PKB::uses->storeStmtUses(1, 4);          // statement 1 uses d
+    PKB::uses->storeProcUses(1, 4);           // procedure p uses d
+    PKB::uses->storeStmtUses(2, 5);          // statement 2 uses e
+    PKB::uses->storeProcUses(1, 5);           // procedure p uses e
+    PKB::uses->storeStmtUses(1, 5);          // statement 1 uses e [handled by Design Extractor]
+    PKB::uses->storeStmtUses(4, 2);          // statement 4 uses b
+    PKB::uses->storeProcUses(2, 2);           // procedure q uses b
+    PKB::modifies->storeStmtModifies(4, 1); // statement 4 modifies a
+    PKB::modifies->storeProcModifies(2, 1);   // procedure q modifies a
+    PKB::modifies->storeStmtModifies(6, 3);  // statement 6 modifies c
+    PKB::modifies->storeProcModifies(3, 3);   // procedure r modifies c
+    PKB::populatePKB();
+
+    REQUIRE(PKB::uses->getProcsUses(1).empty()); // no procedure uses a
+    REQUIRE(PKB::uses->getProcsUses(2) == unordered_set<ID>({1, 2})); // procedure p and q use b
+    REQUIRE(PKB::uses->getProcsUses(3).empty()); // no procedure uses c
+    REQUIRE(PKB::uses->getProcsUses(4) == unordered_set<ID>({1})); // procedure p uses d
+    REQUIRE(PKB::uses->getProcsUses(5) == unordered_set<ID>({1})); // procedure p uses e
+
+    REQUIRE(PKB::uses->getStmtsUses(1).empty()); // no statements uses a
+    REQUIRE(PKB::uses->getStmtsUses(2) == unordered_set<ID>({1, 2, 3, 4})); // statements 1, 2, 3, 4 use b
+    REQUIRE(PKB::uses->getStmtsUses(3).empty()); // no statements uses c
+    REQUIRE(PKB::uses->getStmtsUses(4) == unordered_set<ID>({1})); // statements 1 use d
+    REQUIRE(PKB::uses->getStmtsUses(5) == unordered_set<ID>({1,2})); // statement 1,2 uses e
+
+    REQUIRE(PKB::modifies->getProcsModifies(1) == unordered_set<ID>({1, 2})); // procedure p and q modify a
+    REQUIRE(PKB::modifies->getProcsModifies(2).empty()); // no procedure modifies b
+    REQUIRE(PKB::modifies->getProcsModifies(3) == unordered_set<ID>({1, 2, 3})); // all procedures modify c
+    REQUIRE(PKB::modifies->getProcsModifies(4).empty()); // no procedure modifies d
+    REQUIRE(PKB::modifies->getProcsModifies(5).empty()); // no procedure modifies e
+
+    REQUIRE(PKB::modifies->getStmtsModifies(1) == unordered_set<ID>({1, 2, 3, 4})); // statement 1, 2, 3, 4 modify a
+    REQUIRE(PKB::modifies->getStmtsModifies(2).empty()); // no statement modifies b
+    REQUIRE(PKB::modifies->getStmtsModifies(3) == unordered_set<ID>({1, 2, 3, 5, 6})); // statement 1,2,3,5,6 modify c
+    REQUIRE(PKB::modifies->getStmtsModifies(4).empty()); // no statement modifies d
+    REQUIRE(PKB::modifies->getStmtsModifies(5).empty()); // no statement modifies e
 }
