@@ -90,12 +90,20 @@ TEST_CASE("process invalid such that clause") {
     Query expected = Query(declarations, "a", {}, false);
     REQUIRE(actual == expected);
 
-    query = "assign a; while w; \nSelect w such that Parent* (w, a) and pattern a (\"count\", _)";
+    query = "assign a; while w; \nSelect a such that Affects* (w, a)";
     actual = qp.process(query);
     unordered_map<string, string> declarations1;
     declarations1["a"] = "assign";
     declarations1["w"] = "while";
-    expected = Query(declarations1, "w", {}, false);
+    expected = Query(declarations1, "a", {}, false);
+    REQUIRE(actual == expected);
+
+    query = "assign a; while w; \nSelect w such that Parent* (w, a) abc pattern a (\"count\", _)";
+    actual = qp.process(query);
+    unordered_map<string, string> declarations2;
+    declarations2["a"] = "assign";
+    declarations2["w"] = "while";
+    expected = Query(declarations2, "w", {}, false);
     REQUIRE(actual == expected);
 }
 
@@ -173,6 +181,14 @@ TEST_CASE("process valid query with such that clause") {
     declarations2["n"] = "prog_line";
     declarations2["s"] = "stmt";
     expected = Query(declarations2, "s", { c }, true);
+    REQUIRE(actual == expected);
+
+    query = "prog_line n; \nSelect n such that Next (5, n)";
+    actual = qp.process(query);
+    c = Clause("Next", { "5", "n" });
+    unordered_map<string, string> declarations3;
+    declarations3["n"] = "prog_line";
+    expected = Query(declarations3, "n", { c }, true);
     REQUIRE(actual == expected);
 }
 

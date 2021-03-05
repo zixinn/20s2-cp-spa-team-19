@@ -2,6 +2,7 @@
 
 QueryPreprocessor::QueryPreprocessor() {
     designEntities = { STMT_, READ_, PRINT_, ASSIGN_, CALL_, WHILE_, IF_, VARIABLE_, CONSTANT_, PROCEDURE_, PROGLINE_ };
+
     validSuchThatArgType["Follows"] = { { STMT_, READ_, PRINT_, ASSIGN_, CALL_, WHILE_, IF_, PROGLINE_, INTEGER_, UNDERSCORE_ },
                                         { STMT_, READ_, PRINT_, ASSIGN_, CALL_, WHILE_, IF_, PROGLINE_, INTEGER_, UNDERSCORE_ } };
     validSuchThatArgType["Follows*"] = { { STMT_, READ_, PRINT_, ASSIGN_, CALL_, WHILE_, IF_, PROGLINE_, INTEGER_, UNDERSCORE_ },
@@ -14,6 +15,19 @@ QueryPreprocessor::QueryPreprocessor() {
                                      { VARIABLE_, NAME_, UNDERSCORE_ } };
     validSuchThatArgType["Modifies"] = { { STMT_, READ_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, PROGLINE_, INTEGER_, NAME_ },
                                          { VARIABLE_, NAME_, UNDERSCORE_ } };
+    validSuchThatArgType["Calls"] = { { PROCEDURE_, NAME_, UNDERSCORE_ },
+                                         { PROCEDURE_, NAME_, UNDERSCORE_ } };
+    validSuchThatArgType["Calls*"] = { { PROCEDURE_, NAME_, UNDERSCORE_ },
+                                      { PROCEDURE_, NAME_, UNDERSCORE_ } };
+    validSuchThatArgType["Next"] = { { STMT_, READ_, PRINT_, ASSIGN_, CALL_, WHILE_, IF_, PROGLINE_, INTEGER_, UNDERSCORE_ },
+                                       { STMT_, READ_, PRINT_, ASSIGN_, CALL_, WHILE_, IF_, PROGLINE_, INTEGER_, UNDERSCORE_ } };
+    validSuchThatArgType["Next*"] = { { STMT_, READ_, PRINT_, ASSIGN_, CALL_, WHILE_, IF_, PROGLINE_, INTEGER_, UNDERSCORE_ },
+                                     { STMT_, READ_, PRINT_, ASSIGN_, CALL_, WHILE_, IF_, PROGLINE_, INTEGER_, UNDERSCORE_ } };
+    validSuchThatArgType["Affects"] = { { STMT_, ASSIGN_, PROGLINE_, INTEGER_, UNDERSCORE_ },
+                                     { STMT_, ASSIGN_, PROGLINE_, INTEGER_, UNDERSCORE_ } };
+    validSuchThatArgType["Affects*"] = { { STMT_, ASSIGN_, PROGLINE_, INTEGER_, UNDERSCORE_ },
+                                        { STMT_, ASSIGN_, PROGLINE_, INTEGER_, UNDERSCORE_ } };
+
     validPatternArgType["assign"] = { { VARIABLE_, NAME_, UNDERSCORE_ },
                                       { UNDERSCORE_, NAME_, EXPRESSION_, EXPRESSIONWITHUNDERSCORE_ } };
     validPatternArgType["while"] = { { VARIABLE_, NAME_, UNDERSCORE_ },
