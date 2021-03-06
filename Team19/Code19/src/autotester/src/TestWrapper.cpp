@@ -44,6 +44,7 @@ void TestWrapper::parse(std::string filename) {
         auto p = Parser(l);
         valid = p.parse();
     } catch (...) {
+        
         valid = false;
     }
 }

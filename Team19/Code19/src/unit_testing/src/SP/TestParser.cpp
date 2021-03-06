@@ -128,7 +128,7 @@ TEST_CASE("Keyword Detection Test") {
 
 //repeated procedure names
 TEST_CASE("Mutiple Proc - Exceptions") {
-    std::string test = "procedure abc {} procedure edf {} procedure abc {}";
+    std::string test = "procedure abc { read r; } procedure edf { read r; } procedure abc { read r; }";
     
     /** begin ritual to Summon Parser **/
     std::vector<sp::Token> actual_tok;
@@ -143,6 +143,6 @@ TEST_CASE("Mutiple Proc - Exceptions") {
         REQUIRE(false);
     } catch (sp::ParserException& ex) {
         INFO(ex.what());
-        REQUIRE(true);
+        REQUIRE(ex.what().find("Procedure already exists: abc") != string::npos);
     }
 }

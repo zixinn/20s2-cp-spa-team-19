@@ -20,7 +20,6 @@ TEST_CASE("Parse Proc Test") {
         new sp::Token(sp::Token::TokenType::READ, "read"),
         new sp::Token(sp::Token::TokenType::NAME, "ttt"),
         new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
-        //parse stmtlst used to terminate at EOF
         new sp::Token(sp::Token::TokenType::RBRACE, "}"),
         new sp::Token(sp::Token::TokenType::EOFF, "EOF"),
 
@@ -87,34 +86,58 @@ TEST_CASE("Parse Prog - Proc - Keyword Test") {
         new sp::Token(sp::Token::TokenType::PROC, "procedure"),
         new sp::Token(sp::Token::TokenType::PROC, "procedure"),
         new sp::Token(sp::Token::TokenType::LBRACE, "{"),
+        new sp::Token(sp::Token::TokenType::READ, "read"),
+        new sp::Token(sp::Token::TokenType::NAME, "r"),
+        new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
         new sp::Token(sp::Token::TokenType::RBRACE, "}"),
         new sp::Token(sp::Token::TokenType::PROC, "procedure"),
         new sp::Token(sp::Token::TokenType::READ, "read"),
         new sp::Token(sp::Token::TokenType::LBRACE, "{"),
+        new sp::Token(sp::Token::TokenType::READ, "read"),
+        new sp::Token(sp::Token::TokenType::NAME, "r"),
+        new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
         new sp::Token(sp::Token::TokenType::RBRACE, "}"),
         new sp::Token(sp::Token::TokenType::PROC, "procedure"),
         new sp::Token(sp::Token::TokenType::PRINT, "print"),
         new sp::Token(sp::Token::TokenType::LBRACE, "{"),
+        new sp::Token(sp::Token::TokenType::READ, "read"),
+        new sp::Token(sp::Token::TokenType::NAME, "r"),
+        new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
         new sp::Token(sp::Token::TokenType::RBRACE, "}"),
         new sp::Token(sp::Token::TokenType::PROC, "procedure"),
         new sp::Token(sp::Token::TokenType::CALL, "call"),
         new sp::Token(sp::Token::TokenType::LBRACE, "{"),
+        new sp::Token(sp::Token::TokenType::READ, "read"),
+        new sp::Token(sp::Token::TokenType::NAME, "r"),
+        new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
         new sp::Token(sp::Token::TokenType::RBRACE, "}"),
         new sp::Token(sp::Token::TokenType::PROC, "procedure"),
         new sp::Token(sp::Token::TokenType::WHILE, "while"),
         new sp::Token(sp::Token::TokenType::LBRACE, "{"),
+        new sp::Token(sp::Token::TokenType::READ, "read"),
+        new sp::Token(sp::Token::TokenType::NAME, "r"),
+        new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
         new sp::Token(sp::Token::TokenType::RBRACE, "}"),
         new sp::Token(sp::Token::TokenType::PROC, "procedure"),
         new sp::Token(sp::Token::TokenType::IF, "if"),
         new sp::Token(sp::Token::TokenType::LBRACE, "{"),
+        new sp::Token(sp::Token::TokenType::READ, "read"),
+        new sp::Token(sp::Token::TokenType::NAME, "r"),
+        new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
         new sp::Token(sp::Token::TokenType::RBRACE, "}"),
         new sp::Token(sp::Token::TokenType::PROC, "procedure"),
         new sp::Token(sp::Token::TokenType::THEN, "then"),
         new sp::Token(sp::Token::TokenType::LBRACE, "{"),
+        new sp::Token(sp::Token::TokenType::READ, "read"),
+        new sp::Token(sp::Token::TokenType::NAME, "r"),
+        new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
         new sp::Token(sp::Token::TokenType::RBRACE, "}"),
         new sp::Token(sp::Token::TokenType::PROC, "procedure"),
         new sp::Token(sp::Token::TokenType::ELSE, "else"),
         new sp::Token(sp::Token::TokenType::LBRACE, "{"),
+        new sp::Token(sp::Token::TokenType::READ, "read"),
+        new sp::Token(sp::Token::TokenType::NAME, "r"),
+        new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
         new sp::Token(sp::Token::TokenType::RBRACE, "}"),
         new sp::Token(sp::Token::TokenType::EOFF, "EOF"),
     };
@@ -132,9 +155,9 @@ TEST_CASE("Parse Prog - Proc - Keyword Test") {
         REQUIRE(proc->getName()->getVal() == identifiers[i]);
 
         ast::StmtLst* stmt_lst = proc->getStmtLst();
-        REQUIRE((*stmt_lst).getStatements().size() == 0);
+        REQUIRE((*stmt_lst).getStatements().size() == 1);
 
-        std::string expectedString = "{\n}\n";
+        std::string expectedString = "{\n    read (r);\n}\n";
         REQUIRE(stmt_lst->toString() == expectedString);
 
     }
