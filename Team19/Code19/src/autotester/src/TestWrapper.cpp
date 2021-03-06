@@ -47,6 +47,11 @@ void TestWrapper::parse(std::string filename) {
         
         valid = false;
     }
+
+    if (!valid) { 
+        std::cout << "Error encoutered while parsing Simple Program, terminating execution." << std::endl;
+        exit(1); 
+    }
 }
 
 // method to evaluating a query
