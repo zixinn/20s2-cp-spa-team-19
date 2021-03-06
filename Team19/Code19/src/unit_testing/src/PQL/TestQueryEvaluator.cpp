@@ -135,7 +135,7 @@ void setupQe() {
 TEST_CASE("QueryEvaluator evaluate invalid query") {
     setupQe();
     QueryEvaluator qe = QueryEvaluator();
-    Query q = Query({}, "", {}, false, true);
+    Query q = Query({}, {""}, {}, false, true);
     list<string> list = qe.evaluate(q);
     REQUIRE(list.empty());
 }
@@ -145,7 +145,7 @@ TEST_CASE("QueryEvaluator evaluate query with no clauses") {
     QueryEvaluator qe = QueryEvaluator();
 
     // variable v; Select v
-    Query q = Query({{"v", VARIABLE_}}, "v", {}, true, true);
+    Query q = Query({{"v", VARIABLE_}}, {"v"}, {}, true, true);
     list<string> list = qe.evaluate(q);
     unordered_set<string> actual(begin(list), end(list));
     unordered_set<string> expected = {"count", "cenX", "cenY", "x", "y", "flag", "normSq"};
@@ -159,7 +159,7 @@ TEST_CASE("QueryEvaluator evaluate query with one such that clause and synonym i
 
     // stmt s; Select s such that Follows* (6, s)
     Clause c1 = Clause("Follows*", vector<string>{"6", "s"});
-    Query q1 = Query({{"s", STMT_}}, "s", {c1}, true, true);
+    Query q1 = Query({{"s", STMT_}}, {"s"}, {c1}, true, true);
     list<string> list1 = qe.evaluate(q1);
     unordered_set<string> actual1(begin(list1), end(list1));
     unordered_set<string> expected1 = {"7", "8", "9"};
@@ -168,7 +168,7 @@ TEST_CASE("QueryEvaluator evaluate query with one such that clause and synonym i
 
     // assign a; variable v; Select a such that Modifies (a, v)
     Clause c2 = Clause("Modifies", vector<string>{"a", "v"});
-    Query q2 = Query({{"a", ASSIGN_}, {"v", VARIABLE_}}, "a", {c2}, true, true);
+    Query q2 = Query({{"a", ASSIGN_}, {"v", VARIABLE_}}, {"a"}, {c2}, true, true);
     list<string> list2 = qe.evaluate(q2);
     unordered_set<string> actual2(begin(list2), end(list2));
     unordered_set<string> expected2 = {"1", "2", "3", "6", "7", "8", "11", "12", "13", "14"};
@@ -182,13 +182,13 @@ TEST_CASE("QueryEvaluator evaluate query with one such that clause and synonym n
 
     // variable v; while w1, w2; Select v such that Follows(w1, w2)
     Clause c1 = Clause("Follows", vector<string>{"w1", "w2"});
-    Query q1 = Query({{"v", VARIABLE_}, {"w1", WHILE_}, {"w2", WHILE_}}, "v", {c1}, true, true);
+    Query q1 = Query({{"v", VARIABLE_}, {"w1", WHILE_}, {"w2", WHILE_}}, {"v"}, {c1}, true, true);
     list<string> list1 = qe.evaluate(q1);
     REQUIRE(list1.empty());
 
     // variable v; while w; if ifs; Select v such that Follows(w, ifs)
     Clause c2 = Clause("Follows", vector<string>{"w", "ifs"});
-    Query q2 = Query({{"v", VARIABLE_}, {"w", WHILE_}, {"ifs", IF_}}, "v", {c2}, true, true);
+    Query q2 = Query({{"v", VARIABLE_}, {"w", WHILE_}, {"ifs", IF_}}, {"v"}, {c2}, true, true);
     list<string> list2 = qe.evaluate(q2);
     unordered_set<string> actual2(begin(list2), end(list2));
     unordered_set<string> expected2 = {"count", "cenX", "cenY", "x", "y", "flag", "normSq"};
@@ -202,7 +202,7 @@ TEST_CASE("QueryEvaluator evaluate query with one pattern clause") {
 
     // assign a; Select a pattern a(_, "count + 1")
     Clause c1 = Clause("a", vector<string>{"_", "\"count + 1\""});
-    Query q1 = Query({{"a", ASSIGN_}}, "a", {c1}, true, true);
+    Query q1 = Query({{"a", ASSIGN_}}, {"a"}, {c1}, true, true);
     list<string> list1 = qe.evaluate(q1);
     unordered_set<string> actual1(begin(list1), end(list1));
     unordered_set<string> expected1 = {"6"};
@@ -211,7 +211,7 @@ TEST_CASE("QueryEvaluator evaluate query with one pattern clause") {
 
     // assign a; Select a pattern a("normSq", _"cenX * cenX"_)
     Clause c2 = Clause("a", vector<string>{"\"normSq\"", "_\"cenX * cenX\"_"});
-    Query q2 = Query({{"a", ASSIGN_}}, "a", {c2}, true, true);
+    Query q2 = Query({{"a", ASSIGN_}}, {"a"}, {c2}, true, true);
     list<string> list2 = qe.evaluate(q2);
     unordered_set<string> actual2(begin(list2), end(list2));
     unordered_set<string> expected2 = {"14"};
@@ -226,7 +226,7 @@ TEST_CASE("QueryEvaluator evaluate query with multiple such that clauses") {
     // variable v; stmt s; Select v such that Follows* (6, s) such that Modifies (6, v)
     Clause c11 = Clause("Follows*", vector<string>{"6", "s"});
     Clause c12 = Clause("Modifies", vector<string>{"6", "v"});
-    Query q1 = Query({{"v", VARIABLE_}, {"s", STMT_}}, "v", {c11, c12}, true, true);
+    Query q1 = Query({{"v", VARIABLE_}, {"s", STMT_}}, {"v"}, {c11, c12}, true, true);
     list<string> list1 = qe.evaluate(q1);
     unordered_set<string> actual1(begin(list1), end(list1));
     unordered_set<string> expected1 = {"count"};
@@ -236,7 +236,7 @@ TEST_CASE("QueryEvaluator evaluate query with multiple such that clauses") {
     // variable v; stmt s; Select v such that Follows* (5, s) such that Modifies (s, v)
     Clause c21 = Clause("Follows*", vector<string>{"5", "s"});
     Clause c22 = Clause("Modifies", vector<string>{"s", "v"});
-    Query q2 = Query({{"v", VARIABLE_}, {"s", STMT_}}, "v", {c21, c22}, true, true);
+    Query q2 = Query({{"v", VARIABLE_}, {"s", STMT_}}, {"v"}, {c21, c22}, true, true);
     list<string> list2 = qe.evaluate(q2);
     unordered_set<string> actual2(begin(list2), end(list2));
     unordered_set<string> expected2 = {"flag", "cenX", "cenY", "normSq"};
@@ -247,7 +247,7 @@ TEST_CASE("QueryEvaluator evaluate query with multiple such that clauses") {
     Clause c31 = Clause("Follows", vector<string>{"s1", "s2"});
     Clause c32 = Clause("Follows*", vector<string>{"s1", "s2"});
     Clause c33 = Clause("Modifies", vector<string>{"s2", "\"cenY\""});
-    Query q3 = Query({{"s1", STMT_}, {"s2", STMT_}}, "s1", {c31, c32, c33}, true, true);
+    Query q3 = Query({{"s1", STMT_}, {"s2", STMT_}}, {"s1"}, {c31, c32, c33}, true, true);
     list<string> list3 = qe.evaluate(q3);
     unordered_set<string> actual3(begin(list3), end(list3));
     unordered_set<string> expected3 = {"2", "4", "5", "7", "12"};
@@ -262,7 +262,7 @@ TEST_CASE("QueryEvaluator evaluate query with one such that and one pattern clau
     // assign a; variable v; Select a such that Uses(a, v) pattern a(v, _)
     Clause c11 = Clause("Uses", vector<string>{"a", "v"});
     Clause c12 = Clause("a", vector<string>{"v", "_"});
-    Query q1 = Query({{"a", ASSIGN_}, {"v", VARIABLE_}}, "a", {c11, c12}, true, true);
+    Query q1 = Query({{"a", ASSIGN_}, {"v", VARIABLE_}}, {"a"}, {c11, c12}, true, true);
     list<string> list1 = qe.evaluate(q1);
     unordered_set<string> actual1(begin(list1), end(list1));
     unordered_set<string> expected1 = {"6", "7", "8", "12", "13"};
@@ -272,7 +272,7 @@ TEST_CASE("QueryEvaluator evaluate query with one such that and one pattern clau
     // assign a; while w; Select w such that Parent* (w, a) pattern a("count", _)
     Clause c21 = Clause("Parent*", vector<string>{"w", "a"});
     Clause c22 = Clause("a", vector<string>{"\"count\"", "_"});
-    Query q2 = Query({{"a", ASSIGN_}, {"w", WHILE_}}, "w", {c21, c22}, true, true);
+    Query q2 = Query({{"a", ASSIGN_}, {"w", WHILE_}}, {"w"}, {c21, c22}, true, true);
     list<string> list2 = qe.evaluate(q2);
     unordered_set<string> actual2(begin(list2), end(list2));
     unordered_set<string> expected2 = {"5"};

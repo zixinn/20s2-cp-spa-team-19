@@ -4,7 +4,7 @@ Query::Query() {
 
 }
 
-Query::Query(unordered_map<string, string> declarations, string toSelect, vector<Clause> clauses,
+Query::Query(unordered_map<string, string> declarations, vector<string> toSelect, vector<Clause> clauses,
              bool isSyntacticallyValid, bool isSemanticallyValid) {
     this->declarations = declarations;
     this->toSelect = toSelect;
@@ -17,7 +17,7 @@ unordered_map<string, string> Query::getDeclarations() {
     return this->declarations;
 }
 
-string Query::getToSelect() {
+vector<string> Query::getToSelect() {
     return this->toSelect;
 }
 

@@ -7,7 +7,7 @@ QueryEvaluator::QueryEvaluator() {
 // Evaluates the query and returns a list containing the answers to the query
 list<string> QueryEvaluator::evaluate(Query query) {
     this->declarations.clear();
-    this->toSelect = "";
+    this->toSelect.clear();
     this->clauses.clear();
     this->results.clear();
 
@@ -232,24 +232,34 @@ void QueryEvaluator::join(unordered_map<string, vector<int>> table) {
 }
 
 // Evaluates the synonym to select using the results table and returns a list containing the answers
-list<string> QueryEvaluator::evaluateSynonymToSelect(string toSelect) {
-    if (results.find(toSelect) == results.end()) {
-        unordered_map<string, vector<int>> tempResults = {{toSelect, selectAll(this->declarations[toSelect])}};
-        join(tempResults);
+list<string> QueryEvaluator::evaluateSynonymToSelect(vector<string> toSelect) {
+    for (string synonym : toSelect) {
+        if (results.find(synonym) == results.end()) {
+            unordered_map<string, vector<int>> tempResults = {{synonym, selectAll(this->declarations[synonym])}};
+            join(tempResults);
+        }
     }
 
     unordered_set<string> set;
-    string toSelectType = this->declarations[toSelect];
     int numRows = results.begin()->second.size();
     for (int i = 0; i < numRows; i++) {
-        int val = results[toSelect].at(i);
-        if (toSelectType == PROCEDURE_) {
-            set.insert(PKB::procTable->getProcName(val));
-        } else if (toSelectType == VARIABLE_) {
-            set.insert(PKB::varTable->getVarName(val));
-        } else {
-            set.insert(to_string(val));
+        string res = "";
+        for (int j = 0; j < toSelect.size(); j++) {
+            string synonym = toSelect[j];
+            string toSelectType = this->declarations[synonym];
+            int val = results[synonym].at(i);
+            if (toSelectType == PROCEDURE_) {
+                res += PKB::procTable->getProcName(val);
+            } else if (toSelectType == VARIABLE_) {
+                res += PKB::varTable->getVarName(val);
+            } else {
+                res += to_string(val);
+            }
+            if (j != toSelect.size() - 1) {
+                res += " ";
+            }
         }
+        set.insert(res);
     }
 
     list<string> res(set.begin(), set.end());

@@ -19,7 +19,7 @@ public:
 
 private:
     unordered_map<string, string> declarations;
-    string toSelect;
+    vector<string> toSelect;
     vector<Clause> clauses;
     bool isSyntacticallyValid = true;
     bool isSemanticallyValid = true;

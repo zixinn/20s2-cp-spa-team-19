@@ -39,7 +39,7 @@ QueryPreprocessor::QueryPreprocessor() {
 
 Query QueryPreprocessor::process(string query) {
     this->declarations.clear();
-    this->toSelect = "";
+    this->toSelect.clear();
     this->clauses.clear();
     this->isSyntacticallyValid = true;
     this->isSemanticallyValid = true;
@@ -136,7 +136,7 @@ int QueryPreprocessor::getNextPos(vector<int> pos) {
 void QueryPreprocessor::parseToSelect(string synonym) {
     if (synonym == "BOOLEAN") {
         if (this->isSemanticallyValid) {
-            this->toSelect = synonym;
+            this->toSelect.push_back(synonym);
         }
     } else {
         if (!checkName(synonym)) {
@@ -146,7 +146,7 @@ void QueryPreprocessor::parseToSelect(string synonym) {
         }
 
         if (this->isSyntacticallyValid && this->isSemanticallyValid) {
-            this->toSelect = synonym;
+            this->toSelect.push_back(synonym);
         }
     }
 }

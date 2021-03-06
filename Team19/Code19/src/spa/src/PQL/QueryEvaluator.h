@@ -26,7 +26,7 @@ public:
 
 private:
     unordered_map<string, string> declarations;
-    string toSelect;
+    vector<string> toSelect;
     vector<Clause> clauses;
     unordered_map<string, vector<int>> results; // maps synonym declared to possible values for that synonym,
                                                 // each column in the table is represented as an entry in the map
@@ -35,5 +35,5 @@ private:
 
     void join(unordered_map<string, vector<int>> table);
 
-    list<string> evaluateSynonymToSelect(string toSelect);
+    list<string> evaluateSynonymToSelect(vector<string> toSelect);
 };
