@@ -138,13 +138,36 @@ TEST_CASE("process query with select BOOLEAN") {
     Query actual = qp.process(query);
     unordered_map<string, string> declarations;
     declarations["a"] = "assign";
-    Query expected = Query(declarations, {}, {}, false, true);
+    Query expected = Query(declarations, {}, {}, true, false);
     REQUIRE(actual == expected);
 
     query = "Select BOOLEAN such that Next* (2, 9)";
     actual = qp.process(query);
     Clause c = Clause("Next*", {"2", "9"});
     expected = Query({}, {"BOOLEAN"}, { c }, true, true);
+    REQUIRE(actual == expected);
+}
+
+TEST_CASE("process query with select tuple") {
+    QueryPreprocessor qp = QueryPreprocessor();
+    string query = "procedure p, q;\n Select <p, q> such that Calls (p, q)";
+    Query actual = qp.process(query);
+    Clause c = Clause("Calls", {"p", "q"});
+    unordered_map<string, string> declarations;
+    declarations["p"] = "procedure";
+    declarations["q"] = "procedure";
+    Query expected = Query(declarations, {"p", "q"}, { c }, true, true);
+    REQUIRE(actual == expected);
+
+    query = "while w1, w2, w3;\nSelect <w1, w2, w3> such that Parent* (w1, w2) and Parent* (w2, w3)";
+    actual = qp.process(query);
+    Clause c1 = Clause("Parent*", {"w1", "w2"});
+    Clause c2 = Clause("Parent*", {"w2", "w3"});
+    unordered_map<string, string> declarations1;
+    declarations1["w1"] = "while";
+    declarations1["w2"] = "while";
+    declarations1["w3"] = "while";
+    expected = Query(declarations1, {"w1", "w2", "w3"}, { c1, c2 }, true, true);
     REQUIRE(actual == expected);
 }
 

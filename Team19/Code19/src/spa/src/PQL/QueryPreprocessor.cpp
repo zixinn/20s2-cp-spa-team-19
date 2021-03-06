@@ -138,6 +138,27 @@ void QueryPreprocessor::parseToSelect(string synonym) {
         if (this->isSemanticallyValid) {
             this->toSelect.push_back(synonym);
         }
+
+    } else if (regex_match(synonym, regex("^<.*>$"))) {
+        string synonyms = trim(synonym.substr(1, synonym.length() - 2));
+        if (synonyms.at(synonyms.length() - 1) == ',') {
+            this->isSyntacticallyValid = false;
+        } else {
+            vector<string> synonymsVector = split(synonyms, ",");
+            for (string syn : synonymsVector) {
+                if (!checkName(syn)) {
+                    this->isSyntacticallyValid = false;
+                    break;
+                } else if (!checkSynonymDeclared(syn, this->declarations)) {
+                    this->isSemanticallyValid = false;
+                }
+
+                if (this->isSyntacticallyValid && this->isSemanticallyValid) {
+                    this->toSelect.push_back(syn);
+                }
+            }
+        }
+
     } else {
         if (!checkName(synonym)) {
             this->isSyntacticallyValid = false;
