@@ -132,7 +132,7 @@ bool Calls::processCalls() {
         }
 
         it2 = reverseCallsMap.find(q);
-        if (it2 == callsMap.end()) {
+        if (it2 == reverseCallsMap.end()) {
             reverseCallsMap.insert({q, unordered_set<ID>({p})});
         } else {
             it2->second.insert(p);
