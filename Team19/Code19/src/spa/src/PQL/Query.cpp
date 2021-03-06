@@ -4,11 +4,13 @@ Query::Query() {
 
 }
 
-Query::Query(unordered_map<string, string> declarations, string toSelect, vector<Clause> clauses, bool isValid) {
+Query::Query(unordered_map<string, string> declarations, string toSelect, vector<Clause> clauses,
+             bool isSyntacticallyValid, bool isSemanticallyValid) {
     this->declarations = declarations;
     this->toSelect = toSelect;
     this->clauses = clauses;
-    this->isValid = isValid;
+    this->isSyntacticallyValid = isSyntacticallyValid;
+    this->isSemanticallyValid = isSemanticallyValid;
 }
 
 unordered_map<string, string> Query::getDeclarations() {
@@ -23,13 +25,17 @@ vector<Clause> Query::getClauses() {
     return this->clauses;
 }
 
-bool Query::getIsValid() {
-    return this->isValid;
+bool Query::getIsSyntacticallyValid() {
+    return this->isSyntacticallyValid;
+}
+
+bool Query::getIsSemanticallyValid() {
+    return this->isSemanticallyValid;
 }
 
 bool operator==(const Query& q1, const Query& q2) {
-    return q1.declarations == q2.declarations && q1.toSelect == q2.toSelect
-        && q1.clauses == q2.clauses && q1.isValid == q2.isValid;
+    return q1.declarations == q2.declarations && q1.toSelect == q2.toSelect && q1.clauses == q2.clauses
+            && q1.isSyntacticallyValid == q2.isSyntacticallyValid && q1.isSemanticallyValid == q2.isSemanticallyValid;
 }
 
 Query::~Query() {

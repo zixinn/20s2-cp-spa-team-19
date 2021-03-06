@@ -41,23 +41,24 @@ Query QueryPreprocessor::process(string query) {
     this->declarations.clear();
     this->toSelect = "";
     this->clauses.clear();
-    this->isValid = true;
+    this->isSyntacticallyValid = true;
+    this->isSemanticallyValid = true;
 
     if (query.empty() || query.at(query.length() - 1) == ';') {
-        this->isValid = false;
+        this->isSyntacticallyValid = false;
     }
 
     vector<string> statements;
-    if (this->isValid) {
+    if (this->isSyntacticallyValid) {
         statements = split(query, ";");
         if (statements[statements.size() - 1].find("Select ") != 0) {
-            this->isValid = false;
+            this->isSyntacticallyValid = false;
         }
     }
 
-    for (int i = 0; i < statements.size() - 1 && this->isValid; i++) {
+    for (int i = 0; i < statements.size() - 1 && this->isSyntacticallyValid; i++) {
         if (!regex_match(statements[i], regex("^.*\\s.*$"))) {
-            this->isValid = false;
+            this->isSyntacticallyValid = false;
             break;
         }
         int space = statements[i].find(' ');
@@ -66,66 +67,60 @@ Query QueryPreprocessor::process(string query) {
         parseDeclaration(designEntity, synonyms);
     }
 
-    if (this->isValid) {
+    if (this->isSyntacticallyValid) {
         parseSelect(trim(statements[statements.size() - 1].substr(7)));
     }
 
-    return Query(this->declarations, this->toSelect, this->clauses, this->isValid);
+    return Query(this->declarations, this->toSelect, this->clauses, this->isSyntacticallyValid, this->isSemanticallyValid);
 }
 
-bool QueryPreprocessor::parseDeclaration(string designEntity, string synonyms) {
-    if (!checkDesignEntity(designEntity)) {
-        this->isValid = false;
-        return false;
-    }
-    if (synonyms.at(synonyms.length() - 1) == ',') {
-        return false;
-    }
-    vector<string> synonymsVector = split(synonyms, ",");
-    for (string synonym : synonymsVector) {
-        if (checkSynonymDeclared(synonym, this->declarations) || !checkName(synonym)) {
-            this->isValid = false;
-            return false;
+void QueryPreprocessor::parseDeclaration(string designEntity, string synonyms) {
+    if (!checkDesignEntity(designEntity) || synonyms.at(synonyms.length() - 1) == ',') {
+        this->isSyntacticallyValid = false;
+    } else {
+        vector<string> synonymsVector = split(synonyms, ",");
+        for (string synonym : synonymsVector) {
+            if (!checkName(synonym)) {
+                this->isSyntacticallyValid = false;
+                break;
+            }
+            if (checkSynonymDeclared(synonym, this->declarations)) {
+                this->isSemanticallyValid = false;
+            }
+            if (this->isSemanticallyValid) {
+                this->declarations[synonym] = designEntity;
+            }
         }
-        this->declarations[synonym] = designEntity;
     }
-    return true;
 }
 
 bool QueryPreprocessor::checkDesignEntity(string designEntity) {
     return this->designEntities.find(designEntity) != this->designEntities.end();
 }
 
-bool QueryPreprocessor::parseSelect(string select) {
+void QueryPreprocessor::parseSelect(string select) {
     int suchThatPos = select.find(" such that ");
     int patternPos = select.find(" pattern ");
     int nextPos = getNextPos(vector<int>{suchThatPos, patternPos});
     int minPos = nextPos;
 
     if (nextPos == -1) {
-        return parseToSelect(select);
-    }
-    if (!parseToSelect(trim(select.substr(0, nextPos)))) {
-        return false;
-    }
-
-    while (nextPos != -1) {
-        if (minPos == suchThatPos) {
-            suchThatPos = select.find(" such that ", suchThatPos + 1);
-            nextPos = getNextPos(vector<int>{suchThatPos, patternPos});
-            if (!parseSuchThatClause(trim(select.substr(minPos + 11, nextPos - minPos - 11)))) {
-                return false;
+        parseToSelect(select);
+    } else {
+        parseToSelect(trim(select.substr(0, nextPos)));
+        while (this->isSyntacticallyValid && nextPos != -1) {
+            if (minPos == suchThatPos) {
+                suchThatPos = select.find(" such that ", suchThatPos + 1);
+                nextPos = getNextPos(vector<int>{suchThatPos, patternPos});
+                parseSuchThatClause(trim(select.substr(minPos + 11, nextPos - minPos - 11)));
+            } else if (minPos == patternPos) {
+                patternPos = select.find(" pattern ", patternPos + 1);
+                nextPos = getNextPos(vector<int>{suchThatPos, patternPos});
+                parsePatternClause(trim(select.substr(minPos + 9, nextPos - minPos - 9)));
             }
-        } else if (minPos == patternPos) {
-            patternPos = select.find(" pattern ", patternPos + 1);
-            nextPos = getNextPos(vector<int>{suchThatPos, patternPos});
-            if (!parsePatternClause(trim(select.substr(minPos + 9, nextPos - minPos - 9)))) {
-                return false;
-            }
+            minPos = nextPos;
         }
-        minPos = nextPos;
     }
-    return true;
 }
 
 int QueryPreprocessor::getNextPos(vector<int> pos) {
@@ -138,110 +133,113 @@ int QueryPreprocessor::getNextPos(vector<int> pos) {
     return next == INT_MAX ?  -1 : next;
 }
 
-bool QueryPreprocessor::parseToSelect(string synonym) {
-    if (!checkSynonymDeclared(synonym, this->declarations)) {
-        this->isValid = false;
-        return false;
+void QueryPreprocessor::parseToSelect(string synonym) {
+    if (synonym == "BOOLEAN") {
+        if (this->isSemanticallyValid) {
+            this->toSelect = synonym;
+        }
+    } else {
+        if (!checkName(synonym)) {
+            this->isSyntacticallyValid = false;
+        } else if (!checkSynonymDeclared(synonym, this->declarations)) {
+            this->isSemanticallyValid = false;
+        }
+
+        if (this->isSyntacticallyValid && this->isSemanticallyValid) {
+            this->toSelect = synonym;
+        }
     }
-    this->toSelect = synonym;
-    return true;
 }
 
-bool QueryPreprocessor::parseSuchThatClause(string clause) {
+void QueryPreprocessor::parseSuchThatClause(string clause) {
     if (!regex_match(clause, regex("^.*\\(.*,.*\\)$"))) {
-        this->isValid = false;
-        return false;
-    }
+        this->isSyntacticallyValid = false;
+    } else {
+        int left = clause.find('(');
+        int comma = clause.find(',');
+        int right = clause.length() - 1;
 
-    int left = clause.find('(');
-    int comma = clause.find(',');
-    int right = clause.length() - 1;
-
-    string rel = trim(clause.substr(0, left));
-    string firstArg = trim(clause.substr(left + 1, comma - left - 1));
-    string secondArg = trim(clause.substr(comma + 1, right - comma - 1));
-
-    if (!checkSuchThatClause(rel, { firstArg, secondArg })) {
-        this->isValid = false;
-        return false;
-    }
-
-    this->clauses.push_back(Clause(rel, { firstArg, secondArg }));
-    return true;
-}
-
-bool QueryPreprocessor::checkSuchThatClause(string rel, vector<string> args) {
-    if (this->validSuchThatArgType.find(rel) == this->validSuchThatArgType.end()) {
-        this->isValid = false;
-        return false;
-    }
-
-    vector<unordered_set<string>> validArgType = this->validSuchThatArgType.find(rel)->second;
-    for (int i = 0; i < 2; i++) {
-        if (validArgType[i].find(getArgType(args[i], this->declarations)) == validArgType[i].end()) {
-            this->isValid = false;
-            return false;
-        }
-    }
-
-    return true;
-}
-
-bool QueryPreprocessor::parsePatternClause(string clause) {
-    if (!regex_match(clause, regex("^.*\\(.*,.*\\)$")) && !regex_match(clause, regex("^.*\\(.*,.*,.*\\)$"))) {
-        this->isValid = false;
-        return false;
-    }
-
-    int left = clause.find('(');
-    int comma = clause.find(',');
-    int comma2 = clause.find(',', comma + 1);
-    int right = clause.length() - 1;
-
-    string syn = trim(clause.substr(0, left));
-    string firstArg = trim(clause.substr(left + 1, comma - left - 1));
-
-    if (comma2 == string::npos) { // assign, while
+        string rel = trim(clause.substr(0, left));
+        string firstArg = trim(clause.substr(left + 1, comma - left - 1));
         string secondArg = trim(clause.substr(comma + 1, right - comma - 1));
-        if (!checkPatternClause(syn, { firstArg, secondArg })) {
-            this->isValid = false;
-            return false;
-        }
-        this->clauses.push_back(Clause(syn, { firstArg, secondArg }));
-
-    } else { // if
-        string secondArg = trim(clause.substr(comma + 1, comma2 - comma - 1));
-        string thirdArg = trim(clause.substr(comma2 + 1, right - comma2 - 1));
-        if (!checkPatternClause(syn, { firstArg, secondArg, thirdArg })) {
-            this->isValid = false;
-            return false;
-        }
-        this->clauses.push_back(Clause(syn, { firstArg, secondArg, thirdArg }));
+        checkSuchThatClause(rel, { firstArg, secondArg });
     }
-
-    return true;
 }
 
-bool QueryPreprocessor::checkPatternClause(string syn, vector<string> args) {
-    string argType = getArgType(syn, this->declarations);
-    if (argType != ASSIGN_ && argType != WHILE_ && argType != IF_) {
-        this->isValid = false;
-        return false;
-    }
-
-    vector<unordered_set<string>> validArgType = this->validPatternArgType.find(argType)->second;
-    if (args.size() != validArgType.size()) {
-        this->isValid = false;
-        return false;
-    }
-
-    for (int i = 0; i < validArgType.size(); i++) {
-        if (validArgType[i].find(getArgType(args[i], this->declarations)) == validArgType[i].end()) {
-            this->isValid = false;
-            return false;
+void QueryPreprocessor::checkSuchThatClause(string rel, vector<string> args) {
+    if (this->validSuchThatArgType.find(rel) == this->validSuchThatArgType.end()) {
+        this->isSyntacticallyValid = false;
+    } else {
+        vector<unordered_set<string>> validArgType = this->validSuchThatArgType.find(rel)->second;
+        for (int i = 0; i < validArgType.size(); i++) {
+            string argType = getArgType(args[i], this->declarations);
+            if (validArgType[i].find(argType) != validArgType[i].end()) {
+                continue;
+            }
+            if (checkName(args[i])) {
+                this->isSemanticallyValid = false;
+            } else {
+                this->isSyntacticallyValid = false;
+                break;
+            }
         }
     }
-    return true;
+
+    if (this->isSyntacticallyValid && this->isSemanticallyValid) {
+        this->clauses.push_back(Clause(rel, args));
+    }
+}
+
+void QueryPreprocessor::parsePatternClause(string clause) {
+    if (!regex_match(clause, regex("^.*\\(.*,.*\\)$")) && !regex_match(clause, regex("^.*\\(.*,.*,.*\\)$"))) {
+        this->isSyntacticallyValid = false;
+    } else {
+        int left = clause.find('(');
+        int comma = clause.find(',');
+        int comma2 = clause.find(',', comma + 1);
+        int right = clause.length() - 1;
+
+        string syn = trim(clause.substr(0, left));
+        string firstArg = trim(clause.substr(left + 1, comma - left - 1));
+
+        if (comma2 == string::npos) { // assign, while
+            string secondArg = trim(clause.substr(comma + 1, right - comma - 1));
+            checkPatternClause(syn, { firstArg, secondArg });
+        } else { // if
+            string secondArg = trim(clause.substr(comma + 1, comma2 - comma - 1));
+            string thirdArg = trim(clause.substr(comma2 + 1, right - comma2 - 1));
+            checkPatternClause(syn, { firstArg, secondArg, thirdArg });
+        }
+    }
+}
+
+void QueryPreprocessor::checkPatternClause(string syn, vector<string> args) {
+    string synArgType = getArgType(syn, this->declarations);
+    if (synArgType != ASSIGN_ && synArgType != WHILE_ && synArgType != IF_) {
+        this->isSyntacticallyValid = false;
+    } else {
+        vector<unordered_set<string>> validArgType = this->validPatternArgType.find(synArgType)->second;
+        if (args.size() != validArgType.size()) {
+            this->isSyntacticallyValid = false;
+        }
+
+        for (int i = 0; i < validArgType.size() && this->isSyntacticallyValid; i++) {
+            string argType = getArgType(args[i], this->declarations);
+            if (validArgType[i].find(argType) != validArgType[i].end()) {
+                continue;
+            }
+            if (i == 0 && checkName(args[i])) {
+                this->isSemanticallyValid = false;
+            } else {
+                this->isSyntacticallyValid = false;
+                return;
+            }
+        }
+    }
+
+    if (this->isSyntacticallyValid && this->isSemanticallyValid) {
+        this->clauses.push_back(Clause(syn, args));
+    }
 }
 
 QueryPreprocessor::~QueryPreprocessor() {

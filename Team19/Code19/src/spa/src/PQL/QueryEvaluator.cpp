@@ -13,7 +13,7 @@ list<string> QueryEvaluator::evaluate(Query query) {
 
     list<string> emptyList;
 
-    if (!query.getIsValid()) {
+    if (!query.getIsSyntacticallyValid() || !query.getIsSemanticallyValid()) {
         return emptyList;
     }
 
