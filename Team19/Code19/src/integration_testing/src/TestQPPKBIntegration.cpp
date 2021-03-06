@@ -235,7 +235,7 @@ TEST_CASE("QueryPrepocessor evaluate query with one such that clause and synonym
 
     string query5 = "stmt stmt; stmt stmt; Select stmt such that Follows (stmt, stmt)";
     Query q5 = qp.process(query5);
-    REQUIRE_FALSE(q5.getIsValid());
+    REQUIRE_FALSE(q5.getIsSemanticallyValid());
 
     string query6 = "stmt stmt; Select stmt such that Parent* (10, stmt)";
     Query q6 = qp.process(query6);

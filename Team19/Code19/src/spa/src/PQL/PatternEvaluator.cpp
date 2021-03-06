@@ -116,11 +116,11 @@ bool PatternEvaluator::evaluateNameUnderscore(vector<int> stmtNums, string varNa
 // Will get all assignment stmts that fully matches LHS and RHS
 bool PatternEvaluator::evaluateNameExpression(vector<int> stmtNums, string varName, string firstArg,
     string secondArg, unordered_map<string, vector<int>>& tempResults) { // a("x", "y + z")
+    string exprStr2 = parseExprToExprStr(trimQuotes(secondArg));
     for (int& stmtNum : stmtNums) {
         pair<string, string> p = PKB::stmtTable->getAssignExpr(stmtNum);
         string varStr = p.first;
         string exprStr1 = p.second;
-        string exprStr2 = parseExprToExprStr(trimQuotes(secondArg));
 
         if (varStr == trimQuotes(firstArg) && exprStr1 == exprStr2) {
             tempResults[varName].push_back(stmtNum);
@@ -135,11 +135,11 @@ bool PatternEvaluator::evaluateNameExpression(vector<int> stmtNums, string varNa
 // Will get all assignment stmts that fully matches LHS and RHS matches subexpr
 bool PatternEvaluator::evaluateNameExpressionWithUnderscore(vector<int> stmtNums, string varName, string firstArg,
     string secondArg, unordered_map<string, vector<int>>& tempResults) { // a("x", _"y + z"_)
+    string exprStr2 = parseExprToExprStr(trimQuotesUnderscore(secondArg));
     for (int& stmtNum : stmtNums) {
         pair<string, string> p = PKB::stmtTable->getAssignExpr(stmtNum);
         string varStr = p.first;
         string exprStr1 = p.second;
-        string exprStr2 = parseExprToExprStr(trimQuotesUnderscore(secondArg));
 
         if (varStr == trimQuotes(firstArg) && exprStr1.find(exprStr2) != string::npos) {
             tempResults[varName].push_back(stmtNum);
@@ -169,11 +169,11 @@ bool PatternEvaluator::evaluateVarUnderscore(vector<int> stmtNums, string varNam
 // Will get all assignment stmt nums and variables on LHS and checks if matches RHS
 bool PatternEvaluator::evaluateVarExpression(vector<int> stmtNums, string varName, string firstArg,
     string secondArg, unordered_map<string, vector<int>>& tempResults) { // a(v, "x + y")
+    string exprStr2 = parseExprToExprStr(trimQuotes(secondArg));
     for (int& stmtNum : stmtNums) {
         pair<string, string> p = PKB::stmtTable->getAssignExpr(stmtNum);
         string varStr = p.first;
         string exprStr1 = p.second;
-        string exprStr2 = parseExprToExprStr(trimQuotes(secondArg));
 
         if (exprStr1 == exprStr2) {
             tempResults[firstArg].push_back(PKB::varTable->getVarID(varStr)); // store varID of var on LHS
@@ -189,11 +189,11 @@ bool PatternEvaluator::evaluateVarExpression(vector<int> stmtNums, string varNam
 // Will get all assignment stmt nums and variables on LHS and checks if its a subexpr of RHS
 bool PatternEvaluator::evaluateVarExpressionWithUnderscore(vector<int> stmtNums, string varName, string firstArg,
     string secondArg, unordered_map<string, vector<int>>& tempResults) { // a(v, _"x + y"_)
+    string exprStr2 = parseExprToExprStr(trimQuotesUnderscore(secondArg));
     for (int& stmtNum : stmtNums) {
         pair<string, string> p = PKB::stmtTable->getAssignExpr(stmtNum);
         string varStr = p.first;
         string exprStr1 = p.second;
-        string exprStr2 = parseExprToExprStr(trimQuotesUnderscore(secondArg));
 
         if (exprStr1.find(exprStr2) != string::npos) {
             tempResults[firstArg].push_back(PKB::varTable->getVarID(varStr)); // store varID of var on LHS
@@ -221,10 +221,10 @@ bool PatternEvaluator::evaluateUnderscoreUnderscore(vector<int> stmtNums, string
 // Will get all assignment stmt nums that matches RHS
 bool PatternEvaluator::evaluateUnderscoreExpression(vector<int> stmtNums, string varName,
     string secondArg, unordered_map<string, vector<int>>& tempResults) { // a(_, "x + y")
+    string exprStr2 = parseExprToExprStr(trimQuotes(secondArg));
     for (int& stmtNum : stmtNums) {
         pair<string, string> p = PKB::stmtTable->getAssignExpr(stmtNum);
         string exprStr1 = p.second;
-        string exprStr2 = parseExprToExprStr(trimQuotes(secondArg));
 
         if (exprStr1 == exprStr2) {
             tempResults[varName].push_back(stmtNum); // store stmtNum
@@ -239,10 +239,10 @@ bool PatternEvaluator::evaluateUnderscoreExpression(vector<int> stmtNums, string
 // Will get all assignment stmt nums that have subexpr that matches
 bool PatternEvaluator::evaluateUnderscoreExpressionWithUnderscore(vector<int> stmtNums, string varName,
     string secondArg, unordered_map<string, vector<int>>& tempResults) {// a(_, _"x + y"_)
+    string exprStr2 = parseExprToExprStr(trimQuotesUnderscore(secondArg));
     for (int& stmtNum : stmtNums) {
         pair<string, string> p = PKB::stmtTable->getAssignExpr(stmtNum);
         string exprStr1 = p.second;
-        string exprStr2 = parseExprToExprStr(trimQuotesUnderscore(secondArg));
 
         if (exprStr1.find(exprStr2) != string::npos) {
             tempResults[varName].push_back(stmtNum); // store stmtNum
