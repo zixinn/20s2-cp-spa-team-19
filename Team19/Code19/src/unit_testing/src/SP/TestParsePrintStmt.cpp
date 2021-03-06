@@ -119,15 +119,15 @@ TEST_CASE("Parse StmtLst - Print - Keyword Test") {
 
     // testing toString()
     std::vector<std::string> expected_strings{ 
-        "print sun;", 
-        "print procedure;", 
-        "print read;", 
-        "print print;", 
-        "print call;", 
-        "print while;", 
-        "print if;", 
-        "print then;", 
-        "print else;", 
+        "print (sun);", 
+        "print (procedure);", 
+        "print (read);", 
+        "print (print);", 
+        "print (call);", 
+        "print (while);", 
+        "print (if);", 
+        "print (then);", 
+        "print (else);", 
     };
     for (int i = 0; i < identifiers.size(); ++i) {
         auto str = expected_strings[i];

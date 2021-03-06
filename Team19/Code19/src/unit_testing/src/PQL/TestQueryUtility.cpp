@@ -3,6 +3,82 @@
 
 using namespace std;
 
+TEST_CASE("checkNameWithQuotes") {
+    // valid name
+    REQUIRE(checkNameWithQuotes("\"name\""));
+    REQUIRE(checkNameWithQuotes("\"NaMe\""));
+    REQUIRE(checkNameWithQuotes("\"N4m3\""));
+    REQUIRE(checkNameWithQuotes("\"a\""));
+
+    // invalid name
+    REQUIRE_FALSE(checkNameWithQuotes("\"1name\""));
+    REQUIRE_FALSE(checkNameWithQuotes("\"my_name\""));
+    REQUIRE_FALSE(checkNameWithQuotes("\"my name\""));
+    REQUIRE_FALSE(checkNameWithQuotes("\"name?\""));
+    REQUIRE_FALSE(checkNameWithQuotes("\"n@me\""));
+
+    REQUIRE_FALSE(checkNameWithQuotes("name"));
+    REQUIRE_FALSE(checkNameWithQuotes("\"NaMe"));
+    REQUIRE_FALSE(checkNameWithQuotes("N4m3\""));
+    REQUIRE_FALSE(checkNameWithQuotes("\"a\"\""));
+}
+
+TEST_CASE("isOperator") {
+    // valid operator
+    REQUIRE(isOperator(sp::Token::TokenType::PLUS));
+    REQUIRE(isOperator(sp::Token::TokenType::MINUS));
+    REQUIRE(isOperator(sp::Token::TokenType::TIMES));
+    REQUIRE(isOperator(sp::Token::TokenType::DIV));
+    REQUIRE(isOperator(sp::Token::TokenType::MOD));
+
+    // invalid operator
+    REQUIRE_FALSE(isOperator(sp::Token::TokenType::EOFF));
+    REQUIRE_FALSE(isOperator(sp::Token::TokenType::ASSIGN));
+    REQUIRE_FALSE(isOperator(sp::Token::TokenType::CONST));
+    REQUIRE_FALSE(isOperator(sp::Token::TokenType::OR));
+    REQUIRE_FALSE(isOperator(sp::Token::TokenType::EQ));
+    REQUIRE_FALSE(isOperator(sp::Token::TokenType::NOT));
+    REQUIRE_FALSE(isOperator(sp::Token::TokenType::RPAREN));
+}
+
+TEST_CASE("checkExpression") {
+    // valid expression
+    REQUIRE(checkExpression("\"1 \""));
+    REQUIRE(checkExpression("\"2 + 3\""));
+    REQUIRE(checkExpression("\"  xyz-abc\""));
+    REQUIRE(checkExpression("\"w   * 4\""));
+    REQUIRE(checkExpression("\"(def) % (if + 5)\""));
+
+    // invalid expression
+    REQUIRE_FALSE(checkExpression("\")\""));
+    REQUIRE_FALSE(checkExpression("\"()\""));
+    REQUIRE_FALSE(checkExpression("\"+9\""));
+    REQUIRE_FALSE(checkExpression("\"8+-7\""));
+    REQUIRE_FALSE(checkExpression("\"[6 / 5]\""));
+    REQUIRE_FALSE(checkExpression("\"(4 * (x % 3)\""));
+    REQUIRE_FALSE(checkExpression("\"2 - ?\""));
+    REQUIRE_FALSE(checkExpression("\"+1-0\""));
+    REQUIRE_FALSE(checkExpression("\"__\""));
+}
+
+TEST_CASE("checkExpressionWithUnderscores") {
+    // valid expression with underscores
+    REQUIRE(checkExpressionWithUnderscores("_\"1 \"_"));
+    REQUIRE(checkExpressionWithUnderscores("_  \"2 + 3\"_"));
+    REQUIRE(checkExpressionWithUnderscores("_\"  xyz-abc\"  _"));
+    REQUIRE(checkExpressionWithUnderscores("_ \"w   * 4\" _"));
+    REQUIRE(checkExpressionWithUnderscores("_\"(def) % (if + 5)\"_"));
+
+    // invalid expression with underscores
+    REQUIRE_FALSE(checkExpressionWithUnderscores("_\"()\"_"));
+    REQUIRE_FALSE(checkExpressionWithUnderscores("_ \"+9\"_"));
+    REQUIRE_FALSE(checkExpressionWithUnderscores("_\"8+-7\" _"));
+    REQUIRE_FALSE(checkExpressionWithUnderscores("\"6 + 5\""));
+    REQUIRE_FALSE(checkExpressionWithUnderscores("_\"abc * def\""));
+    REQUIRE_FALSE(checkExpressionWithUnderscores("__\"xyz / 4\""));
+    REQUIRE_FALSE(checkExpressionWithUnderscores("\"3\"_"));
+}
+
 TEST_CASE("checkSynonymDeclared") {
     unordered_map<string, string> declarations = {{"a", "assign"}, {"v", "variable"}};
     checkSynonymDeclared("a", declarations);
@@ -19,7 +95,7 @@ TEST_CASE("getArgType") {
     REQUIRE(getArgType("\"x + y * z\"", declarations) == EXPRESSION_);
     REQUIRE(getArgType("_\"x + y * z\"_", declarations) == EXPRESSIONWITHUNDERSCORE_);
     REQUIRE(getArgType("s", declarations) == "");
-//    REQUIRE(getArgType("\"_\"", declarations) == "");
+    REQUIRE(getArgType("\"_\"", declarations) == "");
 }
 
 class StmtNodeStub : public ast::Stmt {

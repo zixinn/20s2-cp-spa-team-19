@@ -12,6 +12,7 @@ using namespace std;
 // Prototype test to ensure mechanism is working
 TEST_CASE("Parse LexerStubAdapt Test") {
     std::string input = "nobody = 10;";
+    std::string expect = "(nobody) = (10);";
 
     /** begin ritual to Summon Parser **/
 	vector<sp::Token> actualTokens;
@@ -25,7 +26,7 @@ TEST_CASE("Parse LexerStubAdapt Test") {
     /** Parser now ready for use      **/
 
     ast::AssignStmt* ass = p.parseAssignStmt();
-    REQUIRE(ass->toString() == input);
+    REQUIRE(ass->toString() == expect);
     //REQUIRE(false);
     //for (int i = 0; i < tok_ptrs.size(); ++i) {
     //    std::cout << (*tok_ptrs[i]).getLiteral() << std::endl;
@@ -37,7 +38,7 @@ TEST_CASE("ParseLexer Stmt Test") {
 
     //std::string input = "if = v + x * y + z * t;";    // if not implemented yet
     std::string input = "x = v + x * y + z * t;";
-    std::string expected = "x = ((v + (x * y)) + (z * t));";
+    std::string expected = "(x) = (((v) + ((x) * (y))) + ((z) * (t)));";
 
     /** begin ritual to Summon Parser **/
 	std::vector<sp::Token> actual_tok;
@@ -59,27 +60,27 @@ TEST_CASE("ParseLexer Assign Paren - Test") {
     std::vector<std::pair<std::string, std::string>> tests{
         {
             "xx = 1 + (2 + 3) + 4;",
-            "xx = ((1 + (2 + 3)) + 4);",
+            "(xx) = (((1) + ((2) + (3))) + (4));",
         },
         {
             "yy = 2/(5+    5);",
-            "yy = (2 / (5 + 5));",
+            "(yy) = ((2) / ((5) + (5)));",
         },
         {
             "zz = 1;",
-            "zz = 1;",
+            "(zz) = (1);",
         },
         {
             "aa = (1+(2));",
-            "aa = (1 + 2);",
+            "(aa) = ((1) + (2));",
         },
         {
             "bb = (b);",
-            "bb = b;",
+            "(bb) = (b);",
         },
         {
             "cc = (1) + ((2) + (3)) + (4);",
-            "cc = ((1 + (2 + 3)) + 4);",
+            "(cc) = (((1) + ((2) + (3))) + (4));",
         },
     };
 
@@ -95,8 +96,14 @@ TEST_CASE("ParseLexer Assign Paren - Test") {
         auto p = Parser(l);
         /** Parser now ready for use      **/
 
-        ast::Stmt* stmt = p.parseStmt();
-        REQUIRE(stmt->toString() == expected);
+        try {
+            ast::Stmt* stmt = p.parseStmt();
+            REQUIRE(stmt->toString() == expected);
+        }
+        catch (sp::ParserException &ex) {
+            INFO(ex.what());
+            REQUIRE(false);
+        }
     }
 }
 
@@ -109,23 +116,23 @@ TEST_CASE("ParseLexer Assign Keyword LHS - Test") {
     std::vector<std::pair<std::string, std::string>> tests{
         {
             "call = 1+2+3+4;",
-            "call = (((1 + 2) + 3) + 4);"
+            "(call) = ((((1) + (2)) + (3)) + (4));"
         },
         {
             "read = 2/5*3/6;",
-            "read = (((2 / 5) * 3) / 6);"
+            "(read) = ((((2) / (5)) * (3)) / (6));"
         },
         {
             "print = a * b / ( c - a ) / b / c - z;",
-            "print = (((((a * b) / (c - a)) / b) / c) - z);"
+            "(print) = ((((((a) * (b)) / ((c) - (a))) / (b)) / (c)) - (z));"
         },
         {
             "procedure=a;",
-            "procedure = a;",
+            "(procedure) = (a);",
         },
         {
             "program=(1);",
-            "program = 1;",
+            "(program) = (1);",
         },
     };
 

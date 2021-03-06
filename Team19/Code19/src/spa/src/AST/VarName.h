@@ -11,7 +11,7 @@ namespace ast {
 		const std::string val;
 
 		VarName(sp::Token* token, std::string val) :Expr{ token }, val{ val } {}
-		std::string toString() override { return this->val; };
+		std::string toString() override { return "(" + this->val + ")"; };
 		std::string getVal() { return val; }
 
 		// DO NOT TRUST THIS, IF YOU ARE USING THIS METHOD LET ME KNOW
@@ -21,5 +21,6 @@ namespace ast {
 			// PROBLEM: a proc_name and a var_name can have same name, maybe add new TokenType?
 			return false; // this->getTokenLiteral() == expr->getTokenLiteral();
 		};
+		~VarName() {};
 	};
 }

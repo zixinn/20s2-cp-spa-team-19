@@ -1,7 +1,9 @@
-#include "TestWrapper.h"
-//#include "SP/Lexer.h"
-//#include "SP/Parser.h"
+#include <fstream>
 
+#include "TestWrapper.h"
+#include "SP/Parser.h"
+#include "PQL/QueryPreprocessor.h"
+#include "PQL/QueryEvaluator.h"
 
 // implementation code of WrapperFactory - do NOT modify the next 5 lines
 AbstractWrapper* WrapperFactory::wrapper = 0;
@@ -22,25 +24,41 @@ TestWrapper::TestWrapper() {
 void TestWrapper::parse(std::string filename) {
 	// call your parser to do the parsing
   // ...rest of your code...
-    //std::vector<string> stubTokens{ "procedure", "main", "{", "x", "=", "10", ";", "}", "EOF" };
-    //auto l = new LexerStub(stubTokens);     //new keyword gets me a ptr to LexerStub
-    //Parser p = Parser(l);
-		//2, 11, 30, 11, 10, 11, 13, 12, 14, 0, 27, 31
-	/*
-	vector<Token> tokens;
-	bool valid = Lexer::tokenise("procedure q {\n z = x + 1-    a1;}", tokens);
-	for (int i = 0; i < tokens.size(); i++) {
-		cout << tokens[i].getLiteral() << " " << int(tokens[i].getType()) <<endl;
-	}
-	cout << valid << endl;
-	*/
+    std::ifstream theFile;
+    theFile.open(filename);
+    if (!theFile) {
+        valid = false;
+    }
+    std::string input;
+    std::string line;
+    while (getline(theFile, line)) {
+        input += line + "\n";
+    }
+    theFile.close();
+   // cout << input << endl;
+    try {
+        std::vector<sp::Token> actual_tok;
+        std::vector<sp::Token*> tok_ptrs;
+        ParserUtils::StringToTokenPtrs(input, actual_tok, tok_ptrs);
+        auto l = new LexerStub(tok_ptrs);
+        auto p = Parser(l);
+        valid = p.parse();
+    } catch (...) {
+        valid = false;
+    }
 }
 
 // method to evaluating a query
 void TestWrapper::evaluate(std::string query, std::list<std::string>& results){
-// call your evaluator to evaluate the query here
-  // ...code to evaluate query...
+    // call your evaluator to evaluate the query here
+    // ...code to evaluate query...
+    if (valid) {
+        QueryPreprocessor qp = QueryPreprocessor();
+        Query q = qp.process(trim(query));
 
-  // store the answers to the query in the results list (it is initially empty)
-  // each result must be a string.
+        QueryEvaluator qe = QueryEvaluator();
+        results = qe.evaluate(q);
+    }
+    // store the answers to the query in the results list (it is initially empty)
+    // each result must be a string.
 }

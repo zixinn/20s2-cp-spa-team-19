@@ -13,6 +13,15 @@ ast::Stmt* StmtTable::getStmtNode(StmtNum stmtNum) {
     }
 }
 
+pair<STRING, STRING> StmtTable::getAssignExpr(StmtNum stmtNum) {
+    if (assignExprMap.find(stmtNum) == assignExprMap.end()) {
+        std::cerr << "No statement with StmtNum " << stmtNum << " stored in assignExprMap." << std::endl;
+        throw std::exception();
+    } else {
+        return assignExprMap.find(stmtNum)->second;
+    }
+}
+
 vector<StmtNum> const &StmtTable::getAllAssignStmtNums() const {
     return assignStmtNums;
 }
@@ -72,6 +81,10 @@ bool StmtTable::storeStmt(StmtNum stmtNum, ast::Stmt *stmtNode, STRING type) {
 
     stmtNums.push_back(stmtNum);
     return inserted;
+}
+
+bool StmtTable::storeAssignExpr(StmtNum stmtNum, STRING varName, STRING expr) {
+    return assignExprMap.insert({stmtNum, make_pair(varName, expr)}).second;
 }
 
 bool StmtTable::hasStmt(StmtNum stmtNum) {

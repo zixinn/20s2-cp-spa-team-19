@@ -4,6 +4,7 @@
 #include <iostream>
 #include "AST/Index.h"
 #include "SP/Parser.h"
+#include "PKB/PKB.h"
 
 #include "catch.hpp"
 using namespace std;

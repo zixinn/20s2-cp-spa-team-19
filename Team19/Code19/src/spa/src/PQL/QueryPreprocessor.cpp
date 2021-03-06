@@ -2,8 +2,8 @@
 
 QueryPreprocessor::QueryPreprocessor() {
     designEntities = { PROCEDURE_, STMTLST_, STMT_, READ_, PRINT_, ASSIGN_, CALL_, WHILE_, IF_, VARIABLE_, CONSTANT_ };
-    validSuchThatArgType["Follows"] = { { STMT_, READ_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, UNDERSCORE_ },
-                                        { STMT_, READ_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, UNDERSCORE_ } };
+    validSuchThatArgType["Follows"] = { { STMT_, READ_, PRINT_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, UNDERSCORE_ },
+                                        { STMT_, READ_, PRINT_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, UNDERSCORE_ } };
     validSuchThatArgType["Follows*"] = { { STMT_, READ_, PRINT_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, UNDERSCORE_ },
                                          { STMT_, READ_, PRINT_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, INTEGER_, UNDERSCORE_ } };
     validSuchThatArgType["Parent"] = { { STMT_, WHILE_, IF_, INTEGER_, UNDERSCORE_ },
@@ -59,6 +59,9 @@ bool QueryPreprocessor::parseDeclaration(string designEntity, string synonyms) {
         this->isValid = false;
         return false;
     }
+    if (synonyms.at(synonyms.length() - 1) == ',') {
+        return false;
+    }
     vector<string> synonymsVector = split(synonyms, ",");
     for (string synonym : synonymsVector) {
         if (checkSynonymDeclared(synonym, this->declarations) || !checkName(synonym)) {
@@ -74,29 +77,76 @@ bool QueryPreprocessor::checkDesignEntity(string designEntity) {
     return this->designEntities.find(designEntity) != this->designEntities.end();
 }
 
+/*bool QueryPreprocessor::parseSelect(string select) {
+    int suchThatPos = select.find(" such that ");
+    int patternPos = select.find(" pattern ");
+    int nextPos = getNextPos(vector<int>{suchThatPos, patternPos});
+    int minPos = nextPos;
+
+    if (nextPos == -1) {
+        return parseToSelect(select);
+    }
+    if (!parseToSelect(trim(select.substr(0, nextPos)))) {
+        return false;
+    }
+
+    while (nextPos != -1) {
+        if (minPos == suchThatPos) {
+            suchThatPos = select.find(" such that ", suchThatPos + 1);
+            nextPos = getNextPos(vector<int>{suchThatPos, patternPos});
+            if (!parseSuchThatClause(trim(select.substr(minPos + 11, nextPos - minPos - 11)))) {
+                return false;
+            }
+        } else if (minPos == patternPos) {
+            patternPos = select.find(" pattern ", patternPos + 1);
+            nextPos = getNextPos(vector<int>{suchThatPos, patternPos});
+            if (!parsePatternClause(trim(select.substr(minPos + 9, nextPos - minPos - 9)))) {
+                return false;
+            }
+        }
+        minPos = nextPos;
+    }
+    return true;
+}*/
+
 bool QueryPreprocessor::parseSelect(string select) {
     int suchThatPos = select.find(" such that ");
     int patternPos = select.find(" pattern ");
 
     if (suchThatPos == string::npos && patternPos == string::npos) { // no such that and pattern clause
         return parseToSelect(select);
-    } else if (patternPos == string::npos) { // no pattern clause
+    }
+    else if (patternPos == string::npos) { // no pattern clause
         return parseToSelect(trim(select.substr(0, suchThatPos)))
-                && parseSuchThatClause(trim(select.substr(suchThatPos + 11)));
-    } else if (suchThatPos == string::npos) { // no such that clause
+            && parseSuchThatClause(trim(select.substr(suchThatPos + 11)));
+    }
+    else if (suchThatPos == string::npos) { // no such that clause
         return parseToSelect(trim(select.substr(0, patternPos)))
-               && parsePatternClause(trim(select.substr(patternPos + 9)));
-    } else { // both such that and pattern clause
+            && parsePatternClause(trim(select.substr(patternPos + 9)));
+
+    }
+    else { // both such that and pattern clause
         if (suchThatPos < patternPos) { // such that before pattern
             return parseToSelect(trim(select.substr(0, suchThatPos)))
-                   && parseSuchThatClause(trim(select.substr(suchThatPos + 11, patternPos - suchThatPos - 11)))
-                   && parsePatternClause(trim(select.substr(patternPos + 9)));
-        } else { // pattern before such that
+                && parseSuchThatClause(trim(select.substr(suchThatPos + 11, patternPos - suchThatPos - 11)))
+                && parsePatternClause(trim(select.substr(patternPos + 9)));
+        }
+        else { // pattern before such that
             return parseToSelect(trim(select.substr(0, patternPos)))
-                   && parsePatternClause(trim(select.substr(patternPos + 9, suchThatPos - patternPos - 9)))
-                   && parseSuchThatClause(trim(select.substr(suchThatPos + 11)));
+                && parsePatternClause(trim(select.substr(patternPos + 9, suchThatPos - patternPos - 9)))
+                && parseSuchThatClause(trim(select.substr(suchThatPos + 11)));
         }
     }
+}
+
+int QueryPreprocessor::getNextPos(vector<int> pos) {
+    int next = INT_MAX;
+    for (int po : pos) {
+        if (po != -1 && po < next) {
+            next = po;
+        }
+    }
+    return next == INT_MAX ?  -1 : next;
 }
 
 bool QueryPreprocessor::parseToSelect(string synonym) {
@@ -116,7 +166,7 @@ bool QueryPreprocessor::parseSuchThatClause(string clause) {
 
     int left = clause.find('(');
     int comma = clause.find(',');
-    int right = clause.find(')');
+    int right = clause.length() - 1;
 
     string rel = trim(clause.substr(0, left));
     string firstArg = trim(clause.substr(left + 1, comma - left - 1));
@@ -156,7 +206,7 @@ bool QueryPreprocessor::parsePatternClause(string clause) {
 
     int left = clause.find('(');
     int comma = clause.find(',');
-    int right = clause.find(')');
+    int right = clause.length() - 1;
 
     string syn = trim(clause.substr(0, left));
     string firstArg = trim(clause.substr(left + 1, comma - left - 1));

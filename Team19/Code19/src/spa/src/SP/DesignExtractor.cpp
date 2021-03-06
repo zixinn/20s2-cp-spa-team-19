@@ -49,7 +49,7 @@ void DesignExtractor::exitProcedure() {
     addAllCurrentStmtLstUsesForProcedure();
 }
 
-void DesignExtractor::storeNewWhile(StmtNum startStmtNum, vector<STRING> condVarNames, vector<STRING> condConsts, Stmt* AST) {
+void DesignExtractor::storeNewWhile(StmtNum startStmtNum, vector<STRING> condVarNames, vector<STRING> condConsts, WhileStmt* AST) {
     // Store the conditional variables into PKB and receive the PKB-assigned ID
     for (STRING varName : condVarNames) {
         ID varID = PKB::varTable->storeVarName(varName);
@@ -79,7 +79,7 @@ void DesignExtractor::exitWhile() {
     popSavedState();                    // Reset to previous local state variables
 }
 
-void DesignExtractor::storeNewIf(StmtNum startStmtNum, vector<STRING> condVarNames, vector<STRING> condConsts, Stmt* AST) {
+void DesignExtractor::storeNewIf(StmtNum startStmtNum, vector<STRING> condVarNames, vector<STRING> condConsts, IfStmt* AST) {
     // Store the conditional variables into PKB and receive the PKB-assigned ID
     for (STRING varName : condVarNames) {
         ID varID = PKB::varTable->storeVarName(varName);
@@ -120,7 +120,7 @@ void DesignExtractor::storeNewAssignment(StmtNum stmtNum, STRING variableName, A
     // Store the LHS variable into PKB and receive the PKB-assigned ID
     ID varID = PKB::varTable->storeVarName(variableName);
     // Update Modifies
-     PKB::modifies->storeStmtModifies(stmtNum, varID);
+    PKB::modifies->storeStmtModifies(stmtNum, varID);
 
     // Stores <stmtNum, PAIR<variable ID, *AST>> into Assignment Map.
     if (!PKB::stmtTable->storeStmt(stmtNum, AST, ASSIGN_)) {
@@ -145,6 +145,12 @@ void DesignExtractor::storeNewAssignment(StmtNum stmtNum, STRING variableName, A
         // DE Internal Bookkeeping
         currentUsedVarsLst.insert(listVarID);
     }
+
+    // Store <stmtNum, PAIR<variable ID, expr>> into Assignment Expression Map.
+    if (!PKB::stmtTable->storeAssignExpr(stmtNum, AST->getName()->getVal(), expression->toString())) {
+        std::cerr << "DE encountered an error when attempting to store assignment expression " << stmtNum << " in PKB.\n";
+    }
+
     // DE Internal Bookkeeping
     currentStmtLst.push_back(stmtNum);
     currentModifiedVarsLst.insert(varID);

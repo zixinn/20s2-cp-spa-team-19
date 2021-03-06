@@ -1,0 +1,700 @@
+1 - empty query
+
+
+none
+5000
+2 - no declaration
+
+Select v
+none
+5000
+3 - no select
+variable v;
+
+none
+5000
+4 - multiple select
+variable v, v1;
+Select v Select v1
+none
+5000
+5 - select ending with ;
+variable v;
+Select v;
+none
+5000
+6 - declaration after select
+variable v;
+Select v; assign a;
+none
+5000
+7 - declaration after select
+variable v;
+Select v; assign a
+none
+5000
+8 - declaration after select
+variable v;
+Select v assign a
+none
+5000
+9 - invalid declaration
+test;
+Select test
+none
+5000
+10 - invalid declaration
+assign;
+Select assign
+none
+5000
+11 - invalid declaration
+stmts;
+Select s
+none
+5000
+12 - invalid declaration
+assign a; a1;
+Select a
+none
+5000
+13 - invalid declaration
+stmt s, ;
+Select s
+none
+5000
+14 - invalid declaration
+while w
+Select w
+none
+5000
+15 - invalid design entity
+test t;
+Select t
+none
+5000
+16 - invalid design entity
+While w;
+Select w
+none
+5000
+17 - invalid synonym
+assign 0a;
+Select 0a
+none
+5000
+18 - invalid synonym
+stmt s_1;
+Select s_1
+none
+5000
+19 - invalid synonym
+assign a;;
+Select a
+none
+5000
+20 - invalid select
+if ifs;
+Select
+none
+5000
+21 - invalid select
+if ifs; while w;
+Select such that Follows*(ifs, w)
+none
+5000
+22 - invalid select
+if ifs; while w;
+such that Follows*(ifs, w)
+none
+5000
+23 - invalid select
+assign a;
+Select a1
+none
+5000
+24 - invalid select
+stmt s;
+Select 123
+none
+5000
+25 - invalid select
+stmt s;
+Selects
+none
+5000
+26 - invalid Follows
+variable v;
+Select v such that Follows(v, _)
+none
+5000
+27 - invalid Follows
+variable v;
+Select v such that Follows(_, v)
+none
+5000
+28 - invalid Follows
+constant c;
+Select c such that Follows(c, _)
+none
+5000
+29 - invalid Follows
+constant c;
+Select c such that Follows(_, c)
+none
+5000
+30 - invalid Follows
+procedure p;
+Select p such that Follows(p, _)
+none
+5000
+31 - invalid Follows
+procedure p;
+Select p such that Follows(_, p)
+none
+5000
+32 - invalid Follows
+assign a;
+Select a such that Follows("z", _)
+none
+5000
+33 - invalid Follows
+assign a;
+Select a such that Follows(_, "z")
+none
+5000
+34 - invalid Follows
+assign a;
+Select a such that Follows(12, 13)
+none
+5000
+35 - invalid Follows
+assign a;
+Select a such that Follows(13, 14)
+none
+5000
+36 - invalid Follows
+assign a;
+Select a such that Follows(1)
+none
+5000
+37 - invalid Follows
+assign a;
+Select a such that Follows(1, 2, 3)
+none
+5000
+38 - invalid Follows*
+variable v;
+Select v such that Follows*(v, _)
+none
+5000
+39 - invalid Follows*
+variable v;
+Select v such that Follows*(_, v)
+none
+5000
+40 - invalid Follows*
+constant c;
+Select c such that Follows*(c, _)
+none
+5000
+41 - invalid Follows*
+constant c;
+Select c such that Follows*(_, c)
+none
+5000
+42 - invalid Follows*
+procedure p;
+Select p such that Follows*(p, _)
+none
+5000
+43 - invalid Follows*
+procedure p;
+Select p such that Follows*(_, p)
+none
+5000
+44 - invalid Follows*
+assign a;
+Select a such that Follows*("z", _)
+none
+5000
+45 - invalid Follows*
+assign a;
+Select a such that Follows*(_, "z")
+none
+5000
+46 - invalid Follows*
+assign a;
+Select a such that Follows*(_, 13)
+none
+5000
+47 - invalid Follows*
+while w
+Select w such that Follows*(13, _)
+none
+5000
+48 - invalid Follows*
+assign a;
+Select a such that Follows*(1)
+none
+5000
+49 - invalid Follows*
+assign a;
+Select a such that Follows*(1, 2, 3)
+none
+5000
+50 - invalid Parent
+variable v;
+Select v such that Parent(v, _)
+none
+5000
+51 - invalid Parent
+variable v;
+Select v such that Parent(_, v)
+none
+5000
+52 - invalid Parent
+constant c;
+Select c such that Parent(c, _)
+none
+5000
+53 - invalid Parent
+constant c;
+Select c such that Parent(_, c)
+none
+5000
+54 - invalid Parent
+assign a;
+Select a such that Parent(a, _)
+none
+5000
+55 - invalid Parent
+read r;
+Select r such that Parent(r, _)
+none
+5000
+56 - invalid Parent
+print p;
+Select p such that Parent(p, _)
+none
+5000
+57 - invalid Parent
+procedure proc;
+Select proc such that Parent(proc, _)
+none
+5000
+58 - invalid Parent
+procedure proc;
+Select proc such that Parent(_, proc)
+none
+5000
+59 - invalid Parent
+stmt s;
+Select s such that Parent("z", _)
+none
+5000
+60 - invalid Parent
+stmt s;
+Select s such that Parent(_, "z")
+none
+5000
+61 - invalid Parent
+stmt s;
+Select s such that Parent(1)
+none
+5000
+62 - invalid Parent
+stmt s;
+Select s such that Parent(1, 2, 3)
+none
+5000
+63- invalid Parent
+stmt s;
+Select s such that Parent(13, 14)
+none
+5000
+64 - invalid Parent*
+constant c;
+Select c such that Parent*(c, _)
+none
+5000
+65 - invalid Parent*
+constant c;
+Select c such that Parent*(_, c)
+none
+5000
+66 - invalid Parent*
+assign a;
+Select a such that Parent*(a, _)
+none
+5000
+67 - invalid Parent*
+read r;
+Select r such that Parent*(r, _)
+none
+5000
+68 - invalid Parent*
+print p;
+Select p such that Parent*(p, _)
+none
+5000
+69 - invalid Parent*
+variable v;
+Select v such that Parent*(v, _)
+none
+5000
+70 - invalid Parent*
+variable v;
+Select v such that Parent*(_, v)
+none
+5000
+71 - invalid Parent*
+procedure proc;
+Select proc such that Parent*(proc, _)
+none
+5000
+72 - invalid Parent*
+procedure proc;
+Select proc such that Parent*(_, proc)
+none
+5000
+73 - invalid Parent*
+stmt s;
+Select s such that Parent*("z", _)
+none
+5000
+74 - invalid Parent*
+stmt s;
+Select s such that Parent*(_, "z")
+none
+5000
+75 - invalid Parent*
+stmt s;
+Select s such that Parent*(1)
+none
+5000
+76 - invalid Parent*
+stmt s;
+Select s such that Parent*(1, 2, 3)
+none
+5000
+77 - invalid Parent*
+stmt s;
+Select s such that Parent*(12, 14)
+none
+5000
+78 - invalid Uses
+stmt s;
+Select s such that Uses(_, _)
+none
+5000
+79 - invalid Uses
+variable v;
+Select v such that Uses(v, _)
+none
+5000
+80 - invalid Uses
+constant c;
+Select c such that Uses(c, _)
+none
+5000
+81 - invalid Uses
+read r;
+Select r such that Uses(r, _)
+none
+5000
+82 - invalid Uses
+stmt s;
+Select s such that Uses(_, s)
+none
+5000
+83 - invalid Uses
+assign a;
+Select a such that Uses(_, a)
+none
+5000
+84 - invalid Uses
+while w;
+Select w such that Uses(_, w)
+none
+5000
+85 - invalid Uses
+if ifs;
+Select ifs such that Uses(_, ifs)
+none
+5000
+86 - invalid Uses
+read r;
+Select r such that Uses(_, r)
+none
+5000
+87 - invalid Uses
+print p;
+Select p such that Uses(_, p)
+none
+5000
+88 - invalid Uses
+call c;
+Select c such that Uses(_, c)
+none
+5000
+89 - invalid Uses
+procedure proc;
+Select proc such that Uses(_, proc)
+none
+5000
+90 - invalid Uses
+stmt s;
+Select s such that Uses(_)
+none
+5000
+91 - invalid Uses
+stmt s;
+Select s such that Uses(1, 2, 3)
+none
+5000
+92 - invalid Uses
+stmt s;
+Select s such that Uses(15, _)
+none
+5000
+93 - invalid Modifies
+stmt s;
+Select s such that Modifies(_, _)
+none
+5000
+94 - invalid Modifies
+variable v;
+Select v such that Modifies(v, _)
+none
+5000
+95 - invalid Modifies
+constant c;
+Select c such that Modifies(c, _)
+none
+5000
+96 - invalid Modifies
+print p;
+Select p such that Modifies(p, _)
+none
+5000
+97 - invalid Modifies
+stmt s;
+Select s such that Modifies(_, s)
+none
+5000
+98 - invalid Modifies
+assign a;
+Select a such that Modifies(_, a)
+none
+5000
+99 - invalid Modifies
+while w;
+Select w such that Modifies(_, w)
+none
+5000
+100 - invalid Modifies
+if ifs;
+Select ifs such that Modifies(_, ifs)
+none
+5000
+101 - invalid Modifies
+read r;
+Select r such that Modifies(_, r)
+none
+5000
+102 - invalid Modifies
+print p;
+Select p such that Modifies(_, p)
+none
+5000
+103 - invalid Modifies
+call c;
+Select c such that Modifies(_, c)
+none
+5000
+104 - invalid Modifies
+procedure proc;
+Select proc such that Modifies(_, proc)
+none
+5000
+105 - invalid Modifies
+stmt s;
+Select s such that Modifies(_)
+none
+5000
+106 - invalid Modifies
+stmt s;
+Select s such that Modifies(1, 2, 3)
+none
+5000
+107 - invalid Modifies
+stmt s;
+Select s such that Modifies(15, _)
+none
+5000
+108 - invalid pattern
+variable v;
+Select v pattern v(_, _)
+none
+5000
+109 - invalid pattern
+call c;
+Select c pattern c(_, "c")
+none
+5000
+110 - invalid pattern
+stmt s;
+Select s pattern s(_, _)
+none
+5000
+111 - invalid pattern
+while w;
+Select w pattern w("x", _)
+none
+5000
+112 - invalid pattern
+if ifs; stmt s;
+Select ifs pattern ifs(_, _)
+none
+5000
+113 - invalid pattern
+read r;
+Select r pattern r(_, _"a % b"_)
+none
+5000
+114 - invalid pattern
+print p;
+Select p pattern p(_, _)
+none
+5000
+115 - invalid pattern
+procedure p;
+Select p pattern p(_, _)
+none
+5000
+116 - invalid pattern
+assign a;
+Select a pattern a("_", _)
+none
+5000
+117 - invalid pattern
+assign a;
+Select a pattern a(_""_, _)
+none
+5000
+118 - invalid pattern
+assign a;
+Select a pattern a(_"x"_, _)
+none
+5000
+119 - invalid pattern
+assign a;
+Select a pattern a(_"8"_, _)
+none
+5000
+120 - invalid pattern
+assign a;
+Select a pattern a(_, _""_)
+none
+5000
+121 - invalid pattern
+assign a;
+Select a pattern a(_, _"")
+none
+5000
+122 - invalid pattern
+assign a;
+Select a pattern a(_, _"x")
+none
+5000
+123 - invalid pattern
+assign a;
+Select a pattern a(_, ""_)
+none
+5000
+124 - invalid pattern
+assign a;
+Select a pattern a(_, "x"_)
+none
+5000
+125 - invalid pattern
+assign a;
+Select a pattern a(_, _"_"_)
+none
+5000
+126 - invalid pattern
+assign a;
+Select a pattern a(_a_, _)
+none
+5000
+127 - invalid pattern
+assign a;
+Select a pattern a(_, _a_)
+none
+5000
+128 - invalid pattern
+variable v;
+Select v pattern _(v, _"x"_)
+none
+5000
+129 - invalid query
+stmt s;
+Select s pattern such that Follows(_, 2)
+none
+5000
+130 - invalid query
+stmt s;
+Select s such that Follows(_, 2) pattern
+none
+5000
+131 - invalid query
+stmt s; assign a;
+Select s such that Follows pattern a("y", _)
+none
+5000
+132 - invalid query
+stmt s; assign a;
+Select s pattern a("y", _) such that Follows
+none
+5000
+133 - invalid query
+stmt s; assign a;
+Select s such that Follows(_, 2) abc pattern a("y", _)
+none
+5000
+134 - invalid query
+stmt s; assign a;
+Select s pattern a("y", _) xyz such that Follows(_, 2)
+none
+5000
+135 - invalid query
+stmt s; assign a;
+Select s such that Follows(_, 2) pattern a("y", _) abc
+none
+5000
+136 - invalid query
+stmt s; assign a;
+Select s pattern a("y", _) such that Follows(_, 2) xyz
+none
+5000
+137 - invalid query
+stmt s; assign a;
+Select s such that pattern a("y", _)
+none
+5000
+138 - invalid query
+stmt s; assign a;
+Select s pattern Follows(_, 2)
+none
+5000
+139 - synonym not declared
+assign a;
+Select a such that Parent(w, a)
+none
+5000
+140 - synonym not declared
+stmt s;
+Select s such that pattern a(_, _)
+none
+5000

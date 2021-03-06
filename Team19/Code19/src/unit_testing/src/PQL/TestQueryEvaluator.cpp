@@ -42,6 +42,17 @@ void setupQe() {
     PKB::stmtTable->storeStmt(13, stmtNodeStub, ASSIGN_);
     PKB::stmtTable->storeStmt(14, stmtNodeStub, ASSIGN_);
 
+    PKB::stmtTable->storeAssignExpr(1, "count", "(0)");
+    PKB::stmtTable->storeAssignExpr(2, "cenX", "(0)");
+    PKB::stmtTable->storeAssignExpr(3, "cenY", "(0)");
+    PKB::stmtTable->storeAssignExpr(6, "count", "((count) + (1))");
+    PKB::stmtTable->storeAssignExpr(7, "cenX", "((cenX) + (x))");
+    PKB::stmtTable->storeAssignExpr(8, "cenY", "((cenY) + (y))");
+    PKB::stmtTable->storeAssignExpr(11, "flag", "(1)");
+    PKB::stmtTable->storeAssignExpr(12, "cenX", "((cenX) / (count))");
+    PKB::stmtTable->storeAssignExpr(13, "cenY", "((cenY) / (count))");
+    PKB::stmtTable->storeAssignExpr(14, "normSq", "(((cenX) * (cenX)) + ((cenY) * (cenY)))");
+
     PKB::follows = new Follows();
     PKB::follows->storeFollows(1,2);
     PKB::follows->storeFollows(2,3);
@@ -112,7 +123,6 @@ void setupQe() {
     PKB::modifies->storeStmtModifies(12, 1);
     PKB::modifies->storeStmtModifies(13, 2);
     PKB::modifies->storeStmtModifies(14, 6);
-
     PKB::modifies->storeProcModifies(0, 0);
     PKB::modifies->storeProcModifies(0, 1);
     PKB::modifies->storeProcModifies(0, 2);
@@ -186,28 +196,28 @@ TEST_CASE("QueryEvaluator evaluate query with one such that clause and synonym n
     REQUIRE(actual2 == expected2);
 }
 
-//TEST_CASE("QueryEvaluator evaluate query with one pattern clause") { // not tested
-//    setupQe();
-//    QueryEvaluator qe = QueryEvaluator();
-//
-//    // assign a; Select a pattern a(_, "count + 1")
-//    Clause c1 = Clause("a", vector<string>{"_", "\"count + 1\""});
-//    Query q1 = Query({{"a", ASSIGN_}}, "a", {c1}, true);
-//    list<string> list1 = qe.evaluate(q1);
-//    unordered_set<string> actual1(begin(list1), end(list1));
-//    unordered_set<string> expected1 = {"6"};
-//    REQUIRE(actual1.size() == list1.size());
-//    REQUIRE(actual1 == expected1);
-//
-//    // assign a; Select a pattern a("normSq", _"cenX * xenX"_)
-//    Clause c2 = Clause("a", vector<string>{"\"normSq\"", "_\"cenX * xenX\"_"});
-//    Query q2 = Query({{"a", ASSIGN_}}, "a", {c2}, true);
-//    list<string> list2 = qe.evaluate(q2);
-//    unordered_set<string> actual2(begin(list2), end(list2));
-//    unordered_set<string> expected2 = {"14"};
-//    REQUIRE(actual2.size() == list2.size());
-//    REQUIRE(actual2 == expected2);
-//}
+TEST_CASE("QueryEvaluator evaluate query with one pattern clause") {
+    setupQe();
+    QueryEvaluator qe = QueryEvaluator();
+
+    // assign a; Select a pattern a(_, "count + 1")
+    Clause c1 = Clause("a", vector<string>{"_", "\"count + 1\""});
+    Query q1 = Query({{"a", ASSIGN_}}, "a", {c1}, true);
+    list<string> list1 = qe.evaluate(q1);
+    unordered_set<string> actual1(begin(list1), end(list1));
+    unordered_set<string> expected1 = {"6"};
+    REQUIRE(actual1.size() == list1.size());
+    REQUIRE(actual1 == expected1);
+
+    // assign a; Select a pattern a("normSq", _"cenX * cenX"_)
+    Clause c2 = Clause("a", vector<string>{"\"normSq\"", "_\"cenX * cenX\"_"});
+    Query q2 = Query({{"a", ASSIGN_}}, "a", {c2}, true);
+    list<string> list2 = qe.evaluate(q2);
+    unordered_set<string> actual2(begin(list2), end(list2));
+    unordered_set<string> expected2 = {"14"};
+    REQUIRE(actual2.size() == list2.size());
+    REQUIRE(actual2 == expected2);
+}
 
 TEST_CASE("QueryEvaluator evaluate query with multiple such that clauses") {
     setupQe();
@@ -245,27 +255,27 @@ TEST_CASE("QueryEvaluator evaluate query with multiple such that clauses") {
     REQUIRE(actual3 == expected3);
 }
 
-//TEST_CASE("QueryEvaluator evaluate query with one such that and one pattern clause") { // not tested
-//    setupQe();
-//    QueryEvaluator qe = QueryEvaluator();
-//
-//    // assign a; variable v; Select a such that Uses(a, v) pattern a(v, _)
-//    Clause c11 = Clause("Uses", vector<string>{"a", "v"});
-//    Clause c12 = Clause("a", vector<string>{"v", "_"});
-//    Query q1 = Query({{"a", ASSIGN_}, {"v", VARIABLE_}}, "a", {c11, c12}, true);
-//    list<string> list1 = qe.evaluate(q1);
-//    unordered_set<string> actual1(begin(list1), end(list1));
-//    unordered_set<string> expected1 = {"6", "7", "8", "12", "13"};
-//    REQUIRE(actual1.size() == list1.size());
-//    REQUIRE(actual1 == expected1);
-//
-//    // assign a; while w; Select w such that Parent* (w, a) pattern a("count", _)
-//    Clause c21 = Clause("Parent*", vector<string>{"w", "a"});
-//    Clause c22 = Clause("a", vector<string>{"\"count\"", "_"});
-//    Query q2 = Query({{"a", ASSIGN_}}, "a", {c21, c22}, true);
-//    list<string> list2 = qe.evaluate(q2);
-//    unordered_set<string> actual2(begin(list2), end(list2));
-//    unordered_set<string> expected2 = {"5"};
-//    REQUIRE(actual2.size() == list2.size());
-//    REQUIRE(actual2 == expected2);
-//}
+TEST_CASE("QueryEvaluator evaluate query with one such that and one pattern clause") {
+    setupQe();
+    QueryEvaluator qe = QueryEvaluator();
+
+    // assign a; variable v; Select a such that Uses(a, v) pattern a(v, _)
+    Clause c11 = Clause("Uses", vector<string>{"a", "v"});
+    Clause c12 = Clause("a", vector<string>{"v", "_"});
+    Query q1 = Query({{"a", ASSIGN_}, {"v", VARIABLE_}}, "a", {c11, c12}, true);
+    list<string> list1 = qe.evaluate(q1);
+    unordered_set<string> actual1(begin(list1), end(list1));
+    unordered_set<string> expected1 = {"6", "7", "8", "12", "13"};
+    REQUIRE(actual1.size() == list1.size());
+    REQUIRE(actual1 == expected1);
+
+    // assign a; while w; Select w such that Parent* (w, a) pattern a("count", _)
+    Clause c21 = Clause("Parent*", vector<string>{"w", "a"});
+    Clause c22 = Clause("a", vector<string>{"\"count\"", "_"});
+    Query q2 = Query({{"a", ASSIGN_}, {"w", WHILE_}}, "w", {c21, c22}, true);
+    list<string> list2 = qe.evaluate(q2);
+    unordered_set<string> actual2(begin(list2), end(list2));
+    unordered_set<string> expected2 = {"5"};
+    REQUIRE(actual2.size() == list2.size());
+    REQUIRE(actual2 == expected2);
+}

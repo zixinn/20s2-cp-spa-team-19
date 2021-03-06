@@ -15,7 +15,7 @@ namespace ast {
 			return false; 
 		};
 
-		std::string toString() override { return std::to_string(this->val); };
+		std::string toString() override { return "(" + std::to_string(this->val) + ")"; };
 		int getVal() { return val; }
 	};
 }

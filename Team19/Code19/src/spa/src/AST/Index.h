@@ -13,6 +13,12 @@
 
 #include "InfixExpr.h"
 
+#include "CondExprBag.h"
+#include "CondExprWrapper.h"
+#include "PrefixCondExpr.h"
+#include "InfixCondExpr.h"
+#include "RelExpr.h"
+
 #include "VarName.h"
 #include "ProcName.h"
 #include "ConstVal.h"
@@ -24,3 +30,5 @@
 #include "ReadStmt.h"
 #include "CallStmt.h"
 #include "PrintStmt.h"
+#include "WhileStmt.h"
+#include "IfStmt.h"
