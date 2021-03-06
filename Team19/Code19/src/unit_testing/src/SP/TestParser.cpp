@@ -125,3 +125,24 @@ TEST_CASE("Keyword Detection Test") {
         REQUIRE(Parser::isKeyword(tok) == expect);
     }
 }
+
+//repeated procedure names
+TEST_CASE("Mutiple Proc - Exceptions") {
+    std::string test = "procedure abc {} procedure edf {} procedure abc {}";
+    
+    /** begin ritual to Summon Parser **/
+    std::vector<sp::Token> actual_tok;
+    std::vector<sp::Token*> tok_ptrs;
+    ParserUtils::StringToTokenPtrs(test, actual_tok, tok_ptrs);
+    auto l = new LexerStub(tok_ptrs);
+    auto p = Parser(l);
+    /** Parser now ready for use      **/
+
+    try {
+        ast::Program* prog = p.parseProgram();
+        REQUIRE(false);
+    } catch (sp::ParserException& ex) {
+        INFO(ex.what());
+        REQUIRE(true);
+    }
+}
