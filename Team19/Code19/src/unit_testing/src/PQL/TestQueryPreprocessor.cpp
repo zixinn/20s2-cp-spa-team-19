@@ -272,3 +272,57 @@ TEST_CASE("process valid query with multiple clauses") {
     Query expected = Query(declarations, "a", { c1, c2, c3, c4 }, true, true);
     REQUIRE(actual == expected);
 }
+
+TEST_CASE("process invalid query with and in clause") {
+    QueryPreprocessor qp = QueryPreprocessor();
+    string query = "assign a; while w;\nSelect a such that Parent* (w, a) and Modifies (a, \"x\") and such that Next* (1, a)";
+    Query actual = qp.process(query);
+    Clause c1 = Clause("Parent*", { "w", "a" });
+    unordered_map<string, string> declarations;
+    declarations["a"] = "assign";
+    declarations["w"] = "while";
+    Query expected = Query(declarations, "a", { c1 }, false, true);
+    REQUIRE(actual == expected);
+
+    query = "assign a; while w;\nSelect a such that Parent* (w, a) and pattern a (\"x\", _) such that Next* (1, a)";
+    actual = qp.process(query);
+    unordered_map<string, string> declarations1;
+    declarations1["a"] = "assign";
+    declarations1["w"] = "while";
+    expected = Query(declarations1, "a", { }, false, true);
+    REQUIRE(actual == expected);
+
+    query = "assign a; while w;\nSelect a such that Parent* (w, a) pattern a (\"x\", _) and Next* (1, a)";
+    actual = qp.process(query);
+    c1 = Clause("Parent*", { "w", "a" });
+    Clause c2 = Clause("a", { "\"x\"", "_" });
+    unordered_map<string, string> declarations2;
+    declarations2["a"] = "assign";
+    declarations2["w"] = "while";
+    expected = Query(declarations1, "a", { c1, c2 }, false, true);
+    REQUIRE(actual == expected);
+}
+
+TEST_CASE("process valid query with and in clause") {
+    QueryPreprocessor qp = QueryPreprocessor();
+    string query = "prog_line n;\nSelect n such that Next* (5, n) and Next* (n, 12)";
+    Query actual = qp.process(query);
+    Clause c1 = Clause("Next*", { "5", "n" });
+    Clause c2 = Clause("Next*", { "n", "12" });
+    unordered_map<string, string> declarations;
+    declarations["n"] = "prog_line";
+    Query expected = Query(declarations, "n", { c1, c2 }, true, true);
+    REQUIRE(actual == expected);
+
+    query = "assign a, a1; while w; \nSelect a pattern a (\"x\", _) pattern a1 (\"y\", _\"1\"_) and w (\"count\", _)";
+    actual = qp.process(query);
+    c1 = Clause("a", { "\"x\"", "_" });
+    c2 = Clause("a1", { "\"y\"", "_\"1\"_" });
+    Clause c3 = Clause("w", { "\"count\"", "_" });
+    unordered_map<string, string> declarations1;
+    declarations1["a"] = "assign";
+    declarations1["a1"] = "assign";
+    declarations1["w"] = "while";
+    expected = Query(declarations1, "a", { c1, c2, c3 }, true, true);
+    REQUIRE(actual == expected);
+}

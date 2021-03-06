@@ -36,9 +36,11 @@ private:
 
     void parseToSelect(string synonym);
 
+    void parseSuchThatClauses(string clauses);
     void parseSuchThatClause(string clause);
     void checkSuchThatClause(string rel, vector<string> args);
 
+    void parsePatternClauses(string clauses);
     void parsePatternClause(string clause);
     void checkPatternClause(string syn, vector<string> args);
 };

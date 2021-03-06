@@ -112,11 +112,11 @@ void QueryPreprocessor::parseSelect(string select) {
             if (minPos == suchThatPos) {
                 suchThatPos = select.find(" such that ", suchThatPos + 1);
                 nextPos = getNextPos(vector<int>{suchThatPos, patternPos});
-                parseSuchThatClause(trim(select.substr(minPos + 11, nextPos - minPos - 11)));
+                parseSuchThatClauses(trim(select.substr(minPos + 11, nextPos - minPos - 11)));
             } else if (minPos == patternPos) {
                 patternPos = select.find(" pattern ", patternPos + 1);
                 nextPos = getNextPos(vector<int>{suchThatPos, patternPos});
-                parsePatternClause(trim(select.substr(minPos + 9, nextPos - minPos - 9)));
+                parsePatternClauses(trim(select.substr(minPos + 9, nextPos - minPos - 9)));
             }
             minPos = nextPos;
         }
@@ -148,6 +148,21 @@ void QueryPreprocessor::parseToSelect(string synonym) {
         if (this->isSyntacticallyValid && this->isSemanticallyValid) {
             this->toSelect = synonym;
         }
+    }
+}
+
+void QueryPreprocessor::parseSuchThatClauses(string clauses) {
+    int andPos = -5;
+    int nextPos = clauses.find(" and ");
+
+    while (this->isSyntacticallyValid && nextPos != -1) {
+        parseSuchThatClause(trim(clauses.substr(andPos + 5, nextPos - andPos - 5)));
+        andPos = nextPos;
+        nextPos = clauses.find(" and ", nextPos + 1);
+    }
+
+    if (this->isSyntacticallyValid) {
+        parseSuchThatClause(trim(clauses.substr(andPos + 5, clauses.length() - andPos - 5)));
     }
 }
 
@@ -187,6 +202,21 @@ void QueryPreprocessor::checkSuchThatClause(string rel, vector<string> args) {
 
     if (this->isSyntacticallyValid && this->isSemanticallyValid) {
         this->clauses.push_back(Clause(rel, args));
+    }
+}
+
+void QueryPreprocessor::parsePatternClauses(string clauses) {
+    int andPos = -5;
+    int nextPos = clauses.find(" and ");
+
+    while (this->isSyntacticallyValid && nextPos != -1) {
+        parsePatternClause(trim(clauses.substr(andPos + 5, nextPos - andPos - 5)));
+        andPos = nextPos;
+        nextPos = clauses.find(" and ", nextPos + 1);
+    }
+
+    if (this->isSyntacticallyValid) {
+        parsePatternClause(trim(clauses.substr(andPos + 5, clauses.length() - andPos - 5)));
     }
 }
 
