@@ -42,11 +42,19 @@ bool Parser::parse() {
 		DesignExtractor::signalEnd();
 		
 
-	} catch (...) {
+	} catch (sp::ParserException &ex) {
+		//print error message
+		cout << ex.what();
 		//error encountered so reset PKB and DE
 		DesignExtractor::signalReset();
 		return false;
-	}
+	} catch (sp::UtilsException &ex) {
+		//print error message
+		cout << ex.what();
+		//error encountered so reset PKB and DE
+		DesignExtractor::signalReset();
+		return false;
+	} 
 
 	return true;
 }
@@ -100,18 +108,28 @@ void Parser::addStmtLstToDE(vector<ast::Stmt*> stmts) {
 
 ast::Program* Parser::parseProgram() {
 	std::vector<ast::Proc*> procs{};
+	//to store proc names
+	std::unordered_set<std::string> procnames{};
 	while (this->currToken && (!this->currTokenIs(sp::Token::TokenType::EOFF))) {
 		ast::Proc* proc = this->parseProc();
 		if (!proc) { throw this->genError("ParseProc error"); }
+				
+		//checking if proc exists
+		if (procnames.find(proc->getName()->getVal()) != procnames.end()) {
+			throw this->genError("Procedure already exists: " + proc->getName()->getVal());
+		} else {
+			procnames.insert(proc->getName()->getVal());
+		}
+
 		procs.push_back(proc);
 
 	}
 	if (procs.size() == 0) {
 		throw this->genError("Expect at least one procedure");
-		return new ast::Program(nullptr, procs);
-	} else {
-		return new ast::Program(procs[0], procs);
-	}
+	} 
+		
+	return new ast::Program(procs[0], procs);
+	
 }
 
 ast::Proc* Parser::parseProc() {
@@ -133,6 +151,10 @@ ast::Proc* Parser::parseProc() {
 	this->nextToken();
 
 	ast::StmtLst* stmtlst = this->parseStmtLst();
+
+	if (stmtlst->getStatements().size() == 0) {
+		throw this->genError("Procedure should have at least one statement.");
+	}
 
 	if (!this->currTokenIs(sp::Token::TokenType::RBRACE)) {
 		throw this->genError("ParseProc expected a RBRACE, got: " + this->peekLiteral());
@@ -409,6 +431,10 @@ ast::WhileStmt* Parser::parseWhileStmt() {
 
 	auto stmt_lst = this->parseStmtLst();
 
+	if (stmt_lst->getStatements().size() == 0) {
+		throw this->genError("While should have at least one statement.");
+	}
+
 	if (!this->currTokenIs(sp::Token::TokenType::RBRACE)) {
 		throw this->genError("ParseWhile expected RBRACE }, encountered: " + this->currLiteral());
 	}
@@ -442,6 +468,10 @@ ast::IfStmt* Parser::parseIfStmt() {
 	this->nextToken();
 
 	auto csq_lst = this->parseStmtLst();
+	
+	if (csq_lst->getStatements().size() == 0) {
+		throw this->genError("If should have at least one statement.");
+	}
 
 	if (!this->currTokenIs(sp::Token::TokenType::RBRACE)) {
 		throw this->genError("ParseIf expected RBRACE }, encountered: " + this->currLiteral());
@@ -457,6 +487,10 @@ ast::IfStmt* Parser::parseIfStmt() {
 	this->nextToken();
 
 	auto alt_lst = this->parseStmtLst();
+	
+	if (alt_lst->getStatements().size() == 0) {
+		throw this->genError("Else should have at least one statement.");
+	}
 
 	if (!this->currTokenIs(sp::Token::TokenType::RBRACE)) {
 		throw this->genError("ParseWhile expected RBRACE }, encountered: " + this->currLiteral());

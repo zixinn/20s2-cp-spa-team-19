@@ -15,12 +15,12 @@ TEST_CASE("ParseLexer While - Test") {
     //std::string input = "if = v + x * y + z * t;";    // if not implemented yet
     std::vector<std::pair<std::string, std::string>> tests{
         {
-            "while (flag == 1) {}",
-            "while (( flag == 1 )) {\n}\n",
+            "while (flag == 1) { read r;}",
+            "while (( flag == 1 )) {\n    read (r);\n}\n",
         },
         {
-            "while ((flag == 1) || (5 > 3)) {}",
-            "while (( ( flag == 1 ) || ( 5 > 3 ) )) {\n}\n",
+            "while ((flag == 1) || (5 > 3)) { read r; }",
+            "while (( ( flag == 1 ) || ( 5 > 3 ) )) {\n    read (r);\n}\n",
         },
         {
             "while ((flag == 1) || (5 > 3)) { asd = 23; b = 2 + sdf; }",
