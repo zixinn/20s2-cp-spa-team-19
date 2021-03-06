@@ -16,6 +16,7 @@ void setupAssignStmts() {
 	PKB::varTable->storeVarName("cenX"); // 5
 	PKB::varTable->storeVarName("w"); // 6
 	PKB::varTable->storeVarName("urgh"); // 7
+	PKB::varTable->storeVarName("we"); // 8
 
 	// "x = v + x * y + z * t;"
 	std::vector<sp::Token*> stubTokens1{
@@ -224,8 +225,8 @@ TEST_CASE("PatternEvaluator evaluate Variable Underscore (assignment stmts exist
 	bool result1 = PatternEvaluator::evaluate({ {"a", VARIABLE_}, {"x", VARIABLE_} }, Clause("a", vector<string>{"x", "_"}), tempResults1);
 	unordered_set<int> actual1(tempResults1["a"].begin(), tempResults1["a"].end());
 	unordered_set<int> actual2(tempResults1["x"].begin(), tempResults1["x"].end());
-	unordered_set<int> expected1{ 1, 2, 3, 7, 21};
-	unordered_set<int> expected2{ 0, 5, 7, 3 };
+	unordered_set<int> expected1{ 1, 2, 3, 7, 21, 22};
+	unordered_set<int> expected2{ 0, 5, 7, 3 , 8};
 	REQUIRE(actual1 == expected1);
 	REQUIRE(actual2 == expected2);
 	REQUIRE(result1);
@@ -352,7 +353,7 @@ TEST_CASE("PatternEvaluator evaluate stmt Underscore Underscore (assignment stmt
 	unordered_map<string, vector<int>> tempResults1;
 	bool result1 = PatternEvaluator::evaluate({ {"a", VARIABLE_}}, Clause("a", vector<string>{"_", "_"}), tempResults1);
 	unordered_set<int> actual1(tempResults1["a"].begin(), tempResults1["a"].end());
-	unordered_set<int> expected1{ 1, 2, 3, 7, 21 };
+	unordered_set<int> expected1{ 1, 2, 3, 7, 21, 22};
 	REQUIRE(actual1 == expected1);
 	REQUIRE(result1);
 }
@@ -454,5 +455,5 @@ TEST_CASE("PatternEvaluator evaluate stmt underscore substring (edge case)") {
 	unordered_set<int> actual1(tempResults1["a"].begin(), tempResults1["a"].end());
 	unordered_set<int> expected1{};
 	REQUIRE(actual1 == expected1);
-	REQUIRE(result1);
+	REQUIRE_FALSE(result1);
 }
