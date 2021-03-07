@@ -84,7 +84,9 @@ void setupQe() {
     PKB::uses->storeStmtUses(5, 2);
     PKB::uses->storeStmtUses(6, 0);
     PKB::uses->storeStmtUses(7, 1);
+    PKB::uses->storeStmtUses(7, 3);
     PKB::uses->storeStmtUses(8, 2);
+    PKB::uses->storeStmtUses(8, 4);
     PKB::uses->storeStmtUses(10, 0);
     PKB::uses->storeStmtUses(10, 1);
     PKB::uses->storeStmtUses(10, 2);
@@ -278,4 +280,59 @@ TEST_CASE("QueryEvaluator evaluate query with one such that and one pattern clau
     unordered_set<string> expected2 = {"5"};
     REQUIRE(actual2.size() == list2.size());
     REQUIRE(actual2 == expected2);
+}
+
+//TEST_CASE("QueryEvaluator evaluate query with two such that clauses") {
+//    setupQe();
+//    QueryEvaluator qe = QueryEvaluator();
+//
+//    // while w; assign a; variable v; Select v such that Parent (w, a) such that Uses (a, v)
+//    Clause c11 = Clause("Parent", vector<string>{"w", "a"});
+//    Clause c12 = Clause("Uses", vector<string>{"a", "v"});
+//    Query q1 = Query({ {"a", ASSIGN_}, {"v", VARIABLE_}, {"w", WHILE_} }, { "v" }, { c11, c12 }, true, true);
+//    list<string> list1 = qe.evaluate(q1);
+//    unordered_set<string> actual1(begin(list1), end(list1));
+//    unordered_set<string> expected1 = { "count", "cenX", "cenY"};
+//    REQUIRE(actual1.size() == list1.size());
+//    REQUIRE(actual1 == expected1);
+//}
+
+TEST_CASE("QueryEvaluator evaluate query with two such that uses clauses") {
+    setupQe();
+    QueryEvaluator qe = QueryEvaluator();
+
+    // assign a; variable v; Select a such that Uses(a, v) and Uses (a, "count")
+    Clause c11 = Clause("Uses", vector<string>{"a", "v"});
+    Clause c12 = Clause("Uses", vector<string>{"a", "\"count\""});
+    Query q1 = Query({ {"a", ASSIGN_}, {"v", VARIABLE_} }, { "a" }, { c11, c12 }, true, true);
+    list<string> list1 = qe.evaluate(q1);
+    unordered_set<string> actual1(begin(list1), end(list1));
+    unordered_set<string> expected1 = { "6", "12", "13" };
+    REQUIRE(actual1.size() == list1.size());
+    REQUIRE(actual1 == expected1);
+
+    // assign a; variable v; Select v such that Uses(a, v) and Uses (a, "count")
+    Query q2 = Query({ {"a", ASSIGN_}, {"v", VARIABLE_} }, { "v" }, { c11, c12 }, true, true);
+    list<string> list2 = qe.evaluate(q2);
+    unordered_set<string> actual2(begin(list2), end(list2));
+    unordered_set<string> expected2 = { "count", "cenX", "cenY" };
+    REQUIRE(actual2 == expected2);
+    REQUIRE(actual2.size() == list2.size());
+
+    // assign a; variable v; if ifs; Select a such that Uses(a, v) and Uses (ifs, v)
+    Clause c13 = Clause("Uses", vector<string>{"ifs", "v"});
+    Query q3 = Query({ {"a", ASSIGN_}, {"v", VARIABLE_}, {"ifs", IF_} }, { "a" }, { c11, c13 }, true, true);
+    list<string> list3 = qe.evaluate(q3);
+    unordered_set<string> actual3(begin(list3), end(list3));
+    unordered_set<string> expected3 = { "6", "7", "8", "12", "13", "14" };
+    REQUIRE(actual3 == expected3);
+    REQUIRE(actual3.size() == list3.size());
+
+    // Select <a, v> such that Uses(a, v) and Uses (a, "count")
+    /*Query q4 = Query({ {"a", ASSIGN_}, {"v", VARIABLE_} }, { "a", "v" }, { c11 }, true, true);
+    list<string> list4 = qe.evaluate(q4);
+    unordered_set<string> actual4(begin(list4), end(list4));
+    unordered_set<string> expected4 = { "6 count", "12 cenX", "12 count", "13 cenY", "13 count" };
+    REQUIRE(actual4 == expected4);
+    REQUIRE(actual4.size() == list4.size());*/
 }
