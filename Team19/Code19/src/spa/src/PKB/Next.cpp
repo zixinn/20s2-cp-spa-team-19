@@ -12,7 +12,7 @@ bool Next::isNextStar(ProgLine n1, ProgLine n2) {
     return result != nextStarMap.end() && result->second.find(n2) != result->second.end();
 }
 
-unordered_set<ProgLine> Next::getNext(ProgLine n1) {
+unordered_set<ProgLine> const & Next::getNext(ProgLine n1) const {
     if (nextMap.find(n1) == nextMap.end()) {
         static unordered_set<ProgLine> empty = unordered_set<ProgLine>({});
         return empty;
@@ -20,7 +20,7 @@ unordered_set<ProgLine> Next::getNext(ProgLine n1) {
     return nextMap.find(n1)->second;
 }
 
-unordered_set<ProgLine> Next::getPrevious(ProgLine n2) {
+unordered_set<ProgLine> const & Next::getPrevious(ProgLine n2) const {
     if (reverseNextMap.find(n2) == reverseNextMap.end()) {
         static unordered_set<ProgLine> empty = unordered_set<ProgLine>({});
         return empty;
@@ -28,7 +28,7 @@ unordered_set<ProgLine> Next::getPrevious(ProgLine n2) {
     return reverseNextMap.find(n2)->second;
 }
 
-unordered_set<ProgLine> Next::getNextStar(ProgLine n1) {
+unordered_set<ProgLine> const & Next::getNextStar(ProgLine n1) const {
     if (nextStarMap.find(n1) == nextStarMap.end()) {
         static unordered_set<ProgLine> empty = unordered_set<ProgLine>({});
         return empty;
@@ -36,7 +36,7 @@ unordered_set<ProgLine> Next::getNextStar(ProgLine n1) {
     return nextStarMap.find(n1)->second;
 }
 
-unordered_set<ProgLine> Next::getPreviousStar(ProgLine n2) {
+unordered_set<ProgLine> const & Next::getPreviousStar(ProgLine n2) const {
     if (reverseNextStarMap.find(n2) == reverseNextStarMap.end()) {
         static unordered_set<ProgLine> empty = unordered_set<ProgLine>({});
         return empty;
