@@ -49,6 +49,7 @@ bool PKB::populatePKB() {
     follows->populateFollowsStar();
     parent->populateParentStar();
     calls->processCalls();
+    next->populateNextStar();
     affects->populateAffectsAndAffectsStar();
     return true;
 }

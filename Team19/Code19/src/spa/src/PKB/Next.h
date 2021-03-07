@@ -14,16 +14,16 @@ public:
     bool isNextStar(ProgLine n1, ProgLine n2);
 
     // Returns n2's such that Next(n1, n2)
-    unordered_set<ProgLine> getNext(ProgLine n1);
+    unordered_set<ProgLine> const &getNext(ProgLine n1) const;
 
     // Returns n1's such that Next(n1, n2)
-    unordered_set<ProgLine> getPrevious(ProgLine n2);
+    unordered_set<ProgLine> const & getPrevious(ProgLine n2) const;
 
     // Returns n2's such that Next*(n1, n2)
-    unordered_set<ProgLine> getNextStar(ProgLine n1);
+    unordered_set<ProgLine> const & getNextStar(ProgLine n1) const;
 
     // Returns n1's such that Next*(n1, n2)
-    unordered_set<ProgLine> getPreviousStar(ProgLine n2);
+    unordered_set<ProgLine> const & getPreviousStar(ProgLine n2) const;
 
     // Returns a pair of vectors in the nextMap.
     // First vector is vector of n1's. Second is vector of n2's.
