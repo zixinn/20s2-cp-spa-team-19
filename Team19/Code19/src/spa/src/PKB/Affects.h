@@ -3,6 +3,7 @@
 #include "../AbstractAPI.h"
 
 class Affects {
+public:
     // Constructor for Affects
     Affects();
 

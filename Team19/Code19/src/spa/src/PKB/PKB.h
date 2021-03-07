@@ -11,6 +11,7 @@
 #include "Modifies.h"
 #include "Calls.h"
 #include "Next.h"
+#include "Affects.h"
 
 #include "../AbstractAPI.h"
 
@@ -41,6 +42,7 @@ public:
     static Modifies* modifies;
     static Calls* calls;
     static Next* next;
+    static Affects* affects;
 
     // Resets the entire PKB (delete everything stored in PKB)
     static void resetPKB();
