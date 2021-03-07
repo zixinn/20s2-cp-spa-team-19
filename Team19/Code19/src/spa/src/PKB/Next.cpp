@@ -110,16 +110,16 @@ void Next::populateNextStar() {
     for (auto &it : nextMap) {
         curr = it.first;
         list<int> queue;
+        unordered_set<ProgLine> processedProgLine;
+        processedProgLine.insert(curr);
         queue.push_back(curr);
         while (!queue.empty()) {
             n2s = getNext(queue.front());
             queue.pop_front();
             for (ID n2 : n2s) {
-                if (curr == n2) {
-                    // Should stop here else we will get into infinite loop
-                    break;
-                } else {
-                    storeNextStar(curr, n2);
+                storeNextStar(curr, n2);
+                if (curr != n2 && processedProgLine.find(n2) == processedProgLine.end()) {
+                    processedProgLine.insert(n2);
                     queue.push_back(n2);
                 }
             }
