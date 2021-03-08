@@ -45,9 +45,9 @@ unordered_set<ProgLine> const & Next::getPreviousStar(ProgLine n2) const {
 }
 
 pair<vector<ProgLine>, vector<ProgLine> > Next::getAllNext() {
-    vector<ID> n1s, n2s;
+    vector<ProgLine> n1s, n2s;
     for (auto &it : nextMap) {
-        for (ID n2 : it.second) {
+        for (ProgLine n2 : it.second) {
             n1s.push_back(it.first);
             n2s.push_back(n2);
         }
@@ -56,9 +56,9 @@ pair<vector<ProgLine>, vector<ProgLine> > Next::getAllNext() {
 }
 
 pair<vector<ProgLine>, vector<ProgLine> > Next::getAllNextStar() {
-    vector<ID> n1s, n2s;
+    vector<ProgLine> n1s, n2s;
     for (auto &it : nextStarMap) {
-        for (ID n2 : it.second) {
+        for (ProgLine n2 : it.second) {
             n1s.push_back(it.first);
             n2s.push_back(n2);
         }
