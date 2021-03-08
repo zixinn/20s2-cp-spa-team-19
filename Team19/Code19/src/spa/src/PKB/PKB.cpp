@@ -44,8 +44,7 @@ void PKB::resetPKB() {
 bool PKB::populatePKB() {
     follows->populateFollowsStar();
     parent->populateParentStar();
-    calls->processCalls();
-    return true;
+    return calls->processCalls();
 }
 
 //int PKB::setProcToAST(PROC p, TNode* r) {
