@@ -13,17 +13,27 @@ list<string> QueryEvaluator::evaluate(Query query) {
 
     list<string> emptyList;
 
-    if (!query.getIsSyntacticallyValid() || !query.getIsSemanticallyValid()) {
+    if (!query.getIsSyntacticallyValid()) {
+        return emptyList;
+    }
+    if (!query.getIsSemanticallyValid()) {
+        if (toSelect.at(0) == "BOOLEAN") { return list<string> {"FALSE"}; }
         return emptyList;
     }
 
     this->declarations = query.getDeclarations();
     this->toSelect = query.getToSelect();
     this->clauses = query.getClauses();
+    this->selectBool = true;
 
     for (Clause clause : this->clauses) {
         unordered_map<string, vector<int>> tempResults;
-        if (!evaluateClause(clause, tempResults)) {
+        if (!evaluateClause(clause, tempResults)) { // clause returns false
+            // as long as clause returns false and toSelect is BOOLEAN, break and return
+            if (toSelect.at(0) == "BOOLEAN") { 
+                this->selectBool = false;
+                break;
+            }
             return emptyList;
         }
         if (!tempResults.empty()) {
@@ -53,6 +63,10 @@ bool QueryEvaluator::evaluateClause(Clause clause, unordered_map<string, vector<
         return UsesEvaluator::evaluate(this->declarations, clause, tempResults);
     } else if (rel == "Modifies") {
         return ModifiesEvaluator::evaluate(this->declarations, clause, tempResults);
+    } else if (rel == "Calls") {
+        return CallsEvaluator::evaluate(this->declarations, clause, tempResults);
+    } else if (rel == "Calls*") {
+        return CallsTEvaluator::evaluate(this->declarations, clause, tempResults);
     } else { // pattern
         return PatternEvaluator::evaluate(this->declarations, clause, tempResults);
     }
@@ -233,8 +247,15 @@ void QueryEvaluator::join(unordered_map<string, vector<int>> table) {
 
 // Evaluates the synonym to select using the results table and returns a list containing the answers
 list<string> QueryEvaluator::evaluateSynonymToSelect(vector<string> toSelect) {
+    if (toSelect.at(0) == "BOOLEAN") {
+        string ans;
+        if (selectBool) { ans = "TRUE"; }
+        else { ans = "FALSE"; }
+        return list<string>{ans};
+    }
+
     for (string synonym : toSelect) {
-        if (results.find(synonym) == results.end()) {
+        if (results.find(synonym) == results.end()) { // synonym not in results table
             unordered_map<string, vector<int>> tempResults = {{synonym, selectAll(this->declarations[synonym])}};
             join(tempResults);
         }
