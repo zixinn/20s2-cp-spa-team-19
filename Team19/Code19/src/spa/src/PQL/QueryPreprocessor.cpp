@@ -212,7 +212,7 @@ void QueryPreprocessor::checkSuchThatClause(string rel, vector<string> args) {
             if (validArgType[i].find(argType) != validArgType[i].end()) {
                 continue;
             }
-            if (checkName(args[i])) {
+            if (argType == UNDERSCORE_ || checkName(args[i])) {
                 this->isSemanticallyValid = false;
             } else {
                 this->isSyntacticallyValid = false;

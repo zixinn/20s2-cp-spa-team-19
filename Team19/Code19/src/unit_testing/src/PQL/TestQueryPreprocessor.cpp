@@ -98,12 +98,20 @@ TEST_CASE("process invalid such that clause") {
     expected = Query(declarations1, {"a"}, {}, true, false);
     REQUIRE(actual == expected);
 
-    query = "assign a; while w; \nSelect w such that Parent* (w, a) abc pattern a (\"count\", _)";
+    query = "assign a; variable v; \nSelect a such that Modifies (_, v)";
     actual = qp.process(query);
     unordered_map<string, string> declarations2;
     declarations2["a"] = "assign";
-    declarations2["w"] = "while";
-    expected = Query(declarations2, {"w"}, {}, false, true);
+    declarations2["v"] = "variable";
+    expected = Query(declarations2, {"a"}, {}, true, false);
+    REQUIRE(actual == expected);
+
+    query = "assign a; while w; \nSelect w such that Parent* (w, a) abc pattern a (\"count\", _)";
+    actual = qp.process(query);
+    unordered_map<string, string> declarations3;
+    declarations3["a"] = "assign";
+    declarations3["w"] = "while";
+    expected = Query(declarations3, {"w"}, {}, false, true);
     REQUIRE(actual == expected);
 }
 
