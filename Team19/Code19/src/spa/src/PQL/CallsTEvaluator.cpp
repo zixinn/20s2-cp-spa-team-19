@@ -31,13 +31,10 @@ bool CallsTEvaluator::evaluate(unordered_map<string, string> declarations, Claus
         if (callees.empty()) {
             return false;
         }
-        if (secondType != UNDERSCORE_) {
+        if (secondType != UNDERSCORE_) { //secondType == PROCEDURE
             vector<int> res;
-            bool nonEmpty = intersectSingleSynonym(callees, selectAll(secondType), res);
-            if (nonEmpty) {
-                tempResults[secondArg] = res;
-            }
-            return nonEmpty;
+            res.assign(callees.begin(), callees.end());
+            tempResults[secondArg] = res;
         }
         return true;
     }
@@ -47,16 +44,12 @@ bool CallsTEvaluator::evaluate(unordered_map<string, string> declarations, Claus
         if (callers.empty()) {
             return false;
         }
-        if (firstType != UNDERSCORE_) {
+        if (firstType != UNDERSCORE_) { //firstType == PROCEDURE
             vector<int> res;
-            bool nonEmpty = intersectSingleSynonym(callers, selectAll(firstType), res);
-            if (nonEmpty) {
-                tempResults[firstArg] = res;
-            }
-            return nonEmpty;
+            res.assign(callers.begin(), callers.end());
+            tempResults[firstArg] = res;
         }
         return true;
-
     }
     else { // s1, s2 or s, _ or _, s
         if (firstArg == secondArg) {
@@ -67,32 +60,17 @@ bool CallsTEvaluator::evaluate(unordered_map<string, string> declarations, Claus
             return false;
         }
         if (firstType != UNDERSCORE_ && secondType != UNDERSCORE_) { // s1, s2
-            pair<vector<int>, vector<int>> allCorrectType = make_pair(selectAll(firstType), selectAll(secondType));
-            pair<vector<int>, vector<int>> res;
-            bool nonEmpty = intersectDoubleSynonym(allCalls, allCorrectType, res);
-            if (nonEmpty) {
-                tempResults[firstArg] = res.first;
-                tempResults[secondArg] = res.second;
-            }
-            return nonEmpty;
+            tempResults[firstArg] = allCalls.first;
+            tempResults[secondArg] = allCalls.second;
+            return true;
         }
         else if (firstType != UNDERSCORE_) { // s, _
-            vector<int> allCorrectType = selectAll(firstType);
-            vector<int> res;
-            bool nonEmpty = intersectSingleSynonym(allCalls.first, allCorrectType, res);
-            if (nonEmpty) {
-                tempResults[firstArg] = res;
-            }
-            return nonEmpty;
+            tempResults[firstArg] = allCalls.first;
+            return true;
         }
         else { // _, s
-            vector<int> allCorrectType = selectAll(secondType);
-            vector<int> res;
-            bool nonEmpty = intersectSingleSynonym(allCalls.second, allCorrectType, res);
-            if (nonEmpty) {
-                tempResults[secondArg] = res;
-            }
-            return nonEmpty;
+            tempResults[secondArg] = allCalls.second;
+            return true;
         }
     }
 }
