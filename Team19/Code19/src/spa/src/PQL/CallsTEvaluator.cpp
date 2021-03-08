@@ -1,29 +1,33 @@
-#include "CallsEvaluator.h"
+#include "CallsTEvaluator.h"
 
-/*using namespace std;
+using namespace std;
 
-CallsEvaluator::CallsEvaluator() {
+CallsTEvaluator::CallsTEvaluator() {
 
 }
 
-bool CallsEvaluator::evaluate(unordered_map<string, string> declarations, Clause clause, unordered_map<string, vector<int>>& tempResults) {
+bool CallsTEvaluator::evaluate(unordered_map<string, string> declarations, Clause clause, unordered_map<string, vector<int>>& tempResults) {
     string firstArg = clause.getArgs().at(0);
     string secondArg = clause.getArgs().at(1);
     string firstType = getArgType(firstArg, declarations);
     string secondType = getArgType(secondArg, declarations);
 
     if (firstType == UNDERSCORE_ && secondType == UNDERSCORE_) { // _, _
-        return true; // part of SIMPLE rules, will be checked by SP [program: procedure+]
+        vector<int> callStmts = PKB::stmtTable->getAllCallStmtNums();
+        if (callStmts.empty()) {
+            return false;
+        }
+        return true;
     }
 
     if (firstType == NAME_ && secondType == NAME_) { // known, known
         int firstProcId = PKB::procTable->getProcID(trim(firstArg.substr(1, firstArg.size() - 2)));
         int secondProcId = PKB::procTable->getProcID(trim(secondArg.substr(1, secondArg.size() - 2)));
-        return PKB::Calls->isCallsStar(firstProcId, secondProcId);
+        return PKB::calls->isCallsStar(firstProcId, secondProcId);
     }
     else if (firstType == NAME_ && secondType != NAME_) { // known, s or known, _
         int firstProcId = PKB::procTable->getProcID(trim(firstArg.substr(1, firstArg.size() - 2)));
-        unordered_set<StmtNum> callees = PKB::Calls->getCalleesStar(firstProcId);
+        unordered_set<StmtNum> callees = PKB::calls->getCalleesStar(firstProcId);
         if (callees.empty()) {
             return false;
         }
@@ -93,7 +97,6 @@ bool CallsEvaluator::evaluate(unordered_map<string, string> declarations, Clause
     }
 }
 
-CallsEvaluator::~CallsEvaluator() {
+CallsTEvaluator::~CallsTEvaluator() {
 
 }
-*/

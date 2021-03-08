@@ -14,6 +14,8 @@
 #include "ParentTEvaluator.h"
 #include "UsesEvaluator.h"
 #include "ModifiesEvaluator.h"
+#include "CallsEvaluator.h"
+#include "CallsTEvaluator.h"
 #include "PatternEvaluator.h"
 
 class QueryEvaluator {

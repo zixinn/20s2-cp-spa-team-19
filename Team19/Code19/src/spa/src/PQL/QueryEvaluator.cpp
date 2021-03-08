@@ -53,6 +53,10 @@ bool QueryEvaluator::evaluateClause(Clause clause, unordered_map<string, vector<
         return UsesEvaluator::evaluate(this->declarations, clause, tempResults);
     } else if (rel == "Modifies") {
         return ModifiesEvaluator::evaluate(this->declarations, clause, tempResults);
+    } else if (rel == "Calls") {
+        return CallsEvaluator::evaluate(this->declarations, clause, tempResults);
+    } else if (rel == "Calls*") {
+        return CallsTEvaluator::evaluate(this->declarations, clause, tempResults);
     } else { // pattern
         return PatternEvaluator::evaluate(this->declarations, clause, tempResults);
     }
@@ -234,7 +238,7 @@ void QueryEvaluator::join(unordered_map<string, vector<int>> table) {
 // Evaluates the synonym to select using the results table and returns a list containing the answers
 list<string> QueryEvaluator::evaluateSynonymToSelect(vector<string> toSelect) {
     for (string synonym : toSelect) {
-        if (results.find(synonym) == results.end()) {
+        if (results.find(synonym) == results.end()) { // synonym not in results table
             unordered_map<string, vector<int>> tempResults = {{synonym, selectAll(this->declarations[synonym])}};
             join(tempResults);
         }
