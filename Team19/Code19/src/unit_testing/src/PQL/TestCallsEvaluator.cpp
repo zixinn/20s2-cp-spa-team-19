@@ -117,9 +117,10 @@ TEST_CASE("CallsEvaluator evaluate synonym known") {
     // Calls (p, "proc7")
     unordered_map<string, vector<int>> tempResults2;
     bool b2 = CallsEvaluator::evaluate({ {"p", PROCEDURE_} }, Clause("Calls", vector<string>{"p", "\"proc7\""}), tempResults2);
-    unordered_map<string, vector<int>> expected2 = { {"p", vector<int>{5, 6, 8}} };
+    unordered_set<int> actual2(tempResults2["p"].begin(), tempResults2["p"].end());
+    unordered_set<int> expected2{ 5, 6, 8 };
     REQUIRE(b2);
-    REQUIRE(tempResults2 == expected2);
+    REQUIRE(actual2 == expected2);
 
     // Calls (p, "proc4")
     unordered_map<string, vector<int>> tempResults3;
