@@ -10,6 +10,7 @@
 #include "Uses.h"
 #include "Modifies.h"
 #include "Calls.h"
+#include "Next.h"
 
 #include "../AbstractAPI.h"
 
@@ -39,6 +40,7 @@ public:
     static Uses* uses;
     static Modifies* modifies;
     static Calls* calls;
+    static Next* next;
 
     // Resets the entire PKB (delete everything stored in PKB)
     static void resetPKB();
