@@ -32,6 +32,7 @@ void DesignExtractor::DEStack<T>::stackPush(vector<T> &stack, T entry) {
 void DesignExtractor::storeNewProcedure(STRING procedureName) {
     // Stores new procedure into PKB and receive the PKB-assigned ID
     currentProcedureID = PKB::procTable->storeProcName(procedureName);
+    createNewCurrentState(NULL); // no parent for a new procedure!
 }
 
 void DesignExtractor::exitProcedure() {
@@ -183,6 +184,28 @@ void DesignExtractor::storeNewPrint(StmtNum stmtNum, STRING variableName, PrintS
     // DE Internal Bookkeeping
     currentStmtLst.push_back(stmtNum);
     currentUsedVarsLst.insert(varID);
+}
+
+bool DesignExtractor::storeNewCall(StmtNum stmtNum, STRING callerName, STRING procedureName, CallStmt* AST) {
+    if (!PKB::stmtTable->storeStmt(stmtNum, AST, CALL_)) {
+        std::cerr << "DE encountered an error when attempting to store statement " << stmtNum << " in PKB.\n";
+    }
+    // Get procedure IDs
+    ID callerProcID = PKB::procTable->getProcID(callerName);    // this should be in PKB already
+    ID calledProcID = PKB::procTable->storeProcName(procedureName);
+    if (callerProcID < 0) {
+        std::cerr << "DE could not find the callerName " << callerName << " in PKB.\n";
+    }
+
+    // Bookkepping
+    currentStmtLst.push_back(stmtNum);
+
+    // Only store if this is not a recursive call
+    if (callerProcID != calledProcID) {
+        return PKB::calls->storeCalls(stmtNum, callerProcID, calledProcID);
+    } else {
+        return false;
+    }
 }
 
 void DesignExtractor::signalReset() {

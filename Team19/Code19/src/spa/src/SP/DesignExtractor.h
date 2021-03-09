@@ -50,9 +50,10 @@ public:
         static void stackPush(vector<T> &stack, T entry);
     };
 
-    // Iteration 2/3
-        // Finds or adds the entry of the callerName in the NestedCallsMap and append procedureName to the calledProceduresList of the entry. Returns true (success) if successful; otherwise, returns false if this is a recursive call.
-        // bool storeNewCall(StmtNum stmtNum,STRING callerName, CallStmt* AST);
+    // It2/3 [Move upwards after everything is done]
+    // Finds or adds the entry of the callerName in the NestedCallsMap and append procedureName to the calledProceduresList of the entry.
+    // Returns true (success) if successful; otherwise, returns false if this is a recursive call.
+    static bool storeNewCall(StmtNum stmtNum,STRING callerName, STRING procedureName, CallStmt* AST);
 
 private:
     // For bookkeeping
@@ -80,6 +81,7 @@ private:
     static void saveCurrentState(); // push to all stacks
     // Wipes the local state variables for the given parent (container) statement
     static void popSavedState(); // pop all stacks, restoring the current state variables
+    // Reset local state variables to prepare for a new procedure
     static void createNewCurrentState(ID currentParent);
 
     // Other internal DE methods
