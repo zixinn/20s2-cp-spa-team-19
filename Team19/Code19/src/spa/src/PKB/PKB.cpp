@@ -13,6 +13,8 @@ Follows* PKB::follows = new Follows();
 Parent* PKB::parent = new Parent();
 Uses* PKB::uses = new Uses();
 Modifies* PKB::modifies = new Modifies();
+Calls* PKB::calls = new Calls();
+Next* PKB::next = new Next();
 
 void PKB::resetPKB() {
     delete constTable;
@@ -25,6 +27,7 @@ void PKB::resetPKB() {
     delete parent;
     delete uses;
     delete modifies;
+    delete calls;
 
     constTable = new ConstTable();
     varTable = new VarTable();
@@ -36,12 +39,14 @@ void PKB::resetPKB() {
     parent = new Parent();
     uses = new Uses();
     modifies = new Modifies();
+    calls = new Calls();
+    next = new Next();
 }
 
 bool PKB::populatePKB() {
     follows->populateFollowsStar();
     parent->populateParentStar();
-    return true;
+    return calls->processCalls();
 }
 
 //int PKB::setProcToAST(PROC p, TNode* r) {
