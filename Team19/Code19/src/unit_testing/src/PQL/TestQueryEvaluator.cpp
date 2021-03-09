@@ -145,12 +145,20 @@ TEST_CASE("QueryEvaluator evaluate query with no clauses") {
     QueryEvaluator qe = QueryEvaluator();
 
     // variable v; Select v
-    Query q = Query({ {"v", VARIABLE_} }, { "v" }, {}, true, true);
-    list<string> list = qe.evaluate(q);
-    unordered_set<string> actual(begin(list), end(list));
-    unordered_set<string> expected = { "count", "cenX", "cenY", "x", "y", "flag", "normSq" };
-    REQUIRE(actual.size() == list.size());
-    REQUIRE(actual == expected);
+    Query q1 = Query({ {"v", VARIABLE_} }, { "v" }, {}, true, true);
+    list<string> list1 = qe.evaluate(q1);
+    unordered_set<string> actual1(begin(list1), end(list1));
+    unordered_set<string> expected1 = { "count", "cenX", "cenY", "x", "y", "flag", "normSq" };
+    REQUIRE(actual1.size() == list1.size());
+    REQUIRE(actual1 == expected1);
+
+    // prog_line n; Select n
+    Query q2 = Query({ {"n", PROGLINE_} }, { "n" }, {}, true, true);
+    list<string> list2 = qe.evaluate(q2);
+    unordered_set<string> actual2(begin(list2), end(list2));
+    unordered_set<string> expected2 = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14" };
+    REQUIRE(actual2.size() == list2.size());
+    REQUIRE(actual2 == expected2);
 }
 
 TEST_CASE("QueryEvaluator evaluate query with one such that clause and synonym in clause") {
@@ -415,7 +423,7 @@ TEST_CASE("QueryEvaluator evaluate query with multiple such that and pattern cla
     setupQe();
     QueryEvaluator qe = QueryEvaluator();
 
-    // assign a; variable v; Select a such that Uses(a, v) pattern a(v, _) such that Follows (12, a)
+    // assign a; variable v; Select BOOLEAN such that Uses(a, v) pattern a(v, _) such that Follows (12, a)
     Clause c11 = Clause("Uses", vector<string>{"a", "v"});
     Clause c12 = Clause("a", vector<string>{"v", "_"});
     Clause c13 = Clause("Follows", vector<string>{"12", "a"});
@@ -426,7 +434,7 @@ TEST_CASE("QueryEvaluator evaluate query with multiple such that and pattern cla
     REQUIRE(actual1.size() == list1.size());
     REQUIRE(actual1 == expected1);
 
-    // assign a; while w; Select w such that Parent* (w, a) pattern a("count", _) and a(_, "count + 1")
+    // assign a; while w; Select BOOLEAN such that Parent* (w, a) pattern a("count", _) and a(_, "count + 1")
     Clause c21 = Clause("Parent*", vector<string>{"w", "a"});
     Clause c22 = Clause("a", vector<string>{"\"count\"", "_"});
     Clause c23 = Clause("a", vector<string>{"_", "\"count+1\""});
@@ -437,7 +445,7 @@ TEST_CASE("QueryEvaluator evaluate query with multiple such that and pattern cla
     REQUIRE(actual2.size() == list2.size());
     REQUIRE(actual2 == expected2);
 
-    // assign a; while w; Select w such that Parent* (w, a) pattern a("count", _) and a(_, "count")
+    // assign a; while w; Select BOOLEAN such that Parent* (w, a) pattern a("count", _) and a(_, "count")
     Clause c31 = Clause("Parent*", vector<string>{"w", "a"});
     Clause c32 = Clause("a", vector<string>{"\"count\"", "_"});
     Clause c33 = Clause("a", vector<string>{"_", "\"count\""});
@@ -447,6 +455,33 @@ TEST_CASE("QueryEvaluator evaluate query with multiple such that and pattern cla
     unordered_set<string> expected3 = { "FALSE" };
     REQUIRE(actual3.size() == list3.size());
     REQUIRE(actual3 == expected3);
+}
+
+TEST_CASE("QueryEvaluator evaluate query with multiple such that and pattern clauses tuples") {
+    setupQe();
+    QueryEvaluator qe = QueryEvaluator();
+
+    // assign a; variable v; Select <a, v> such that Uses(a, v) pattern a(v, _) such that Follows (12, a)
+    Clause c11 = Clause("Uses", vector<string>{"a", "v"});
+    Clause c12 = Clause("a", vector<string>{"v", "_"});
+    Clause c13 = Clause("Follows", vector<string>{"12", "a"});
+    Query q1 = Query({ {"a", ASSIGN_}, {"v", VARIABLE_} }, { "a", "v" }, { c11, c12, c13 }, true, true);
+    list<string> list1 = qe.evaluate(q1);
+    unordered_set<string> actual1(begin(list1), end(list1));
+    unordered_set<string> expected1 = { "13 cenY" };
+    REQUIRE(actual1.size() == list1.size());
+    REQUIRE(actual1 == expected1);
+
+    // assign a; while w; stmt s; Select <a, w, s> such that Parent* (w, a) and Follows* (7, s) pattern a("cenX", _)
+    Clause c21 = Clause("Parent*", vector<string>{"w", "a"});
+    Clause c22 = Clause("Follows*", vector<string>{"7", "s"});
+    Clause c23 = Clause("a", vector<string>{"\"cenX\"", "_"});
+    Query q2 = Query({ {"a", ASSIGN_}, {"w", WHILE_}, {"s", STMT_} }, { "a", "w", "s" }, { c21, c22, c23 }, true, true);
+    list<string> list2 = qe.evaluate(q2);
+    unordered_set<string> actual2(begin(list2), end(list2));
+    unordered_set<string> expected2 = { "7 5 8", "7 5 9" };
+    REQUIRE(actual2.size() == list2.size());
+    REQUIRE(actual2 == expected2);
 }
 
 TEST_CASE("QueryEvaluator evaluate query with one such that clause-semantically invalid") {
@@ -475,7 +510,7 @@ TEST_CASE("QueryEvaluator evaluate query with one such that clause-semantically 
     setupQe();
     QueryEvaluator qe = QueryEvaluator();
 
-    // variable v; Select v such that Uses(_, v)
+    // variable v; Select BOOLEAN such that Uses(_, v)
     Clause c11 = Clause("Uses", vector<string>{"_", "v"});
     Query q1 = Query({ {"v", VARIABLE_} }, { "BOOLEAN" }, { c11 }, true, true);
     list<string> list1 = qe.evaluate(q1);
@@ -484,7 +519,7 @@ TEST_CASE("QueryEvaluator evaluate query with one such that clause-semantically 
     REQUIRE(actual1.size() == list1.size());
     REQUIRE(actual1 == expected1);
 
-    // Select v such that Modifies (_, v)
+    // variable v; Select BOOLEAN such that Modifies (_, v)
     Clause c21 = Clause("Modifies", vector<string>{"_", "v"});
     Query q2 = Query({ {"v", VARIABLE_} }, { "BOOLEAN" }, { c21 }, true, true);
     list<string> list2 = qe.evaluate(q2);
