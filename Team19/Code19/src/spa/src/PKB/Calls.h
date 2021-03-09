@@ -7,7 +7,7 @@ public:
     // Constructor for CallsTable
     Calls();
 
-    // Returns true if the program has indirect calls
+    // Returns true if the program has cyclical calls
     bool hasCyclicalCall();
 
     // Returns true if Calls(p,q)

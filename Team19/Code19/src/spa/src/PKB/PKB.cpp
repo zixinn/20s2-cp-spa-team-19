@@ -14,6 +14,7 @@ Parent* PKB::parent = new Parent();
 Uses* PKB::uses = new Uses();
 Modifies* PKB::modifies = new Modifies();
 Calls* PKB::calls = new Calls();
+Next* PKB::next = new Next();
 
 void PKB::resetPKB() {
     delete constTable;
@@ -39,12 +40,14 @@ void PKB::resetPKB() {
     uses = new Uses();
     modifies = new Modifies();
     calls = new Calls();
+    next = new Next();
 }
 
 bool PKB::populatePKB() {
     follows->populateFollowsStar();
     parent->populateParentStar();
     calls->processCalls();
+    next->populateNextStar();
     return true;
 }
 
