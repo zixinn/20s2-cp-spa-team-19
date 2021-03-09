@@ -19,8 +19,8 @@ public:
     ast::Stmt* getStmtNode(StmtNum stmtNum);
 
     // Returns the control variable given statement number. Returns -1 if the variable is not a control variable.
-    unordered_set<StmtNum> getIfStmtsWithControlVar(ID controlVarID);
-    unordered_set<StmtNum> getWhileStmtsWithControlVar(ID controlVarID);
+    unordered_set<StmtNum> const &getIfStmtsWithControlVar(ID controlVarID) const;
+    unordered_set<StmtNum> const &getWhileStmtsWithControlVar(ID controlVarID) const;
 
     // Returns the statement number given the control variable. Returns -1 if the statement number given is not an if(while) statement / does not use a control variable.
     ID getControlVarOfIfStmt(StmtNum stmtNum);

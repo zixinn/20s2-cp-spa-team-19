@@ -27,7 +27,7 @@ ast::Stmt* StmtTable::getStmtNode(StmtNum stmtNum) {
     }
 }
 
-unordered_set<StmtNum> StmtTable::getIfStmtsWithControlVar(ID controlVarID) {
+unordered_set<StmtNum> const &StmtTable::getIfStmtsWithControlVar(ID controlVarID) const {
     if (reverseIfPatternsMap.find(controlVarID) == reverseIfPatternsMap.end()) {
         static unordered_set<StmtNum> empty = unordered_set<StmtNum>({});
         return empty;
@@ -36,7 +36,7 @@ unordered_set<StmtNum> StmtTable::getIfStmtsWithControlVar(ID controlVarID) {
     }
 }
 
-unordered_set<StmtNum> StmtTable::getWhileStmtsWithControlVar(ID controlVarID) {
+unordered_set<StmtNum> const &StmtTable::getWhileStmtsWithControlVar(ID controlVarID) const {
     if (reverseWhilePatternsMap.find(controlVarID) == reverseWhilePatternsMap.end()) {
         static unordered_set<StmtNum> empty = unordered_set<StmtNum>({});
         return empty;
