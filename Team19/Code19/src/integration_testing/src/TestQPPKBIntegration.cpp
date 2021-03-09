@@ -235,7 +235,7 @@ TEST_CASE("QueryPrepocessor evaluate query with one such that clause and synonym
 
     string query5 = "stmt stmt; stmt stmt; Select stmt such that Follows (stmt, stmt)";
     Query q5 = qp.process(query5);
-    REQUIRE_FALSE(q5.getIsValid());
+    REQUIRE_FALSE(q5.getIsSemanticallyValid());
 
     string query6 = "stmt stmt; Select stmt such that Parent* (10, stmt)";
     Query q6 = qp.process(query6);
@@ -244,6 +244,14 @@ TEST_CASE("QueryPrepocessor evaluate query with one such that clause and synonym
     unordered_set<string> expected6 = { "11", "12", "13" };
     REQUIRE(actual6.size() == list6.size());
     REQUIRE(actual6 == expected6);
+
+    string query7 = "assign stmt; Select stmt such that Uses (stmt, \"count\")";
+    Query q7 = qp.process(query7);
+    list<string> list7 = qe.evaluate(q7);
+    unordered_set<string> actual7(begin(list7), end(list7));
+    unordered_set<string> expected7 = { "6", "12", "13" };
+    REQUIRE(actual7.size() == list7.size());
+    REQUIRE(actual7 == expected7);
 }
 
 TEST_CASE("QueryEvaluator evaluate query with one such that clause and synonym not in clause") {
