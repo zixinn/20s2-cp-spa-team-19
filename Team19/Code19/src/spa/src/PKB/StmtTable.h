@@ -18,11 +18,11 @@ public:
     // Returns the statement node given the stmtNum. Throws error if statement is not in statement table.
     ast::Stmt* getStmtNode(StmtNum stmtNum);
 
-    // Returns the control variable given statement number. Returns -1 if the variable is not a control variable.
+    // Returns the set of statement numbers given the control variable. Returns an empty set if it is not a control variable of an if(while) statement.
     unordered_set<StmtNum> const &getIfStmtsWithControlVar(ID controlVarID) const;
     unordered_set<StmtNum> const &getWhileStmtsWithControlVar(ID controlVarID) const;
 
-    // Returns the statement number given the control variable. Returns -1 if the statement number given is not an if(while) statement / does not use a control variable.
+    // Returns the control variable given the statement number. Returns -1 if the statement number given is not an if(while) statement / does not use a control variable.
     ID getControlVarOfIfStmt(StmtNum stmtNum);
     ID getControlVarOfWhileStmt(StmtNum stmtNum);
 
