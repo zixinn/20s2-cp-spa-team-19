@@ -1,0 +1,34 @@
+procedure Test1 {
+  read a;
+  if (b==1) then {
+    z = x / 1;
+    call Test2a; 
+  } else {
+    call Test2b; 
+  }
+
+  a = a + 4;
+
+  
+  print x;
+  print y;
+}
+
+procedure Test2a {
+  call Test3;
+}
+
+procedure Test2b {
+  call Test3;
+}
+
+procedure Test3 {
+  while (x >= z) {
+    call Test4;
+  }
+  call Test5;
+}
+
+procedure Test4 {
+  call Test5;
+}

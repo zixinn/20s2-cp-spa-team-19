@@ -26,6 +26,14 @@ bool Parser::parse() {
 	try {
 		DesignExtractor::signalReset();
 		ast::Program* prog = this->parseProgram();
+
+		// check to ensure no calling undefined procedures
+		ParserUtils::throwIfUndefCall(prog);
+
+		// check to ensure no cyclical proc calls
+		ParserUtils::throwIfCyclic(prog);
+
+		// call DE
 		vector<ast::Proc*> procs = prog->getProcedures();
 		for (int i = 0; i < procs.size(); i++) {
 			ast::Proc* procedure = procs[i];
