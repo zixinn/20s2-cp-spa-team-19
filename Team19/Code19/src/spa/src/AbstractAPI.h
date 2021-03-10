@@ -7,6 +7,7 @@
 #include "../../autotester/src/AbstractWrapper.h"
 
 #define PROCEDURE_ "procedure"
+#define PROGLINE_ "prog_line"
 #define STMTLST_ "stmtLst"
 #define STMT_ "stmt"
 #define READ_ "read"

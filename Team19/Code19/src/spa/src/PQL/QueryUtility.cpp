@@ -116,7 +116,7 @@ vector<int> selectAll(string synonymType) {
             res.push_back(i);
         }
         return res;
-    } else if (synonymType == STMT_) {
+    } else if (synonymType == STMT_ || synonymType == PROGLINE_) {
         return PKB::stmtTable->getAllStmtNums();
     } else if (synonymType == READ_) {
         return PKB::stmtTable->getAllReadStmtNums();
