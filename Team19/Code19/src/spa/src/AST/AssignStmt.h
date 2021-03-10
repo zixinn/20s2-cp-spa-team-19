@@ -10,13 +10,15 @@ namespace ast {
 	class AssignStmt : public Stmt {
 		VarName* var_name;
 		Expr* expr;
+		std::string exprString;
 	public:
 	//	AssignStmt(int stmtNum, Token token, VarName* var_name, Expr* expr);
 		AssignStmt(int stmtNum, sp::Token* token, VarName* var_name, Expr* expr)
-			:Stmt( token, stmtNum ), var_name{ var_name }, expr{ expr } {}
+			:Stmt(token, stmtNum), var_name{ var_name }, expr{ expr }, exprString{ expr->toString() } {}
 		VarName* getName() { return var_name; }
 		Expr* getExpr() { return expr; }
 		bool compareExpr(Expr* otherExpr) { return this->expr->compare(otherExpr); }
+		std::string getCachedExprString() { return this->exprString; }
 
 		std::string toString() override {
 			std::string var_str = var_name ? var_name->toString() : "[NULL_PTR]";

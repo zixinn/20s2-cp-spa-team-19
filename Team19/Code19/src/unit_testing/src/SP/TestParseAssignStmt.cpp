@@ -107,3 +107,65 @@ TEST_CASE("Parse Assign Expr - With Paren Test") {
     ast::AssignStmt* ass = p.parseAssignStmt();
     REQUIRE(ass->toString() == "(x) = (((y) + (5)) * (3));");
 }
+
+TEST_CASE("Parse Assign Expr - Cache Test") {
+
+    //std::string input = "if = v + x * y + z * t;";    // if not implemented yet
+    std::vector<std::pair<std::string, std::string>> tests{
+        {
+            "x = (y + 5) * 3;",
+            "(((y) + (5)) * (3))",
+        },
+        {
+            "xx = 1 + (2 + 3) + 4;",
+            "(((1) + ((2) + (3))) + (4))",
+        },
+        {
+            "yy = 2/(5+    5);",
+            "((2) / ((5) + (5)))",
+        },
+        {
+            "zz = 1;",
+            "(1)",
+        },
+        {
+            "aa = (1+(2));",
+            "((1) + (2))",
+        },
+        {
+            "bb = (b);",
+            "(b)",
+        },
+        {
+            "cc = (1) + ((2) + (3)) + (4);",
+            "(((1) + ((2) + (3))) + (4))",
+        },
+        {
+            "x = v + x * y + z * t;",
+            "(((v) + ((x) * (y))) + ((z) * (t)))",
+        },
+    };
+
+    for (int i = 0; i < tests.size(); ++i) {
+        std::string input = std::get<0>(tests[i]);
+        std::string expected = std::get<1>(tests[i]);
+
+        /** begin ritual to Summon Parser **/
+        std::vector<sp::Token> actual_tok;
+        std::vector<sp::Token*> tok_ptrs;
+        ParserUtils::StringToTokenPtrs(input, actual_tok, tok_ptrs);
+        auto l = new LexerStub(tok_ptrs);
+        auto p = Parser(l);
+        /** Parser now ready for use      **/
+
+        try {
+            //ast::Stmt* stmt = p.parseStmt();
+            ast::AssignStmt* ass = p.parseAssignStmt();
+            REQUIRE(ass->getCachedExprString() == expected);
+        }
+        catch (sp::ParserException &ex) {
+            INFO(ex.what());
+            REQUIRE(false);
+        }
+    }
+}
