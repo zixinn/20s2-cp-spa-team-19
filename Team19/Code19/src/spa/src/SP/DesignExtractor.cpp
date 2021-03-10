@@ -92,6 +92,8 @@ void DesignExtractor::exitWhile() {
 
 void DesignExtractor::storeNewIf(StmtNum startStmtNum, vector<STRING> condVarNames, vector<STRING> condConsts, IfStmt* AST) {
     // Store the conditional variables into PKB and receive the PKB-assigned ID
+    cerr << "startStmtNum is " << startStmtNum;
+
     for (STRING varName : condVarNames) {
         ID varID = PKB::varTable->storeVarName(varName);
          PKB::uses->storeStmtUses(startStmtNum, varID);
@@ -112,8 +114,10 @@ void DesignExtractor::storeNewIf(StmtNum startStmtNum, vector<STRING> condVarNam
     currentParent = startStmtNum;
 
     currentNext.push_back(set<ProgLine>{ startStmtNum });
+    currentNext.push_back(set<ProgLine>{ });
     // For the Else portion of the statement later.
     currentNext.push_back(set<ProgLine>{ startStmtNum });
+
     saveCurrentState();
     createNewCurrentState(startStmtNum); // current If stmt is not part of the new stmtLst
     // This is to account for the Next relationship from the If to its first Then nested statement
@@ -132,6 +136,13 @@ void DesignExtractor::storeNewElse() {
 
     vector<set<ProgLine>> storedNextEntries = DEStack<vector<set<ProgLine>>>::stackPop(nextStack);
     currentNext =  vector<set<ProgLine>>{ storedNextEntries.back() };
+//    cerr << "lastThenStmt is ";
+//    for (int e: lastThenStmt)
+//        cerr << e;
+//
+//    cerr << "currentNext is " ;
+//    for (int e: currentNext.back())
+//        cerr << e;
     storedNextEntries.pop_back();
 
     // To store the ProgLine of the branching Then
@@ -143,10 +154,17 @@ void DesignExtractor::endIfElse() {
     // Called when exiting an if-else statement.
     storeCurrentStmtLstRelationships(); // Store If stmt's stmtLst's relationships
     set<ProgLine> lastElseStmt = currentNext.back();
+//    cerr << "lastElseStmt is " ;
+//    for (int e: lastElseStmt)
+//        cerr << e;
+
     popSavedState();                    // Reset to previous local state variables
 
     // Add the ProgLine of the branching Else to the ProgLine of the branching Then
-    currentNext.back().insert(*lastElseStmt.rbegin());
+//    currentNext.back().insert(*lastElseStmt.rbegin());
+    for (int e: lastElseStmt) {
+        currentNext.back().insert(e);   // add to the previous currentNext
+    }
 }
 
 void DesignExtractor::storeNewAssignment(StmtNum stmtNum, STRING variableName, AssignStmt* AST) {
