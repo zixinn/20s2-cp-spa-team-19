@@ -1,8 +1,18 @@
 #pragma once
 #include <unordered_map>
 #include <unordered_set>
+#include <iostream>
 #include "SP/Token.h"
 #include "SP/Lexer.h"
+#include "SP/ParserException.h"
+#include "AST/Program.h"
+#include "AST/Proc.h"
+#include "AST/ProcName.h"
+#include "AST/Stmt.h"
+#include "AST/StmtLst.h"
+#include "AST/IfStmt.h"
+#include "AST/WhileStmt.h"
+#include "AST/CallStmt.h"
 
 // function pointers for ExprParsing
 namespace ParserUtils {
@@ -106,4 +116,16 @@ namespace ParserUtils {
 	};
 
 	const bool isCondExprOps(sp::Token::TokenType tok_type);
+
+	// does not check for call to procedures that do not exist, for that use hasUndefCall
+	const bool isASTCyclic(ast::Program* prog, std::unordered_set<std::string>& path);
+	const void throwIfCyclic(ast::Program* prog);
+	const bool cyclicDfs(std::string proc, std::unordered_set<std::string>& visited, std::unordered_map<std::string, std::vector<string>>& adjL, std::unordered_set<std::string>& rec_stack);
+	const void getCallsInProc(std::vector<ast::Stmt*>, std::vector<std::string>&);
+
+	const void throwIfUndefCall(ast::Program* prog);
+	const bool hasUndefCall(ast::Program* prog, std::unordered_set<std::string>& undef_calls);
+	const void hasUndefCall_helper(std::vector<ast::Stmt*> stmts, std::unordered_set<std::string>& def_proc, std::unordered_set<std::string>& undef_call);
+
+	const std::string setToString(std::unordered_set<std::string>& path);
 }
