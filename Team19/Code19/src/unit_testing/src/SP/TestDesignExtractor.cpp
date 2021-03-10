@@ -710,7 +710,7 @@ TEST_CASE("[ONE NESTED IF] storeNewIf and storeNewElse and endIfElse Test") {
     REQUIRE(PKB::modifies->getStmtsModifies(varID7) == unordered_set<ID>{ 2, 4, 7, 8 });
 
     // Check Next
-    // Tests DE's ability to extract Next for nested if statements with no explicit 'end' point in the CFG
+    // Tests DE's ability to extract Next for nested if statements with no explicit 'end' point in the CFG for outer if
     REQUIRE(PKB::next->getNext(1) == unordered_set<ProgLine>{ 2 });
     REQUIRE(PKB::next->getNext(2) == unordered_set<ProgLine>{ 3, 4 });
     REQUIRE(PKB::next->getNext(3) == unordered_set<ProgLine>{ 8 });

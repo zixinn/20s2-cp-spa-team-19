@@ -70,6 +70,12 @@ void DesignExtractor::storeNewWhile(StmtNum startStmtNum, vector<STRING> condVar
     if (!PKB::stmtTable->storeStmt(startStmtNum, AST, WHILE_)) {
         std::cerr << "DE encountered an error when attempting to store statement " << startStmtNum << " in PKB.\n";
     }
+    
+//    // Store pattern information
+//    if (!PKB::stmtTable->storeWhilePattern(startStmtNum, )) {
+//        std::cerr << "DE encountered an error when attempting to store statement " << startStmtNum << " in PKB.\n";
+//    }
+
     // DE Internal Bookkeeping
     currentStmtLst.push_back(startStmtNum);
     // Prepare for the while loop's stmtLst
@@ -92,8 +98,6 @@ void DesignExtractor::exitWhile() {
 
 void DesignExtractor::storeNewIf(StmtNum startStmtNum, vector<STRING> condVarNames, vector<STRING> condConsts, IfStmt* AST) {
     // Store the conditional variables into PKB and receive the PKB-assigned ID
-    cerr << "startStmtNum is " << startStmtNum;
-
     for (STRING varName : condVarNames) {
         ID varID = PKB::varTable->storeVarName(varName);
          PKB::uses->storeStmtUses(startStmtNum, varID);
@@ -136,13 +140,6 @@ void DesignExtractor::storeNewElse() {
 
     vector<set<ProgLine>> storedNextEntries = DEStack<vector<set<ProgLine>>>::stackPop(nextStack);
     currentNext =  vector<set<ProgLine>>{ storedNextEntries.back() };
-//    cerr << "lastThenStmt is ";
-//    for (int e: lastThenStmt)
-//        cerr << e;
-//
-//    cerr << "currentNext is " ;
-//    for (int e: currentNext.back())
-//        cerr << e;
     storedNextEntries.pop_back();
 
     // To store the ProgLine of the branching Then
