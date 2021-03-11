@@ -171,16 +171,25 @@ TEST_CASE("process query with select BOOLEAN") {
     Query expected = Query(declarations, {}, {}, true, false);
     REQUIRE(actual == expected);
 
+    query = "assign a; stmt BOOLEAN;\n Select <BOOLEAN, a> such that Affects (a, 11)";
+    actual = qp.process(query);
+    Clause c = Clause("Affects", {"a", "11"});
+    unordered_map<string, string> declarations1;
+    declarations1["a"] = "assign";
+    declarations1["BOOLEAN"] = "stmt";
+    expected = Query(declarations1, {"BOOLEAN", "a"}, { c }, true, true);
+    REQUIRE(actual == expected);
+
     query = "assign BOOLEAN;\n Select BOOLEAN such that Affects (BOOLEAN, 11)";
     actual = qp.process(query);
-    unordered_map<string, string> declarations1;
-    declarations1["BOOLEAN"] = "assign";
-    expected = Query(declarations1, {"BOOLEAN"}, {}, true, false);
+    unordered_map<string, string> declarations2;
+    declarations2["BOOLEAN"] = "assign";
+    expected = Query(declarations2, {"BOOLEAN"}, {}, true, false);
     REQUIRE(actual == expected);
 
     query = "Select BOOLEAN such that Next* (2, 9)";
     actual = qp.process(query);
-    Clause c = Clause("Next*", {"2", "9"});
+    c = Clause("Next*", {"2", "9"});
     expected = Query({}, {"BOOLEAN"}, { c }, true, true);
     REQUIRE(actual == expected);
 }
@@ -399,5 +408,80 @@ TEST_CASE("process valid query with and in clause") {
     declarations1["a1"] = "assign";
     declarations1["w"] = "while";
     expected = Query(declarations1, {"a"}, { c1, c2, c3 }, true, true);
+    REQUIRE(actual == expected);
+}
+
+TEST_CASE("process query with invalid with clause") {
+    QueryPreprocessor qp = QueryPreprocessor();
+    string query = "stmt s; variable v;\nSelect s with s.stmt# = v.varName";
+    Query actual = qp.process(query);
+    unordered_map<string, string> declarations;
+    declarations["s"] = "stmt";
+    declarations["v"] = "variable";
+    Query expected = Query(declarations, {"s"}, {}, false, true);
+    REQUIRE(actual == expected);
+
+    query = "assign a; constant c;\nSelect c with a = c.value";
+    actual = qp.process(query);
+    unordered_map<string, string> declarations1;
+    declarations1["a"] = "assign";
+    declarations1["c"] = "constant";
+    expected = Query(declarations1, {"c"}, {}, false, true);
+    REQUIRE(actual == expected);
+
+    query = "variable v;\nSelect v with v.procName = \"abc\"";
+    actual = qp.process(query);
+    unordered_map<string, string> declarations2;
+    declarations2["v"] = "variable";
+    expected = Query(declarations2, {"v.procName"}, {}, true, false);
+    REQUIRE(actual.getIsSyntacticallyValid() == expected.getIsSyntacticallyValid());
+    REQUIRE(actual.getIsSemanticallyValid() == expected.getIsSemanticallyValid());
+}
+
+TEST_CASE("process valid query with with clause") {
+    QueryPreprocessor qp = QueryPreprocessor();
+    string query = "stmt s; constant c;\nSelect s with s.stmt# = c.value";
+    Query actual = qp.process(query);
+    Clause c1 = Clause("", { "s.stmt#", "c.value" });
+    unordered_map<string, string> declarations;
+    declarations["s"] = "stmt";
+    declarations["c"] = "constant";
+    Query expected = Query(declarations, {"s"}, { c1 }, true, true);
+    REQUIRE(actual == expected);
+
+    query = "procedure p, q;\nSelect p such that Calls (p, q) with q.procName = \"Third\" such that Modifies (p, \"i\")";
+    actual = qp.process(query);
+    c1 = Clause("Calls", { "p", "q" });
+    Clause c2 = Clause("", { "q.procName", "\"Third\"" });
+    Clause c3 = Clause("Modifies", { "p", "\"i\"" });
+    unordered_map<string, string> declarations1;
+    declarations1["p"] = "procedure";
+    declarations1["q"] = "procedure";
+    expected = Query(declarations1, {"p"}, { c1, c2, c3 }, true, true);
+    REQUIRE(actual == expected);
+
+    query = "stmt s, s1; prog_line n;\nSelect s.stmt# such that Follows* (s, s1) with s1 . stmt#=n and 10=n";
+    actual = qp.process(query);
+    c1 = Clause("Follows*", { "s", "s1" });
+    c2 = Clause("", { "s1.stmt#", "n" });
+    c3 = Clause("", { "10", "n" });
+    unordered_map<string, string> declarations2;
+    declarations2["s"] = "stmt";
+    declarations2["s1"] = "stmt";
+    declarations2["n"] = "prog_line";
+    expected = Query(declarations2, {"s.stmt#"}, { c1, c2, c3 }, true, true);
+    REQUIRE(actual == expected);
+
+    query = "assign a; while w; prog_line n;\nSelect a such that Parent* (w, a) and Next* (60, n) pattern a(\"x\", _) with a.stmt# = n";
+    actual = qp.process(query);
+    c1 = Clause("Parent*", { "w", "a" });
+    c2 = Clause("Next*", { "60", "n" });
+    c3 = Clause("a", { "\"x\"", "_" });
+    Clause c4 = Clause("", { "a.stmt#", "n" });
+    unordered_map<string, string> declarations3;
+    declarations3["a"] = "assign";
+    declarations3["w"] = "while";
+    declarations3["n"] = "prog_line";
+    expected = Query(declarations3, {"a"}, { c1, c2, c3, c4 }, true, true);
     REQUIRE(actual == expected);
 }

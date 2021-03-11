@@ -46,4 +46,9 @@ private:
     void parsePatternClauses(string clauses);
     void parsePatternClause(string clause);
     void checkPatternClause(string syn, vector<string> args);
+
+    void parseWithClauses(string clauses);
+    void parseWithClause(string clause);
+    void checkWithClause(string left, string right);
+    string checkRef(string& ref);
 };

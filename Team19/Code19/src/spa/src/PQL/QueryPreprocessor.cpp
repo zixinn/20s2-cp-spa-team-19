@@ -113,7 +113,8 @@ bool QueryPreprocessor::checkDesignEntity(string designEntity) {
 void QueryPreprocessor::parseSelect(string select) {
     int suchThatPos = select.find(" such that ");
     int patternPos = select.find(" pattern ");
-    int nextPos = getNextPos(vector<int>{suchThatPos, patternPos});
+    int withPos = select.find(" with ");
+    int nextPos = getNextPos(vector<int>{suchThatPos, patternPos, withPos});
     int minPos = nextPos;
 
     if (nextPos == -1) {
@@ -123,12 +124,16 @@ void QueryPreprocessor::parseSelect(string select) {
         while (this->isSyntacticallyValid && nextPos != -1) {
             if (minPos == suchThatPos) {
                 suchThatPos = select.find(" such that ", suchThatPos + 1);
-                nextPos = getNextPos(vector<int>{suchThatPos, patternPos});
+                nextPos = getNextPos(vector<int>{suchThatPos, patternPos, withPos});
                 parseSuchThatClauses(trim(select.substr(minPos + 11, nextPos - minPos - 11)));
             } else if (minPos == patternPos) {
                 patternPos = select.find(" pattern ", patternPos + 1);
-                nextPos = getNextPos(vector<int>{suchThatPos, patternPos});
+                nextPos = getNextPos(vector<int>{suchThatPos, patternPos, withPos});
                 parsePatternClauses(trim(select.substr(minPos + 9, nextPos - minPos - 9)));
+            } else if (minPos == withPos) {
+                withPos = select.find(" with ", withPos + 1);
+                nextPos = getNextPos(vector<int>{suchThatPos, patternPos, withPos});
+                parseWithClauses(trim(select.substr(minPos + 6, nextPos - minPos - 6)));
             }
             minPos = nextPos;
         }
@@ -338,6 +343,76 @@ void QueryPreprocessor::checkPatternClause(string syn, vector<string> args) {
     if (this->isSyntacticallyValid && this->isSemanticallyValid) {
         this->clauses.push_back(Clause(syn, args));
     }
+}
+
+void QueryPreprocessor::parseWithClauses(string clauses) {
+    int andPos = -5;
+    int nextPos = clauses.find(" and ");
+
+    while (this->isSyntacticallyValid && nextPos != -1) {
+        parseWithClause(trim(clauses.substr(andPos + 5, nextPos - andPos - 5)));
+        andPos = nextPos;
+        nextPos = clauses.find(" and ", nextPos + 1);
+    }
+
+    if (this->isSyntacticallyValid) {
+        parseWithClause(trim(clauses.substr(andPos + 5, clauses.length() - andPos - 5)));
+    }
+}
+
+void QueryPreprocessor::parseWithClause(string clause) {
+    int pos = clause.find('=');
+    if (pos == string::npos) {
+        this->isSyntacticallyValid = false;
+    } else {
+        string left = trim(clause.substr(0, pos));
+        string right = trim(clause.substr(pos + 1));
+        checkWithClause(left, right);
+    }
+}
+
+void QueryPreprocessor::checkWithClause(string left, string right) {
+    string leftType = checkRef(left);
+    string rightType = checkRef(right);
+    if (leftType != rightType) {
+        this->isSyntacticallyValid = false;
+    }
+
+    if (this->isSyntacticallyValid && this->isSemanticallyValid) {
+        this->clauses.push_back(Clause("", {left, right}));
+    }
+}
+
+string QueryPreprocessor::checkRef(string &ref) {
+    string type;
+    int pos = ref.find('.');
+    if (pos == string::npos) { // NAME_ | INTEGER_ | PROGLINE_
+        string argType = getArgType(ref, this->declarations);
+        if (argType == NAME_) {
+            type = NAME_;
+        } else if (argType == INTEGER_ || argType == PROGLINE_) {
+            type = INTEGER_;
+        } else {
+            this->isSyntacticallyValid = false;
+            return type;
+        }
+    } else { // attrRef
+        string synonym = trim(ref.substr(0, pos));
+        string attrName = trim(ref.substr(pos + 1));
+        checkAttrRef(synonym, attrName);
+        if (!this->isSyntacticallyValid) {
+            return type;
+        }
+        if (this->isSyntacticallyValid) {
+            if (attrName == "value" || attrName == "stmt#") {
+                type = INTEGER_;
+            } else {
+                type = NAME_;
+            }
+        }
+        ref = synonym.append(".").append(attrName);
+    }
+    return type;
 }
 
 QueryPreprocessor::~QueryPreprocessor() {
