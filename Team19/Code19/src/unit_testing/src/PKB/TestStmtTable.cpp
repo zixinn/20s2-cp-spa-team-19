@@ -28,6 +28,7 @@ StmtTable* setupStmtTestTable() {
 StmtTable* setUpIfWhileTests() {
     StmtTable* stmtTable = new StmtTable();
     stmtTable->storeIfPattern(1, 1);
+    stmtTable->storeIfPattern(1, 2);
     stmtTable->storeIfPattern(2, 1);
     stmtTable->storeWhilePattern(3, 2);
     stmtTable->storeIfPattern(6, 4);
@@ -38,6 +39,7 @@ StmtTable* setUpIfWhileTests() {
     stmtTable->storeWhilePattern(17, 8);
     stmtTable->storeIfPattern(20, 10);
     stmtTable->storeIfPattern(22, 12);
+    stmtTable->storeIfPattern(22, 13);
     stmtTable->storeWhilePattern(25, 14);
     return stmtTable;
 }
@@ -74,6 +76,9 @@ TEST_CASE("storeAssignExpr Test") {
 TEST_CASE("storeIfPattern and storeWhilePattern Test") {
     StmtTable* stmtTable = new StmtTable();
     REQUIRE(stmtTable->storeIfPattern(1, 1));
+    REQUIRE_FALSE(stmtTable->storeIfPattern(1,1));
+    REQUIRE(stmtTable->storeIfPattern(1,2));
+    REQUIRE_FALSE(stmtTable->storeIfPattern(1,3));
     REQUIRE(stmtTable->storeIfPattern(2, 1));
     REQUIRE_FALSE(stmtTable->storeIfPattern(1,5));
     REQUIRE(stmtTable->storeWhilePattern(3, 1));
@@ -93,7 +98,7 @@ TEST_CASE("getSize Test [StmtTable]") {
 
 TEST_CASE("getIfPatternsSize Test") {
     StmtTable* stmtTable = setUpIfWhileTests();
-    REQUIRE(stmtTable->getIfPatternsSize() == 7);
+    REQUIRE(stmtTable->getIfPatternsSize() == 9);
 }
 
 TEST_CASE("getWhilePatternsSize Test") {
@@ -190,21 +195,21 @@ TEST_CASE("getWhileStmtsWithControlVar Test") {
     REQUIRE(stmtTable->getWhileStmtsWithControlVar(5).empty());
 }
 
-TEST_CASE("getControlVarOfIfStmt Test") {
+TEST_CASE("getControlVarsOfIfStmt Test") {
     StmtTable* stmtTable = setUpIfWhileTests();
-    REQUIRE(stmtTable->getControlVarOfIfStmt(1) == 1);
-    REQUIRE(stmtTable->getControlVarOfIfStmt(2) == 1);
-    REQUIRE(stmtTable->getControlVarOfIfStmt(3) == -1);
-    REQUIRE(stmtTable->getControlVarOfIfStmt(6) == 4);
-    REQUIRE(stmtTable->getControlVarOfIfStmt(9) == -1);
-    REQUIRE(stmtTable->getControlVarOfIfStmt(10) == 3);
-    REQUIRE(stmtTable->getControlVarOfIfStmt(13) == 7);
-    REQUIRE(stmtTable->getControlVarOfIfStmt(16) == -1);
-    REQUIRE(stmtTable->getControlVarOfIfStmt(17) == -1);
-    REQUIRE(stmtTable->getControlVarOfIfStmt(20) == 10);
-    REQUIRE(stmtTable->getControlVarOfIfStmt(22) == 12);
-    REQUIRE(stmtTable->getControlVarOfIfStmt(25) == -1);
-    REQUIRE(stmtTable->getControlVarOfIfStmt(30) == -1);
+    REQUIRE(stmtTable->getControlVarsOfIfStmt(1) == unordered_set<ID>({1,2}));
+    REQUIRE(stmtTable->getControlVarsOfIfStmt(2) == unordered_set<ID>({1}));
+    REQUIRE(stmtTable->getControlVarsOfIfStmt(3).empty());
+    REQUIRE(stmtTable->getControlVarsOfIfStmt(6) == unordered_set<ID>({4}));
+    REQUIRE(stmtTable->getControlVarsOfIfStmt(9).empty());
+    REQUIRE(stmtTable->getControlVarsOfIfStmt(10) == unordered_set<ID>({3}));
+    REQUIRE(stmtTable->getControlVarsOfIfStmt(13) == unordered_set<ID>({7}));
+    REQUIRE(stmtTable->getControlVarsOfIfStmt(16).empty());
+    REQUIRE(stmtTable->getControlVarsOfIfStmt(17).empty());
+    REQUIRE(stmtTable->getControlVarsOfIfStmt(20) == unordered_set<ID>({10}));
+    REQUIRE(stmtTable->getControlVarsOfIfStmt(22) == unordered_set<ID>({12,13}));
+    REQUIRE(stmtTable->getControlVarsOfIfStmt(25).empty());
+    REQUIRE(stmtTable->getControlVarsOfIfStmt(30).empty());
 }
 
 TEST_CASE("getControlVarOfWhileStmt Test") {
@@ -227,6 +232,7 @@ TEST_CASE("getControlVarOfWhileStmt Test") {
 TEST_CASE("isIfStmtWithControlVar Test") {
     StmtTable* stmtTable = setUpIfWhileTests();
     REQUIRE(stmtTable->isIfStmtWithControlVar(1,1));
+    REQUIRE(stmtTable->isIfStmtWithControlVar(1,2));
     REQUIRE(stmtTable->isIfStmtWithControlVar(2,1));
     REQUIRE_FALSE(stmtTable->isIfStmtWithControlVar(3,2));
     REQUIRE(stmtTable->isIfStmtWithControlVar(6,4));
@@ -237,6 +243,7 @@ TEST_CASE("isIfStmtWithControlVar Test") {
     REQUIRE_FALSE(stmtTable->isIfStmtWithControlVar(17,8));
     REQUIRE(stmtTable->isIfStmtWithControlVar(20,10));
     REQUIRE(stmtTable->isIfStmtWithControlVar(22,12));
+    REQUIRE(stmtTable->isIfStmtWithControlVar(22,13));
     REQUIRE_FALSE(stmtTable->isIfStmtWithControlVar(25,14));
 }
 

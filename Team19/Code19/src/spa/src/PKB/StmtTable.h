@@ -9,10 +9,10 @@ public:
     // Constructor for StmtTable
     StmtTable();
 
-    // Returns true if stmtNum is an If stmt and that it has a control variable
+    // Returns true if stmtNum is an If stmt and that it has that control variable
     bool isIfStmtWithControlVar(StmtNum stmtNum, ID controlVarID);
 
-    // Returns true if stmtNum is an While stmt and that it has a control variable
+    // Returns true if stmtNum is an While stmt and that it has that control variable
     bool isWhileStmtWithControlVar(StmtNum stmtNum, ID controlVarID);
 
     // Returns the statement node given the stmtNum. Throws error if statement is not in statement table.
@@ -22,8 +22,9 @@ public:
     unordered_set<StmtNum> const &getIfStmtsWithControlVar(ID controlVarID) const;
     unordered_set<StmtNum> const &getWhileStmtsWithControlVar(ID controlVarID) const;
 
-    // Returns the control variable given the statement number. Returns -1 if the statement number given is not an if(while) statement / does not use a control variable.
-    ID getControlVarOfIfStmt(StmtNum stmtNum);
+    // Returns the control variable(s) given the statement number. Returns an empty set if the statement number given is not an if statement / does not use a control variable.
+    unordered_set<ID> const &getControlVarsOfIfStmt(StmtNum stmtNum) const;
+    // Returns the control variable given the statement number. Returns -1 if the statement number given is not an while statement / does not use a control variable.
     ID getControlVarOfWhileStmt(StmtNum stmtNum);
 
     // Returns a pair of vectors in the ifPatternsMap / whilePatternsMap.
@@ -48,6 +49,7 @@ public:
     int getSize();
 
     // Returns the number of entries in ifPatternsMap
+    // E.g. if the ifPatternsMap has [1: {2,3}], then the size is 2. Because there are pairs (1,2) and (1,3).
     int getIfPatternsSize();
 
     // Returns the number of entries in whilePatternsMap
@@ -77,10 +79,12 @@ private:
     unordered_map<StmtNum, ast::Stmt*> stmtASTMap;
 
     // A map that stores the statement number as key and pair<lhs, rhs> of assignment statement as value
-    unordered_map<StmtNum, pair<STRING, STRING>> assignExprMap;
+    unordered_map<StmtNum, pair<STRING, STRING> > assignExprMap;
+
+    // Stores StmtNum as key, and the set of control variable as value
+    unordered_map<StmtNum, unordered_set<ID> > ifPatternsMap;
 
     // Stores StmtNum as key, and the control variable as value
-    unordered_map<StmtNum, ID> ifPatternsMap;
     unordered_map<StmtNum, ID> whilePatternsMap;
 
     // Stores control variable as key, and a set of stmtNum as value
