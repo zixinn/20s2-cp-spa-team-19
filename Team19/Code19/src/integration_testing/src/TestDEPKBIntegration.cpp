@@ -302,6 +302,10 @@ TEST_CASE("[SIMPLE, no nested while/if] storeNewWhile and exitWhile Test") {
     REQUIRE(varID3 == 4);
     REQUIRE(PKB::varTable->getVarName(varID3) == "shine");
 
+    // Check pattern storage
+    REQUIRE(PKB::stmtTable->getWhileStmtsWithControlVar(condVarId) == unordered_set<StmtNum>{ 1 });
+    REQUIRE(PKB::stmtTable->getWhileStmtsWithControlVar(condVarId2) == unordered_set<StmtNum>{ 1 });
+
     // Check consts used in conditional
     REQUIRE(PKB::constTable->hasConst("5") == true);
     REQUIRE(PKB::constTable->getConstValue("5") == 5);
@@ -406,6 +410,12 @@ TEST_CASE("[ONE NESTED WHILE] storeNewWhile and exitWhile Test") {
     REQUIRE(varID3 == 6);   // due to cond variables in nested While loop
     REQUIRE(PKB::varTable->getVarName(varID3) == "shine");
 
+    // Check pattern storage
+    REQUIRE(PKB::stmtTable->getWhileStmtsWithControlVar(condVarId) == unordered_set<StmtNum>{ 1 });
+    REQUIRE(PKB::stmtTable->getWhileStmtsWithControlVar(condVarId2) == unordered_set<StmtNum>{ 1 });
+    REQUIRE(PKB::stmtTable->getWhileStmtsWithControlVar(condVarId3) == unordered_set<StmtNum>{ 3 });
+    REQUIRE(PKB::stmtTable->getWhileStmtsWithControlVar(condVarId4) == unordered_set<StmtNum>{ 3 });
+
     // Check consts used in conditional
     REQUIRE(PKB::constTable->hasConst("5") == true);
     REQUIRE(PKB::constTable->getConstValue("5") == 5);
@@ -489,6 +499,7 @@ TEST_CASE("[SIMPLE, no nested if/while] storeNewIf and storeNewElse and endIfEls
     DesignExtractor::storeNewRead(4, "shine", createRead("shine"));
     DesignExtractor::endIfElse();
     DesignExtractor::exitProcedure();
+    REQUIRE(DesignExtractor::signalEnd() == true);
 
     // Check StmtLst
     REQUIRE(PKB::stmtLstTable->hasStmtLst(1) == true);  // Procedure's stmtLst
@@ -519,6 +530,10 @@ TEST_CASE("[SIMPLE, no nested if/while] storeNewIf and storeNewElse and endIfEls
     REQUIRE(varID4 == 5);
     REQUIRE(PKB::varTable->getVarName(varID4) == "shine");
 
+    // Check pattern storage
+    REQUIRE(PKB::stmtTable->getIfStmtsWithControlVar(condVarId) == unordered_set<StmtNum>{ 2 });
+    REQUIRE(PKB::stmtTable->getIfStmtsWithControlVar(condVarId2) == unordered_set<StmtNum>{ 2 });
+
     // Check consts used in conditional
     REQUIRE(PKB::constTable->hasConst("5") == true);
     REQUIRE(PKB::constTable->getConstValue("5") == 5);
@@ -547,6 +562,17 @@ TEST_CASE("[SIMPLE, no nested if/while] storeNewIf and storeNewElse and endIfEls
     REQUIRE(PKB::modifies->getStmtsModifies(varID) == unordered_set<ID>{ 1 });
     REQUIRE(PKB::modifies->getStmtsModifies(varID3) == unordered_set<ID>{ 2, 3 }); // as 2 is a container stmt
     REQUIRE(PKB::modifies->getStmtsModifies(varID4) == unordered_set<ID>{ 2, 4 }); // as 2 is a container stmt
+
+    // Check Next
+    REQUIRE(PKB::next->getNext(1) == unordered_set<ProgLine>{ 2 });
+    REQUIRE(PKB::next->getNext(2) == unordered_set<ProgLine>{ 3, 4 });
+    REQUIRE(PKB::next->getNext(3) == unordered_set<ProgLine>{ });
+    REQUIRE(PKB::next->getNext(4) == unordered_set<ProgLine>{ });
+    // Check Next*
+    REQUIRE(PKB::next->getNextStar(1) == unordered_set<ProgLine>{ 2, 3, 4 });
+    REQUIRE(PKB::next->getNextStar(2) == unordered_set<ProgLine>{ 3, 4 });
+    REQUIRE(PKB::next->getNextStar(3) == unordered_set<ProgLine>{ });
+    REQUIRE(PKB::next->getNextStar(4) == unordered_set<ProgLine>{ });
 }
 
 TEST_CASE("[ONE NESTED IF] storeNewIf and storeNewElse and endIfElse Test") {
@@ -629,6 +655,7 @@ TEST_CASE("[ONE NESTED IF] storeNewIf and storeNewElse and endIfElse Test") {
     DesignExtractor::endIfElse();
     DesignExtractor::endIfElse();
     DesignExtractor::exitProcedure();
+    REQUIRE(DesignExtractor::signalEnd() == true);
 
     // Check StmtLst
     REQUIRE(PKB::stmtLstTable->hasStmtLst(1) == true);  // Procedure's stmtLst
@@ -679,6 +706,12 @@ TEST_CASE("[ONE NESTED IF] storeNewIf and storeNewElse and endIfElse Test") {
     REQUIRE(varID7 == 10);
     REQUIRE(PKB::varTable->getVarName(varID7) == "droning");
 
+    // Check pattern storage
+    REQUIRE(PKB::stmtTable->getIfStmtsWithControlVar(condVarId) == unordered_set<StmtNum>{ 2 });
+    REQUIRE(PKB::stmtTable->getIfStmtsWithControlVar(condVarId2) == unordered_set<StmtNum>{ 2 });
+    REQUIRE(PKB::stmtTable->getIfStmtsWithControlVar(condVarId3) == unordered_set<StmtNum>{ 4 });
+    REQUIRE(PKB::stmtTable->getIfStmtsWithControlVar(condVarId4) == unordered_set<StmtNum>{ 4 });
+
     // Check consts used in conditional
     REQUIRE(PKB::constTable->hasConst("5") == true);
     REQUIRE(PKB::constTable->getConstValue("5") == 5);
@@ -725,6 +758,23 @@ TEST_CASE("[ONE NESTED IF] storeNewIf and storeNewElse and endIfElse Test") {
     REQUIRE(PKB::modifies->getStmtsModifies(varID4) == unordered_set<ID>{ 2, 4, 5 }); // 2, 4 is container stmt
     REQUIRE(PKB::modifies->getStmtsModifies(varID6) == unordered_set<ID>{ 2, 4, 6 });
     REQUIRE(PKB::modifies->getStmtsModifies(varID7) == unordered_set<ID>{ 2, 4, 7 });
+
+    // Check Next
+    REQUIRE(PKB::next->getNext(1) == unordered_set<ProgLine>{ 2 });
+    REQUIRE(PKB::next->getNext(2) == unordered_set<ProgLine>{ 3, 4 });
+    REQUIRE(PKB::next->getNext(3) == unordered_set<ProgLine>{ });
+    REQUIRE(PKB::next->getNext(4) == unordered_set<ProgLine>{ 5, 6 });
+    REQUIRE(PKB::next->getNext(5) == unordered_set<ProgLine>{ });
+    REQUIRE(PKB::next->getNext(6) == unordered_set<ProgLine>{ 7 });
+    REQUIRE(PKB::next->getNext(7) == unordered_set<ProgLine>{ });
+    // Check Next*
+    REQUIRE(PKB::next->getNextStar(1) == unordered_set<ProgLine>{ 2, 3, 4, 5, 6, 7 });
+    REQUIRE(PKB::next->getNextStar(2) == unordered_set<ProgLine>{ 3, 4, 5, 6, 7 });
+    REQUIRE(PKB::next->getNextStar(3) == unordered_set<ProgLine>{ });
+    REQUIRE(PKB::next->getNextStar(4) == unordered_set<ProgLine>{ 5, 6, 7 });
+    REQUIRE(PKB::next->getNextStar(5) == unordered_set<ProgLine>{ });
+    REQUIRE(PKB::next->getNextStar(6) == unordered_set<ProgLine>{ 7 });
+    REQUIRE(PKB::next->getNextStar(7) == unordered_set<ProgLine>{ });
 }
 
 TEST_CASE("[WHILE-IF NESTING] storeNewWhile & storeNewIf Interaction Test") {
@@ -857,6 +907,12 @@ TEST_CASE("[WHILE-IF NESTING] storeNewWhile & storeNewIf Interaction Test") {
     REQUIRE(varID7 == 10);
     REQUIRE(PKB::varTable->getVarName(varID7) == "droning");
 
+    // Check pattern storage
+    REQUIRE(PKB::stmtTable->getIfStmtsWithControlVar(condVarId) == unordered_set<StmtNum>{ 2 });
+    REQUIRE(PKB::stmtTable->getIfStmtsWithControlVar(condVarId2) == unordered_set<StmtNum>{ 2 });
+    REQUIRE(PKB::stmtTable->getWhileStmtsWithControlVar(condVarId3) == unordered_set<StmtNum>{ 4 });
+    REQUIRE(PKB::stmtTable->getWhileStmtsWithControlVar(condVarId4) == unordered_set<StmtNum>{ 4 });
+
     // Check consts used in conditional
     REQUIRE(PKB::constTable->hasConst("5") == true);
     REQUIRE(PKB::constTable->getConstValue("5") == 5);
@@ -921,17 +977,11 @@ TEST_CASE("[WHILE-IF NESTING] storeNewWhile & storeNewIf Interaction Test") {
     REQUIRE(PKB::next->getNext(2) == unordered_set<ProgLine>{ 3, 4 });
     REQUIRE(PKB::next->getNext(3) == unordered_set<ProgLine>{ });
     REQUIRE(PKB::next->getNext(4) == unordered_set<ProgLine>{ 5 });
-    REQUIRE(PKB::next->getNext(5) == unordered_set<ProgLine>{ 6 });
-    REQUIRE(PKB::next->getNext(6) == unordered_set<ProgLine>{ 7 });
-    REQUIRE(PKB::next->getNext(7) == unordered_set<ProgLine>{ 4 });
     // Check Next*
     REQUIRE(PKB::next->getNextStar(1) == unordered_set<ProgLine>{ 2, 3, 4, 5, 6, 7 });
     REQUIRE(PKB::next->getNextStar(2) == unordered_set<ProgLine>{ 3, 4, 5, 6, 7 });
     REQUIRE(PKB::next->getNextStar(3) == unordered_set<ProgLine>{ });
     REQUIRE(PKB::next->getNextStar(4) == unordered_set<ProgLine>{ 4, 5, 6, 7 });
-    REQUIRE(PKB::next->getNextStar(5) == unordered_set<ProgLine>{ 4, 5, 6, 7 });
-    REQUIRE(PKB::next->getNextStar(6) == unordered_set<ProgLine>{ 4, 5, 6, 7 });
-    REQUIRE(PKB::next->getNextStar(7) == unordered_set<ProgLine>{ 4, 5, 6, 7 });
 }
 
 TEST_CASE("Multi-procedure test") {
@@ -1075,6 +1125,12 @@ TEST_CASE("Multi-procedure test") {
     ID varID7 = PKB::varTable->getVarID("droning");
     REQUIRE(varID7 == 10);
     REQUIRE(PKB::varTable->getVarName(varID7) == "droning");
+
+    // Check pattern storage
+    REQUIRE(PKB::stmtTable->getIfStmtsWithControlVar(condVarId) == unordered_set<StmtNum>{ 2 });
+    REQUIRE(PKB::stmtTable->getIfStmtsWithControlVar(condVarId2) == unordered_set<StmtNum>{ 2 });
+    REQUIRE(PKB::stmtTable->getWhileStmtsWithControlVar(condVarId3) == unordered_set<StmtNum>{ 4 });
+    REQUIRE(PKB::stmtTable->getWhileStmtsWithControlVar(condVarId4) == unordered_set<StmtNum>{ 4 });
 
     // Check consts used in conditional
     REQUIRE(PKB::constTable->hasConst("5") == true);
@@ -1303,6 +1359,12 @@ TEST_CASE("Multi-procedure test + calls") {
     REQUIRE(varID9 == 12);
     REQUIRE(PKB::varTable->getVarName(varID9) == "chalk");
 
+    // Check pattern storage
+    REQUIRE(PKB::stmtTable->getIfStmtsWithControlVar(condVarId) == unordered_set<StmtNum>{ 2 });
+    REQUIRE(PKB::stmtTable->getIfStmtsWithControlVar(condVarId2) == unordered_set<StmtNum>{ 2 });
+    REQUIRE(PKB::stmtTable->getWhileStmtsWithControlVar(condVarId3) == unordered_set<StmtNum>{ 4 });
+    REQUIRE(PKB::stmtTable->getWhileStmtsWithControlVar(condVarId4) == unordered_set<StmtNum>{ 4 });
+
     // Check consts used in conditional
     REQUIRE(PKB::constTable->hasConst("5") == true);
     REQUIRE(PKB::constTable->getConstValue("5") == 5);
@@ -1471,7 +1533,8 @@ TEST_CASE("Next/* Variants for If-Else and While Statements") {
     Parser p = Parser(l);
     ast::AssignStmt* assignment = p.parseAssignStmt();
 
-    STRING input = "if ((x == 5) || (y > 10)) then { } else { }";
+    // StmtLst inputs are just dummies, this is not the exact statement being tested
+    STRING input = "if ((x == 5) || (y > 10)) then { dummy =  1; } else { dummy =  1; }";
     std::vector<sp::Token> actual_tok;
     std::vector<sp::Token*> tok_ptrs;
     ParserUtils::StringToTokenPtrs(input, actual_tok, tok_ptrs);
@@ -1479,7 +1542,7 @@ TEST_CASE("Next/* Variants for If-Else and While Statements") {
     auto pif = Parser(lif);
     ast::IfStmt* ifStmt = pif.parseIfStmt();
 
-    STRING input2 = "while ((a != 33) || (z > 1)) { }";
+    STRING input2 = "while ((a != 33) || (z > 1)) { dummy =  1; }";
     std::vector<sp::Token> actual_tok2;
     std::vector<sp::Token*> tok_ptrs2;
     ParserUtils::StringToTokenPtrs(input2, actual_tok2, tok_ptrs2);
@@ -1487,7 +1550,6 @@ TEST_CASE("Next/* Variants for If-Else and While Statements") {
     auto pNestedWhile = Parser(lNestedWhile);
     ast::WhileStmt* whileStmt = pNestedWhile.parseWhileStmt();
     ast::WhileStmt* nestedWhileStmt = whileStmt;
-
 
     // Create call AST
     STRING input3 = "call abyssal;";

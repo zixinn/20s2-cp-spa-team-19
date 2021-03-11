@@ -508,7 +508,7 @@ TEST_CASE("[SIMPLE, no nested if/while] storeNewIf and storeNewElse and endIfEls
 
     // Check pattern storage
     REQUIRE(PKB::stmtTable->getIfStmtsWithControlVar(condVarId) == unordered_set<StmtNum>{ 2 });
-//    REQUIRE(PKB::stmtTable->getIfStmtsWithControlVar(condVarId2) == unordered_set<StmtNum>{ 2 });
+    REQUIRE(PKB::stmtTable->getIfStmtsWithControlVar(condVarId2) == unordered_set<StmtNum>{ 2 });
 
     ID varID3 = PKB::varTable->getVarID("slalom");  // Both Assignments' exprs are the same, so no new var added.
     REQUIRE(varID3 == 4);
@@ -665,6 +665,12 @@ TEST_CASE("[ONE NESTED IF] storeNewIf and storeNewElse and endIfElse Test") {
     ID varID7 = PKB::varTable->getVarID("droning");
     REQUIRE(varID7 == 10);
     REQUIRE(PKB::varTable->getVarName(varID7) == "droning");
+
+    // Check pattern storage
+    REQUIRE(PKB::stmtTable->getIfStmtsWithControlVar(condVarId) == unordered_set<StmtNum>{ 2 });
+    REQUIRE(PKB::stmtTable->getIfStmtsWithControlVar(condVarId2) == unordered_set<StmtNum>{ 2 });
+    REQUIRE(PKB::stmtTable->getIfStmtsWithControlVar(condVarId3) == unordered_set<StmtNum>{ 4 });
+    REQUIRE(PKB::stmtTable->getIfStmtsWithControlVar(condVarId4) == unordered_set<StmtNum>{ 4 });
 
     // Check consts used in conditional
     REQUIRE(PKB::constTable->hasConst("5") == true);
@@ -950,6 +956,12 @@ TEST_CASE("[WHILE-IF NESTING] storeNewWhile & storeNewIf Interaction Test") {
     REQUIRE(varID7 == 10);
     REQUIRE(PKB::varTable->getVarName(varID7) == "droning");
 
+    // Check pattern storage
+    REQUIRE(PKB::stmtTable->getIfStmtsWithControlVar(condVarId) == unordered_set<StmtNum>{ 2 });
+    REQUIRE(PKB::stmtTable->getIfStmtsWithControlVar(condVarId2) == unordered_set<StmtNum>{ 2 });
+    REQUIRE(PKB::stmtTable->getWhileStmtsWithControlVar(condVarId3) == unordered_set<StmtNum>{ 4 });
+    REQUIRE(PKB::stmtTable->getWhileStmtsWithControlVar(condVarId4) == unordered_set<StmtNum>{ 4 });
+
     // Check consts used in conditional
     REQUIRE(PKB::constTable->hasConst("5") == true);
     REQUIRE(PKB::constTable->getConstValue("5") == 5);
@@ -1128,6 +1140,12 @@ TEST_CASE("Multi-procedure test") {
     ID varID7 = PKB::varTable->getVarID("droning");
     REQUIRE(varID7 == 10);
     REQUIRE(PKB::varTable->getVarName(varID7) == "droning");
+
+    // Check pattern storage
+    REQUIRE(PKB::stmtTable->getIfStmtsWithControlVar(condVarId) == unordered_set<StmtNum>{ 2 });
+    REQUIRE(PKB::stmtTable->getIfStmtsWithControlVar(condVarId2) == unordered_set<StmtNum>{ 2 });
+    REQUIRE(PKB::stmtTable->getWhileStmtsWithControlVar(condVarId3) == unordered_set<StmtNum>{ 4 });
+    REQUIRE(PKB::stmtTable->getWhileStmtsWithControlVar(condVarId4) == unordered_set<StmtNum>{ 4 });
 
     // Check consts used in conditional
     REQUIRE(PKB::constTable->hasConst("5") == true);
