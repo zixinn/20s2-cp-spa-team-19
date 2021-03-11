@@ -15,7 +15,7 @@ bool StmtTable::isWhileStmtWithControlVar(StmtNum stmtNum, ID controlVarID) {
     if (whilePatternsMap.find(stmtNum) == whilePatternsMap.end()) {
         return false;
     }
-    return whilePatternsMap.find(stmtNum)->second == controlVarID;
+    return whilePatternsMap.find(stmtNum)->second.find(controlVarID) != whilePatternsMap.find(stmtNum)->second.end();
 }
 
 ast::Stmt* StmtTable::getStmtNode(StmtNum stmtNum) {
@@ -54,9 +54,10 @@ unordered_set<ID> const &StmtTable::getControlVarsOfIfStmt(StmtNum stmtNum) cons
     }
 }
 
-ID StmtTable::getControlVarOfWhileStmt(StmtNum stmtNum) {
+unordered_set<ID> const &StmtTable::getControlVarsOfWhileStmt(StmtNum stmtNum) const {
     if (whilePatternsMap.find(stmtNum) == whilePatternsMap.end()) {
-        return -1;
+        static unordered_set<StmtNum> empty = unordered_set<StmtNum>({});
+        return empty;
     } else {
         return whilePatternsMap.find(stmtNum)->second;
     }
@@ -78,8 +79,10 @@ pair<vector<StmtNum>, vector<ID> > StmtTable::getAllWhilePatterns() {
     vector<StmtNum> first;
     vector<ID> varIDs;
     for (auto &it : whilePatternsMap) {
-        first.push_back(it.first);
-        varIDs.push_back(it.second);
+        for (ID varID : it.second) {
+            first.push_back(it.first);
+            varIDs.push_back(varID);
+        }
     }
     return make_pair(first, varIDs);
 }
@@ -134,7 +137,11 @@ int StmtTable::getIfPatternsSize() {
 }
 
 int StmtTable::getWhilePatternsSize() {
-    return whilePatternsMap.size();
+    int cnt = 0;
+    for (auto &it : whilePatternsMap) {
+        cnt += it.second.size();
+    }
+    return cnt;
 }
 
 bool StmtTable::storeStmt(StmtNum stmtNum, ast::Stmt *stmtNode, STRING type) {
@@ -202,13 +209,27 @@ bool StmtTable::storeIfPattern(StmtNum stmtNum, ID controlVarID) {
 }
 
 bool StmtTable::storeWhilePattern(StmtNum stmtNum, ID controlVarID) {
-    if (ifPatternsMap.find(stmtNum) != ifPatternsMap.end() || whilePatternsMap.find(stmtNum) != whilePatternsMap.end()) {
+    if (ifPatternsMap.find(stmtNum) != ifPatternsMap.end()) {
         return false;
     }
 
-    whilePatternsMap.insert({stmtNum, controlVarID});
+    if (whilePatternsMap.find(stmtNum) != whilePatternsMap.end()) {
+        if (whilePatternsMap.find(stmtNum)->second.find(controlVarID) != whilePatternsMap.find(stmtNum)->second.end()) {
+            return false;
+        }
+        if (whilePatternsMap.find(stmtNum)->second.size() == 2) {
+            return false;
+        }
+    }
 
-    auto it = reverseWhilePatternsMap.find(controlVarID);
+    auto it = whilePatternsMap.find(stmtNum);
+    if (it == whilePatternsMap.end()) {
+        whilePatternsMap.insert({stmtNum, unordered_set<StmtNum>({controlVarID})});
+    } else {
+        it->second.insert(controlVarID);
+    }
+
+    it = reverseWhilePatternsMap.find(controlVarID);
     if (it == reverseWhilePatternsMap.end()) {
         reverseWhilePatternsMap.insert({controlVarID, unordered_set<StmtNum>({stmtNum})});
     } else {

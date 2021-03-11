@@ -22,10 +22,9 @@ public:
     unordered_set<StmtNum> const &getIfStmtsWithControlVar(ID controlVarID) const;
     unordered_set<StmtNum> const &getWhileStmtsWithControlVar(ID controlVarID) const;
 
-    // Returns the control variable(s) given the statement number. Returns an empty set if the statement number given is not an if statement / does not use a control variable.
+    // Returns the control variable(s) given the statement number. Returns an empty set if the statement number given is not an if(while) statement / does not use a control variable.
     unordered_set<ID> const &getControlVarsOfIfStmt(StmtNum stmtNum) const;
-    // Returns the control variable given the statement number. Returns -1 if the statement number given is not an while statement / does not use a control variable.
-    ID getControlVarOfWhileStmt(StmtNum stmtNum);
+    unordered_set<ID> const &getControlVarsOfWhileStmt(StmtNum stmtNum) const;
 
     // Returns a pair of vectors in the ifPatternsMap / whilePatternsMap.
     // First vector is a vector of stmtNums. Second is a vector of varIDs.
@@ -53,6 +52,7 @@ public:
     int getIfPatternsSize();
 
     // Returns the number of entries in whilePatternsMap
+    // E.g. if the ifPatternsMap has [1: {2,3}], then the size is 2. Because there are pairs (1,2) and (1,3).
     int getWhilePatternsSize();
 
     // Stores <stmtNum, *AST> into stmtASTMap.
@@ -83,9 +83,7 @@ private:
 
     // Stores StmtNum as key, and the set of control variable as value
     unordered_map<StmtNum, unordered_set<ID> > ifPatternsMap;
-
-    // Stores StmtNum as key, and the control variable as value
-    unordered_map<StmtNum, ID> whilePatternsMap;
+    unordered_map<StmtNum, unordered_set<ID> > whilePatternsMap;
 
     // Stores control variable as key, and a set of stmtNum as value
     unordered_map<ID, unordered_set<StmtNum> > reverseIfPatternsMap;
