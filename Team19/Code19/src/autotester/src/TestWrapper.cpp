@@ -44,7 +44,13 @@ void TestWrapper::parse(std::string filename) {
         auto p = Parser(l);
         valid = p.parse();
     } catch (...) {
+        
         valid = false;
+    }
+
+    if (!valid) { 
+        std::cout << "Error encoutered while parsing Simple Program, terminating execution." << std::endl;
+        exit(1); 
     }
 }
 
