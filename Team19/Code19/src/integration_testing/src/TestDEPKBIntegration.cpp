@@ -253,7 +253,7 @@ TEST_CASE("[SIMPLE, no nested while/if] storeNewWhile and exitWhile Test") {
     // Create While AST
     // Note that the while loop's internal is empty, but the test itself adds statements inside this while loop
     // This is because in this case, the AST itself has no bearing on the DE's actions (it is only stored into the PKB)
-    STRING input = "while ((x == 5) || (y > 10)) { }";
+    STRING input = "while ((x == 5) || (y > 10)) { x = 1; }"; //x = 1 is dummy statement
     std::vector<sp::Token> actual_tok;
     std::vector<sp::Token*> tok_ptrs;
     ParserUtils::StringToTokenPtrs(input, actual_tok, tok_ptrs);
@@ -336,7 +336,7 @@ TEST_CASE("[ONE NESTED WHILE] storeNewWhile and exitWhile Test") {
     // Create While AST
     // Note that the while loop's internal is empty, but the test itself adds statements inside this while loop
     // This is because in this case, the AST itself has no bearing on the DE's actions (it is only stored into the PKB)
-    STRING input = "while ((x == 5) || (y > 10)) { }";
+    STRING input = "while ((x == 5) || (y > 10)) { x = 1; }"; //x = 1 is dummy statement
     std::vector<sp::Token> actual_tok;
     std::vector<sp::Token*> tok_ptrs;
     ParserUtils::StringToTokenPtrs(input, actual_tok, tok_ptrs);
@@ -344,7 +344,7 @@ TEST_CASE("[ONE NESTED WHILE] storeNewWhile and exitWhile Test") {
     auto pwhile = Parser(lwhile);
     ast::WhileStmt* whileStmt = pwhile.parseWhileStmt();
 
-    STRING input2 = "while ((a != 33) || (z > 1)) { }";
+    STRING input2 = "while ((a != 33) || (z > 1)) { x = 1; }"; //x = 1 is dummy statement
     std::vector<sp::Token> actual_tok2;
     std::vector<sp::Token*> tok_ptrs2;
     ParserUtils::StringToTokenPtrs(input2, actual_tok2, tok_ptrs2);
@@ -450,7 +450,7 @@ TEST_CASE("[SIMPLE, no nested if/while] storeNewIf and storeNewElse and endIfEls
     // Create If ASTs
     // Note that the if stmt's internal is empty, but the test itself adds statements inside this if stmt
     // This is because in this case, the AST itself has no bearing on the DE's actions (it is only stored into the PKB)
-    STRING input = "if ((x == 5) || (y > 10)) then { } else { }";
+    STRING input = "if ((x == 5) || (y > 10)) then { x = 1; } else { x = 1; }"; //x = 1 is dummy statement
     std::vector<sp::Token> actual_tok;
     std::vector<sp::Token*> tok_ptrs;
     ParserUtils::StringToTokenPtrs(input, actual_tok, tok_ptrs);
@@ -555,7 +555,7 @@ TEST_CASE("[ONE NESTED IF] storeNewIf and storeNewElse and endIfElse Test") {
     // Create If ASTs
     // Note that the if stmt's internal is empty, but the test itself adds statements inside this if stmt
     // This is because in this case, the AST itself has no bearing on the DE's actions (it is only stored into the PKB)
-    STRING input = "if ((x == 5) || (y > 10)) then { } else { }";
+    STRING input = "if ((x == 5) || (y > 10)) then { x = 1; } else { x = 1; }"; //x = 1 is dummy statement
     std::vector<sp::Token> actual_tok;
     std::vector<sp::Token*> tok_ptrs;
     ParserUtils::StringToTokenPtrs(input, actual_tok, tok_ptrs);
@@ -563,7 +563,7 @@ TEST_CASE("[ONE NESTED IF] storeNewIf and storeNewElse and endIfElse Test") {
     auto pif = Parser(lif);
     ast::IfStmt* ifStmt = pif.parseIfStmt();
 
-    STRING input2 = "if ((a != 33) || (z > 1)) then { } else { }";
+    STRING input2 = "if ((a != 33) || (z > 1)) then { x = 1; } else { x = 1; }"; //x = 1 is dummy statement
     std::vector<sp::Token> actual_tok2;
     std::vector<sp::Token*> tok_ptrs2;
     ParserUtils::StringToTokenPtrs(input2, actual_tok2, tok_ptrs2);
@@ -733,7 +733,7 @@ TEST_CASE("[WHILE-IF NESTING] storeNewWhile & storeNewIf Interaction Test") {
     // Create If AST
     // Note that the if stmt's internal is empty, but the test itself adds statements inside this if stmt
     // This is because in this case, the AST itself has no bearing on the DE's actions (it is only stored into the PKB)
-    STRING input = "if ((x == 5) || (y > 10)) then { } else { }";
+    STRING input = "if ((x == 5) || (y > 10)) then { x = 1; } else { x = 1; }"; //x = 1 is dummy statement
     std::vector<sp::Token> actual_tok;
     std::vector<sp::Token*> tok_ptrs;
     ParserUtils::StringToTokenPtrs(input, actual_tok, tok_ptrs);
@@ -741,7 +741,7 @@ TEST_CASE("[WHILE-IF NESTING] storeNewWhile & storeNewIf Interaction Test") {
     auto pif = Parser(lif);
     ast::IfStmt* ifStmt = pif.parseIfStmt();
 
-    STRING input2 = "while ((a != 33) || (z > 1)) { }";
+    STRING input2 = "while ((a != 33) || (z > 1)) { x = 1; }"; //x = 1 is dummy statement
     std::vector<sp::Token> actual_tok2;
     std::vector<sp::Token*> tok_ptrs2;
     ParserUtils::StringToTokenPtrs(input2, actual_tok2, tok_ptrs2);
@@ -981,7 +981,7 @@ TEST_CASE("Multi-procedure test") {
     // Create If AST
     // Note that the if stmt's internal is empty, but the test itself adds statements inside this if stmt
     // This is because in this case, the AST itself has no bearing on the DE's actions (it is only stored into the PKB)
-    STRING input = "if ((x == 5) || (y > 10)) then { } else { }";
+    STRING input = "if ((x == 5) || (y > 10)) then { x = x + 1; } else { x = x + 1; }";
     std::vector<sp::Token> actual_tok;
     std::vector<sp::Token*> tok_ptrs;
     ParserUtils::StringToTokenPtrs(input, actual_tok, tok_ptrs);
@@ -989,7 +989,7 @@ TEST_CASE("Multi-procedure test") {
     auto pif = Parser(lif);
     ast::IfStmt* ifStmt = pif.parseIfStmt();
 
-    STRING input2 = "while ((a != 33) || (z > 1)) { }";
+    STRING input2 = "while ((a != 33) || (z > 1)) { x = x + 1; }";
     std::vector<sp::Token> actual_tok2;
     std::vector<sp::Token*> tok_ptrs2;
     ParserUtils::StringToTokenPtrs(input2, actual_tok2, tok_ptrs2);
@@ -1184,7 +1184,7 @@ TEST_CASE("Multi-procedure test + calls") {
     // Create If AST
     // Note that the if stmt's internal is empty, but the test itself adds statements inside this if stmt
     // This is because in this case, the AST itself has no bearing on the DE's actions (it is only stored into the PKB)
-    STRING input = "if ((x == 5) || (y > 10)) then { } else { }";
+    STRING input = "if ((x == 5) || (y > 10)) then { x = x + 1; } else { x = x + 1; }";
     std::vector<sp::Token> actual_tok;
     std::vector<sp::Token*> tok_ptrs;
     ParserUtils::StringToTokenPtrs(input, actual_tok, tok_ptrs);
@@ -1192,7 +1192,7 @@ TEST_CASE("Multi-procedure test + calls") {
     auto pif = Parser(lif);
     ast::IfStmt* ifStmt = pif.parseIfStmt();
 
-    STRING input2 = "while ((a != 33) || (z > 1)) { }";
+    STRING input2 = "while ((a != 33) || (z > 1)) { x = x + 1; }";
     std::vector<sp::Token> actual_tok2;
     std::vector<sp::Token*> tok_ptrs2;
     ParserUtils::StringToTokenPtrs(input2, actual_tok2, tok_ptrs2);

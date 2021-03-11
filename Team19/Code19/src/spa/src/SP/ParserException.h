@@ -15,7 +15,7 @@ namespace sp {
 		ParserException(std::string type, int stmtNum, std::string info) :type{type} ,stmtNum { stmtNum }, info{ info } {};
 		inline std::string what() {
 			const std::string ex_header = this->type == "" ? "" : this->type + " :: ";
-			return ex_header + "ERROR :: StmtNum: " + std::to_string(this->stmtNum) + "\n - " + this->info;
+			return ex_header + "ERROR :: StmtNum: " + std::to_string(this->stmtNum) + "\n - " + this->info + "\n";
 		}
 
 	};
