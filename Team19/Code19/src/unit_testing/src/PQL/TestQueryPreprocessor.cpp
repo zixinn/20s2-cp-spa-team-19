@@ -140,6 +140,28 @@ TEST_CASE("process invalid pattern clause") {
     REQUIRE(actual == expected);
 }
 
+TEST_CASE("process valid query with no such that and pattern clause") {
+    QueryPreprocessor qp = QueryPreprocessor();
+    string query = "variable v; Select v";
+    Query actual = qp.process(query);
+    unordered_map<string, string> declarations;
+    declarations["v"] = "variable";
+    Query expected = Query(declarations, {"v"}, {}, true, true);
+    REQUIRE(actual == expected);
+}
+
+TEST_CASE("process valid query with comma in declaration") {
+    QueryPreprocessor qp = QueryPreprocessor();
+    string query = "stmt s1, s2; \nSelect s1 such that Follows(s1, s2)";
+    Query actual = qp.process(query);
+    Clause c = Clause("Follows", {"s1", "s2"});
+    unordered_map<string, string> declarations;
+    declarations["s1"] = "stmt";
+    declarations["s2"] = "stmt";
+    Query expected = Query(declarations, {"s1"}, { c }, true, true);
+    REQUIRE(actual == expected);
+}
+
 TEST_CASE("process query with select BOOLEAN") {
     QueryPreprocessor qp = QueryPreprocessor();
     string query = "assign a; \n Select <BOOLEAN, a> such that Affects (a, 11)";
@@ -147,6 +169,13 @@ TEST_CASE("process query with select BOOLEAN") {
     unordered_map<string, string> declarations;
     declarations["a"] = "assign";
     Query expected = Query(declarations, {}, {}, true, false);
+    REQUIRE(actual == expected);
+
+    query = "assign BOOLEAN;\n Select BOOLEAN such that Affects (BOOLEAN, 11)";
+    actual = qp.process(query);
+    unordered_map<string, string> declarations1;
+    declarations1["BOOLEAN"] = "assign";
+    expected = Query(declarations1, {"BOOLEAN"}, {}, true, false);
     REQUIRE(actual == expected);
 
     query = "Select BOOLEAN such that Next* (2, 9)";
@@ -179,25 +208,40 @@ TEST_CASE("process query with select tuple") {
     REQUIRE(actual == expected);
 }
 
-TEST_CASE("process valid query with no such that and pattern clause") {
+TEST_CASE("process query with select attrRef") {
     QueryPreprocessor qp = QueryPreprocessor();
-    string query = "variable v; Select v";
+    string query = "prog_line n; stmt s;\nSelect s.stmtNum such that Follows* (s, n)";
     Query actual = qp.process(query);
     unordered_map<string, string> declarations;
-    declarations["v"] = "variable";
-    Query expected = Query(declarations, {"v"}, {}, true, true);
+    declarations["n"] = "prog_line";
+    declarations["s"] = "stmt";
+    Query expected = Query(declarations, {}, {}, false, true);
     REQUIRE(actual == expected);
-}
 
-TEST_CASE("process valid query with comma in declaration") {
-    QueryPreprocessor qp = QueryPreprocessor();
-    string query = "stmt s1, s2; \nSelect s1 such that Follows(s1, s2)";
-    Query actual = qp.process(query);
-    Clause c = Clause("Follows", {"s1", "s2"});
-    unordered_map<string, string> declarations;
-    declarations["s1"] = "stmt";
-    declarations["s2"] = "stmt";
-    Query expected = Query(declarations, {"s1"}, { c }, true, true);
+    query = "stmt s; print pn;\nSelect pn.procName such that Uses (s, pn)";
+    actual = qp.process(query);
+    unordered_map<string, string> declarations1;
+    declarations1["s"] = "stmt";
+    declarations1["pn"] = "print";
+    expected = Query(declarations1, {}, {}, true, false);
+    REQUIRE(actual == expected);
+
+    query = "prog_line n; stmt s;\nSelect s.stmt# such that Follows* (s, n)";
+    actual = qp.process(query);
+    Clause c = Clause("Follows*", {"s", "n"});
+    unordered_map<string, string> declarations2;
+    declarations2["n"] = "prog_line";
+    declarations2["s"] = "stmt";
+    expected = Query(declarations2, {"s.stmt#"}, { c }, true, true);
+    REQUIRE(actual == expected);
+
+    query = "assign a1, a2;\nSelect <a1.stmt#, a2> such that Affects (a1, a2)";
+    actual = qp.process(query);
+    c = Clause("Affects", {"a1", "a2"});
+    unordered_map<string, string> declarations3;
+    declarations3["a1"] = "assign";
+    declarations3["a2"] = "assign";
+    expected = Query(declarations3, {"a1.stmt#", "a2"}, { c }, true, true);
     REQUIRE(actual == expected);
 }
 

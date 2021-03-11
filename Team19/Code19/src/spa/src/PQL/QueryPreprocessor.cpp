@@ -2,6 +2,7 @@
 
 QueryPreprocessor::QueryPreprocessor() {
     designEntities = { STMT_, READ_, PRINT_, ASSIGN_, CALL_, WHILE_, IF_, VARIABLE_, CONSTANT_, PROCEDURE_, PROGLINE_ };
+    attrNames = { "procName", "varName", "value", "stmt#" };
 
     validSuchThatArgType["Follows"] = { { STMT_, READ_, PRINT_, ASSIGN_, CALL_, WHILE_, IF_, PROGLINE_, INTEGER_, UNDERSCORE_ },
                                         { STMT_, READ_, PRINT_, ASSIGN_, CALL_, WHILE_, IF_, PROGLINE_, INTEGER_, UNDERSCORE_ } };
@@ -35,6 +36,17 @@ QueryPreprocessor::QueryPreprocessor() {
     validPatternArgType["if"] = { { VARIABLE_, NAME_, UNDERSCORE_ },
                                       { UNDERSCORE_ },
                                       { UNDERSCORE_ } };
+
+    attrMap[PROCEDURE_] = { "procName" };
+    attrMap[CALL_] = { "procName", "stmt#" };
+    attrMap[VARIABLE_] = { "varName" };
+    attrMap[READ_] = { "varName", "stmt#" };
+    attrMap[PRINT_] = { "varName", "stmt#" };
+    attrMap[CONSTANT_] = { "value" };
+    attrMap[STMT_] = { "stmt#" };
+    attrMap[WHILE_] = { "stmt#" };
+    attrMap[IF_] = { "stmt#" };
+    attrMap[ASSIGN_] = { "stmt#" };
 }
 
 Query QueryPreprocessor::process(string query) {
@@ -133,41 +145,76 @@ int QueryPreprocessor::getNextPos(vector<int> pos) {
     return next == INT_MAX ?  -1 : next;
 }
 
-void QueryPreprocessor::parseToSelect(string synonym) {
-    if (synonym == "BOOLEAN") {
+void QueryPreprocessor::parseToSelect(string resultCl) {
+    if (resultCl == "BOOLEAN") {
         if (this->isSemanticallyValid) {
-            this->toSelect.push_back(synonym);
+            this->toSelect.push_back(resultCl);
+        }
+        if (checkSynonymDeclared(resultCl, this->declarations)) {
+            this->isSemanticallyValid = false;
         }
 
-    } else if (regex_match(synonym, regex("^<.*>$"))) {
-        string synonyms = trim(synonym.substr(1, synonym.length() - 2));
+    } else if (regex_match(resultCl, regex("^<.*>$"))) { // tuples
+        string synonyms = trim(resultCl.substr(1, resultCl.length() - 2));
         if (synonyms.at(synonyms.length() - 1) == ',') {
             this->isSyntacticallyValid = false;
         } else {
             vector<string> synonymsVector = split(synonyms, ",");
-            for (string syn : synonymsVector) {
-                if (!checkName(syn)) {
-                    this->isSyntacticallyValid = false;
-                    break;
-                } else if (!checkSynonymDeclared(syn, this->declarations)) {
-                    this->isSemanticallyValid = false;
-                }
+            for (string elem : synonymsVector) {
+                int pos = elem.find('.');
+                if (pos == string::npos) { // synonym
+                    if (!checkName(elem)) {
+                        this->isSyntacticallyValid = false;
+                        break;
+                    } else if (!checkSynonymDeclared(elem, this->declarations)) {
+                        this->isSemanticallyValid = false;
+                    }
+                    if (this->isSyntacticallyValid && this->isSemanticallyValid) {
+                        this->toSelect.push_back(elem);
+                    }
 
-                if (this->isSyntacticallyValid && this->isSemanticallyValid) {
-                    this->toSelect.push_back(syn);
+                } else { // attrRef
+                    string synonym = trim(elem.substr(0, pos));
+                    string attrName = trim(elem.substr(pos + 1));
+                    checkAttrRef(synonym, attrName);
+                    if (this->isSyntacticallyValid && this->isSemanticallyValid) {
+                        this->toSelect.push_back(synonym.append(".").append(attrName));
+                    }
                 }
             }
         }
 
-    } else {
-        if (!checkName(synonym)) {
-            this->isSyntacticallyValid = false;
-        } else if (!checkSynonymDeclared(synonym, this->declarations)) {
-            this->isSemanticallyValid = false;
-        }
+    } else { // elem
+        int pos = resultCl.find('.');
+        if (pos == string::npos) { // synonym
+            if (!checkName(resultCl)) {
+                this->isSyntacticallyValid = false;
+            } else if (!checkSynonymDeclared(resultCl, this->declarations)) {
+                this->isSemanticallyValid = false;
+            }
+            if (this->isSyntacticallyValid && this->isSemanticallyValid) {
+                this->toSelect.push_back(resultCl);
+            }
 
-        if (this->isSyntacticallyValid && this->isSemanticallyValid) {
-            this->toSelect.push_back(synonym);
+        } else { //attrRef
+            string synonym = trim(resultCl.substr(0, pos));
+            string attrName = trim(resultCl.substr(pos + 1));
+            checkAttrRef(synonym, attrName);
+
+            if (this->isSyntacticallyValid && this->isSemanticallyValid) {
+                this->toSelect.push_back(synonym.append(".").append(attrName));
+            }
+        }
+    }
+}
+
+void QueryPreprocessor::checkAttrRef(string synonym, string attrName) {
+    if (!checkName(synonym) || attrNames.find(attrName) == attrNames.end()) {
+        this->isSyntacticallyValid = false;
+    } else {
+        auto it = this->attrMap.find(getArgType(synonym, this->declarations));
+        if (it == this->attrMap.end() || it->second.find(attrName) == it->second.end()) {
+            this->isSemanticallyValid = false;
         }
     }
 }
