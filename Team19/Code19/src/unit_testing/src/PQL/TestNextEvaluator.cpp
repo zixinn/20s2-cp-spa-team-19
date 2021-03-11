@@ -102,9 +102,11 @@ TEST_CASE("NextEvaluator evaluate known synonym") {
 
     unordered_map<string, vector<int>> tempResults2;
     bool b2 = NextEvaluator::evaluate({{"a", ASSIGN_}}, Clause("Next", vector<string>{"6", "a"}), tempResults2);
-    unordered_map<string, vector<int>> expected2 = { {"a", vector<int>{7, 8}}};
+//    unordered_map<string, vector<int>> expected2 = { {"a", vector<int>{7, 8}}};
+    unordered_set<int> actual2(tempResults2["a"].begin(), tempResults2["a"].end());
+    unordered_set<int> expected2 {7, 8};
     REQUIRE(b2);
-    REQUIRE(tempResults2 == expected2);
+    REQUIRE(actual2 == expected2);
 
     unordered_map<string, vector<int>> tempResults3;
     bool b3 = NextEvaluator::evaluate({{"s", STMT_}}, Clause("Next", vector<string>{"9", "s"}), tempResults3);

@@ -98,21 +98,27 @@ TEST_CASE("NextTEvaluator evaluate known synonym") {
 
     unordered_map<string, vector<int>> tempResults1;
     bool b1 = NextTEvaluator::evaluate({ {"w", WHILE_} }, Clause("Next*", vector<string>{"1", "w"}), tempResults1);
-    unordered_map<string, vector<int>> expected1 = { {"w", vector<int>{2, 5}} };
+//    unordered_map<string, vector<int>> expected1 = { {"w", vector<int>{2, 5}} };
+    unordered_set<int> actual1(tempResults1["w"].begin(), tempResults1["w"].end());
+    unordered_set<int> expected1 {2, 5};
     REQUIRE(b1);
-    REQUIRE(tempResults1 == expected1);
+    REQUIRE(actual1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
     bool b2 = NextTEvaluator::evaluate({ {"a", ASSIGN_} }, Clause("Next*", vector<string>{"6", "a"}), tempResults2);
-    unordered_map<string, vector<int>> expected2 = { {"a", vector<int>{7, 8, 11}} };
+//    unordered_map<string, vector<int>> expected2 = { {"a", vector<int>{7, 8, 11}} };
+    unordered_set<int> actual2(tempResults2["a"].begin(), tempResults2["a"].end());
+    unordered_set<int> expected2 {7, 8, 11};
     REQUIRE(b2);
-    REQUIRE(tempResults2 == expected2);
+    REQUIRE(actual2 == expected2);
 
     unordered_map<string, vector<int>> tempResults3;
     bool b3 = NextTEvaluator::evaluate({ {"s", STMT_} }, Clause("Next*", vector<string>{"9", "s"}), tempResults3);
-    unordered_map<string, vector<int>> expected3 = { {"s", vector<int>{5, 6, 10, 7, 8, 11, 12, 9, 13, 14}} };
+//    unordered_map<string, vector<int>> expected3 = { {"s", vector<int>{5, 6, 10, 7, 8, 11, 12, 9, 13, 14}} };
+    unordered_set<int> actual3(tempResults3["s"].begin(), tempResults3["s"].end());
+    unordered_set<int> expected3 {5, 6, 10, 7, 8, 11, 12, 9, 13, 14};
     REQUIRE(b3);
-    REQUIRE(tempResults3 == expected3);
+    REQUIRE(actual3 == expected3);
 
     unordered_map<string, vector<int>> tempResults4;
     bool b4 = NextTEvaluator::evaluate({ {"a", ASSIGN_} }, Clause("Next*", vector<string>{"13", "a"}), tempResults4);
