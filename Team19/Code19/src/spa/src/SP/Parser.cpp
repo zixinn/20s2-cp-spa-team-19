@@ -41,7 +41,7 @@ bool Parser::parse() {
 
 			DesignExtractor::storeNewProcedure(procedure->getName()->getVal());
 			vector<ast::Stmt*> stmts = procedure->getStmtLst()->getStatements();
-			addStmtLstToDE(stmts);
+			addStmtLstToDE(stmts, procedure);
 
 			DesignExtractor::exitProcedure();
 		}
@@ -67,7 +67,7 @@ bool Parser::parse() {
 	return true;
 }
 
-void Parser::addStmtLstToDE(vector<ast::Stmt*> stmts) {
+void Parser::addStmtLstToDE(vector<ast::Stmt*> stmts, ast::Proc* proc) {
 
 	for (int i = 0; i < stmts.size(); i++) {
 		ast::Stmt* stmt = stmts[i];
@@ -89,7 +89,7 @@ void Parser::addStmtLstToDE(vector<ast::Stmt*> stmts) {
 			ast::CondExprBag* ce = (ast::CondExprBag*) whi->getCondExpr();
 			DesignExtractor::storeNewWhile(whi->getIndex(), ce->getVarNames(), ce->getConstVal(), whi);
 			vector<ast::Stmt*> whileStmts = whi->getStmtLst()->getStatements();
-			addStmtLstToDE(whileStmts);
+			addStmtLstToDE(whileStmts, proc);
 			DesignExtractor::exitWhile();
 		} else if (type == sp::Token::TokenType::IF) {
 
@@ -97,15 +97,17 @@ void Parser::addStmtLstToDE(vector<ast::Stmt*> stmts) {
 			ast::CondExprBag* ce = (ast::CondExprBag*)iff->getCondExpr();
 			DesignExtractor::storeNewIf(iff->getIndex(), ce->getVarNames(), ce->getConstVal(), iff);
 			vector<ast::Stmt*> ifCon = iff->getConsequence()->getStatements();
-			addStmtLstToDE(ifCon);
+			addStmtLstToDE(ifCon, proc);
 
 			DesignExtractor::storeNewElse();
 			vector<ast::Stmt*> ifAlt = iff->getAlternative()->getStatements();
-			addStmtLstToDE(ifAlt);
+			addStmtLstToDE(ifAlt, proc);
 			DesignExtractor::endIfElse();
 
 		} else if (type == sp::Token::TokenType::CALL) {
-			throw "NOT READY";
+			//throw "NOT READY";
+			ast::CallStmt* cs = (ast::CallStmt*)stmt;
+			DesignExtractor::storeNewCall(cs->getIndex(), proc->getName()->getVal(),cs->getName()->getVal(), cs);
 		} else {
 			throw this->genError("Unknown statement");
 		}
