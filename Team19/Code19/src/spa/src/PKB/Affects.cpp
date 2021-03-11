@@ -161,39 +161,32 @@ void Affects::populateAffects() {
 }
 
 bool Affects::pathDoesNotModify(StmtNum a1, StmtNum a2, ID v) {
-    if (a1 >= a2) {
-        // if we has searched beyond a2, means we found the path that has not modified v
+    if (a1 == a2) {
+        // we found our way to a2 means we found the path that has not modified v
         return true;
     }
 
-    for (StmtNum child : PKB::parent->getChildren(a1)) {
-        // For container statements, the conditional part itself will not modify v,
-        // but Modifies(parent, v) will be true if any statements in child modifies v.
-        // check if the children modify v
-        if (pathDoesNotModify(child, a2, v)) {
-            return true;
-        }
+    if (!PKB::next->isNextStar(a1, a2)) {
+        // not a path to a2
+        return false;
     }
 
-    // if statement is modified along the way, This is not a possible path.
-    if (PKB::modifies->stmtModifiesVar(a1, v)) {
-        return false;
+    // if it's container statement, we skip, just check the children using Next later
+    // Because Modifies(while/if, v) will be true if any child modifies v.
+    if (!PKB::parent->hasChild(a1)) {
+        if (PKB::modifies->stmtModifiesVar(a1, v)) {
+            return false;
+        }
     }
 
     // A possible path, need to continue checking
     for (ProgLine next : PKB::next->getNext(a1)) {
-        if (!PKB::next->isNextStar(next, a2)) {
-            continue;
-        }
-
-        if (!PKB::modifies->stmtModifiesVar(next, v)) {
-            if (pathDoesNotModify(next, a2, v)) {
-                break;
-            }
+        if (pathDoesNotModify(next, a2, v)) {
+            return true;
         }
     }
 
-    return true;
+    return false;
 }
 
 void Affects::populateAffectsStar() {
