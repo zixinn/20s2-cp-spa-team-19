@@ -31,11 +31,11 @@ namespace ParserUtils {
 	void StringToTokenPtrs(std::string input, std::vector<sp::Token>& actualTokens, std::vector<sp::Token*>& out) {
 		bool flag = Lexer::tokenise(input, actualTokens);
 		if (!flag) {
-			throw "Lexer::tokenize detected an error";
+			throw sp::UtilsException("Lexer::tokenize detected an error in names, constants or other characters or empty source code");
 		}
 		ParserUtils::LexerStubAdapt(actualTokens, out);
 		if (out.size() != actualTokens.size()) {
-			throw "Output Token* vector is not the same size as Lexer::tokenize vector output size";
+			throw sp::UtilsException("Output Token* vector is not the same size as Lexer::tokenize vector output size");
 		}
 	}
 

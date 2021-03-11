@@ -107,7 +107,7 @@ void Parser::addStmtLstToDE(vector<ast::Stmt*> stmts) {
 		} else if (type == sp::Token::TokenType::CALL) {
 			throw "NOT READY";
 		} else {
-			throw this->genError("Unknown statement");
+			throw sp::ParseExprException("Parser call to DE", -1, "Unknown statement");
 		}
 	}
 }
@@ -120,11 +120,13 @@ ast::Program* Parser::parseProgram() {
 	std::unordered_set<std::string> procnames{};
 	while (this->currToken && (!this->currTokenIs(sp::Token::TokenType::EOFF))) {
 		ast::Proc* proc = this->parseProc();
-		if (!proc) { throw this->genError("ParseProc error"); }
+		if (!proc) { 
+			throw sp::ParserException(-1, "Error encountered when parsing Procedure");
+		}
 				
 		//checking if proc exists
 		if (procnames.find(proc->getName()->getVal()) != procnames.end()) {
-			throw this->genError("Procedure already exists: " + proc->getName()->getVal());
+			throw sp::ParserException(-1, "Procedure already exists: " + proc->getName()->getVal());
 		} else {
 			procnames.insert(proc->getName()->getVal());
 		}
@@ -133,7 +135,7 @@ ast::Program* Parser::parseProgram() {
 
 	}
 	if (procs.size() == 0) {
-		throw this->genError("Expect at least one procedure");
+		throw sp::ParserException(-1, "Expect at least one procedure");
 	} 
 		
 	return new ast::Program(procs[0], procs);
@@ -142,17 +144,17 @@ ast::Program* Parser::parseProgram() {
 
 ast::Proc* Parser::parseProc() {
 	if (!this->currTokenIs(sp::Token::TokenType::PROC)) {
-		throw this->genError("ParseProc expected a PROC, got: " + this->currLiteral());
+		throw sp::ParserException(-1, "ParseProc expected a PROC, got: " + this->currLiteral());
 	}
 	sp::Token* proc_tok = this->currToken;
 
 	if (!this->expectPeekIsNameOrKeyword()) {
-		throw this->genError("ParseProc expected a NAME or Keyword, got: " + this->peekLiteral());
+		throw sp::ParserException(-1, "ParseProc expected a NAME or Keyword, got: " + this->peekLiteral());
 	}
 	ast::ProcName* pn = this->parseProcName();
 
 	if (!this->expectPeek(sp::Token::TokenType::LBRACE)) {
-		throw this->genError("ParseProc expected a LBRACE, got: " + this->peekLiteral());
+		throw sp::ParserException(-1, "ParseProc expected a LBRACE, got: " + this->peekLiteral());
 	}
 
 	//current token is {
@@ -161,11 +163,11 @@ ast::Proc* Parser::parseProc() {
 	ast::StmtLst* stmtlst = this->parseStmtLst();
 
 	if (stmtlst->getStatements().size() == 0) {
-		throw this->genError("Procedure should have at least one statement.");
+		throw sp::ParserException(-1, "Procedure " + pn->getVal() + " should have at least one statement.");
 	}
 
 	if (!this->currTokenIs(sp::Token::TokenType::RBRACE)) {
-		throw this->genError("ParseProc expected a RBRACE, got: " + this->peekLiteral());
+		throw sp::ParserException(-1, "ParseProc expected a RBRACE, got: " + this->peekLiteral());
 	}
 	//current token is }
 	this->nextToken();
