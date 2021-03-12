@@ -26,6 +26,10 @@ public:
     unordered_set<ID> const &getControlVarsOfIfStmt(StmtNum stmtNum) const;
     unordered_set<ID> const &getControlVarsOfWhileStmt(StmtNum stmtNum) const;
 
+    // Returns an unordered set of read/print variables given the vector of read/print stmts.
+    unordered_set<ID> getReadVariablesOfStmts(vector<StmtNum> stmtNums);
+    unordered_set<ID> getPrintVariablesOfStmts(vector<StmtNum> stmtNums);
+
     // Returns a pair of vectors in the ifPatternsMap / whilePatternsMap.
     // First vector is a vector of stmtNums. Second is a vector of varIDs.
     // For e.g., if (1,2), (3,4), (5,6) is in the PatternsMap, then it will return <[1,3,5],[2,4,6]>
@@ -63,6 +67,11 @@ public:
     // Called by DE. Returns TRUE if the information is added successfully, returns FALSE otherwise.
     bool storeAssignExpr(StmtNum stmtNum, STRING varName, STRING expr);
 
+    // Stores <stmtnum, varID> into read(print)VariablesMap
+    // Called by DE. Returns TRUE if the information is added successfully, returns FALSE otherwise.
+    bool storeReadVariableForStmt(StmtNum stmtNum, ID readVarID);
+    bool storePrintVariableForStmt(StmtNum stmtNum, ID printVarID);
+
     // Stores <stmtNum, controlVar> into ifPatternsMap, <controlVar, stmtNum> into reverseIfPatternsMap
     // Called by DE. Returns TRUE if the information is added successfully, returns FALSE otherwise.
     bool storeIfPattern(StmtNum stmtNum, ID controlVarID);
@@ -80,6 +89,10 @@ private:
 
     // A map that stores the statement number as key and pair<lhs, rhs> of assignment statement as value
     unordered_map<StmtNum, pair<STRING, STRING> > assignExprMap;
+
+    // A map that stores the statement number of read/print statements as key, the variable as value
+    unordered_map<StmtNum, ID> readVariablesMap;
+    unordered_map<StmtNum, ID> printVariablesMap;
 
     // Stores StmtNum as key, and the set of control variable as value
     unordered_map<StmtNum, unordered_set<ID> > ifPatternsMap;

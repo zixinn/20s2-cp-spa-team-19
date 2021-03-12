@@ -26,6 +26,17 @@ ID Calls::getCalleeInStmt(StmtNum stmtNum) {
     return callsStmtCalleeMap.find(stmtNum)->second;
 }
 
+unordered_set<ID> Calls::getCalleesInStmts(vector<StmtNum> stmtNums) {
+    unordered_set<ID> result;
+    ID id;
+    for (int stmtNum : stmtNums) {
+        id = getCalleeInStmt(stmtNum);
+        result.insert(getCalleeInStmt(stmtNum));
+    }
+    result.erase(-1);
+    return result;
+}
+
 unordered_set<ID> const &Calls::getCallers(ID q) const {
     if (reverseCallsMap.find(q) == reverseCallsMap.end()) {
         static unordered_set<ID> empty = unordered_set<ID>({});

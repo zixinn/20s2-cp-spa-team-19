@@ -75,6 +75,18 @@ TEST_CASE("storeAssignExpr Test") {
     REQUIRE_FALSE(stmtTable->storeAssignExpr(1, "c", "a+b"));
 }
 
+TEST_CASE("storeReadVariableForStmt and storePrintVariableForStmt Test") {
+    StmtTable* stmtTable = new StmtTable();
+    REQUIRE(stmtTable->storeReadVariableForStmt(1,2));
+    REQUIRE_FALSE(stmtTable->storeReadVariableForStmt(1,3));
+    REQUIRE(stmtTable->storeReadVariableForStmt(2,3));
+    REQUIRE(stmtTable->storeReadVariableForStmt(3,2));
+    REQUIRE(stmtTable->storePrintVariableForStmt(1,2));
+    REQUIRE_FALSE(stmtTable->storePrintVariableForStmt(1,3));
+    REQUIRE(stmtTable->storePrintVariableForStmt(2,3));
+    REQUIRE(stmtTable->storePrintVariableForStmt(3,2));
+}
+
 TEST_CASE("storeIfPattern and storeWhilePattern Test") {
     StmtTable* stmtTable = new StmtTable();
     REQUIRE(stmtTable->storeIfPattern(1, 1));
@@ -232,6 +244,36 @@ TEST_CASE("getControlVarOfWhileStmt Test") {
     REQUIRE(stmtTable->getControlVarsOfWhileStmt(22).empty());
     REQUIRE(stmtTable->getControlVarsOfWhileStmt(25) == unordered_set<ID>({14,15}));
     REQUIRE(stmtTable->getControlVarsOfWhileStmt(30).empty());
+}
+
+TEST_CASE("getReadVariablesOfStmts Test") {
+    StmtTable* stmtTable = new StmtTable();
+    stmtTable->storeReadVariableForStmt(1,2);
+    stmtTable->storeReadVariableForStmt(2,3);
+    stmtTable->storeReadVariableForStmt(3,2);
+    stmtTable->storeReadVariableForStmt(5, 6);
+    REQUIRE(stmtTable->getReadVariablesOfStmts(vector<StmtNum>({1})) == unordered_set<StmtNum>({2}));
+    REQUIRE(stmtTable->getReadVariablesOfStmts(vector<StmtNum>({2})) == unordered_set<StmtNum>({3}));
+    REQUIRE(stmtTable->getReadVariablesOfStmts(vector<StmtNum>({3})) == unordered_set<StmtNum>({2}));
+    REQUIRE(stmtTable->getReadVariablesOfStmts(vector<StmtNum>({5})) == unordered_set<StmtNum>({6}));
+    REQUIRE(stmtTable->getReadVariablesOfStmts(vector<StmtNum>({1,2,3})) == unordered_set<StmtNum>({2,3}));
+    REQUIRE(stmtTable->getReadVariablesOfStmts(vector<StmtNum>({1,2,3,4,5})) == unordered_set<StmtNum>({2,3,6}));
+    REQUIRE(stmtTable->getReadVariablesOfStmts(vector<StmtNum>({4})).empty());
+}
+
+TEST_CASE("getPrintVariablesOfStmts Test") {
+    StmtTable* stmtTable = new StmtTable();
+    stmtTable->storePrintVariableForStmt(1,2);
+    stmtTable->storePrintVariableForStmt(2,3);
+    stmtTable->storePrintVariableForStmt(3,2);
+    stmtTable->storePrintVariableForStmt(5, 6);
+    REQUIRE(stmtTable->getPrintVariablesOfStmts(vector<StmtNum>({1})) == unordered_set<StmtNum>({2}));
+    REQUIRE(stmtTable->getPrintVariablesOfStmts(vector<StmtNum>({2})) == unordered_set<StmtNum>({3}));
+    REQUIRE(stmtTable->getPrintVariablesOfStmts(vector<StmtNum>({3})) == unordered_set<StmtNum>({2}));
+    REQUIRE(stmtTable->getPrintVariablesOfStmts(vector<StmtNum>({5})) == unordered_set<StmtNum>({6}));
+    REQUIRE(stmtTable->getPrintVariablesOfStmts(vector<StmtNum>({1,2,3})) == unordered_set<StmtNum>({2,3}));
+    REQUIRE(stmtTable->getPrintVariablesOfStmts(vector<StmtNum>({1,2,3,4,5})) == unordered_set<StmtNum>({2,3,6}));
+    REQUIRE(stmtTable->getPrintVariablesOfStmts(vector<StmtNum>({4})).empty());
 }
 
 TEST_CASE("isIfStmtWithControlVar Test") {

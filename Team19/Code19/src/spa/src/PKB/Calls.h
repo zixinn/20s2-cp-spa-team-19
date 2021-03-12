@@ -19,6 +19,9 @@ public:
     // Returns the callee of the call statement that occurs at stmtNum. Returns -1 if statement is not a call statement.
     ID getCalleeInStmt(StmtNum stmtNum);
 
+    // returns a unordered_set of callee procIDs of the vector of call statements given.
+    unordered_set<ID> getCalleesInStmts(vector<StmtNum> stmtNums);
+
     // Returns a const reference to the set of p's such that Calls(p,q)
     unordered_set<ID> const &getCallers(ID q) const;
 

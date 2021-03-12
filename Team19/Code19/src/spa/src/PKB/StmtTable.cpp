@@ -63,6 +63,28 @@ unordered_set<ID> const &StmtTable::getControlVarsOfWhileStmt(StmtNum stmtNum) c
     }
 }
 
+unordered_set<ID> StmtTable::getReadVariablesOfStmts(vector<StmtNum> stmtNums) {
+    unordered_set<ID> result;
+    for (int stmtNum : stmtNums) {
+        auto it = readVariablesMap.find(stmtNum);
+        if (it != readVariablesMap.end()) {
+            result.insert(it->second);
+        }
+    }
+    return result;
+}
+
+unordered_set<ID> StmtTable::getPrintVariablesOfStmts(vector<StmtNum> stmtNums) {
+    unordered_set<ID> result;
+    for (int stmtNum : stmtNums) {
+        auto it = printVariablesMap.find(stmtNum);
+        if (it != printVariablesMap.end()) {
+            result.insert(it->second);
+        }
+    }
+    return result;
+}
+
 pair<vector<StmtNum>, vector<ID> > StmtTable::getAllIfPatterns() {
     vector<StmtNum> first;
     vector<ID> varIDs;
@@ -175,6 +197,14 @@ bool StmtTable::storeStmt(StmtNum stmtNum, ast::Stmt *stmtNode, STRING type) {
 
 bool StmtTable::storeAssignExpr(StmtNum stmtNum, STRING varName, STRING expr) {
     return assignExprMap.insert({stmtNum, make_pair(varName, expr)}).second;
+}
+
+bool StmtTable::storeReadVariableForStmt(StmtNum stmtNum, ID readVarID) {
+    return readVariablesMap.insert({stmtNum, readVarID}).second;
+}
+
+bool StmtTable::storePrintVariableForStmt(StmtNum stmtNum, ID printVarID) {
+    return printVariablesMap.insert({stmtNum, printVarID}).second;
 }
 
 bool StmtTable::storeIfPattern(StmtNum stmtNum, ID controlVarID) {
