@@ -20,8 +20,8 @@ bool StmtTable::isWhileStmtWithControlVar(StmtNum stmtNum, ID controlVarID) {
 
 ast::Stmt* StmtTable::getStmtNode(StmtNum stmtNum) {
     if (stmtASTMap.find(stmtNum) == stmtASTMap.end()) {
-        std::cerr << "No statement with StmtNum " << stmtNum << " stored in stmtASTMap." << std::endl;
-        throw std::exception();
+        cerr << "No statement with StmtNum " << stmtNum << " stored in stmtASTMap." << endl;
+        throw exception();
     } else {
         return stmtASTMap.find(stmtNum)->second;
     }
@@ -89,8 +89,8 @@ pair<vector<StmtNum>, vector<ID> > StmtTable::getAllWhilePatterns() {
 
 pair<STRING, STRING> StmtTable::getAssignExpr(StmtNum stmtNum) {
     if (assignExprMap.find(stmtNum) == assignExprMap.end()) {
-        std::cerr << "No statement with StmtNum " << stmtNum << " stored in assignExprMap." << std::endl;
-        throw std::exception();
+        cerr << "No statement with StmtNum " << stmtNum << " stored in assignExprMap." << endl;
+        throw exception();
     } else {
         return assignExprMap.find(stmtNum)->second;
     }

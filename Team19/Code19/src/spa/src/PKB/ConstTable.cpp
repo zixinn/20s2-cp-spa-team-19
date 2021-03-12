@@ -6,7 +6,7 @@ int ConstTable::getConstValue(STRING input) {
     try {
         return constMap.at(input);
     } catch (exception e) {
-        std::cerr << input << " was not found in the ConstTable.\n";
+        cerr << input << " was not found in the ConstTable.\n";
         return -1;
     }
 }
@@ -34,7 +34,7 @@ bool ConstTable::storeConst(STRING input) {
             consts.push_back(inputValue);
             return  true;
         } catch (exception e) {
-            std::cerr << input << " could not be converted into an integer.\n";
+            cerr << input << " could not be converted into an integer.\n";
             throw;
         }
     }

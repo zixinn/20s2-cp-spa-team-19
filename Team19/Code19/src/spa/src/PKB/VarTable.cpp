@@ -15,8 +15,8 @@ ID VarTable::getVarID(STRING varName) {
 STRING VarTable::getVarName(ID varID) {
     try {
         return varNames.at(varID);
-    } catch (std::out_of_range const& e) {
-        std::cerr << "Index out of range: No variable with ID " << varID << " in VarNameIDMap." << std::endl;
+    } catch (out_of_range const& e) {
+        cerr << "Index out of range: No variable with ID " << varID << " in VarNameIDMap." << endl;
         throw;
     }
 }
@@ -26,7 +26,7 @@ vector<STRING> const &VarTable::getAllVarNames() const {
 }
 
 vector<STRING> VarTable::convertVarIDsToNames(vector<ID> varIDs) {
-    std::vector<std::string> result;
+    vector<string> result;
     for (int id : varIDs) {
         result.push_back(getVarName(id));
     }
