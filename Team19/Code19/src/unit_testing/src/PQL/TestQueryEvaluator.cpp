@@ -560,10 +560,10 @@ TEST_CASE("QueryEvaluator evaluate query with two such that uses clauses") {
     REQUIRE(actual3.size() == list3.size());
 
     // Select <a, v> such that Uses(a, v) and Uses (a, "count")
-    /*Query q4 = Query({ {"a", ASSIGN_}, {"v", VARIABLE_} }, { "a", "v" }, { c11 }, true, true);
+    Query q4 = Query({ {"a", ASSIGN_}, {"v", VARIABLE_} }, { "a", "v" }, { c11, c12 }, true, true);
     list<string> list4 = qe.evaluate(q4);
     unordered_set<string> actual4(begin(list4), end(list4));
     unordered_set<string> expected4 = { "6 count", "12 cenX", "12 count", "13 cenY", "13 count" };
     REQUIRE(actual4 == expected4);
-    REQUIRE(actual4.size() == list4.size());*/
+    REQUIRE(actual4.size() == list4.size());
 }
