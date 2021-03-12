@@ -26,15 +26,12 @@ ID Calls::getCalleeInStmt(StmtNum stmtNum) {
     return callsStmtCalleeMap.find(stmtNum)->second;
 }
 
-unordered_set<ID> Calls::getCalleesInStmts(vector<StmtNum> stmtNums) {
-    unordered_set<ID> result;
-    ID id;
-    for (int stmtNum : stmtNums) {
-        id = getCalleeInStmt(stmtNum);
-        result.insert(getCalleeInStmt(stmtNum));
+unordered_set<StmtNum> const &Calls::getStmtNumThatCallsCallee(ID calleeID) const {
+    if (reverseCallsStmtCalleeMap.find(calleeID) == reverseCallsStmtCalleeMap.end()) {
+        static unordered_set<ID> empty = unordered_set<ID>({});
+        return empty;
     }
-    result.erase(-1);
-    return result;
+    return reverseCallsStmtCalleeMap.find(calleeID)->second;
 }
 
 unordered_set<ID> const &Calls::getCallers(ID q) const {
@@ -160,6 +157,13 @@ bool Calls::processCalls() {
         }
 
         callsStmtCalleeMap.insert({stmtNum, q});
+
+        auto it3 = reverseCallsStmtCalleeMap.find(q);
+        if (it3 == reverseCallsStmtCalleeMap.end()) {
+            reverseCallsStmtCalleeMap.insert({q, unordered_set<ID>({stmtNum})});
+        } else {
+            it3->second.insert(stmtNum);
+        }
     }
 
     populateCallsStar();

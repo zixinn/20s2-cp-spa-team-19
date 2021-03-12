@@ -248,7 +248,8 @@ TEST_CASE("storeNewRead Test") {
     REQUIRE(PKB::varTable->getVarName(varID) == "procedure");
 
     // Check readVariables
-    REQUIRE(PKB::stmtTable->getReadVariablesOfStmts(vector<StmtNum>({1})) == unordered_set<StmtNum>({varID}));
+    REQUIRE(PKB::stmtTable->getReadVariableOfStmt(1) == varID);
+    REQUIRE(PKB::stmtTable->getStmtNumsOfReadWithVar(varID) == unordered_set<StmtNum>({1}));
 
     // Check Modifies
     REQUIRE(PKB::modifies->getStmtsModifies(varID) == unordered_set<StmtNum>{ 1 }); // StmtNums start from 1
@@ -265,7 +266,8 @@ TEST_CASE("storeNewPrint Test") {
     REQUIRE(PKB::varTable->getVarName(varID) == "defenestration");
 
     // Check printVariables
-    REQUIRE(PKB::stmtTable->getPrintVariablesOfStmts(vector<StmtNum>({1})) == unordered_set<StmtNum>({varID}));
+    REQUIRE(PKB::stmtTable->getPrintVariableOfStmt(1) == varID);
+    REQUIRE(PKB::stmtTable->getStmtNumsOfPrintWithVar(varID) == unordered_set<StmtNum>({1}));
 
     // Check Uses
     REQUIRE(PKB::uses->getStmtsUses(varID) == unordered_set<StmtNum>{ 1 }); // StmtNums start from 1

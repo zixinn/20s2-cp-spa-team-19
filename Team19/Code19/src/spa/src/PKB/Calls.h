@@ -19,8 +19,9 @@ public:
     // Returns the callee of the call statement that occurs at stmtNum. Returns -1 if statement is not a call statement.
     ID getCalleeInStmt(StmtNum stmtNum);
 
-    // returns a unordered_set of callee procIDs of the vector of call statements given.
-    unordered_set<ID> getCalleesInStmts(vector<StmtNum> stmtNums);
+    // Returns the const reference to a set of call statements that calls callee.
+    // Return an empty set if there is no such callee
+    unordered_set<StmtNum> const &getStmtNumThatCallsCallee(ID calleeID) const;
 
     // Returns a const reference to the set of p's such that Calls(p,q)
     unordered_set<ID> const &getCallers(ID q) const;
@@ -79,6 +80,9 @@ private:
 
     // Stores StmtNum where Calls(p,q) occurs as key, q as value.
     unordered_map<StmtNum, ID> callsStmtCalleeMap;
+
+    // Store q as key, the set of statements that calls q as value.
+    unordered_map<ID, unordered_set<StmtNum> > reverseCallsStmtCalleeMap;
 
     // Stores p as key, q as value for each Calls(p,q).
     unordered_map<ID, unordered_set<ID>> callsMap;

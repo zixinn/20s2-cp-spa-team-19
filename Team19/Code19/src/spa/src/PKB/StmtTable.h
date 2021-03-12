@@ -26,9 +26,13 @@ public:
     unordered_set<ID> const &getControlVarsOfIfStmt(StmtNum stmtNum) const;
     unordered_set<ID> const &getControlVarsOfWhileStmt(StmtNum stmtNum) const;
 
-    // Returns an unordered set of read/print variables given the vector of read/print stmts.
-    unordered_set<ID> getReadVariablesOfStmts(vector<StmtNum> stmtNums);
-    unordered_set<ID> getPrintVariablesOfStmts(vector<StmtNum> stmtNums);
+    // Returns the read/print variable given the stmtNum. Return -1 if the stmtNum is not a read(print) statement
+    ID getReadVariableOfStmt(StmtNum stmtNum);
+    ID getPrintVariableOfStmt(StmtNum stmtNum);
+
+    // Returns the const reference to a set of read(print) statement numbers with the given variable.
+    unordered_set<StmtNum> const &getStmtNumsOfReadWithVar(ID readVarID) const;
+    unordered_set<StmtNum> const &getStmtNumsOfPrintWithVar(ID printVarID) const;
 
     // Returns a pair of vectors in the ifPatternsMap / whilePatternsMap.
     // First vector is a vector of stmtNums. Second is a vector of varIDs.
@@ -68,6 +72,7 @@ public:
     bool storeAssignExpr(StmtNum stmtNum, STRING varName, STRING expr);
 
     // Stores <stmtnum, varID> into read(print)VariablesMap
+    // Stores <varID, set<stmtNum>> into the reverseRead(Print)VariablesMap
     // Called by DE. Returns TRUE if the information is added successfully, returns FALSE otherwise.
     bool storeReadVariableForStmt(StmtNum stmtNum, ID readVarID);
     bool storePrintVariableForStmt(StmtNum stmtNum, ID printVarID);
@@ -93,6 +98,9 @@ private:
     // A map that stores the statement number of read/print statements as key, the variable as value
     unordered_map<StmtNum, ID> readVariablesMap;
     unordered_map<StmtNum, ID> printVariablesMap;
+
+    unordered_map<ID, unordered_set<StmtNum> > reverseReadVariablesMap;
+    unordered_map<ID, unordered_set<StmtNum> > reversePrintVariablesMap;
 
     // Stores StmtNum as key, and the set of control variable as value
     unordered_map<StmtNum, unordered_set<ID> > ifPatternsMap;

@@ -110,15 +110,15 @@ TEST_CASE("getCalleeInStmt Test") {
     REQUIRE(PKB::calls->getCalleeInStmt(2) == -1); // Not a call statement
 }
 
-TEST_CASE("getCalleesInStmts Test") {
+TEST_CASE("getStmtNumThatCallsCallee Test") {
     setUpCallsTest();
     PKB::calls->storeCalls(5, 4, 1); // suppose procedure s calls procedure p twice (stmt 5 and stmt 6).
     PKB::calls->storeCalls(6, 4, 1);
     REQUIRE(PKB::calls->processCalls());
-    REQUIRE(PKB::calls->getCalleesInStmts(vector<StmtNum>({1,3,5,6,2})) == unordered_set<ID>({1,2,3}));
-    REQUIRE(PKB::calls->getCalleesInStmts(vector<StmtNum>({5,6})) == unordered_set<ID>({1}));
-    REQUIRE(PKB::calls->getCalleesInStmts(vector<StmtNum>({1,3})) == unordered_set<ID>({2,3}));
-    REQUIRE(PKB::calls->getCalleesInStmts(vector<StmtNum>({2})).empty()); // Not a call statement
+    REQUIRE(PKB::calls->getStmtNumThatCallsCallee(2) == unordered_set<StmtNum>({1}));
+    REQUIRE(PKB::calls->getStmtNumThatCallsCallee(3) == unordered_set<StmtNum>({3}));
+    REQUIRE(PKB::calls->getStmtNumThatCallsCallee(1) == unordered_set<StmtNum>({5,6}));
+    REQUIRE(PKB::calls->getStmtNumThatCallsCallee(4).empty());
 }
 
 TEST_CASE("getCallers Test") {
