@@ -53,7 +53,7 @@ public:
     // It2/3 [Move upwards after everything is done]
     // Finds or adds the entry of the callerName in the NestedCallsMap and append procedureName to the calledProceduresList of the entry.
     // Returns true (success) if successful; otherwise, returns false if this is a recursive call.
-    static bool storeNewCall(StmtNum stmtNum,STRING callerName, STRING procedureName, CallStmt* AST);
+    static bool storeNewCall(StmtNum stmtNum, STRING callerName, STRING procedureName, CallStmt* AST);
 
 private:
     // For bookkeeping
@@ -70,6 +70,9 @@ private:
     static set<ID> currentModifiedVarsLst;
     // The current list of used variables for this statement
     static set<ID> currentUsedVarsLst;
+    // A list of set<StmtNum> containing the Next statements for the current statement
+    // Next requires a set<ProgLine> due to If statements branching
+    static vector<set<ProgLine>> currentNext;
     // Stacks to handle container statements & nested container statements.
     // Each stack stores its respective entries for the CURRENT PROCEDURE (currentProcedureId)
     // e.g. a stack of stmtLsts, a stack of vectors (containing IDs)
@@ -77,7 +80,9 @@ private:
     static vector<set<ID>> usesStack;
     static vector<set<ID>> modifiesStack;
     static vector<StmtNum> parentStack;
-    // These stacks must always be handled together as a unit.
+    // The above stacks must be handled together as a unit.
+    static vector<vector<set<ProgLine>>> nextStack;
+
     static void saveCurrentState(); // push to all stacks
     // Wipes the local state variables for the given parent (container) statement
     static void popSavedState(); // pop all stacks, restoring the current state variables
@@ -106,6 +111,8 @@ private:
     static void addAllCurrentStmtLstModifiesForProcedure();
     // Helper method to store Uses for the currentStmtLst (for the current procedure)
     static void addAllCurrentStmtLstUsesForProcedure();
+    // Helper method to store Next for the currentStmtLst (for the current procedure)
+    static void addNextForCurrentStmtLst();
 
 };
 

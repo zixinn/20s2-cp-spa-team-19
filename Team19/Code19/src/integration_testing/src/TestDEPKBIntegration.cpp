@@ -302,6 +302,10 @@ TEST_CASE("[SIMPLE, no nested while/if] storeNewWhile and exitWhile Test") {
     REQUIRE(varID3 == 4);
     REQUIRE(PKB::varTable->getVarName(varID3) == "shine");
 
+    // Check pattern storage
+    REQUIRE(PKB::stmtTable->getWhileStmtsWithControlVar(condVarId) == unordered_set<StmtNum>{ 1 });
+    REQUIRE(PKB::stmtTable->getWhileStmtsWithControlVar(condVarId2) == unordered_set<StmtNum>{ 1 });
+
     // Check consts used in conditional
     REQUIRE(PKB::constTable->hasConst("5") == true);
     REQUIRE(PKB::constTable->getConstValue("5") == 5);
@@ -406,6 +410,12 @@ TEST_CASE("[ONE NESTED WHILE] storeNewWhile and exitWhile Test") {
     REQUIRE(varID3 == 6);   // due to cond variables in nested While loop
     REQUIRE(PKB::varTable->getVarName(varID3) == "shine");
 
+    // Check pattern storage
+    REQUIRE(PKB::stmtTable->getWhileStmtsWithControlVar(condVarId) == unordered_set<StmtNum>{ 1 });
+    REQUIRE(PKB::stmtTable->getWhileStmtsWithControlVar(condVarId2) == unordered_set<StmtNum>{ 1 });
+    REQUIRE(PKB::stmtTable->getWhileStmtsWithControlVar(condVarId3) == unordered_set<StmtNum>{ 3 });
+    REQUIRE(PKB::stmtTable->getWhileStmtsWithControlVar(condVarId4) == unordered_set<StmtNum>{ 3 });
+
     // Check consts used in conditional
     REQUIRE(PKB::constTable->hasConst("5") == true);
     REQUIRE(PKB::constTable->getConstValue("5") == 5);
@@ -489,6 +499,7 @@ TEST_CASE("[SIMPLE, no nested if/while] storeNewIf and storeNewElse and endIfEls
     DesignExtractor::storeNewRead(4, "shine", createRead("shine"));
     DesignExtractor::endIfElse();
     DesignExtractor::exitProcedure();
+    REQUIRE(DesignExtractor::signalEnd() == true);
 
     // Check StmtLst
     REQUIRE(PKB::stmtLstTable->hasStmtLst(1) == true);  // Procedure's stmtLst
@@ -519,6 +530,10 @@ TEST_CASE("[SIMPLE, no nested if/while] storeNewIf and storeNewElse and endIfEls
     REQUIRE(varID4 == 5);
     REQUIRE(PKB::varTable->getVarName(varID4) == "shine");
 
+    // Check pattern storage
+    REQUIRE(PKB::stmtTable->getIfStmtsWithControlVar(condVarId) == unordered_set<StmtNum>{ 2 });
+    REQUIRE(PKB::stmtTable->getIfStmtsWithControlVar(condVarId2) == unordered_set<StmtNum>{ 2 });
+
     // Check consts used in conditional
     REQUIRE(PKB::constTable->hasConst("5") == true);
     REQUIRE(PKB::constTable->getConstValue("5") == 5);
@@ -547,6 +562,17 @@ TEST_CASE("[SIMPLE, no nested if/while] storeNewIf and storeNewElse and endIfEls
     REQUIRE(PKB::modifies->getStmtsModifies(varID) == unordered_set<ID>{ 1 });
     REQUIRE(PKB::modifies->getStmtsModifies(varID3) == unordered_set<ID>{ 2, 3 }); // as 2 is a container stmt
     REQUIRE(PKB::modifies->getStmtsModifies(varID4) == unordered_set<ID>{ 2, 4 }); // as 2 is a container stmt
+
+    // Check Next
+    REQUIRE(PKB::next->getNext(1) == unordered_set<ProgLine>{ 2 });
+    REQUIRE(PKB::next->getNext(2) == unordered_set<ProgLine>{ 3, 4 });
+    REQUIRE(PKB::next->getNext(3) == unordered_set<ProgLine>{ });
+    REQUIRE(PKB::next->getNext(4) == unordered_set<ProgLine>{ });
+    // Check Next*
+    REQUIRE(PKB::next->getNextStar(1) == unordered_set<ProgLine>{ 2, 3, 4 });
+    REQUIRE(PKB::next->getNextStar(2) == unordered_set<ProgLine>{ 3, 4 });
+    REQUIRE(PKB::next->getNextStar(3) == unordered_set<ProgLine>{ });
+    REQUIRE(PKB::next->getNextStar(4) == unordered_set<ProgLine>{ });
 }
 
 TEST_CASE("[ONE NESTED IF] storeNewIf and storeNewElse and endIfElse Test") {
@@ -629,6 +655,7 @@ TEST_CASE("[ONE NESTED IF] storeNewIf and storeNewElse and endIfElse Test") {
     DesignExtractor::endIfElse();
     DesignExtractor::endIfElse();
     DesignExtractor::exitProcedure();
+    REQUIRE(DesignExtractor::signalEnd() == true);
 
     // Check StmtLst
     REQUIRE(PKB::stmtLstTable->hasStmtLst(1) == true);  // Procedure's stmtLst
@@ -679,6 +706,12 @@ TEST_CASE("[ONE NESTED IF] storeNewIf and storeNewElse and endIfElse Test") {
     REQUIRE(varID7 == 10);
     REQUIRE(PKB::varTable->getVarName(varID7) == "droning");
 
+    // Check pattern storage
+    REQUIRE(PKB::stmtTable->getIfStmtsWithControlVar(condVarId) == unordered_set<StmtNum>{ 2 });
+    REQUIRE(PKB::stmtTable->getIfStmtsWithControlVar(condVarId2) == unordered_set<StmtNum>{ 2 });
+    REQUIRE(PKB::stmtTable->getIfStmtsWithControlVar(condVarId3) == unordered_set<StmtNum>{ 4 });
+    REQUIRE(PKB::stmtTable->getIfStmtsWithControlVar(condVarId4) == unordered_set<StmtNum>{ 4 });
+
     // Check consts used in conditional
     REQUIRE(PKB::constTable->hasConst("5") == true);
     REQUIRE(PKB::constTable->getConstValue("5") == 5);
@@ -725,6 +758,23 @@ TEST_CASE("[ONE NESTED IF] storeNewIf and storeNewElse and endIfElse Test") {
     REQUIRE(PKB::modifies->getStmtsModifies(varID4) == unordered_set<ID>{ 2, 4, 5 }); // 2, 4 is container stmt
     REQUIRE(PKB::modifies->getStmtsModifies(varID6) == unordered_set<ID>{ 2, 4, 6 });
     REQUIRE(PKB::modifies->getStmtsModifies(varID7) == unordered_set<ID>{ 2, 4, 7 });
+
+    // Check Next
+    REQUIRE(PKB::next->getNext(1) == unordered_set<ProgLine>{ 2 });
+    REQUIRE(PKB::next->getNext(2) == unordered_set<ProgLine>{ 3, 4 });
+    REQUIRE(PKB::next->getNext(3) == unordered_set<ProgLine>{ });
+    REQUIRE(PKB::next->getNext(4) == unordered_set<ProgLine>{ 5, 6 });
+    REQUIRE(PKB::next->getNext(5) == unordered_set<ProgLine>{ });
+    REQUIRE(PKB::next->getNext(6) == unordered_set<ProgLine>{ 7 });
+    REQUIRE(PKB::next->getNext(7) == unordered_set<ProgLine>{ });
+    // Check Next*
+    REQUIRE(PKB::next->getNextStar(1) == unordered_set<ProgLine>{ 2, 3, 4, 5, 6, 7 });
+    REQUIRE(PKB::next->getNextStar(2) == unordered_set<ProgLine>{ 3, 4, 5, 6, 7 });
+    REQUIRE(PKB::next->getNextStar(3) == unordered_set<ProgLine>{ });
+    REQUIRE(PKB::next->getNextStar(4) == unordered_set<ProgLine>{ 5, 6, 7 });
+    REQUIRE(PKB::next->getNextStar(5) == unordered_set<ProgLine>{ });
+    REQUIRE(PKB::next->getNextStar(6) == unordered_set<ProgLine>{ 7 });
+    REQUIRE(PKB::next->getNextStar(7) == unordered_set<ProgLine>{ });
 }
 
 TEST_CASE("[WHILE-IF NESTING] storeNewWhile & storeNewIf Interaction Test") {
@@ -857,6 +907,12 @@ TEST_CASE("[WHILE-IF NESTING] storeNewWhile & storeNewIf Interaction Test") {
     REQUIRE(varID7 == 10);
     REQUIRE(PKB::varTable->getVarName(varID7) == "droning");
 
+    // Check pattern storage
+    REQUIRE(PKB::stmtTable->getIfStmtsWithControlVar(condVarId) == unordered_set<StmtNum>{ 2 });
+    REQUIRE(PKB::stmtTable->getIfStmtsWithControlVar(condVarId2) == unordered_set<StmtNum>{ 2 });
+    REQUIRE(PKB::stmtTable->getWhileStmtsWithControlVar(condVarId3) == unordered_set<StmtNum>{ 4 });
+    REQUIRE(PKB::stmtTable->getWhileStmtsWithControlVar(condVarId4) == unordered_set<StmtNum>{ 4 });
+
     // Check consts used in conditional
     REQUIRE(PKB::constTable->hasConst("5") == true);
     REQUIRE(PKB::constTable->getConstValue("5") == 5);
@@ -915,6 +971,17 @@ TEST_CASE("[WHILE-IF NESTING] storeNewWhile & storeNewIf Interaction Test") {
     REQUIRE(PKB::modifies->getStmtsModifies(varID4) == unordered_set<ID>{ 2, 4, 5 }); // 2, 4 is container stmt
     REQUIRE(PKB::modifies->getStmtsModifies(varID6) == unordered_set<ID>{ 2, 4, 6 });
     REQUIRE(PKB::modifies->getStmtsModifies(varID7) == unordered_set<ID>{ 2, 4, 7 });
+
+    // Check Next
+    REQUIRE(PKB::next->getNext(1) == unordered_set<ProgLine>{ 2 });
+    REQUIRE(PKB::next->getNext(2) == unordered_set<ProgLine>{ 3, 4 });
+    REQUIRE(PKB::next->getNext(3) == unordered_set<ProgLine>{ });
+    REQUIRE(PKB::next->getNext(4) == unordered_set<ProgLine>{ 5 });
+    // Check Next*
+    REQUIRE(PKB::next->getNextStar(1) == unordered_set<ProgLine>{ 2, 3, 4, 5, 6, 7 });
+    REQUIRE(PKB::next->getNextStar(2) == unordered_set<ProgLine>{ 3, 4, 5, 6, 7 });
+    REQUIRE(PKB::next->getNextStar(3) == unordered_set<ProgLine>{ });
+    REQUIRE(PKB::next->getNextStar(4) == unordered_set<ProgLine>{ 4, 5, 6, 7 });
 }
 
 TEST_CASE("Multi-procedure test") {
@@ -1058,6 +1125,12 @@ TEST_CASE("Multi-procedure test") {
     ID varID7 = PKB::varTable->getVarID("droning");
     REQUIRE(varID7 == 10);
     REQUIRE(PKB::varTable->getVarName(varID7) == "droning");
+
+    // Check pattern storage
+    REQUIRE(PKB::stmtTable->getIfStmtsWithControlVar(condVarId) == unordered_set<StmtNum>{ 2 });
+    REQUIRE(PKB::stmtTable->getIfStmtsWithControlVar(condVarId2) == unordered_set<StmtNum>{ 2 });
+    REQUIRE(PKB::stmtTable->getWhileStmtsWithControlVar(condVarId3) == unordered_set<StmtNum>{ 4 });
+    REQUIRE(PKB::stmtTable->getWhileStmtsWithControlVar(condVarId4) == unordered_set<StmtNum>{ 4 });
 
     // Check consts used in conditional
     REQUIRE(PKB::constTable->hasConst("5") == true);
@@ -1286,6 +1359,12 @@ TEST_CASE("Multi-procedure test + calls") {
     REQUIRE(varID9 == 12);
     REQUIRE(PKB::varTable->getVarName(varID9) == "chalk");
 
+    // Check pattern storage
+    REQUIRE(PKB::stmtTable->getIfStmtsWithControlVar(condVarId) == unordered_set<StmtNum>{ 2 });
+    REQUIRE(PKB::stmtTable->getIfStmtsWithControlVar(condVarId2) == unordered_set<StmtNum>{ 2 });
+    REQUIRE(PKB::stmtTable->getWhileStmtsWithControlVar(condVarId3) == unordered_set<StmtNum>{ 4 });
+    REQUIRE(PKB::stmtTable->getWhileStmtsWithControlVar(condVarId4) == unordered_set<StmtNum>{ 4 });
+
     // Check consts used in conditional
     REQUIRE(PKB::constTable->hasConst("5") == true);
     REQUIRE(PKB::constTable->getConstValue("5") == 5);
@@ -1439,4 +1518,309 @@ TEST_CASE("storeNewCall - nonexistent procedure") {
     REQUIRE(PKB::uses->getStmtsUses(varID3) == unordered_set<StmtNum>{ 3 });
     REQUIRE(PKB::uses->getStmtsUses(varID4) == unordered_set<StmtNum>{ 3 });
     REQUIRE(PKB::uses->getVarsUsedByProc(procID) == unordered_set<StmtNum>{ varID, varID3, varID4 });
+}
+
+TEST_CASE("Next/* Variants for If-Else and While Statements") {
+    // AST value does not matter at all, as we are only testing for Next correctness
+    // Set up Assignment AST
+    std::vector<sp::Token*> stubTokens{
+            new sp::Token(sp::Token::TokenType::NAME, "axel2"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::NAME, "semelparity"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto l = new LexerStub(stubTokens);     //new keyword gets me a ptr to LexerStub
+    Parser p = Parser(l);
+    ast::AssignStmt* assignment = p.parseAssignStmt();
+
+    // StmtLst inputs are just dummies, this is not the exact statement being tested
+    STRING input = "if ((x == 5) || (y > 10)) then { dummy =  1; } else { dummy =  1; }";
+    std::vector<sp::Token> actual_tok;
+    std::vector<sp::Token*> tok_ptrs;
+    ParserUtils::StringToTokenPtrs(input, actual_tok, tok_ptrs);
+    auto lif = new LexerStub(tok_ptrs);
+    auto pif = Parser(lif);
+    ast::IfStmt* ifStmt = pif.parseIfStmt();
+
+    STRING input2 = "while ((a != 33) || (z > 1)) { dummy =  1; }";
+    std::vector<sp::Token> actual_tok2;
+    std::vector<sp::Token*> tok_ptrs2;
+    ParserUtils::StringToTokenPtrs(input2, actual_tok2, tok_ptrs2);
+    auto lNestedWhile = new LexerStub(tok_ptrs2);
+    auto pNestedWhile = Parser(lNestedWhile);
+    ast::WhileStmt* whileStmt = pNestedWhile.parseWhileStmt();
+    ast::WhileStmt* nestedWhileStmt = whileStmt;
+
+    // Create call AST
+    STRING input3 = "call abyssal;";
+    std::vector<sp::Token> actual_tok3;
+    std::vector<sp::Token*> tok_ptrs3;
+    ParserUtils::StringToTokenPtrs(input3, actual_tok3, tok_ptrs3);
+    auto lCall = new LexerStub(tok_ptrs3);
+    auto pCall = Parser(lCall);
+    ast::CallStmt* callStmt = pCall.parseCallStmt();
+
+    ReadStmt *readStmt = createRead("droning");
+
+    vector<STRING> condVarNames{ "x", "y" };    // Used in conditional expression of if stmt
+    vector<STRING> condConsts{ "5", "10" };
+    vector<STRING> nestedCondVarNames{ "a", "z" };    // Used in conditional expression of nested if stmt
+    vector<STRING> nestedCondConsts{ "33", "1" };
+
+    DesignExtractor::signalReset();
+    // Tests DE's ability to extract Next for a nested if statement with explicit endpoints in the CFG
+    DesignExtractor::storeNewProcedure("mitosis");
+    DesignExtractor::storeNewAssignment(1, "axel2", assignment);
+    DesignExtractor::storeNewIf(2,condVarNames, condConsts, ifStmt);    // If-then
+    DesignExtractor::storeNewAssignment(3, "slalom", assignment);
+    DesignExtractor::storeNewElse();                                                    // Else
+    DesignExtractor::storeNewIf(4,nestedCondVarNames, nestedCondConsts, ifStmt);    // Nested If-then
+    DesignExtractor::storeNewAssignment(5, "quartz", assignment);
+    DesignExtractor::storeNewElse();                                                    // Nested Else
+    DesignExtractor::storeNewAssignment(6, "sapphire", assignment);
+    DesignExtractor::storeNewRead(7, "droning", readStmt);
+    DesignExtractor::endIfElse();
+    DesignExtractor::storeNewRead(8, "droning", readStmt);
+    DesignExtractor::endIfElse();
+    DesignExtractor::storeNewRead(9, "droning", readStmt);
+    DesignExtractor::storeNewCall(10, "deux", "abyssal", callStmt);
+    DesignExtractor::exitProcedure();
+    REQUIRE(DesignExtractor::signalEnd() == true);
+
+    // Check Next
+    REQUIRE(PKB::next->getNext(1) == unordered_set<ProgLine>{ 2 });
+    REQUIRE(PKB::next->getNext(2) == unordered_set<ProgLine>{ 3, 4 });
+    REQUIRE(PKB::next->getNext(3) == unordered_set<ProgLine>{ 9 });
+    REQUIRE(PKB::next->getNext(4) == unordered_set<ProgLine>{ 5, 6 });
+    REQUIRE(PKB::next->getNext(5) == unordered_set<ProgLine>{ 8 });
+    REQUIRE(PKB::next->getNext(6) == unordered_set<ProgLine>{ 7 });
+    REQUIRE(PKB::next->getNext(7) == unordered_set<ProgLine>{ 8 });
+    REQUIRE(PKB::next->getNext(8) == unordered_set<ProgLine>{ 9 });
+    REQUIRE(PKB::next->getNext(9) == unordered_set<ProgLine>{ 10 });
+    REQUIRE(PKB::next->getNext(10) == unordered_set<ProgLine>{ });
+    // Check Next*
+    REQUIRE(PKB::next->getNextStar(1) == unordered_set<ProgLine>{ 2, 3, 4, 5, 6, 7, 8, 9, 10 });
+    REQUIRE(PKB::next->getNextStar(2) == unordered_set<ProgLine>{ 3, 4, 5, 6, 7, 8, 9, 10 });
+    REQUIRE(PKB::next->getNextStar(3) == unordered_set<ProgLine>{ 9, 10 });
+    REQUIRE(PKB::next->getNextStar(4) == unordered_set<ProgLine>{ 5, 6, 7, 8, 9, 10 });
+    REQUIRE(PKB::next->getNextStar(5) == unordered_set<ProgLine>{ 8, 9, 10 });
+    REQUIRE(PKB::next->getNextStar(6) == unordered_set<ProgLine>{ 7, 8, 9, 10 });
+    REQUIRE(PKB::next->getNextStar(7) == unordered_set<ProgLine>{ 8, 9, 10 });
+    REQUIRE(PKB::next->getNextStar(8) == unordered_set<ProgLine>{ 9, 10 });
+    REQUIRE(PKB::next->getNextStar(9) == unordered_set<ProgLine>{ 10 });
+    REQUIRE(PKB::next->getNextStar(10) == unordered_set<ProgLine>{ });
+
+    DesignExtractor::signalReset();
+    // Tests DE's ability to extract Next for a nested if statement with no explicit endpoint at all
+    DesignExtractor::storeNewProcedure("mitosis");
+    DesignExtractor::storeNewAssignment(1, "axel2", assignment);
+    DesignExtractor::storeNewIf(2,condVarNames, condConsts, ifStmt);    // If-then
+    DesignExtractor::storeNewAssignment(3, "slalom", assignment);
+    DesignExtractor::storeNewElse();                                                    // Else
+    DesignExtractor::storeNewIf(4,nestedCondVarNames, nestedCondConsts, ifStmt);    // Nested If-then
+    DesignExtractor::storeNewAssignment(5, "quartz", assignment);
+    DesignExtractor::storeNewElse();                                                    // Nested Else
+    DesignExtractor::storeNewAssignment(6, "sapphire", assignment);
+    DesignExtractor::storeNewRead(7, "droning", readStmt);
+    DesignExtractor::endIfElse();
+    DesignExtractor::endIfElse();
+    DesignExtractor::exitProcedure();
+    REQUIRE(DesignExtractor::signalEnd() == true);
+
+    // Check Next
+    REQUIRE(PKB::next->getNext(1) == unordered_set<ProgLine>{ 2 });
+    REQUIRE(PKB::next->getNext(2) == unordered_set<ProgLine>{ 3, 4 });
+    REQUIRE(PKB::next->getNext(3) == unordered_set<ProgLine>{ });
+    REQUIRE(PKB::next->getNext(4) == unordered_set<ProgLine>{ 5, 6 });
+    REQUIRE(PKB::next->getNext(5) == unordered_set<ProgLine>{ });
+    REQUIRE(PKB::next->getNext(6) == unordered_set<ProgLine>{ 7 });
+    REQUIRE(PKB::next->getNext(7) == unordered_set<ProgLine>{ });
+    REQUIRE(PKB::next->getNext(8) == unordered_set<ProgLine>{ });
+    // Check Next*
+    REQUIRE(PKB::next->getNextStar(1) == unordered_set<ProgLine>{ 2, 3, 4, 5, 6, 7 });
+    REQUIRE(PKB::next->getNextStar(2) == unordered_set<ProgLine>{ 3, 4, 5, 6, 7 });
+    REQUIRE(PKB::next->getNextStar(3) == unordered_set<ProgLine>{ });
+    REQUIRE(PKB::next->getNextStar(4) == unordered_set<ProgLine>{ 5, 6, 7 });
+    REQUIRE(PKB::next->getNextStar(5) == unordered_set<ProgLine>{ });
+    REQUIRE(PKB::next->getNextStar(6) == unordered_set<ProgLine>{ 7 });
+    REQUIRE(PKB::next->getNextStar(7) == unordered_set<ProgLine>{ });
+
+    DesignExtractor::signalReset();
+    // Tests DE's ability to extract Next for nested if statements with no explicit 'end' point in the CFG for outer if
+    DesignExtractor::storeNewProcedure("mitosis");
+    DesignExtractor::storeNewAssignment(1, "axel2", assignment);
+    DesignExtractor::storeNewIf(2,condVarNames, condConsts, ifStmt);    // If-then
+    DesignExtractor::storeNewAssignment(3, "slalom", assignment);
+    DesignExtractor::storeNewElse();                                                    // Else
+    DesignExtractor::storeNewIf(4,nestedCondVarNames, nestedCondConsts, ifStmt);    // Nested If-then
+    DesignExtractor::storeNewAssignment(5, "quartz", assignment);
+    DesignExtractor::storeNewElse();                                                    // Nested Else
+    DesignExtractor::storeNewAssignment(6, "sapphire", assignment);
+    DesignExtractor::storeNewRead(7, "droning", readStmt);
+    DesignExtractor::endIfElse();
+    DesignExtractor::endIfElse();
+    DesignExtractor::storeNewRead(8, "droning", readStmt);
+    DesignExtractor::exitProcedure();
+    REQUIRE(DesignExtractor::signalEnd() == true);
+
+    // Check Next
+    REQUIRE(PKB::next->getNext(1) == unordered_set<ProgLine>{ 2 });
+    REQUIRE(PKB::next->getNext(2) == unordered_set<ProgLine>{ 3, 4 });
+    REQUIRE(PKB::next->getNext(3) == unordered_set<ProgLine>{ 8 });
+    REQUIRE(PKB::next->getNext(4) == unordered_set<ProgLine>{ 5, 6 });
+    REQUIRE(PKB::next->getNext(5) == unordered_set<ProgLine>{ 8 });
+    REQUIRE(PKB::next->getNext(6) == unordered_set<ProgLine>{ 7 });
+    REQUIRE(PKB::next->getNext(7) == unordered_set<ProgLine>{ 8 });
+    // Check Next*
+    REQUIRE(PKB::next->getNextStar(1) == unordered_set<ProgLine>{ 2, 3, 4, 5, 6, 7, 8 });
+    REQUIRE(PKB::next->getNextStar(2) == unordered_set<ProgLine>{ 3, 4, 5, 6, 7, 8 });
+    REQUIRE(PKB::next->getNextStar(3) == unordered_set<ProgLine>{ 8 });
+    REQUIRE(PKB::next->getNextStar(4) == unordered_set<ProgLine>{ 5, 6, 7, 8 });
+    REQUIRE(PKB::next->getNextStar(5) == unordered_set<ProgLine>{ 8 });
+    REQUIRE(PKB::next->getNextStar(6) == unordered_set<ProgLine>{ 7, 8 });
+    REQUIRE(PKB::next->getNextStar(7) == unordered_set<ProgLine>{ 8 });
+    REQUIRE(PKB::next->getNextStar(8) == unordered_set<ProgLine>{ });
+
+    DesignExtractor::signalReset();
+    // Two if statements, not nested
+    DesignExtractor::storeNewProcedure("mitosis");
+    DesignExtractor::storeNewAssignment(1, "axel2", assignment);
+    DesignExtractor::storeNewIf(2,condVarNames, condConsts, ifStmt);    // If-then
+    DesignExtractor::storeNewAssignment(3, "slalom", assignment);
+    DesignExtractor::storeNewElse();                                                    // Else
+    DesignExtractor::storeNewRead(4, "droning", readStmt);
+    DesignExtractor::endIfElse();
+
+    DesignExtractor::storeNewIf(5,nestedCondVarNames, nestedCondConsts, ifStmt);    //  If-then
+    DesignExtractor::storeNewAssignment(6, "quartz", assignment);
+    DesignExtractor::storeNewCall(7, "deux", "abyssal", callStmt);
+    DesignExtractor::storeNewElse();                                                    //  Else
+    DesignExtractor::storeNewAssignment(8, "sapphire", assignment);
+    DesignExtractor::storeNewRead(9, "droning", readStmt);
+    DesignExtractor::endIfElse();
+
+    DesignExtractor::exitProcedure();
+    REQUIRE(DesignExtractor::signalEnd() == true);
+
+    // Check Next
+    REQUIRE(PKB::next->getNext(1) == unordered_set<ProgLine>{ 2 });
+    REQUIRE(PKB::next->getNext(2) == unordered_set<ProgLine>{ 3, 4 });
+    REQUIRE(PKB::next->getNext(3) == unordered_set<ProgLine>{ 5 });
+    REQUIRE(PKB::next->getNext(4) == unordered_set<ProgLine>{ 5 });
+    REQUIRE(PKB::next->getNext(5) == unordered_set<ProgLine>{ 6, 8 }); // 2nd procedure
+    REQUIRE(PKB::next->getNext(6) == unordered_set<ProgLine>{ 7 });
+    REQUIRE(PKB::next->getNext(7) == unordered_set<ProgLine>{ });
+    REQUIRE(PKB::next->getNext(8) == unordered_set<ProgLine>{ 9 });
+    REQUIRE(PKB::next->getNext(9) == unordered_set<ProgLine>{ });
+    // Check Next*
+    REQUIRE(PKB::next->getNextStar(1) == unordered_set<ProgLine>{ 2, 3, 4, 5, 6, 7, 8, 9 });
+    REQUIRE(PKB::next->getNextStar(2) == unordered_set<ProgLine>{ 3, 4, 5, 6, 7, 8, 9 });
+    REQUIRE(PKB::next->getNextStar(3) == unordered_set<ProgLine>{ 5, 6, 7, 8, 9 });
+    REQUIRE(PKB::next->getNextStar(4) == unordered_set<ProgLine>{ 5, 6, 7, 8, 9 });
+    REQUIRE(PKB::next->getNextStar(5) == unordered_set<ProgLine>{ 6, 7, 8, 9 });
+    REQUIRE(PKB::next->getNextStar(6) == unordered_set<ProgLine>{ 7 });
+    REQUIRE(PKB::next->getNextStar(7) == unordered_set<ProgLine>{ });
+    REQUIRE(PKB::next->getNextStar(8) == unordered_set<ProgLine>{ 9 });
+    REQUIRE(PKB::next->getNextStar(9) == unordered_set<ProgLine>{ });
+
+    DesignExtractor::signalReset();
+    // Nested while-if
+    DesignExtractor::storeNewProcedure("arabesque");
+    DesignExtractor::storeNewAssignment(1, "axel2", assignment);
+    DesignExtractor::storeNewIf(2,condVarNames, condConsts, ifStmt);    // If-then
+    DesignExtractor::storeNewAssignment(3, "slalom", assignment);
+    DesignExtractor::storeNewElse();                                                    // Else
+    DesignExtractor::storeNewWhile(4,nestedCondVarNames, nestedCondConsts, nestedWhileStmt);    // Nested While
+    DesignExtractor::storeNewAssignment(5, "quartz", assignment);
+    DesignExtractor::storeNewAssignment(6, "sapphire", assignment);
+    DesignExtractor::storeNewRead(7, "droning", readStmt);
+    DesignExtractor::exitWhile();
+    DesignExtractor::endIfElse();
+    DesignExtractor::exitProcedure();
+    REQUIRE(DesignExtractor::signalEnd() == true);
+
+    // Check Next
+    REQUIRE(PKB::next->getNext(1) == unordered_set<ProgLine>{ 2 });
+    REQUIRE(PKB::next->getNext(2) == unordered_set<ProgLine>{ 3, 4 });
+    REQUIRE(PKB::next->getNext(3) == unordered_set<ProgLine>{ });
+    REQUIRE(PKB::next->getNext(4) == unordered_set<ProgLine>{ 5 });
+    REQUIRE(PKB::next->getNext(5) == unordered_set<ProgLine>{ 6 });
+    REQUIRE(PKB::next->getNext(6) == unordered_set<ProgLine>{ 7 });
+    REQUIRE(PKB::next->getNext(7) == unordered_set<ProgLine>{ 4 });
+    // Check Next*
+    REQUIRE(PKB::next->getNextStar(1) == unordered_set<ProgLine>{ 2, 3, 4, 5, 6, 7 });
+    REQUIRE(PKB::next->getNextStar(2) == unordered_set<ProgLine>{ 3, 4, 5, 6, 7 });
+    REQUIRE(PKB::next->getNextStar(3) == unordered_set<ProgLine>{ });
+    REQUIRE(PKB::next->getNextStar(4) == unordered_set<ProgLine>{ 4, 5, 6, 7 });
+    REQUIRE(PKB::next->getNextStar(5) == unordered_set<ProgLine>{ 4, 5, 6, 7 });
+    REQUIRE(PKB::next->getNextStar(6) == unordered_set<ProgLine>{ 4, 5, 6, 7 });
+    REQUIRE(PKB::next->getNextStar(7) == unordered_set<ProgLine>{ 4, 5, 6, 7 });
+
+    DesignExtractor::signalReset();
+    // Simple While
+    DesignExtractor::storeNewProcedure("hana");
+    DesignExtractor::storeNewWhile(1,condVarNames, condConsts, whileStmt);
+    DesignExtractor::storeNewAssignment(2, "axel2", assignment);
+    DesignExtractor::storeNewRead(3, "shine", readStmt);
+    DesignExtractor::exitWhile();
+    DesignExtractor::exitProcedure();
+    REQUIRE(DesignExtractor::signalEnd() == true);
+
+    // Check Next
+    REQUIRE(PKB::next->getNext(1) == unordered_set<ProgLine>{ 2 });
+    REQUIRE(PKB::next->getNext(2) == unordered_set<ProgLine>{ 3 });
+    REQUIRE(PKB::next->getNext(3) == unordered_set<ProgLine>{ 1 });
+    // Check Next*
+    REQUIRE(PKB::next->getNextStar(1) == unordered_set<ProgLine>{ 1, 2, 3 });
+    REQUIRE(PKB::next->getNextStar(2) == unordered_set<ProgLine>{ 1, 2, 3 });
+    REQUIRE(PKB::next->getNextStar(3) == unordered_set<ProgLine>{ 1, 2, 3 });
+
+    DesignExtractor::signalReset();
+    // 1 nested While with no explicit endpoint
+    DesignExtractor::storeNewProcedure("hana");
+    DesignExtractor::storeNewWhile(1,condVarNames, condConsts, whileStmt);
+    DesignExtractor::storeNewAssignment(2, "axel2", assignment);
+    DesignExtractor::storeNewWhile(3,nestedCondVarNames, nestedCondConsts, nestedWhileStmt);
+    DesignExtractor::storeNewRead(4, "shine", readStmt);
+    DesignExtractor::exitWhile();
+    DesignExtractor::exitWhile();
+    DesignExtractor::exitProcedure();
+    REQUIRE(DesignExtractor::signalEnd() == true);
+
+    // Check Next
+    REQUIRE(PKB::next->getNext(1) == unordered_set<ProgLine>{ 2 });
+    REQUIRE(PKB::next->getNext(2) == unordered_set<ProgLine>{ 3 });
+    REQUIRE(PKB::next->getNext(3) == unordered_set<ProgLine>{ 1, 4 });
+    REQUIRE(PKB::next->getNext(4) == unordered_set<ProgLine>{ 3 });
+    // Check Next*
+    REQUIRE(PKB::next->getNextStar(1) == unordered_set<ProgLine>{ 1, 2, 3, 4 });
+    REQUIRE(PKB::next->getNextStar(2) == unordered_set<ProgLine>{ 1, 2, 3, 4 });
+    REQUIRE(PKB::next->getNextStar(3) == unordered_set<ProgLine>{ 1, 2, 3, 4 });
+    REQUIRE(PKB::next->getNextStar(4) == unordered_set<ProgLine>{ 1, 2, 3, 4 });
+
+    DesignExtractor::signalReset();
+    // 1 nested While
+    DesignExtractor::storeNewProcedure("hana");
+    DesignExtractor::storeNewWhile(1,condVarNames, condConsts, whileStmt);
+    DesignExtractor::storeNewAssignment(2, "axel2", assignment);
+    DesignExtractor::storeNewWhile(3,nestedCondVarNames, nestedCondConsts, nestedWhileStmt);
+    DesignExtractor::storeNewRead(4, "shine", readStmt);
+    DesignExtractor::exitWhile();
+    DesignExtractor::storeNewRead(5, "shine2", readStmt);
+    DesignExtractor::exitWhile();
+    DesignExtractor::storeNewRead(6, "shine3", readStmt);
+    DesignExtractor::exitProcedure();
+    REQUIRE(DesignExtractor::signalEnd() == true);
+
+    // Check Next
+    REQUIRE(PKB::next->getNext(1) == unordered_set<ProgLine>{ 2, 6 });
+    REQUIRE(PKB::next->getNext(2) == unordered_set<ProgLine>{ 3 });
+    REQUIRE(PKB::next->getNext(3) == unordered_set<ProgLine>{ 4, 5 });
+    REQUIRE(PKB::next->getNext(4) == unordered_set<ProgLine>{ 3 });
+    REQUIRE(PKB::next->getNext(5) == unordered_set<ProgLine>{ 1 });
+    // Check Next*
+    REQUIRE(PKB::next->getNextStar(1) == unordered_set<ProgLine>{ 1, 2, 3, 4, 5, 6 });
+    REQUIRE(PKB::next->getNextStar(2) == unordered_set<ProgLine>{ 1, 2, 3, 4, 5, 6 });
+    REQUIRE(PKB::next->getNextStar(3) == unordered_set<ProgLine>{ 1, 2, 3, 4, 5, 6 });
+    REQUIRE(PKB::next->getNextStar(4) == unordered_set<ProgLine>{ 1, 2, 3, 4, 5, 6 });
 }
