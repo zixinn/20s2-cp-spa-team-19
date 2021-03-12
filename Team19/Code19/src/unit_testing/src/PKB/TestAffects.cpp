@@ -585,8 +585,6 @@ void setUpAffectsTest3() {
     PKB::uses->storeStmtUses(4,4);
     PKB::uses->storeStmtUses(5,1);
     PKB::uses->storeStmtUses(5,2);
-    PKB::uses->storeStmtUses(5,3);
-    PKB::uses->storeStmtUses(5,4);
     PKB::uses->storeStmtUses(6,1);
     PKB::uses->storeStmtUses(7,1);
     PKB::uses->storeStmtUses(7,2);
@@ -669,7 +667,7 @@ TEST_CASE("isAffects Test3") {
     REQUIRE(PKB::affects->isAffects(11,8));
     REQUIRE(PKB::affects->isAffects(11,10));
     REQUIRE(PKB::affects->isAffects(12,16));
-
+    
 }
 
 TEST_CASE("getAffectsSize Test3") {

@@ -149,9 +149,9 @@ void Affects::populateAffects() {
                 // a1 does not affect a2 since a2 does not use the variable modified by a1
                 continue;
             }
-
+            unordered_set<StmtNum> visited;
             for (ProgLine next : PKB::next->getNext(a1)) {
-                if (pathDoesNotModify(next, a2, v)) {
+                if (pathDoesNotModify(next, a2, v, visited)) {
                     storeAffects(a1, a2);
                     break;
                 }
@@ -160,13 +160,16 @@ void Affects::populateAffects() {
     }
 }
 
-bool Affects::pathDoesNotModify(StmtNum a1, StmtNum a2, ID v) {
+bool Affects::pathDoesNotModify(StmtNum a1, StmtNum a2, ID v, unordered_set<StmtNum> visited) { 
+    
+    visited.insert(a1);
+    
     if (a1 == a2) {
         // we found our way to a2 means we found the path that has not modified v
         return true;
     }
 
-    if (!PKB::next->isNextStar(a1, a2)) {
+    if (!PKB::next->isNextStar(a1, a2)) {  
         // not a path to a2
         return false;
     }
@@ -181,10 +184,15 @@ bool Affects::pathDoesNotModify(StmtNum a1, StmtNum a2, ID v) {
 
     // A possible path, need to continue checking
     for (ProgLine next : PKB::next->getNext(a1)) {
-        if (pathDoesNotModify(next, a2, v)) {
-            return true;
+        if (visited.find(next) == visited.end()) {
+            if (pathDoesNotModify(next, a2, v, visited)) {
+                return true;
+            }
         }
+        
     }
+
+    visited.erase(a1);
 
     return false;
 }
