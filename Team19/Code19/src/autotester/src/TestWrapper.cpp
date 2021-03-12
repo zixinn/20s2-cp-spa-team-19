@@ -43,8 +43,13 @@ void TestWrapper::parse(std::string filename) {
         auto l = new LexerStub(tok_ptrs);
         auto p = Parser(l);
         valid = p.parse();
+    } catch (sp::ParserException &e) {
+        cout << e.what();
+        valid = false;
+    } catch (sp::UtilsException &e) {
+        cout << e.what();
+        valid = false;
     } catch (...) {
-        
         valid = false;
     }
 

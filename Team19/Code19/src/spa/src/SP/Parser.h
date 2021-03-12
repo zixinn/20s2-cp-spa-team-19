@@ -81,6 +81,7 @@ private:
 	int currPrecedence();
 
 	//calls to DE
-	void addStmtLstToDE(vector<ast::Stmt*> stmts);
+	//void addStmtLstToDE(vector<ast::Stmt*> stmts);
+	void addStmtLstToDE(vector<ast::Stmt*> stmts, ast::Proc* proc);
 
 };
