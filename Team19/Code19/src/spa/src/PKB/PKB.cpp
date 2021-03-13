@@ -46,6 +46,7 @@ void PKB::resetPKB() {
 bool PKB::populatePKB() {
     follows->populateFollowsStar();
     parent->populateParentStar();
+    next->populateNextStar();
     return calls->processCalls();
 }
 
