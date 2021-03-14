@@ -7,11 +7,13 @@ StmtNum DesignExtractor::currentParent;
 set<ID> DesignExtractor::currentModifiedVarsLst;
 set<ID> DesignExtractor::currentUsedVarsLst;
 vector<StmtNum> DesignExtractor::currentStmtLst;
+vector<set<StmtNum>> DesignExtractor::currentNext;
 // Stacks
 vector<vector<StmtNum>> DesignExtractor::stmtLstsStack;
 vector<set<ID>> DesignExtractor::usesStack;
 vector<set<ID>> DesignExtractor::modifiesStack;
 vector<StmtNum> DesignExtractor::parentStack;
+vector<vector<set<StmtNum>>> DesignExtractor::nextStack;
 
 // To support generic stacks
 template <typename T>
@@ -32,6 +34,7 @@ void DesignExtractor::DEStack<T>::stackPush(vector<T> &stack, T entry) {
 void DesignExtractor::storeNewProcedure(STRING procedureName) {
     // Stores new procedure into PKB and receive the PKB-assigned ID
     currentProcedureID = PKB::procTable->storeProcName(procedureName);
+    createNewCurrentState(NULL); // no parent for a new procedure!
 }
 
 void DesignExtractor::exitProcedure() {
@@ -47,6 +50,7 @@ void DesignExtractor::exitProcedure() {
     // Stores this Procedure's Modifies, Uses relationships for the currentStmtLst
     addAllCurrentStmtLstModifiesForProcedure();
     addAllCurrentStmtLstUsesForProcedure();
+    addNextForCurrentStmtLst();
 }
 
 void DesignExtractor::storeNewWhile(StmtNum startStmtNum, vector<STRING> condVarNames, vector<STRING> condConsts, WhileStmt* AST) {
@@ -54,7 +58,9 @@ void DesignExtractor::storeNewWhile(StmtNum startStmtNum, vector<STRING> condVar
     for (STRING varName : condVarNames) {
         ID varID = PKB::varTable->storeVarName(varName);
         PKB::uses->storeStmtUses(startStmtNum, varID);
-
+        if (!PKB::stmtTable->storeWhilePattern(startStmtNum, varID)) {
+            std::cerr << "DE encountered an error when attempting to store control variable " << varID << " in PKB.\n";
+        }
         // DE Internal Bookkeeping
         currentUsedVarsLst.insert(varID);   // the conditional variables used
     }
@@ -66,15 +72,23 @@ void DesignExtractor::storeNewWhile(StmtNum startStmtNum, vector<STRING> condVar
     if (!PKB::stmtTable->storeStmt(startStmtNum, AST, WHILE_)) {
         std::cerr << "DE encountered an error when attempting to store statement " << startStmtNum << " in PKB.\n";
     }
+
     // DE Internal Bookkeeping
     currentStmtLst.push_back(startStmtNum);
     // Prepare for the while loop's stmtLst
     currentParent = startStmtNum;
+    currentNext.push_back(set<ProgLine>{ startStmtNum });
     saveCurrentState();
     createNewCurrentState(startStmtNum); // current While stmt is not part of the new stmtLst
+
+    // This is to account for the Next relationship from while loop to its first nested statement
+    currentNext.push_back(set<ProgLine>{ startStmtNum });
 }
 
 void DesignExtractor::exitWhile() {
+    // Note that the last stmt in While's stmtLst will always go to the while loop itself next
+    // So only need to account for branching at the start of the loop
+    currentNext.push_back(currentNext.front());
     storeCurrentStmtLstRelationships(); // Store While loop's stmtLst's relationships
     popSavedState();                    // Reset to previous local state variables
 }
@@ -84,7 +98,9 @@ void DesignExtractor::storeNewIf(StmtNum startStmtNum, vector<STRING> condVarNam
     for (STRING varName : condVarNames) {
         ID varID = PKB::varTable->storeVarName(varName);
          PKB::uses->storeStmtUses(startStmtNum, varID);
-
+        if (!PKB::stmtTable->storeIfPattern(startStmtNum, varID)) {
+            std::cerr << "DE encountered an error when attempting to store control variable " << varID << " in PKB.\n";
+        }
         // DE Internal Bookkeeping
         currentUsedVarsLst.insert(varID);   // the conditional variables used
     }
@@ -99,21 +115,52 @@ void DesignExtractor::storeNewIf(StmtNum startStmtNum, vector<STRING> condVarNam
     currentStmtLst.push_back(startStmtNum);
     // Prepare for the If stmt's stmtLst
     currentParent = startStmtNum;
+
+    currentNext.push_back(set<ProgLine>{ startStmtNum });
+    currentNext.push_back(set<ProgLine>{ });
+    // For the Else portion of the statement later.
+    currentNext.push_back(set<ProgLine>{ startStmtNum });
+
     saveCurrentState();
     createNewCurrentState(startStmtNum); // current If stmt is not part of the new stmtLst
+    // This is to account for the Next relationship from the If to its first Then nested statement
+    currentNext.push_back(set<ProgLine>{ startStmtNum });
 }
 void DesignExtractor::storeNewElse() {
     // Stores the else section of if-else statement
     // An if-then and its else statement has their own separate stmtLsts
     // So, it's necessary to populate the if-part abstractions and reset the local state variables
     storeCurrentStmtLstRelationships();
+
+    // Last stmt in currentNext is the last statement in 'then'
+    // Thus, its Next relationship is with the stmt after the IfElse statement.
+    set<ProgLine> lastThenStmt = currentNext.back();
     createNewCurrentState(currentParent);
+
+    vector<set<ProgLine>> storedNextEntries = DEStack<vector<set<ProgLine>>>::stackPop(nextStack);
+    currentNext =  vector<set<ProgLine>>{ storedNextEntries.back() };
+    storedNextEntries.pop_back();
+
+    // To store the ProgLine of the branching Then
+    storedNextEntries.push_back(lastThenStmt);
+    DEStack<vector<set<ProgLine>>>::stackPush(nextStack, storedNextEntries);
 }
 
 void DesignExtractor::endIfElse() {
     // Called when exiting an if-else statement.
     storeCurrentStmtLstRelationships(); // Store If stmt's stmtLst's relationships
+    set<ProgLine> lastElseStmt = currentNext.back();
+//    cerr << "lastElseStmt is " ;
+//    for (int e: lastElseStmt)
+//        cerr << e;
+
     popSavedState();                    // Reset to previous local state variables
+
+    // Add the ProgLine of the branching Else to the ProgLine of the branching Then
+//    currentNext.back().insert(*lastElseStmt.rbegin());
+    for (int e: lastElseStmt) {
+        currentNext.back().insert(e);   // add to the previous currentNext
+    }
 }
 
 void DesignExtractor::storeNewAssignment(StmtNum stmtNum, STRING variableName, AssignStmt* AST) {
@@ -154,6 +201,7 @@ void DesignExtractor::storeNewAssignment(StmtNum stmtNum, STRING variableName, A
     // DE Internal Bookkeeping
     currentStmtLst.push_back(stmtNum);
     currentModifiedVarsLst.insert(varID);
+    currentNext.push_back(set<ProgLine>{ stmtNum });
 }
 
 void DesignExtractor::storeNewRead(StmtNum stmtNum, STRING variableName, ReadStmt* AST) {
@@ -166,9 +214,16 @@ void DesignExtractor::storeNewRead(StmtNum stmtNum, STRING variableName, ReadStm
     if (!PKB::stmtTable->storeStmt(stmtNum, AST, READ_)) {
         std::cerr << "DE encountered an error when attempting to store statement " << stmtNum << " in PKB.\n";
     }
+
+    // Stores <stmtNum, readVarID> into readVariablesMap.
+    if (!PKB::stmtTable->storeReadVariableForStmt(stmtNum, varID)) {
+        std::cerr << "DE encountered an error when attempting to store read variable for statement " << stmtNum << " in PKB.\n";
+    }
+
     // DE Internal Bookkeeping
     currentStmtLst.push_back(stmtNum);
     currentModifiedVarsLst.insert(varID);
+    currentNext.push_back(set<ProgLine>{ stmtNum });
 }
 
 void DesignExtractor::storeNewPrint(StmtNum stmtNum, STRING variableName, PrintStmt* AST) {
@@ -180,9 +235,39 @@ void DesignExtractor::storeNewPrint(StmtNum stmtNum, STRING variableName, PrintS
     if (!PKB::stmtTable->storeStmt(stmtNum, AST, PRINT_)) {
         std::cerr << "DE encountered an error when attempting to store statement " << stmtNum << " in PKB.\n";
     }
+
+    // Stores <stmtNum, printVarID> into readVariablesMap.
+    if (!PKB::stmtTable->storePrintVariableForStmt(stmtNum, varID)) {
+        std::cerr << "DE encountered an error when attempting to store print variable for statement " << stmtNum << " in PKB.\n";
+    }
+
     // DE Internal Bookkeeping
     currentStmtLst.push_back(stmtNum);
     currentUsedVarsLst.insert(varID);
+    currentNext.push_back(set<ProgLine>{ stmtNum });
+}
+
+bool DesignExtractor::storeNewCall(StmtNum stmtNum, STRING callerName, STRING procedureName, CallStmt* AST) {
+    if (!PKB::stmtTable->storeStmt(stmtNum, AST, CALL_)) {
+        std::cerr << "DE encountered an error when attempting to store statement " << stmtNum << " in PKB.\n";
+    }
+    // Get procedure IDs
+    ID callerProcID = PKB::procTable->getProcID(callerName);    // this should be in PKB already
+    ID calledProcID = PKB::procTable->storeProcName(procedureName);
+    if (callerProcID < 0) {
+        std::cerr << "DE could not find the callerName " << callerName << " in PKB.\n";
+    }
+
+    // Bookkepping
+    currentStmtLst.push_back(stmtNum);
+    currentNext.push_back(set<ProgLine>{ stmtNum });
+
+    // Only store if this is not a recursive call
+    if (callerProcID != calledProcID) {
+        return PKB::calls->storeCalls(stmtNum, callerProcID, calledProcID);
+    } else {
+        return false;
+    }
 }
 
 void DesignExtractor::signalReset() {
@@ -192,12 +277,13 @@ void DesignExtractor::signalReset() {
     currentModifiedVarsLst.clear();
     currentUsedVarsLst.clear();
     currentStmtLst.clear();
+    currentNext.clear();
     // Stacks
     stmtLstsStack.clear();
     usesStack.clear();
     modifiesStack.clear();
     parentStack.clear();
-
+    nextStack.clear();
     PKB::resetPKB();
 }
 
@@ -253,6 +339,19 @@ void DesignExtractor::storeCurrentStmtLstRelationships() {
     // because the container statements' stmtLsts are not in the Procedure's currentStmtLst
     addAllCurrentStmtLstModifiesForProcedure();
     addAllCurrentStmtLstUsesForProcedure();
+    addNextForCurrentStmtLst();
+}
+
+void DesignExtractor::addNextForCurrentStmtLst() {
+    if (!currentNext.empty()) {
+        for (int i = 0; i < currentNext.size() - 1; i++) {
+            for (ProgLine n1 : currentNext[i]) {
+                for (ProgLine n2 : currentNext[i + 1]) {
+                    PKB::next->storeNext(n1, n2);
+                }
+            }
+        }
+    }
 }
 
 void DesignExtractor::addCurrentStmtLstToPKB() {
@@ -269,7 +368,6 @@ void DesignExtractor::addFollowsForCurrentStmtLst() {
              PKB::follows->storeFollows(currentStmtLst[i], currentStmtLst[i + 1]);
         }
     }
-
 }
 
 void DesignExtractor::addParentForCurrentStmtLst() {
@@ -316,6 +414,7 @@ void DesignExtractor::saveCurrentState() {
     DEStack<StmtNum>::stackPush(parentStack, currentParent);
     DEStack<set<ID>>::stackPush(usesStack, currentUsedVarsLst);
     DEStack<set<ID>>::stackPush(modifiesStack, currentModifiedVarsLst);
+    DEStack<vector<set<ProgLine>>>::stackPush(nextStack, currentNext);
 }
 
 void DesignExtractor::popSavedState() {
@@ -324,6 +423,7 @@ void DesignExtractor::popSavedState() {
     currentParent = DEStack<StmtNum>::stackPop(parentStack);
     currentUsedVarsLst = DEStack<set<ID>>::stackPop(usesStack);
     currentModifiedVarsLst = DEStack<set<ID>>::stackPop(modifiesStack);
+    currentNext = DEStack<vector<set<ProgLine>>>::stackPop(nextStack);
 }
 
 void DesignExtractor::createNewCurrentState(ID parentStmt) {
@@ -331,5 +431,6 @@ void DesignExtractor::createNewCurrentState(ID parentStmt) {
     currentStmtLst = vector<ID>();
     currentUsedVarsLst = set<ID>();
     currentModifiedVarsLst = set<ID>();
+    currentNext = vector<set<ProgLine>>();
 }
 

@@ -35,6 +35,10 @@ private:
     static int getQueryType(string firstType, string secondType);
     static string parseExprToExprStr(string input);
 
+    static bool evaluateIfClause(string varName, string firstArg, string firstType, 
+        unordered_map<string, vector<int>>& tempResults);
+    static bool evaluateWhileClause(string varName, string firstArg, string firstType,
+        unordered_map<string, vector<int>>& tempResults);
     static bool evaluateNameUnderscore(vector<int> stmtNums, string varName, string firstArg,
         unordered_map<string, vector<int>>& tempResults);
     static bool evaluateNameExpression(vector<int> stmtNums, string varName, string firstArg,

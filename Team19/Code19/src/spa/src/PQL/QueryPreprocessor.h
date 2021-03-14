@@ -19,25 +19,36 @@ public:
 
 private:
     unordered_map<string, string> declarations;
-    string toSelect;
+    vector<string> toSelect;
     vector<Clause> clauses;
-    bool isValid = true;
+    bool isSyntacticallyValid = true;
+    bool isSemanticallyValid = true;
 
     unordered_set<string> designEntities;
+    unordered_set<string> attrNames;
     unordered_map<string, vector<unordered_set<string>>> validSuchThatArgType;
     unordered_map<string, vector<unordered_set<string>>> validPatternArgType;
+    unordered_map<string, unordered_set<string>> attrMap;
 
-    bool parseDeclaration(string designEntity, string synonyms);
+    void parseDeclaration(string designEntity, string synonyms);
     bool checkDesignEntity(string designEntity);
 
-    bool parseSelect(string select);
+    void parseSelect(string select);
     int getNextPos(vector<int> pos);
 
-    bool parseToSelect(string synonym);
+    void parseToSelect(string resultCl);
+    void checkAttrRef(string synonym, string attrName);
 
-    bool parseSuchThatClause(string clause);
-    bool checkSuchThatClause(string rel, vector<string> args);
+    void parseSuchThatClauses(string clauses);
+    void parseSuchThatClause(string clause);
+    void checkSuchThatClause(string rel, vector<string> args);
 
-    bool parsePatternClause(string clause);
-    bool checkPatternClause(string syn, vector<string> args);
+    void parsePatternClauses(string clauses);
+    void parsePatternClause(string clause);
+    void checkPatternClause(string syn, vector<string> args);
+
+    void parseWithClauses(string clauses);
+    void parseWithClause(string clause);
+    void checkWithClause(string left, string right);
+    string checkRef(string& ref);
 };

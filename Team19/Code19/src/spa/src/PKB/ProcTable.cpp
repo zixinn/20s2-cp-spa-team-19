@@ -13,16 +13,16 @@ ID ProcTable::getProcID(STRING procName) {
 STRING ProcTable::getProcName(ID procID) {
     try {
         return procNames.at(procID);
-    } catch (std::out_of_range const& e) {
-        std::cerr << "Index out of range: No procedure with ID " << procID << " in procNameIDMap." << std::endl;
+    } catch (out_of_range const& e) {
+        cerr << "Index out of range: No procedure with ID " << procID << " in procNameIDMap." << endl;
         throw;
     }
 }
 
 pair<StmtNum, StmtNum> ProcTable::getProcRange(ID procID) {
     if (procStmtMap.find(procID) == procStmtMap.end()) {
-        std::cerr << "Index out of range: No procedure with ID " << procID << " in procStmtMap." << std::endl;
-        throw std::exception();
+        cerr << "Index out of range: No procedure with ID " << procID << " in procStmtMap." << endl;
+        throw exception();
     } else {
         return procStmtMap.find(procID)->second;
     }
@@ -33,7 +33,7 @@ vector<STRING> const &ProcTable::getAllProcNames() const {
 }
 
 vector<STRING> ProcTable::convertProcIDsToNames(vector<ID> procIDs) {
-    std::vector<std::string> result;
+    vector<string> result;
     for (int id : procIDs) {
         result.push_back(getProcName(id));
     }
@@ -56,7 +56,7 @@ ID ProcTable::storeProcName(STRING procName) {
 }
 
 bool ProcTable::storeProcStmt(ID procID, StmtNum startStmt, StmtNum endStmt) {
-    return procStmtMap.insert({procID, std::make_pair(startStmt, endStmt)}).second;
+    return procStmtMap.insert({procID, make_pair(startStmt, endStmt)}).second;
 }
 
 bool ProcTable::hasProc(STRING procName) {

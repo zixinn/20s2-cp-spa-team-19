@@ -10,6 +10,7 @@ add_executable(unit_testing ${srcs}
 	src/SP/TestParseWhile.cpp
 	src/SP/TestParseIf.cpp
 	src/SP/TestCondExprUtils.cpp
+	src/SP/TestParserUtils.cpp
 )
 
 target_link_libraries(unit_testing spa)

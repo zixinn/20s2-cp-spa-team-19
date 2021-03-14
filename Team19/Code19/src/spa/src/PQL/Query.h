@@ -11,12 +11,14 @@ using namespace std;
 class Query {
 public:
     Query();
-    Query(unordered_map<string, string> declarations, string toSelect, vector<Clause> clauses, bool isValid);
+    Query(unordered_map<string, string> declarations, vector<string> toSelect, vector<Clause> clauses,
+            bool isSyntacticallyValid, bool isSemanticallyValid);
 
     unordered_map<string, string> getDeclarations();
-    string getToSelect();
+    vector<string> getToSelect();
     vector<Clause> getClauses();
-    bool getIsValid();
+    bool getIsSyntacticallyValid();
+    bool getIsSemanticallyValid();
 
     friend bool operator==(const Query& q1, const Query& q2);
 
@@ -24,7 +26,8 @@ public:
 
 private:
     unordered_map<string, string> declarations;
-    string toSelect;
+    vector<string> toSelect;
     vector<Clause> clauses;
-    bool isValid;
+    bool isSyntacticallyValid;
+    bool isSemanticallyValid;
 };
