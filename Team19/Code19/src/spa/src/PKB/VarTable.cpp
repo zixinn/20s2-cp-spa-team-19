@@ -33,6 +33,14 @@ vector<STRING> VarTable::convertVarIDsToNames(vector<ID> varIDs) {
     return result;
 }
 
+vector<ID> VarTable::getAllVarIDs() {
+    vector<ID> result;
+    for (auto &it : varNameIDMap) {
+        result.push_back(it.second);
+    }
+    return result;
+}
+
 int VarTable::getSize() {
     return varNames.size();
 }
