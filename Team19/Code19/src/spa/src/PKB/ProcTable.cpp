@@ -40,6 +40,14 @@ vector<STRING> ProcTable::convertProcIDsToNames(vector<ID> procIDs) {
     return result;
 }
 
+vector<ID> ProcTable::getAllProcIDs() {
+    vector<ID> result;
+    for (auto &it : procNameIDMap) {
+        result.push_back(it.second);
+    }
+    return result;
+}
+
 int ProcTable::getSize() {
     return procNames.size();
 }

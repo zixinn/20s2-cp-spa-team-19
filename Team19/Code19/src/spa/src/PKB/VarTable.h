@@ -21,6 +21,9 @@ public:
     // returns a vector of variable names corresponding to the vector of variable IDs given.
     vector<STRING> convertVarIDsToNames(vector<ID> varIDs);
 
+    // returns the vector of variable IDs.
+    vector<ID> getAllVarIDs();
+
     // Returns the number of variables in the table.
     int getSize();
 
