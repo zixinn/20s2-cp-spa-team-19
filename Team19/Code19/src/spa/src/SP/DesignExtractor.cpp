@@ -214,6 +214,12 @@ void DesignExtractor::storeNewRead(StmtNum stmtNum, STRING variableName, ReadStm
     if (!PKB::stmtTable->storeStmt(stmtNum, AST, READ_)) {
         std::cerr << "DE encountered an error when attempting to store statement " << stmtNum << " in PKB.\n";
     }
+
+    // Stores <stmtNum, readVarID> into readVariablesMap.
+    if (!PKB::stmtTable->storeReadVariableForStmt(stmtNum, varID)) {
+        std::cerr << "DE encountered an error when attempting to store read variable for statement " << stmtNum << " in PKB.\n";
+    }
+
     // DE Internal Bookkeeping
     currentStmtLst.push_back(stmtNum);
     currentModifiedVarsLst.insert(varID);
@@ -229,6 +235,12 @@ void DesignExtractor::storeNewPrint(StmtNum stmtNum, STRING variableName, PrintS
     if (!PKB::stmtTable->storeStmt(stmtNum, AST, PRINT_)) {
         std::cerr << "DE encountered an error when attempting to store statement " << stmtNum << " in PKB.\n";
     }
+
+    // Stores <stmtNum, printVarID> into readVariablesMap.
+    if (!PKB::stmtTable->storePrintVariableForStmt(stmtNum, varID)) {
+        std::cerr << "DE encountered an error when attempting to store print variable for statement " << stmtNum << " in PKB.\n";
+    }
+
     // DE Internal Bookkeeping
     currentStmtLst.push_back(stmtNum);
     currentUsedVarsLst.insert(varID);

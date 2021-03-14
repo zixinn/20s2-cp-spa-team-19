@@ -20,8 +20,8 @@ bool StmtTable::isWhileStmtWithControlVar(StmtNum stmtNum, ID controlVarID) {
 
 ast::Stmt* StmtTable::getStmtNode(StmtNum stmtNum) {
     if (stmtASTMap.find(stmtNum) == stmtASTMap.end()) {
-        std::cerr << "No statement with StmtNum " << stmtNum << " stored in stmtASTMap." << std::endl;
-        throw std::exception();
+        cerr << "No statement with StmtNum " << stmtNum << " stored in stmtASTMap." << endl;
+        throw exception();
     } else {
         return stmtASTMap.find(stmtNum)->second;
     }
@@ -63,6 +63,39 @@ unordered_set<ID> const &StmtTable::getControlVarsOfWhileStmt(StmtNum stmtNum) c
     }
 }
 
+ID StmtTable::getReadVariableOfStmt(StmtNum stmtNum) {
+    auto it = readVariablesMap.find(stmtNum);
+    if (it == readVariablesMap.end()) {
+        return -1;
+    }
+    return it->second;
+}
+
+ID StmtTable::getPrintVariableOfStmt(StmtNum stmtNum) {
+    auto it = printVariablesMap.find(stmtNum);
+    if (it == printVariablesMap.end()) {
+        return -1;
+    }
+    return it->second;
+}
+
+unordered_set<StmtNum> const &StmtTable::getStmtNumsOfReadWithVar(ID readVarID) const {
+    if (reverseReadVariablesMap.find(readVarID) == reverseReadVariablesMap.end()) {
+        static unordered_set<StmtNum> empty = unordered_set<StmtNum>({});
+        return empty;
+    } else {
+        return reverseReadVariablesMap.find(readVarID)->second;
+    }
+}
+unordered_set<StmtNum> const &StmtTable::getStmtNumsOfPrintWithVar(ID printVarID) const {
+    if (reversePrintVariablesMap.find(printVarID) == reversePrintVariablesMap.end()) {
+        static unordered_set<StmtNum> empty = unordered_set<StmtNum>({});
+        return empty;
+    } else {
+        return reversePrintVariablesMap.find(printVarID)->second;
+    }
+}
+
 pair<vector<StmtNum>, vector<ID> > StmtTable::getAllIfPatterns() {
     vector<StmtNum> first;
     vector<ID> varIDs;
@@ -89,8 +122,8 @@ pair<vector<StmtNum>, vector<ID> > StmtTable::getAllWhilePatterns() {
 
 pair<STRING, STRING> StmtTable::getAssignExpr(StmtNum stmtNum) {
     if (assignExprMap.find(stmtNum) == assignExprMap.end()) {
-        std::cerr << "No statement with StmtNum " << stmtNum << " stored in assignExprMap." << std::endl;
-        throw std::exception();
+        cerr << "No statement with StmtNum " << stmtNum << " stored in assignExprMap." << endl;
+        throw exception();
     } else {
         return assignExprMap.find(stmtNum)->second;
     }
@@ -175,6 +208,38 @@ bool StmtTable::storeStmt(StmtNum stmtNum, ast::Stmt *stmtNode, STRING type) {
 
 bool StmtTable::storeAssignExpr(StmtNum stmtNum, STRING varName, STRING expr) {
     return assignExprMap.insert({stmtNum, make_pair(varName, expr)}).second;
+}
+
+bool StmtTable::storeReadVariableForStmt(StmtNum stmtNum, ID readVarID) {
+    if (readVariablesMap.find(stmtNum) != readVariablesMap.end()) {
+        return false;
+    }
+    readVariablesMap.insert({stmtNum, readVarID}).second;
+
+    auto it = reverseReadVariablesMap.find(readVarID);
+    if (it == reverseReadVariablesMap.end()) {
+        reverseReadVariablesMap.insert({readVarID, unordered_set<StmtNum>({stmtNum})});
+    } else {
+        it->second.insert(stmtNum);
+    }
+
+    return true;
+}
+
+bool StmtTable::storePrintVariableForStmt(StmtNum stmtNum, ID printVarID) {
+    if (printVariablesMap.find(stmtNum) != printVariablesMap.end()) {
+        return false;
+    }
+    printVariablesMap.insert({stmtNum, printVarID}).second;
+
+    auto it = reversePrintVariablesMap.find(printVarID);
+    if (it == reversePrintVariablesMap.end()) {
+        reversePrintVariablesMap.insert({printVarID, unordered_set<StmtNum>({stmtNum})});
+    } else {
+        it->second.insert(stmtNum);
+    }
+
+    return true;
 }
 
 bool StmtTable::storeIfPattern(StmtNum stmtNum, ID controlVarID) {

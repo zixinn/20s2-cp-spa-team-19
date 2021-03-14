@@ -230,6 +230,10 @@ TEST_CASE("storeNewRead Test") {
     REQUIRE(varID == 0);    // varTable ID starts indexing at 0
     REQUIRE(PKB::varTable->getVarName(varID) == "procedure");
 
+    // Check readVariables
+    REQUIRE(PKB::stmtTable->getReadVariableOfStmt(1) == varID);
+    REQUIRE(PKB::stmtTable->getStmtNumsOfReadWithVar(varID) == unordered_set<StmtNum>({1}));
+
     // Check Modifies
     REQUIRE(PKB::modifies->getStmtsModifies(varID) == unordered_set<StmtNum>{ 1 }); // StmtNums start from 1
 }
@@ -243,6 +247,10 @@ TEST_CASE("storeNewPrint Test") {
     ID varID = PKB::varTable->getVarID("defenestration");
     REQUIRE(varID == 0);    // varTable ID starts indexing at 0
     REQUIRE(PKB::varTable->getVarName(varID) == "defenestration");
+
+    // Check printVariables
+    REQUIRE(PKB::stmtTable->getPrintVariableOfStmt(1) == varID);
+    REQUIRE(PKB::stmtTable->getStmtNumsOfPrintWithVar(varID) == unordered_set<StmtNum>({1}));
 
     // Check Uses
     REQUIRE(PKB::uses->getStmtsUses(varID) == unordered_set<StmtNum>{ 1 }); // StmtNums start from 1

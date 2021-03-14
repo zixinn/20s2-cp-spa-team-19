@@ -110,6 +110,17 @@ TEST_CASE("getCalleeInStmt Test") {
     REQUIRE(PKB::calls->getCalleeInStmt(2) == -1); // Not a call statement
 }
 
+TEST_CASE("getStmtNumThatCallsCallee Test") {
+    setUpCallsTest();
+    PKB::calls->storeCalls(5, 4, 1); // suppose procedure s calls procedure p twice (stmt 5 and stmt 6).
+    PKB::calls->storeCalls(6, 4, 1);
+    REQUIRE(PKB::calls->processCalls());
+    REQUIRE(PKB::calls->getStmtNumThatCallsCallee(2) == unordered_set<StmtNum>({1}));
+    REQUIRE(PKB::calls->getStmtNumThatCallsCallee(3) == unordered_set<StmtNum>({3}));
+    REQUIRE(PKB::calls->getStmtNumThatCallsCallee(1) == unordered_set<StmtNum>({5,6}));
+    REQUIRE(PKB::calls->getStmtNumThatCallsCallee(4).empty());
+}
+
 TEST_CASE("getCallers Test") {
     setUpCallsTest();
     PKB::calls->storeCalls(5, 4, 2); // suppose we have another procedure s that also calls procedure q.
