@@ -748,3 +748,275 @@ TEST_CASE("getAffectsStar Test3") {
     REQUIRE(PKB::affects->getAffectsStar(16).empty());
     REQUIRE(PKB::affects->getAffectsStar(17).empty());
 }
+
+//    procedure p {
+//    1.  a = 2;
+//    2.  b = 3 + a;
+//    3.  while (a == 1) {
+//    4.      while (b == 2) {
+//    5.          a = a+8;
+//    6.          while (c == 3) {
+//    7.              if (d == 3) then {
+//    8.                  call q;
+//    9.                  c = b+c;
+//                    } else {
+//    10.                 b = c * a / b;
+//    11.                 call r; }
+//    12.             b = 12 * b * c;} } }
+//
+//    procedure q {
+//    13. b = b+a*6;
+//    14. if (a == 1) then {
+//    15.     a = a-8;
+//    16.     call r;
+//        } else {
+//    17.     b = b % c;} }
+//
+//    procedure r {
+//    18. c = b + c + a; }
+
+//    Affects(1,2), Affects(1,5)
+//    Affects(2,10)
+//    Affects(5,5), Affects(5,10)
+//    Affects(9,12), Affects(9,10)
+//    Affects(10,12)
+//    Affects(12,10)
+//    Affects(13,17)
+
+//    Affects*(1,2), Affects*(1,5), Affects*(1,10), Affects*(1,12)
+//    Affects*(2,10), Affects*(2,12)
+//    Affects*(5,5), Affects*(5,10), Affects*(5,12)
+//    Affects*(9,12), Affects*(9,10)
+//    Affects*(10,12), Affects*(10,10)
+//    Affects*(12,10), Affects*(12,12)
+//    Affects*(13,17)
+
+void setUpAffectsTest4() {
+    PKB::resetPKB();
+
+    ast::Stmt* stmtNodeStub = new StmtNodeStub(1);
+    PKB::stmtTable->storeStmt(1, stmtNodeStub, "assign");
+    PKB::stmtTable->storeStmt(2, stmtNodeStub, "assign");
+    PKB::stmtTable->storeStmt(3, stmtNodeStub, "while");
+    PKB::stmtTable->storeStmt(4, stmtNodeStub, "while");
+    PKB::stmtTable->storeStmt(5, stmtNodeStub, "assign");
+    PKB::stmtTable->storeStmt(6, stmtNodeStub, "while");
+    PKB::stmtTable->storeStmt(7, stmtNodeStub, "if");
+    PKB::stmtTable->storeStmt(8, stmtNodeStub, "call");
+    PKB::stmtTable->storeStmt(9, stmtNodeStub, "assign");
+    PKB::stmtTable->storeStmt(10, stmtNodeStub, "assign");
+    PKB::stmtTable->storeStmt(11, stmtNodeStub, "call");
+    PKB::stmtTable->storeStmt(12, stmtNodeStub, "assign");
+    PKB::stmtTable->storeStmt(13, stmtNodeStub, "assign");
+    PKB::stmtTable->storeStmt(14, stmtNodeStub, "if");
+    PKB::stmtTable->storeStmt(15, stmtNodeStub, "assign");
+    PKB::stmtTable->storeStmt(16, stmtNodeStub, "call");
+    PKB::stmtTable->storeStmt(17, stmtNodeStub, "assign");
+    PKB::stmtTable->storeStmt(18, stmtNodeStub, "assign");
+
+    PKB::next->storeNext(1,2);
+    PKB::next->storeNext(2,3);
+    PKB::next->storeNext(3,4);
+    PKB::next->storeNext(4,5);
+    PKB::next->storeNext(5,6);
+    PKB::next->storeNext(6,7);
+    PKB::next->storeNext(7,8);
+    PKB::next->storeNext(8,9);
+    PKB::next->storeNext(7,10);
+    PKB::next->storeNext(10,11);
+    PKB::next->storeNext(9,12);
+    PKB::next->storeNext(11,12);
+    PKB::next->storeNext(12,6);
+    PKB::next->storeNext(6,4);
+    PKB::next->storeNext(4,3);
+    PKB::next->storeNext(13,14);
+    PKB::next->storeNext(14,15);
+    PKB::next->storeNext(15,16);
+    PKB::next->storeNext(14,17);
+
+    // proc ID: p = 1, q = 2, r = 3
+    PKB::calls->storeCalls(8,1,2);
+    PKB::calls->storeCalls(11,1,3);
+    PKB::calls->storeCalls(16,2,3);
+    PKB::parent->storeParent(3,4);
+    PKB::parent->storeParent(4,5);
+    PKB::parent->storeParent(4,6);
+    PKB::parent->storeParent(6,7);
+    PKB::parent->storeParent(6,12);
+    PKB::parent->storeParent(7,8);
+    PKB::parent->storeParent(7,9);
+    PKB::parent->storeParent(7,10);
+    PKB::parent->storeParent(7,11);
+    PKB::parent->storeParent(14,15);
+    PKB::parent->storeParent(14,16);
+    PKB::parent->storeParent(14,17);
+
+    // Var ID: a = 1, b = 2, c = 3, d = 4
+    PKB::uses->storeStmtUses(2,1);
+    PKB::uses->storeStmtUses(3,1);
+    PKB::uses->storeStmtUses(3,2);
+    PKB::uses->storeStmtUses(3,3);
+    PKB::uses->storeStmtUses(3,4);
+    PKB::uses->storeStmtUses(4,1);
+    PKB::uses->storeStmtUses(4,2);
+    PKB::uses->storeStmtUses(4,3);
+    PKB::uses->storeStmtUses(4,4);
+    PKB::uses->storeStmtUses(5,1);
+    PKB::uses->storeStmtUses(6,1);
+    PKB::uses->storeStmtUses(6,2);
+    PKB::uses->storeStmtUses(6,3);
+    PKB::uses->storeStmtUses(6,4);
+    PKB::uses->storeStmtUses(7,1);
+    PKB::uses->storeStmtUses(7,2);
+    PKB::uses->storeStmtUses(7,3);
+    PKB::uses->storeStmtUses(7,4);
+    PKB::uses->storeStmtUses(9,2);
+    PKB::uses->storeStmtUses(9,3);
+    PKB::uses->storeStmtUses(10,1);
+    PKB::uses->storeStmtUses(10,2);
+    PKB::uses->storeStmtUses(10,3);
+    PKB::uses->storeStmtUses(12,2);
+    PKB::uses->storeStmtUses(12,3);
+    PKB::uses->storeStmtUses(13,1);
+    PKB::uses->storeStmtUses(13,2);
+    PKB::uses->storeStmtUses(14,1);
+    PKB::uses->storeStmtUses(14,2);
+    PKB::uses->storeStmtUses(14,3);
+    PKB::uses->storeStmtUses(15,1);
+    PKB::uses->storeStmtUses(17,2);
+    PKB::uses->storeStmtUses(17,3);
+    PKB::uses->storeStmtUses(18,1);
+    PKB::uses->storeStmtUses(18,2);
+    PKB::uses->storeStmtUses(18,3);
+
+    PKB::uses->storeProcUses(1, 1);
+    PKB::uses->storeProcUses(1, 2);
+    PKB::uses->storeProcUses(1, 3);
+    PKB::uses->storeProcUses(1, 4);
+    PKB::uses->storeProcUses(2, 1);
+    PKB::uses->storeProcUses(2, 2);
+    PKB::uses->storeProcUses(2, 3);
+    PKB::uses->storeProcUses(3, 1);
+    PKB::uses->storeProcUses(3, 2);
+    PKB::uses->storeProcUses(3, 3);
+
+    PKB::modifies->storeStmtModifies(1,1);
+    PKB::modifies->storeStmtModifies(2,2);
+    PKB::modifies->storeStmtModifies(3,1);
+    PKB::modifies->storeStmtModifies(3,2);
+    PKB::modifies->storeStmtModifies(3,3);
+    PKB::modifies->storeStmtModifies(4,1);
+    PKB::modifies->storeStmtModifies(4,3);
+    PKB::modifies->storeStmtModifies(4,2);
+    PKB::modifies->storeStmtModifies(5,1);
+    PKB::modifies->storeStmtModifies(6,2);
+    PKB::modifies->storeStmtModifies(6,3);
+    PKB::modifies->storeStmtModifies(7,3);
+    PKB::modifies->storeStmtModifies(7,2);
+    PKB::modifies->storeStmtModifies(9,3);
+    PKB::modifies->storeStmtModifies(10,2);
+    PKB::modifies->storeStmtModifies(12,2);
+    PKB::modifies->storeStmtModifies(13,2);
+    PKB::modifies->storeStmtModifies(14,1);
+    PKB::modifies->storeStmtModifies(14,2);
+    PKB::modifies->storeStmtModifies(15,1);
+    PKB::modifies->storeStmtModifies(17,2);
+    PKB::modifies->storeStmtModifies(18,3);
+
+    PKB::modifies->storeProcModifies(1,1);
+    PKB::modifies->storeProcModifies(1,2);
+    PKB::modifies->storeProcModifies(1,3);
+    PKB::modifies->storeProcModifies(2,1);
+    PKB::modifies->storeProcModifies(2,2);
+    PKB::modifies->storeProcModifies(3,3);
+
+    PKB::populatePKB();
+}
+
+TEST_CASE("isAffects Test4") {
+    setUpAffectsTest4();
+    REQUIRE(PKB::affects->isAffects(1,2));
+    REQUIRE(PKB::affects->isAffects(1,5));
+    REQUIRE(PKB::affects->isAffects(2,10));
+    REQUIRE(PKB::affects->isAffects(5,5));
+    REQUIRE(PKB::affects->isAffects(5,10));
+    REQUIRE(PKB::affects->isAffects(9,10));
+    REQUIRE(PKB::affects->isAffects(9,12));
+    REQUIRE(PKB::affects->isAffects(10,12));
+    REQUIRE(PKB::affects->isAffects(12,10));
+    REQUIRE(PKB::affects->isAffects(13,17));
+}
+
+TEST_CASE("getAffectsSize Test4") {
+    setUpAffectsTest4();
+    REQUIRE(PKB::affects->getAffectsSize() == 10);
+}
+
+TEST_CASE("getAffects Test4") {
+    setUpAffectsTest4();
+    REQUIRE(PKB::affects->getAffects(1) == unordered_set<StmtNum>({2,5}));
+    REQUIRE(PKB::affects->getAffects(2) == unordered_set<StmtNum>({10}));
+    REQUIRE(PKB::affects->getAffects(3).empty());
+    REQUIRE(PKB::affects->getAffects(4).empty());
+    REQUIRE(PKB::affects->getAffects(5) == unordered_set<StmtNum>({5,10}));
+    REQUIRE(PKB::affects->getAffects(6).empty());
+    REQUIRE(PKB::affects->getAffects(7).empty());
+    REQUIRE(PKB::affects->getAffects(8).empty());
+    REQUIRE(PKB::affects->getAffects(9) == unordered_set<StmtNum>({10,12}));
+    REQUIRE(PKB::affects->getAffects(10) == unordered_set<StmtNum>({12}));
+    REQUIRE(PKB::affects->getAffects(11).empty());
+    REQUIRE(PKB::affects->getAffects(12) == unordered_set<StmtNum>({10}));
+    REQUIRE(PKB::affects->getAffects(13) == unordered_set<StmtNum>({17}));
+    REQUIRE(PKB::affects->getAffects(14).empty());
+    REQUIRE(PKB::affects->getAffects(15).empty());
+    REQUIRE(PKB::affects->getAffects(16).empty());
+    REQUIRE(PKB::affects->getAffects(17).empty());
+    REQUIRE(PKB::affects->getAffects(18).empty());
+}
+
+TEST_CASE("isAffectsStar Test4") {
+    setUpAffectsTest4();
+    REQUIRE(PKB::affects->isAffectsStar(1,2));
+    REQUIRE(PKB::affects->isAffectsStar(1,5));
+    REQUIRE(PKB::affects->isAffectsStar(1,10));
+    REQUIRE(PKB::affects->isAffectsStar(1,12));
+    REQUIRE(PKB::affects->isAffectsStar(2,10));
+    REQUIRE(PKB::affects->isAffectsStar(2,12));
+    REQUIRE(PKB::affects->isAffectsStar(5,5));
+    REQUIRE(PKB::affects->isAffectsStar(5,10));
+    REQUIRE(PKB::affects->isAffectsStar(5,12));
+    REQUIRE(PKB::affects->isAffectsStar(9,10));
+    REQUIRE(PKB::affects->isAffectsStar(9,12));
+    REQUIRE(PKB::affects->isAffectsStar(10,10));
+    REQUIRE(PKB::affects->isAffectsStar(10,12));
+    REQUIRE(PKB::affects->isAffectsStar(12,12));
+    REQUIRE(PKB::affects->isAffectsStar(12,10));
+    REQUIRE(PKB::affects->isAffectsStar(13,17));
+}
+
+TEST_CASE("getAffectsStarSize Test4") {
+    setUpAffectsTest4();
+    REQUIRE(PKB::affects->getAffectsStarSize() == 16);
+}
+
+TEST_CASE("getAffectsStar Test4") {
+    setUpAffectsTest4();
+    REQUIRE(PKB::affects->getAffectsStar(1) == unordered_set<StmtNum>({2,5,10,12}));
+    REQUIRE(PKB::affects->getAffectsStar(2) == unordered_set<StmtNum>({10,12}));
+    REQUIRE(PKB::affects->getAffectsStar(3).empty());
+    REQUIRE(PKB::affects->getAffectsStar(4).empty());
+    REQUIRE(PKB::affects->getAffectsStar(5) == unordered_set<StmtNum>({5,10,12}));
+    REQUIRE(PKB::affects->getAffectsStar(6).empty());
+    REQUIRE(PKB::affects->getAffectsStar(7).empty());
+    REQUIRE(PKB::affects->getAffectsStar(8).empty());
+    REQUIRE(PKB::affects->getAffectsStar(9) == unordered_set<StmtNum>({10,12}));
+    REQUIRE(PKB::affects->getAffectsStar(10) == unordered_set<StmtNum>({10,12}));
+    REQUIRE(PKB::affects->getAffectsStar(11).empty());
+    REQUIRE(PKB::affects->getAffectsStar(12) == unordered_set<StmtNum>({10,12}));
+    REQUIRE(PKB::affects->getAffectsStar(13) == unordered_set<StmtNum>({17}));
+    REQUIRE(PKB::affects->getAffectsStar(14).empty());
+    REQUIRE(PKB::affects->getAffectsStar(15).empty());
+    REQUIRE(PKB::affects->getAffectsStar(16).empty());
+    REQUIRE(PKB::affects->getAffectsStar(17).empty());
+    REQUIRE(PKB::affects->getAffectsStar(18).empty());
+}
