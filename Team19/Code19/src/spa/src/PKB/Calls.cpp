@@ -241,6 +241,7 @@ void Calls::updateUsesAndModifiesForProcedure(ID p) {
             }
         }
     }
+    processedProcedures.erase(p);
 }
 
 void Calls::storeUsesAndModifies(StmtNum stmtNum, ID p, ID q) {
