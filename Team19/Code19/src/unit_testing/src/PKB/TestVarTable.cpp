@@ -64,3 +64,13 @@ TEST_CASE("convertVarIDsToNames Test") {
     vector<string> varNames = varTable->convertVarIDsToNames(vector<int>{1, 2});
     REQUIRE_THAT(varNames, Catch::Matchers::UnorderedEquals(vector<string>{ "b", "c"}));
 }
+
+TEST_CASE("getAllVarIDs Test") {
+    VarTable* varTable = new VarTable();
+    varTable->storeVarName("a");
+    varTable->storeVarName("b");
+    varTable->storeVarName("c");
+    varTable->storeVarName("d");
+    REQUIRE_THAT(varTable->getAllVarIDs(), Catch::Matchers::UnorderedEquals(vector<ID>{ 1,2,3,4}));
+}
+

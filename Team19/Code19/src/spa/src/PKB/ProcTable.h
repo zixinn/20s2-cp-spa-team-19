@@ -24,6 +24,9 @@ public:
     // returns a vector of procedure names corresponding to the vector of procedure IDs given.
     vector<STRING> convertProcIDsToNames(vector<ID> procIDs);
 
+    // returns the vector of procedure IDs.
+    vector<ID> getAllProcIDs();
+
     // Returns the number of procedures in the table.
     int getSize();
 

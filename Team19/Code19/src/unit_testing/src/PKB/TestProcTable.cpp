@@ -92,3 +92,12 @@ TEST_CASE("convertProcIDsToNames Test") {
     vector<string> procNames = procTable->convertProcIDsToNames(vector<int>{1, 2});
     REQUIRE_THAT(procNames, Catch::Matchers::UnorderedEquals(vector<string>{ "b", "c"}));
 }
+
+TEST_CASE("getAllProcIDs Test") {
+    ProcTable* procTable = new ProcTable();
+    procTable->storeProcName("a");
+    procTable->storeProcName("b");
+    procTable->storeProcName("c");
+    procTable->storeProcName("d");
+    REQUIRE_THAT(procTable->getAllProcIDs(), Catch::Matchers::UnorderedEquals(vector<ID>{ 1,2,3,4}));
+}
