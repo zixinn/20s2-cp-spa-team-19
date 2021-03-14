@@ -8,48 +8,56 @@ vector<string> secondArgTypes = { UNDERSCORE_, NAME_, EXPRESSION_, EXPRESSIONWIT
 
 bool PatternEvaluator::evaluate(unordered_map<string, string> declarations, Clause clause,
 	unordered_map<string, vector<int>>& tempResults) {
+    bool result;
     string firstArg = clause.getArgs().at(0);
     string secondArg = clause.getArgs().at(1);
     string varName = clause.getRel(); // i.e. varName(firstArg, secondArg)
     string firstType = getArgType(firstArg, declarations);
     string secondType = getArgType(secondArg, declarations);
-    int queryType = getQueryType(firstType, secondType);
-    vector<int> stmtNums = PKB::stmtTable->getAllAssignStmtNums();
-    bool result;
+    string varNameType = getArgType(varName, declarations);
 
-    switch (queryType) {
-    case nameUnderscore:
-        result = evaluateNameUnderscore(stmtNums, varName, firstArg, tempResults);
-        break;
-    case nameName:
-    case nameExpr:
-        result = evaluateNameExpression(stmtNums, varName, firstArg, secondArg, tempResults);
-        break;
-    case nameExprWithUnderscore:
-        result = evaluateNameExpressionWithUnderscore(stmtNums, varName, firstArg, secondArg, tempResults);
-        break;
-    case varUnderscore:
-        result = evaluateVarUnderscore(stmtNums, varName, firstArg, tempResults);
-        break;
-    case variableName:
-    case varExpr:
-        result = evaluateVarExpression(stmtNums, varName, firstArg, secondArg, tempResults);
-        break;
-    case varExprWithUnderscore:
-        result = evaluateVarExpressionWithUnderscore(stmtNums, varName, firstArg, secondArg, tempResults);
-        break;
-    case underscoreUnderscore:
-        result = evaluateUnderscoreUnderscore(stmtNums, varName, tempResults);
-        break;
-    case underscoreName:
-    case underscoreExpr:
-        result = evaluateUnderscoreExpression(stmtNums, varName, secondArg, tempResults);
-        break;
-    case underscoreExprWithUnderscore:
-        result = evaluateUnderscoreExpressionWithUnderscore(stmtNums, varName, secondArg, tempResults);
-        break;
-    default:
-        throw std::runtime_error("Arguments for pattern matching is invalid.");
+    if (varNameType == IF_) {
+        result = evaluateIfClause(varName, firstArg, firstType, tempResults);
+    } else if (varNameType == WHILE_) {
+        result = evaluateWhileClause(varName, firstArg, firstType, tempResults);
+    } else {
+        int queryType = getQueryType(firstType, secondType);
+        vector<int> stmtNums = PKB::stmtTable->getAllAssignStmtNums();
+
+        switch (queryType) {
+        case nameUnderscore:
+            result = evaluateNameUnderscore(stmtNums, varName, firstArg, tempResults);
+            break;
+        case nameName:
+        case nameExpr:
+            result = evaluateNameExpression(stmtNums, varName, firstArg, secondArg, tempResults);
+            break;
+        case nameExprWithUnderscore:
+            result = evaluateNameExpressionWithUnderscore(stmtNums, varName, firstArg, secondArg, tempResults);
+            break;
+        case varUnderscore:
+            result = evaluateVarUnderscore(stmtNums, varName, firstArg, tempResults);
+            break;
+        case variableName:
+        case varExpr:
+            result = evaluateVarExpression(stmtNums, varName, firstArg, secondArg, tempResults);
+            break;
+        case varExprWithUnderscore:
+            result = evaluateVarExpressionWithUnderscore(stmtNums, varName, firstArg, secondArg, tempResults);
+            break;
+        case underscoreUnderscore:
+            result = evaluateUnderscoreUnderscore(stmtNums, varName, tempResults);
+            break;
+        case underscoreName:
+        case underscoreExpr:
+            result = evaluateUnderscoreExpression(stmtNums, varName, secondArg, tempResults);
+            break;
+        case underscoreExprWithUnderscore:
+            result = evaluateUnderscoreExpressionWithUnderscore(stmtNums, varName, secondArg, tempResults);
+            break;
+        default:
+            throw std::runtime_error("Arguments for pattern matching is invalid.");
+        }
     }
     return result;
 }
@@ -95,6 +103,59 @@ string trimQuotes(string s) {
 string trimQuotesUnderscore(string s) {
     string underscoreRemoved = trim(s.substr(1, s.size() - 2));
     return trim(underscoreRemoved.substr(1, underscoreRemoved.size() - 2));
+}
+
+bool PatternEvaluator::evaluateIfClause(string varName, string firstArg, string firstType,
+    unordered_map<string, vector<int>>& tempResults) {
+    if (firstType != NAME_) { // variable/underscore
+        pair<vector<int>, vector<int>> allIfPatterns = PKB::stmtTable->getAllIfPatterns();
+        if (allIfPatterns.first.empty()) {
+            return false;
+        }
+        tempResults[varName] = allIfPatterns.first;
+        if (firstType != UNDERSCORE_) {
+            tempResults[firstArg] = allIfPatterns.second;
+        }
+    } else { // first arg is name in quotation marks
+        string varString = trimQuotes(firstArg);
+        ID id = PKB::varTable->getVarID(varString);
+        if (id == -1) {
+            return false;
+        }
+        unordered_set<ID> vars = PKB::stmtTable->getIfStmtsWithControlVar(id);
+        if (vars.empty()) {
+            return false;
+        }
+        tempResults[varName].assign(vars.begin(), vars.end());
+    }
+    return true;
+}
+
+bool PatternEvaluator::evaluateWhileClause(string varName, string firstArg, string firstType,
+    unordered_map<string, vector<int>>& tempResults) {
+    if (firstType != NAME_) { // variable/underscore
+        pair<vector<int>, vector<int>> allWhilePatterns = PKB::stmtTable->getAllWhilePatterns();
+        if (allWhilePatterns.first.empty()) {
+            return false;
+        }
+        tempResults[varName] = allWhilePatterns.first;
+        if (firstType != UNDERSCORE_) {
+            tempResults[firstArg] = allWhilePatterns.second;
+        }
+    }
+    else { // first arg is name in quotation marks
+        string varString = trimQuotes(firstArg);
+        ID id = PKB::varTable->getVarID(varString);
+        if (id == -1) {
+            return false;
+        }
+        unordered_set<ID> vars = PKB::stmtTable->getWhileStmtsWithControlVar(id);
+        if (vars.empty()) {
+            return false;
+        }
+        tempResults[varName].assign(vars.begin(), vars.end());
+    }
+    return true;
 }
 
 // Will get all assignment stmts that matches variable name on LHS

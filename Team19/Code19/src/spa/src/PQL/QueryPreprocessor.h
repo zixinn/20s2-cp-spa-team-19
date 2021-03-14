@@ -25,8 +25,10 @@ private:
     bool isSemanticallyValid = true;
 
     unordered_set<string> designEntities;
+    unordered_set<string> attrNames;
     unordered_map<string, vector<unordered_set<string>>> validSuchThatArgType;
     unordered_map<string, vector<unordered_set<string>>> validPatternArgType;
+    unordered_map<string, unordered_set<string>> attrMap;
 
     void parseDeclaration(string designEntity, string synonyms);
     bool checkDesignEntity(string designEntity);
@@ -34,7 +36,8 @@ private:
     void parseSelect(string select);
     int getNextPos(vector<int> pos);
 
-    void parseToSelect(string synonym);
+    void parseToSelect(string resultCl);
+    void checkAttrRef(string synonym, string attrName);
 
     void parseSuchThatClauses(string clauses);
     void parseSuchThatClause(string clause);
@@ -43,4 +46,9 @@ private:
     void parsePatternClauses(string clauses);
     void parsePatternClause(string clause);
     void checkPatternClause(string syn, vector<string> args);
+
+    void parseWithClauses(string clauses);
+    void parseWithClause(string clause);
+    void checkWithClause(string left, string right);
+    string checkRef(string& ref);
 };
