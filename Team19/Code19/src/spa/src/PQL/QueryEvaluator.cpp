@@ -68,9 +68,9 @@ bool QueryEvaluator::evaluateClause(Clause clause, unordered_map<string, vector<
     } else if (rel == "Calls*") {
         return CallsTEvaluator::evaluate(this->declarations, clause, tempResults);
     } else if (rel == "Next") {
-        return CallsTEvaluator::evaluate(this->declarations, clause, tempResults);
+        return NextEvaluator::evaluate(this->declarations, clause, tempResults);
     } else if (rel == "Next*") {
-        return CallsTEvaluator::evaluate(this->declarations, clause, tempResults);
+        return NextTEvaluator::evaluate(this->declarations, clause, tempResults);
     } else { // pattern
         return PatternEvaluator::evaluate(this->declarations, clause, tempResults);
     }
