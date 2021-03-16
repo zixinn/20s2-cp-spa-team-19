@@ -71,6 +71,10 @@ bool QueryEvaluator::evaluateClause(Clause clause, unordered_map<string, vector<
         return NextEvaluator::evaluate(this->declarations, clause, tempResults);
     } else if (rel == "Next*") {
         return NextTEvaluator::evaluate(this->declarations, clause, tempResults);
+    } else if (rel == "Affects") {
+        return AffectsEvaluator::evaluate(this->declarations, clause, tempResults);
+    } else if (rel == "Affects*") {
+        return AffectsTEvaluator::evaluate(this->declarations, clause, tempResults);
     } else { // pattern
         return PatternEvaluator::evaluate(this->declarations, clause, tempResults);
     }
