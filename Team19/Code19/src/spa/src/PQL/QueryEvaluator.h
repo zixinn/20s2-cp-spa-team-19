@@ -20,8 +20,6 @@
 #include "NextTEvaluator.h"
 #include "PatternEvaluator.h"
 #include "WithEvaluator.h"
-#include "NextEvaluator.h"
-#include "NextTEvaluator.h"
 
 class QueryEvaluator {
 public:
