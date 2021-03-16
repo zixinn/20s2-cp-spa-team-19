@@ -58,9 +58,7 @@ void DesignExtractor::storeNewWhile(StmtNum startStmtNum, vector<STRING> condVar
     for (STRING varName : condVarNames) {
         ID varID = PKB::varTable->storeVarName(varName);
         PKB::uses->storeStmtUses(startStmtNum, varID);
-        if (!PKB::stmtTable->storeWhilePattern(startStmtNum, varID)) {
-            std::cerr << "DE encountered an error when attempting to store control variable " << varID << " in PKB.\n";
-        }
+        PKB::stmtTable->storeWhilePattern(startStmtNum, varID);
         // DE Internal Bookkeeping
         currentUsedVarsLst.insert(varID);   // the conditional variables used
     }
@@ -98,9 +96,7 @@ void DesignExtractor::storeNewIf(StmtNum startStmtNum, vector<STRING> condVarNam
     for (STRING varName : condVarNames) {
         ID varID = PKB::varTable->storeVarName(varName);
          PKB::uses->storeStmtUses(startStmtNum, varID);
-        if (!PKB::stmtTable->storeIfPattern(startStmtNum, varID)) {
-            std::cerr << "DE encountered an error when attempting to store control variable " << varID << " in PKB.\n";
-        }
+        PKB::stmtTable->storeIfPattern(startStmtNum, varID);
         // DE Internal Bookkeeping
         currentUsedVarsLst.insert(varID);   // the conditional variables used
     }
