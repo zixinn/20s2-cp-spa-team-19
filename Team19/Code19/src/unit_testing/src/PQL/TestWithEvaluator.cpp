@@ -26,10 +26,10 @@ void setupWith() {
     PKB::stmtTable->storeStmt(10, stmtNodeStub, IF_);
     PKB::stmtTable->storeStmt(11, stmtNodeStub, PRINT_); // print v
     PKB::stmtTable->storeStmt(12, stmtNodeStub, ASSIGN_);
-    PKB::stmtTable->storeStmt(13, stmtNodeStub, READ_); // read v
+    PKB::stmtTable->storeStmt(13, stmtNodeStub, READ_); // read x
     PKB::stmtTable->storeStmt(14, stmtNodeStub, ASSIGN_);
     PKB::stmtTable->storeReadVariableForStmt(8, 0);
-    PKB::stmtTable->storeReadVariableForStmt(13, 1);
+    PKB::stmtTable->storeReadVariableForStmt(13, 0);
     PKB::stmtTable->storePrintVariableForStmt(11, 1);
 
     PKB::constTable = new ConstTable();
@@ -167,7 +167,7 @@ TEST_CASE("With Evaluator r1.varName = r2.varName") {
         pair<int, int> p = make_pair(tempResults1["r1"].at(i), tempResults1["r2"].at(i));
         actual1.insert(p);
     }
-    set<pair<int, int>> expected1 = { {make_pair(8, 8), make_pair(13, 13)} };
+    set<pair<int, int>> expected1 = { {make_pair(8, 8), make_pair(13, 13), make_pair(8, 13), make_pair(13, 8)} };
     REQUIRE(b1);
     REQUIRE(tempResults1.size() == 2);
     REQUIRE(actual1 == expected1);
@@ -403,14 +403,14 @@ TEST_CASE("With evaluator name = v.varName / v.varName = name (negative case)") 
 TEST_CASE("With evaluator name = r.varName / r.varName = name (positive case)") {
     setupWith();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"r", READ_} }, Clause("", vector<string>{"\"v\"", "r.varName"}), tempResults1);
-    unordered_map<string, vector<int>> expected1 = { {"r", vector<int>{13}} };
+    bool b1 = WithEvaluator::evaluate({ {"r", READ_} }, Clause("", vector<string>{"\"x\"", "r.varName"}), tempResults1);
+    unordered_map<string, vector<int>> expected1 = { {"r", vector<int>{8, 13}} };
     REQUIRE(b1);
     REQUIRE(tempResults1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = WithEvaluator::evaluate({ {"r", READ_} }, Clause("", vector<string>{"r.varName", "\"v\""}), tempResults2);
-    unordered_map<string, vector<int>> expected2 = { {"r", vector<int>{13}} };
+    bool b2 = WithEvaluator::evaluate({ {"r", READ_} }, Clause("", vector<string>{"r.varName", "\"x\""}), tempResults2);
+    unordered_map<string, vector<int>> expected2 = { {"r", vector<int>{8, 13}} };
     REQUIRE(b2);
     REQUIRE(tempResults2 == expected2);
 }
