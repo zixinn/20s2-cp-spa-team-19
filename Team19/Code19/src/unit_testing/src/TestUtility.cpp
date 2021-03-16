@@ -79,6 +79,7 @@ TEST_CASE("checkName") {
 TEST_CASE("checkInteger") {
     // valid
     REQUIRE(checkInteger("123"));
+    REQUIRE(checkInteger("0"));
 
     // invalid
     REQUIRE_FALSE(checkInteger("098"));

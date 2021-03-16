@@ -20,7 +20,7 @@ void setupQe() {
 
     PKB::procTable = new ProcTable();
     PKB::procTable->storeProcName("computeCentroid"); // 0
-    PKB::procTable->storeProcName("blah"); // 1
+    PKB::procTable->storeProcName("readPoint"); // 1
     PKB::procTable->storeProcName("randomProcName"); // 2
 
     PKB::constTable = new ConstTable();
@@ -43,6 +43,8 @@ void setupQe() {
     PKB::stmtTable->storeStmt(12, stmtNodeStub, ASSIGN_);
     PKB::stmtTable->storeStmt(13, stmtNodeStub, ASSIGN_);
     PKB::stmtTable->storeStmt(14, stmtNodeStub, ASSIGN_);
+    PKB::stmtTable->storeStmt(15, stmtNodeStub, PRINT_);
+    PKB::stmtTable->storeStmt(16, stmtNodeStub, PRINT_);
 
     PKB::stmtTable->storeAssignExpr(1, "count", "(0)");
     PKB::stmtTable->storeAssignExpr(2, "cenX", "(0)");
@@ -54,12 +56,17 @@ void setupQe() {
     PKB::stmtTable->storeAssignExpr(12, "cenX", "((cenX) / (count))");
     PKB::stmtTable->storeAssignExpr(13, "cenY", "((cenY) / (count))");
     PKB::stmtTable->storeAssignExpr(14, "normSq", "(((cenX) * (cenX)) + ((cenY) * (cenY)))");
+    
+    PKB::stmtTable->storePrintVariableForStmt(15, 1);
+    PKB::stmtTable->storePrintVariableForStmt(16, 2);
 
+    PKB::stmtTable->storeIfPattern(10, 0);
     PKB::stmtTable->storeIfPattern(10, 3);
     PKB::stmtTable->storeIfPattern(10, 4);
     PKB::stmtTable->storeIfPattern(10, 2);
     PKB::stmtTable->storeWhilePattern(5, 5);
     PKB::stmtTable->storeWhilePattern(5, 3);
+    PKB::stmtTable->storeWhilePattern(5, 4);
 
     PKB::follows = new Follows();
     PKB::follows->storeFollows(1, 2);
@@ -72,6 +79,8 @@ void setupQe() {
     PKB::follows->storeFollows(8, 9);
     PKB::follows->storeFollows(10, 14);
     PKB::follows->storeFollows(12, 13);
+    PKB::follows->storeFollows(14, 15);
+    PKB::follows->storeFollows(15, 16);
     PKB::follows->populateFollowsStar();
 
     PKB::parent = new Parent();
@@ -104,6 +113,8 @@ void setupQe() {
     PKB::uses->storeStmtUses(13, 0);
     PKB::uses->storeStmtUses(14, 1);
     PKB::uses->storeStmtUses(14, 2);
+    PKB::uses->storeStmtUses(15, 1);
+    PKB::uses->storeStmtUses(16, 2);
     PKB::uses->storeProcUses(0, 0);
     PKB::uses->storeProcUses(0, 1);
     PKB::uses->storeProcUses(0, 2);
@@ -157,12 +168,17 @@ void setupQe() {
     PKB::next->storeNext(12, 13);
     PKB::next->storeNext(13, 14);
     PKB::next->storeNext(11, 14);
+    PKB::next->storeNext(14, 15);
+    PKB::next->storeNext(15, 16);
     PKB::next->populateNextStar();
 
     PKB::calls = new Calls();
     PKB::calls->storeCalls(4, 0, 1);
     PKB::calls->storeCalls(9, 1, 2);
     PKB::calls->processCalls();
+
+    PKB::affects = new Affects();
+    PKB::affects->populateAffectsAndAffectsStar();
 }
 
 TEST_CASE("QueryEvaluator evaluate invalid query") {
@@ -189,7 +205,7 @@ TEST_CASE("QueryEvaluator evaluate query with no clauses") {
     Query q2 = Query({ {"n", PROGLINE_} }, { "n" }, {}, true, true);
     list<string> list2 = qe.evaluate(q2);
     unordered_set<string> actual2(begin(list2), end(list2));
-    unordered_set<string> expected2 = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14" };
+    unordered_set<string> expected2 = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" };
     REQUIRE(actual2.size() == list2.size());
     REQUIRE(actual2 == expected2);
 }
@@ -341,6 +357,13 @@ TEST_CASE("QueryEvaluator evaluate query with one such that clause BOOLEAN") {
     list<string> expected2 = { "FALSE" };
     REQUIRE(list2.size() == expected2.size());
     REQUIRE(list2 == expected2);
+
+    // Select BOOLEAN such that Modifies (_, _)
+    Query q3 = Query({}, { "BOOLEAN" }, { }, true, false);
+    list<string> list3 = qe.evaluate(q3);
+    list<string> expected3 = { "FALSE" };
+    REQUIRE(list3.size() == expected3.size());
+    REQUIRE(list3 == expected3);
 }
 
 TEST_CASE("QueryEvaluator evaluate query with multiple such that clauses BOOLEAN") {
@@ -636,7 +659,7 @@ TEST_CASE("QueryEvaluator evaluate query with if/while pattern matching clause")
     Query q1 = Query({ {"v", VARIABLE_}, {"ifs", IF_}, {"w", WHILE_} }, { "v" }, { c11, c12 }, true, true);
     list<string> list1 = qe.evaluate(q1);
     unordered_set<string> actual1(begin(list1), end(list1));
-    unordered_set<string> expected1 = { "x" };
+    unordered_set<string> expected1 = { "x", "y" };
     REQUIRE(actual1.size() == list1.size());
     REQUIRE(actual1 == expected1);
 
@@ -732,4 +755,66 @@ TEST_CASE("QueryEvaluator evaluate query with 'with' clause (meaningless queries
     unordered_set<string> expected5 = { };
     REQUIRE(actual5.size() == list5.size());
     REQUIRE(actual5 == expected5);
+}
+
+TEST_CASE("QueryEvaluator evaluate query with attribute in select") {
+    setupQe();
+    QueryEvaluator qe = QueryEvaluator();
+
+    // call c; prog_line n; Select c.stmt# such that Follows* (c, n)
+    Clause c11 = Clause("Follows*", vector<string>{"c", "n"});
+    Query q1 = Query({ {"c", CALL_}, {"n", PROGLINE_} }, { "c.stmt#" }, { c11 }, true, true);
+    list<string> list1 = qe.evaluate(q1);
+    unordered_set<string> actual1(begin(list1), end(list1));
+    unordered_set<string> expected1 = { "4" };
+    REQUIRE(actual1.size() == list1.size());
+    REQUIRE(actual1 == expected1);
+
+    // assign a; while w; Select a.stmt# such that Parent* (w, a) pattern w (_, _)
+    Clause c21 = Clause("Parent*", vector<string>{"w", "a"});
+    Clause c22 = Clause("w", vector<string>{"_", "_"});
+    Query q2 = Query({ {"a", ASSIGN_}, {"w", WHILE_} }, { "a.stmt#" }, { c21, c22 }, true, true);
+    list<string> list2 = qe.evaluate(q2);
+    unordered_set<string> actual2(begin(list2), end(list2));
+    unordered_set<string> expected2 = { "6", "7", "8" };
+    REQUIRE(actual2.size() == list2.size());
+    REQUIRE(actual2 == expected2);
+
+    // constant c; assign a; Select c.value pattern a (_, _"cenX"_)
+    Clause c31 = Clause("a", vector<string>{"_", "_\"cenX\"_"});
+    Query q3 = Query({ {"c", CONSTANT_}, {"a", ASSIGN_} }, { "c.value" }, { c31 }, true, true);
+    list<string> list3 = qe.evaluate(q3);
+    unordered_set<string> actual3(begin(list3), end(list3));
+    unordered_set<string> expected3 = { "0", "1" };
+    REQUIRE(actual3.size() == list3.size());
+    REQUIRE(actual3 == expected3);
+
+    // procedure p; variable v; if ifs; Select <p.procName, v.varName, ifs> pattern ifs (v, _, _) such that Uses (p, v)
+    Clause c41 = Clause("ifs", vector<string>{"v", "_", "_"});
+    Clause c42 = Clause("Uses", vector<string>{"p", "v"});
+    Query q4 = Query({ {"p", PROCEDURE_}, {"v", VARIABLE_}, {"ifs", IF_} }, { "p.procName", "v.varName", "ifs" }, { c41, c42 }, true, true);
+    list<string> list4 = qe.evaluate(q4);
+    unordered_set<string> actual4(begin(list4), end(list4));
+    unordered_set<string> expected4 = { "computeCentroid count 10", "computeCentroid x 10", "computeCentroid y 10", "computeCentroid cenY 10" };
+    REQUIRE(actual4.size() == list4.size());
+    REQUIRE(actual4 == expected4);
+
+    // call c; Select c.procName such that Affects (2, 7)
+    Clause c51 = Clause("Affects", vector<string>{"2", "7" });
+    Query q5 = Query({ {"c", CALL_} }, { "c.procName" }, { c51 }, true, true);
+    list<string> list5 = qe.evaluate(q5);
+    unordered_set<string> actual5(begin(list5), end(list5));
+    unordered_set<string> expected5 = { "readPoint", "randomProcName" };
+    REQUIRE(actual5.size() == list5.size());
+    REQUIRE(actual5 == expected5);
+
+    // print pn; variable v; Select <v, pn.varName> such that Uses (pn, v) and Next* (10, pn)
+    Clause c61 = Clause("Uses", vector<string>{ "pn", "v" });
+    Clause c62 = Clause("Next*", vector<string>{ "10", "pn" });
+    Query q6 = Query({ {"pn", PRINT_}, {"v", VARIABLE_} }, { "v", "pn.varName" }, { c61, c62 }, true, true);
+    list<string> list6 = qe.evaluate(q6);
+    unordered_set<string> actual6(begin(list6), end(list6));
+    unordered_set<string> expected6 = { "cenX cenX", "cenY cenY" };
+    REQUIRE(actual6.size() == list6.size());
+    REQUIRE(actual6 == expected6);
 }
