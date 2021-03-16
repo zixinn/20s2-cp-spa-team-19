@@ -212,6 +212,27 @@ TEST_CASE("Nested while-if test - Parser-DE Test") {
     REQUIRE(PKB::modifies->getStmtsModifies(varID5) == unordered_set<ID>{ 8 });
     REQUIRE(PKB::modifies->getStmtsModifies(varID1) == unordered_set<ID>{ });
 
+    // Check Next
+    REQUIRE(PKB::next->getNext(1) == unordered_set<ProgLine>{ 2 });
+    REQUIRE(PKB::next->getNext(2) == unordered_set<ProgLine>{ 3, 7 });
+    REQUIRE(PKB::next->getNext(3) == unordered_set<ProgLine>{ 4 });
+    REQUIRE(PKB::next->getNext(4) == unordered_set<ProgLine>{ 5, 6 });
+    REQUIRE(PKB::next->getNext(5) == unordered_set<ProgLine>{ 2 });
+    REQUIRE(PKB::next->getNext(6) == unordered_set<ProgLine>{ 2 });
+    REQUIRE(PKB::next->getNext(7) == unordered_set<ProgLine>{ 8 });
+    REQUIRE(PKB::next->getNext(8) == unordered_set<ProgLine>{  });
+
+    // Check Next*
+    REQUIRE(PKB::next->getNextStar(1) == unordered_set<ProgLine>{ 2, 3, 4, 5, 6, 7, 8 });
+    REQUIRE(PKB::next->getNextStar(2) == unordered_set<ProgLine>{ 2, 3, 4, 5, 6, 7, 8 });
+    REQUIRE(PKB::next->getNextStar(3) == unordered_set<ProgLine>{ 2, 3, 4, 5, 6, 7, 8 });
+    REQUIRE(PKB::next->getNextStar(4) == unordered_set<ProgLine>{ 2, 3, 4, 5, 6, 7, 8 });
+    REQUIRE(PKB::next->getNextStar(5) == unordered_set<ProgLine>{ 2, 3, 4, 5, 6, 7, 8 });
+    REQUIRE(PKB::next->getNextStar(6) == unordered_set<ProgLine>{ 2, 3, 4, 5, 6, 7, 8 });
+    REQUIRE(PKB::next->getNextStar(7) == unordered_set<ProgLine>{ 8 });
+    REQUIRE(PKB::next->getNextStar(8) == unordered_set<ProgLine>{ });
+
+
 }
 
 TEST_CASE("Triple-nested while test - Parser-DE Test") {
@@ -337,6 +358,28 @@ TEST_CASE("Triple-nested while test - Parser-DE Test") {
     REQUIRE(PKB::modifies->getStmtsModifies(varID2) == unordered_set<ID>{ 2, 4, 5 });
     REQUIRE(PKB::modifies->getStmtsModifies(varID3) == unordered_set<ID>{ 2, 4, 6, 7 });
     REQUIRE(PKB::modifies->getStmtsModifies(varID5) == unordered_set<ID>{ 9 });
+
+    // Check Next
+    REQUIRE(PKB::next->getNext(1) == unordered_set<ProgLine>{ 2 });
+    REQUIRE(PKB::next->getNext(2) == unordered_set<ProgLine>{ 3, 8 });
+    REQUIRE(PKB::next->getNext(3) == unordered_set<ProgLine>{ 4 });
+    REQUIRE(PKB::next->getNext(4) == unordered_set<ProgLine>{ 5, 2 });
+    REQUIRE(PKB::next->getNext(5) == unordered_set<ProgLine>{ 6 });
+    REQUIRE(PKB::next->getNext(6) == unordered_set<ProgLine>{ 7, 4 });
+    REQUIRE(PKB::next->getNext(7) == unordered_set<ProgLine>{ 6 });
+    REQUIRE(PKB::next->getNext(8) == unordered_set<ProgLine>{ 9 });
+    REQUIRE(PKB::next->getNext(9) == unordered_set<ProgLine>{  });
+
+    // Check Next*
+    REQUIRE(PKB::next->getNextStar(1) == unordered_set<ProgLine>{ 2, 3, 4, 5, 6, 7, 8, 9 });
+    REQUIRE(PKB::next->getNextStar(2) == unordered_set<ProgLine>{ 2, 3, 4, 5, 6, 7, 8, 9 });
+    REQUIRE(PKB::next->getNextStar(3) == unordered_set<ProgLine>{ 2, 3, 4, 5, 6, 7, 8, 9 });
+    REQUIRE(PKB::next->getNextStar(4) == unordered_set<ProgLine>{ 2, 3, 4, 5, 6, 7, 8, 9 });
+    REQUIRE(PKB::next->getNextStar(5) == unordered_set<ProgLine>{ 2, 3, 4, 5, 6, 7, 8, 9 });
+    REQUIRE(PKB::next->getNextStar(6) == unordered_set<ProgLine>{ 2, 3, 4, 5, 6, 7, 8, 9 });
+    REQUIRE(PKB::next->getNextStar(7) == unordered_set<ProgLine>{ 2, 3, 4, 5, 6, 7, 8, 9 });
+    REQUIRE(PKB::next->getNextStar(8) == unordered_set<ProgLine>{ 9 });
+    REQUIRE(PKB::next->getNextStar(9) == unordered_set<ProgLine>{ });
 }
 
 TEST_CASE("Triple-nested if test - Parser-DE Test") {
@@ -486,6 +529,28 @@ TEST_CASE("Triple-nested if test - Parser-DE Test") {
     REQUIRE(PKB::modifies->getStmtsModifies(varID3) == unordered_set<ID>{ 2, 4, 6, 7 });
     REQUIRE(PKB::modifies->getStmtsModifies(varID4) == unordered_set<ID>{ 2, 4, 6, 8 });
     REQUIRE(PKB::modifies->getStmtsModifies(varID6) == unordered_set<ID>{ 10 });
+
+    // Check Next
+    REQUIRE(PKB::next->getNext(1) == unordered_set<ProgLine>{ 2 });
+    REQUIRE(PKB::next->getNext(2) == unordered_set<ProgLine>{ 3, 4 });
+    REQUIRE(PKB::next->getNext(3) == unordered_set<ProgLine>{ 9 });
+    REQUIRE(PKB::next->getNext(4) == unordered_set<ProgLine>{ 5, 6 });
+    REQUIRE(PKB::next->getNext(5) == unordered_set<ProgLine>{ 9 });
+    REQUIRE(PKB::next->getNext(6) == unordered_set<ProgLine>{ 7, 8 });
+    REQUIRE(PKB::next->getNext(7) == unordered_set<ProgLine>{ 9 });
+    REQUIRE(PKB::next->getNext(8) == unordered_set<ProgLine>{ 9 });
+    REQUIRE(PKB::next->getNext(9) == unordered_set<ProgLine>{ 10 });
+
+    // Check Next*
+    REQUIRE(PKB::next->getNextStar(1) == unordered_set<ProgLine>{ 2, 3, 4, 5, 6, 7, 8, 9, 10 });
+    REQUIRE(PKB::next->getNextStar(2) == unordered_set<ProgLine>{ 3, 4, 5, 6, 7, 8, 9, 10 });
+    REQUIRE(PKB::next->getNextStar(3) == unordered_set<ProgLine>{ 9, 10 });
+    REQUIRE(PKB::next->getNextStar(4) == unordered_set<ProgLine>{ 5, 6, 7, 8, 9, 10 });
+    REQUIRE(PKB::next->getNextStar(5) == unordered_set<ProgLine>{ 9, 10 });
+    REQUIRE(PKB::next->getNextStar(6) == unordered_set<ProgLine>{ 7, 8, 9, 10 });
+    REQUIRE(PKB::next->getNextStar(7) == unordered_set<ProgLine>{ 9, 10 });
+    REQUIRE(PKB::next->getNextStar(8) == unordered_set<ProgLine>{ 9, 10 });
+    REQUIRE(PKB::next->getNextStar(9) == unordered_set<ProgLine>{ 10 });
 }
 
 TEST_CASE("Syntactic Errors 1 - Parser-DE Test") {
