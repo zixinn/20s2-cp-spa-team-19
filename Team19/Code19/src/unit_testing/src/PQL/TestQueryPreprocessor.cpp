@@ -192,6 +192,11 @@ TEST_CASE("process query with select BOOLEAN") {
     c = Clause("Next*", {"2", "9"});
     expected = Query({}, {"BOOLEAN"}, { c }, true, true);
     REQUIRE(actual == expected);
+
+    query = "Select BOOLEAN such that Modifies (_, _)";
+    actual = qp.process(query);
+    expected = Query({}, {"BOOLEAN"}, { }, true, false);
+    REQUIRE(actual == expected);
 }
 
 TEST_CASE("process query with select tuple") {
