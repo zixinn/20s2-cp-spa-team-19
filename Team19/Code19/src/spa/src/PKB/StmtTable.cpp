@@ -251,9 +251,6 @@ bool StmtTable::storeIfPattern(StmtNum stmtNum, ID controlVarID) {
         if (ifPatternsMap.find(stmtNum)->second.find(controlVarID) != ifPatternsMap.find(stmtNum)->second.end()) {
             return false;
         }
-        if (ifPatternsMap.find(stmtNum)->second.size() == 2) {
-            return false;
-        }
     }
 
     auto it = ifPatternsMap.find(stmtNum);
@@ -280,9 +277,6 @@ bool StmtTable::storeWhilePattern(StmtNum stmtNum, ID controlVarID) {
 
     if (whilePatternsMap.find(stmtNum) != whilePatternsMap.end()) {
         if (whilePatternsMap.find(stmtNum)->second.find(controlVarID) != whilePatternsMap.find(stmtNum)->second.end()) {
-            return false;
-        }
-        if (whilePatternsMap.find(stmtNum)->second.size() == 2) {
             return false;
         }
     }

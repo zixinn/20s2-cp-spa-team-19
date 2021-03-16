@@ -92,13 +92,13 @@ TEST_CASE("storeIfPattern and storeWhilePattern Test") {
     REQUIRE(stmtTable->storeIfPattern(1, 1));
     REQUIRE_FALSE(stmtTable->storeIfPattern(1,1));
     REQUIRE(stmtTable->storeIfPattern(1,2));
-    REQUIRE_FALSE(stmtTable->storeIfPattern(1,3));
+    REQUIRE(stmtTable->storeIfPattern(1,3));
     REQUIRE(stmtTable->storeIfPattern(2, 1));
-    REQUIRE_FALSE(stmtTable->storeIfPattern(1,5));
+    REQUIRE(stmtTable->storeIfPattern(1,5));
     REQUIRE(stmtTable->storeWhilePattern(3, 1));
     REQUIRE_FALSE(stmtTable->storeWhilePattern(3, 1));
     REQUIRE(stmtTable->storeWhilePattern(3,2));
-    REQUIRE_FALSE(stmtTable->storeWhilePattern(3, 3));
+    REQUIRE(stmtTable->storeWhilePattern(3, 3));
     REQUIRE_FALSE(stmtTable->storeWhilePattern(2,2));
     REQUIRE_FALSE(stmtTable->storeWhilePattern(3,2));
     REQUIRE(stmtTable->storeWhilePattern(4, 2));
