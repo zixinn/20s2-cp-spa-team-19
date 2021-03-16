@@ -1,0 +1,150 @@
+procedure f00d {
+	read rice;
+	noodle = chicken + noodle;
+	call obj3ct;
+	chickenRice = chicken + rice * chi11i;
+	duck = 2;
+	print chickenRice;
+	if ((duck > chicken)    &&(0/(2/4)*6+noodle == 10%ramen)) then {
+		ramen = noodle + sprING000Ni0n;
+		onion = 0 + 4 + duck + 0 + 4;
+		while (onion != sprING000Ni0n) {
+			sprING000Ni0n = spring + 3*0;
+			call colors;
+			read sprING000Ni0n;
+			noodle = sprING000Ni0n;
+		}
+		sprING000Ni0n = sprING000Ni0n * sprING000Ni0n / spring;
+	} else {
+		spring = ((((2)))) + (4 * 6 - ((2 + 2)/0))    % 3;
+		if (rice != noodle) then {
+			print chi11i;
+			duck = chickenRice + ramen;
+		} else {
+			call obj3ct;
+			rice = chi11i * 4;
+		}
+	}
+	chickenRice = duck + 4;
+	print duck;
+	call simple;
+}
+
+procedure colors {
+	purple = red + blue;
+	red1 = 2;
+	red2 = 3;
+	red = purple;
+	if ((red1) == red2) then {
+		spring = green;
+		while ((!((!(green > yellow)) || (!(blue2 == blue2)))) && ((234 + (((456 * 789)))) <= (blue1 + green))) {
+			if ((234 + 234 + ((234 - (789 - 789)))) != 456) then {
+				red = red * red;
+			} else {
+				read purple;
+			}
+			red = blue;
+		}
+		purple = purple;
+		while ((red1 > blue3)&&((red2 < blue2) || (!(purple + spring != green1)))) {
+			blue = blue - blue;
+			blue = blue;
+		}
+	} else {
+		purple = purple;
+	}
+	yellow = green + red * blue1;
+	black = 7 + blue;
+	white = green2 - green2;
+	while (yellow > 3) {
+		if (green < 5) then {
+			if (!(purple == 9)) then {
+				while ((blue3 == blue2) || (red != ramen)) {
+					blue2 = blue2 % red2;
+					print purple;
+					red2 = black * red;
+					
+				}
+				purple = purple;
+			} else {
+				call simple;
+				if (red != red1) then {
+					grey = black / yellow;
+					while (7 > 234) {
+						while (456 * 2 == 789) {
+							blue = purple - red;
+							while ((!((((green) - 2)) >= ((456)*3) - 2)) && (((green1 < 234) || (green2 == green)) ||(!(3*4*(5 - 6) <= ((red1) * (((red2)))))))) {
+								if (3 * 4 == 12) then{
+									green = yellow;
+									read green1;
+								} else {
+									while (green1 == 1) {
+										print rice;
+										rice = 500;
+									}
+								}
+							}
+						}
+						blue = blue;
+					}
+				} else {
+					print black;
+					read white;
+				}
+			}
+		} else {
+			
+			call simple;
+			black = black % white /grey;
+			grey = purple + red * blue / (blue1 - blue2-blue3)%(red1 *red2);
+		}
+	}
+	progline = progline;
+	if ((procedure > statement) || ((((progline) == (statement))) && (print > read))) then {
+		then = assign;
+		print = call - black;
+		progline = 5555;
+	} else {
+		read read;
+		print print;
+		progline = statement * 100;
+	}
+	assign = progline;
+}
+
+procedure obj3ct {
+	sci333ors = 290918238;
+	Kn17e = 424809 + w9113t;
+	if (w9113t > 1) then {
+		Kn17e = 1241242134;
+		call colors;
+	} else {
+		call t0pUp;
+	}
+	sci333ors = Kn17e;
+}
+
+procedure simple {
+	while (while != if) {
+		print print;
+		read read;
+		call = assign + procedure;		
+	}
+	yellow = 0;
+	if (!(then - else == 3)) then {
+		if = then + else;
+	} else {
+		call procedure;
+		Kn17e = else;
+	}
+}
+
+procedure t0pUp {
+	money = money + earn - used;
+	read Kn17e;
+	call simple;
+}
+
+procedure procedure {
+	else = else;
+}

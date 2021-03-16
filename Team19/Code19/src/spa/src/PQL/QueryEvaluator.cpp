@@ -6,12 +6,14 @@ QueryEvaluator::QueryEvaluator() {
 
 // Evaluates the query and returns a list containing the answers to the query
 list<string> QueryEvaluator::evaluate(Query query) {
-    this->declarations.clear();
-    this->toSelect.clear();
-    this->clauses.clear();
+    this->declarations = query.getDeclarations();
+    this->toSelect = query.getToSelect();
+    this->clauses = query.getClauses();
     this->results.clear();
+    this->selectBool = true;
 
     list<string> emptyList;
+
 
     if (!query.getIsSyntacticallyValid()) {
         return emptyList;
@@ -21,10 +23,7 @@ list<string> QueryEvaluator::evaluate(Query query) {
         return emptyList;
     }
 
-    this->declarations = query.getDeclarations();
-    this->toSelect = query.getToSelect();
-    this->clauses = query.getClauses();
-    this->selectBool = true;
+
 
     for (Clause clause : this->clauses) {
         unordered_map<string, vector<int>> tempResults;
