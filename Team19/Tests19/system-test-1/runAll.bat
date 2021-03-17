@@ -15,4 +15,3 @@ if exist ..\..\Code19\build_win\x86-Debug\src\autotester\autotester.exe (
 ) 
 
 pause
-
