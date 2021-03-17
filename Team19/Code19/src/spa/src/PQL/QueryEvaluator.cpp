@@ -25,7 +25,7 @@ list<string> QueryEvaluator::evaluate(Query query) {
     for (Clause clause : this->clauses) {
         unordered_map<string, vector<int>> tempResults;
         if (!evaluateClause(clause, tempResults)) { // clause returns false
-            // as long as clause returns false and toSelect is BOOLEAN, break and return
+            // as long as clause returns false and toSelect is BOOLEAN, break
             if (toSelect.at(0) == "BOOLEAN") { 
                 this->selectBool = false;
                 break;
@@ -71,6 +71,9 @@ bool QueryEvaluator::evaluateClause(Clause clause, unordered_map<string, vector<
         return AffectsEvaluator::evaluate(this->declarations, clause, tempResults);
     } else if (rel == "Affects*") {
         return AffectsTEvaluator::evaluate(this->declarations, clause, tempResults);
+    }
+    else if (rel == "") { // with clause
+        return WithEvaluator::evaluate(this->declarations, clause, tempResults);
     } else { // pattern
         return PatternEvaluator::evaluate(this->declarations, clause, tempResults);
     }

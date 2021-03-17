@@ -21,6 +21,7 @@
 #include "AffectsEvaluator.h"
 #include "AffectsTEvaluator.h"
 #include "PatternEvaluator.h"
+#include "WithEvaluator.h"
 
 class QueryEvaluator {
 public:
