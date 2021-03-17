@@ -143,6 +143,14 @@ procedure pr; assign a; stmt s; print p; read r;
 Select pr such that Calls("obj3ct", proc)
 none
 5000
-
-
+30 - synonym is not procedure
+procedure pr; assign a; stmt s; call c;
+Select c such that Calls(c, pr)
+none
+5000
+31 - synonym is not procedure
+procedure pr; assign a; stmt s; call c;
+Select c such that Calls(pr, c)
+none
+5000
 
