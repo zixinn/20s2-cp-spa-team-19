@@ -1,75 +1,148 @@
-1 - No clause booleam
-
-Select BOOLEAN
-TRUE
+1 - No clause call
+call c;
+Select c
+3, 12, 20, 24, 52, 68, 84, 85, 94, 98
 5000
-2 - boolean (clause return true)
-
-Select BOOLEAN such that Follows(7, 22)
-TRUE
+2 - wildcard, wildcard
+call c;
+Select c such that Calls(_, _)
+3, 12, 20, 24, 52, 68, 84, 85, 94, 98
 5000
-3 - boolean (clause return table)
-stmt s;
-Select BOOLEAN such that Follows(s, 42)
-TRUE
+3 - synonym, wildcard
+procedure p;
+Select p such that Calls(p, _)
+f00d, colors, obj3ct, simple, t0pUp
 5000
-4 - boolean (clause return false)
-
-Select BOOLEAN such that Follows(62, 63)
-FALSE
+4 - wildcard, synonym
+procedure p;
+Select p such that Calls(_, p)
+colors, obj3ct, simple, t0pUp, procedure
 5000
-5 - boolean (clause return nth)
+5 - synonym, synonym
 procedure p, p1;
-Select BOOLEAN such that Calls(p, p1) and Modifies(p, "e")
-FALSE
+Select p such that Calls(p, p1)
+f00d, colors, obj3ct, simple, t0pUp
 5000
-6 - boolean (one clause true, one clause false)
-
-Select BOOLEAN such that Parent(57, 58) and Parent(1, 2)
-FALSE
+6 - synonym, synonym (tuple)
+procedure p, p1;
+Select <p, p1> such that Calls(p, p1)
+f00d obj3ct, f00d colors, f00d simple, colors simple, obj3ct colors, obj3ct t0pUp, simple procedure, t0pUp simple
 5000
-7 - boolean (one clause true, one clause return nothing)
-assign a;
-Select BOOLEAN such that Next(1, 2) pattern a("chilli", "1")
-FALSE
+7 - synonym, exact 
+procedure p;
+Select p such that Calls(p, "colors")
+f00d, obj3ct
 5000
-8 - boolean (one clause true, one clause return table)
-stmt s;
-Select BOOLEAN such that Next(1,2) such that Next*(1, s)
-TRUE
+8 - synonym, exact
+procedure p;
+Select p such that Calls(p, "obj3ct")
+f00d
 5000
-9 - boolean (one clause return table, one clause return nothing)
-stmt s, s1; assign a;
-Select BOOLEAN such that Follows*(s, s1) pattern a("chilli", "1")
-FALSE
+9 - synonym, exact
+procedure p;
+Select p such that Calls(p, "t0pUp")
+obj3ct
 5000
-10 - boolean (one clause false, one clause return table)
-stmt s, s1;
-Select BOOLEAN such that Follows(2, 1) such that Next(s, s1)
-FALSE
+10 - synonym, exact
+procedure p;
+Select p such that Calls(p, "simple")
+f00d, colors, t0pUp
 5000
-11 - boolean (one clause false, one clause return nothing)
-assign a;
-Select BOOLEAN such that Next(18,20) pattern a(_, "v")
-FALSE
+11 - synonym, exact
+procedure p;
+Select p such that Calls(p, "procedure")
+simple
 5000
-12 - boolean wildcard such that
-
-Select BOOLEAN such that Follows(_,_)
-TRUE
-5000
-13 - boolean wildcard such that
-assign a;
-Select BOOLEAN such that Modifies(_, _)
-FALSE
-5000
-14 - boolean wildcard pattern
-if if;
-Select BOOLEAN pattern if(_,_,_)
-TRUE
-5000
-15 - boolean syntax error
-assign a;
-Select BOOLEAN pattern a("v", _, _)
+12 - synonym, exact
+procedure p;
+Select p such that Calls(p, "f00d")
 none
 5000
+13 - exact, synonym
+procedure pppp1pp;
+Select pppp1pp such that Calls("colors", pppp1pp)
+simple
+5000
+14 - exact, synonym
+procedure p;
+Select p such that Calls("obj3ct", p)
+colors, t0pUp
+5000
+15 - exact, synonym
+procedure p;
+Select p such that Calls("t0pUp", p)
+simple
+5000
+16 - exact, synonym
+procedure p; read r; assign a; print pr; constant c; variable v;
+Select r such that Calls("simple", p)
+1, 13, 34, 61, 67, 76, 89, 97
+5000
+17 - exact, synonym
+procedure p;
+Select p such that Calls("procedure", p)
+none
+5000
+18 - exact, synonym
+procedure p;
+Select p such that Calls ("f00d", p)
+obj3ct, colors, simple
+5000
+19 - exact, exact
+
+Select BOOLEAN such that Calls ("obj3ct", "colors")
+TRUE
+5000 
+20 - wildcard, exact 
+procedure p;
+Select p such that Calls(_, "colors")
+f00d, colors, obj3ct, simple, t0pUp, procedure
+5000
+21 - wildcard, exact
+procedure p;
+Select p such that Calls(_, "simple")
+f00d, colors, obj3ct, simple, t0pUp, procedure
+5000
+22 - wildcard, exact
+procedure p;
+Select p such that Calls(_, "f00d")
+none
+5000
+23 - exact, wildcard
+procedure p;
+Select p such that Calls("f00d", _)
+f00d, colors, obj3ct, simple, t0pUp, procedure
+5000
+24 - exact, wildcard
+procedure p;
+Select p such that Calls("obj3ct", _)
+f00d, colors, obj3ct, simple, t0pUp, procedure
+5000
+25 - exact, wildcard
+procedure p;
+Select p such that Calls("procedure", _)
+none
+5000
+26 - procedure not in simple
+procedure p;
+Select p such that Calls("object", p)
+none
+5000
+27 - procedure not in simple
+procedure p;
+Select p such that Calls(p, "colorss")
+none
+5000
+28 - both procedures not in simple
+procedure p;
+Select p such that Calls("food", "colorss")
+none
+5000
+29 - synonym not in declaration
+procedure pr; assign a; stmt s; print p; read r;
+Select pr such that Calls("obj3ct", proc)
+none
+5000
+
+
+

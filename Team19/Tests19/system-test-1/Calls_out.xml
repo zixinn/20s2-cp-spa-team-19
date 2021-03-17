@@ -1,0 +1,211 @@
+<?xml-stylesheet type="text/xsl" href="analysis.xsl"?>
+<test_results>
+<info>
+<name>system-test-1</name><parsing_time_taken>209.000000</parsing_time_taken>
+</info>
+<queries>
+<query>
+<id ReturnTuple="1" CondNum="1" RelNum="0" comment="No clause call">1</id><querystr><![CDATA[call c; Select c]]></querystr>
+<stuans>12,3,20,68,24,85,52,84,94,98</stuans>
+<correct>3,12,20,24,52,68,84,85,94,98</correct>
+<time_taken>24.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" UnnamedVar="2" SuchThat="1" CondNum="5" RelNum="1" comment="wildcard, wildcard">2</id><querystr><![CDATA[call c; Select c such that Calls(_, _)]]></querystr>
+<stuans>12,3,20,68,24,85,52,84,94,98</stuans>
+<correct>3,12,20,24,52,68,84,85,94,98</correct>
+<time_taken>37.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="synonym, wildcard">3</id><querystr><![CDATA[procedure p; Select p such that Calls(p, _)]]></querystr>
+<stuans>simple,f00d,obj3ct,colors,t0pUp</stuans>
+<correct>f00d,colors,obj3ct,simple,t0pUp</correct>
+<time_taken>25.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="wildcard, synonym">4</id><querystr><![CDATA[procedure p; Select p such that Calls(_, p)]]></querystr>
+<stuans>obj3ct,colors,simple,procedure,t0pUp</stuans>
+<correct>colors,obj3ct,simple,t0pUp,procedure</correct>
+<time_taken>31.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" SuchThat="1" CondNum="3" RelNum="1" comment="synonym, synonym">5</id><querystr><![CDATA[procedure p, p1; Select p such that Calls(p, p1)]]></querystr>
+<stuans>simple,f00d,obj3ct,colors,t0pUp</stuans>
+<correct>f00d,colors,obj3ct,simple,t0pUp</correct>
+<time_taken>18.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" SuchThat="1" CondNum="3" RelNum="1" comment="synonym, synonym (tuple)">6</id><querystr><![CDATA[procedure p, p1; Select <p, p1> such that Calls(p, p1)]]></querystr>
+<stuans>f00d obj3ct,colors simple,f00d colors,f00d simple,t0pUp simple,obj3ct colors,obj3ct t0pUp,simple procedure</stuans>
+<correct>f00d obj3ct,f00d colors,f00d simple,colors simple,obj3ct colors,obj3ct t0pUp,simple procedure,t0pUp simple</correct>
+<time_taken>18.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" SuchThat="1" CondNum="3" RelNum="1" comment="synonym, exact">7</id><querystr><![CDATA[procedure p; Select p such that Calls(p, "colors")]]></querystr>
+<stuans>obj3ct,f00d</stuans>
+<correct>f00d,obj3ct</correct>
+<time_taken>14.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" SuchThat="1" CondNum="3" RelNum="1" comment="synonym, exact">8</id><querystr><![CDATA[procedure p; Select p such that Calls(p, "obj3ct")]]></querystr>
+<stuans>f00d</stuans>
+<correct>f00d</correct>
+<time_taken>13.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" SuchThat="1" CondNum="3" RelNum="1" comment="synonym, exact">9</id><querystr><![CDATA[procedure p; Select p such that Calls(p, "t0pUp")]]></querystr>
+<stuans>obj3ct</stuans>
+<correct>obj3ct</correct>
+<time_taken>9.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" SuchThat="1" CondNum="3" RelNum="1" comment="synonym, exact">10</id><querystr><![CDATA[procedure p; Select p such that Calls(p, "simple")]]></querystr>
+<stuans>colors,f00d,t0pUp</stuans>
+<correct>f00d,colors,t0pUp</correct>
+<time_taken>10.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" SuchThat="1" CondNum="3" RelNum="1" comment="synonym, exact">11</id><querystr><![CDATA[procedure p; Select p such that Calls(p, "procedure")]]></querystr>
+<stuans>simple</stuans>
+<correct>simple</correct>
+<time_taken>10.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" SuchThat="1" CondNum="3" RelNum="1" comment="synonym, exact">12</id><querystr><![CDATA[procedure p; Select p such that Calls(p, "f00d")]]></querystr>
+<stuans></stuans>
+<correct></correct>
+<time_taken>13.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" SuchThat="1" CondNum="3" RelNum="1" comment="exact, synonym">13</id><querystr><![CDATA[procedure pppp1pp; Select pppp1pp such that Calls("colors", pppp1pp)]]></querystr>
+<stuans>simple</stuans>
+<correct>simple</correct>
+<time_taken>9.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" SuchThat="1" CondNum="3" RelNum="1" comment="exact, synonym">14</id><querystr><![CDATA[procedure p; Select p such that Calls("obj3ct", p)]]></querystr>
+<stuans>colors,t0pUp</stuans>
+<correct>colors,t0pUp</correct>
+<time_taken>7.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" SuchThat="1" CondNum="3" RelNum="1" comment="exact, synonym">15</id><querystr><![CDATA[procedure p; Select p such that Calls("t0pUp", p)]]></querystr>
+<stuans>simple</stuans>
+<correct>simple</correct>
+<time_taken>11.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" SuchThat="1" CondNum="3" RelNum="1" comment="exact, synonym">16</id><querystr><![CDATA[procedure p; read r; assign a; print pr; constant c; variable v; Select r such that Calls("simple", p)]]></querystr>
+<stuans>1,13,89,67,34,76,61,97</stuans>
+<correct>1,13,34,61,67,76,89,97</correct>
+<time_taken>14.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" SuchThat="1" CondNum="3" RelNum="1" comment="exact, synonym">17</id><querystr><![CDATA[procedure p; Select p such that Calls("procedure", p)]]></querystr>
+<stuans></stuans>
+<correct></correct>
+<time_taken>10.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" SuchThat="1" CondNum="3" RelNum="1" comment="exact, synonym">18</id><querystr><![CDATA[procedure p; Select p such that Calls ("f00d", p)]]></querystr>
+<stuans>obj3ct,colors,simple</stuans>
+<correct>obj3ct,colors,simple</correct>
+<time_taken>11.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnBoolean="1" Calls="1" SuchThat="1" CondNum="3" RelNum="1" comment="exact, exact">19</id><querystr><![CDATA[ Select BOOLEAN such that Calls ("obj3ct", "colors")]]></querystr>
+<stuans>TRUE</stuans>
+<correct>TRUE</correct>
+<time_taken>6.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="wildcard, exact">20</id><querystr><![CDATA[procedure p; Select p such that Calls(_, "colors")]]></querystr>
+<stuans>simple,f00d,obj3ct,colors,procedure,t0pUp</stuans>
+<correct>f00d,colors,obj3ct,simple,t0pUp,procedure</correct>
+<time_taken>12.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="wildcard, exact">21</id><querystr><![CDATA[procedure p; Select p such that Calls(_, "simple")]]></querystr>
+<stuans>simple,f00d,obj3ct,colors,procedure,t0pUp</stuans>
+<correct>f00d,colors,obj3ct,simple,t0pUp,procedure</correct>
+<time_taken>12.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="wildcard, exact">22</id><querystr><![CDATA[procedure p; Select p such that Calls(_, "f00d")]]></querystr>
+<stuans></stuans>
+<correct></correct>
+<time_taken>14.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="exact, wildcard">23</id><querystr><![CDATA[procedure p; Select p such that Calls("f00d", _)]]></querystr>
+<stuans>simple,f00d,obj3ct,colors,procedure,t0pUp</stuans>
+<correct>f00d,colors,obj3ct,simple,t0pUp,procedure</correct>
+<time_taken>20.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="exact, wildcard">24</id><querystr><![CDATA[procedure p; Select p such that Calls("obj3ct", _)]]></querystr>
+<stuans>simple,f00d,obj3ct,colors,procedure,t0pUp</stuans>
+<correct>f00d,colors,obj3ct,simple,t0pUp,procedure</correct>
+<time_taken>16.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="exact, wildcard">25</id><querystr><![CDATA[procedure p; Select p such that Calls("procedure", _)]]></querystr>
+<stuans></stuans>
+<correct></correct>
+<time_taken>15.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" SuchThat="1" CondNum="3" RelNum="1" comment="procedure not in simple">26</id><querystr><![CDATA[procedure p; Select p such that Calls("object", p)]]></querystr>
+<stuans></stuans>
+<correct></correct>
+<time_taken>14.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" SuchThat="1" CondNum="3" RelNum="1" comment="procedure not in simple">27</id><querystr><![CDATA[procedure p; Select p such that Calls(p, "colorss")]]></querystr>
+<stuans></stuans>
+<correct></correct>
+<time_taken>18.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" SuchThat="1" CondNum="3" RelNum="1" comment="both procedures not in simple">28</id><querystr><![CDATA[procedure p; Select p such that Calls("food", "colorss")]]></querystr>
+<stuans></stuans>
+<correct></correct>
+<time_taken>15.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" SuchThat="1" CondNum="3" RelNum="1" comment="synonym not in declaration">29</id><querystr><![CDATA[procedure pr; assign a; stmt s; print p; read r; Select pr such that Calls("obj3ct", proc)]]></querystr>
+<stuans></stuans>
+<correct></correct>
+<time_taken>20.000000</time_taken>
+<passed/>
+</query>
+</queries>
+</test_results>

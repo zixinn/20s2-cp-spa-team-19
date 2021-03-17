@@ -68,8 +68,24 @@ if if;
 Select BOOLEAN pattern if(_,_,_)
 TRUE
 5000
+15 - boolean pattern
+assign a;
+Select BOOLEAN pattern a("sci333ors", _)
+TRUE
+5000
 15 - boolean syntax error
 assign a;
 Select BOOLEAN pattern a("v", _, _)
 none
 5000
+16 - boolean meaningless query
+
+Select BOOLEAN with 112 = 112
+TRUE
+5000
+17 - boolean meaningless query
+
+Select BOOLEAN with 112 = 11
+FALSE
+5000
+
