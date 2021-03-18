@@ -6,10 +6,11 @@ QueryEvaluator::QueryEvaluator() {
 
 // Evaluates the query and returns a list containing the answers to the query
 list<string> QueryEvaluator::evaluate(Query query) {
-    this->declarations.clear();
-    this->toSelect.clear();
-    this->clauses.clear();
+    this->declarations = query.getDeclarations();
+    this->toSelect = query.getToSelect();
+    this->clauses = query.getClauses();
     this->results.clear();
+    this->selectBool = true;
 
     list<string> emptyList;
 
@@ -21,15 +22,10 @@ list<string> QueryEvaluator::evaluate(Query query) {
         return emptyList;
     }
 
-    this->declarations = query.getDeclarations();
-    this->toSelect = query.getToSelect();
-    this->clauses = query.getClauses();
-    this->selectBool = true;
-
     for (Clause clause : this->clauses) {
         unordered_map<string, vector<int>> tempResults;
         if (!evaluateClause(clause, tempResults)) { // clause returns false
-            // as long as clause returns false and toSelect is BOOLEAN, break and return
+            // as long as clause returns false and toSelect is BOOLEAN, break
             if (toSelect.at(0) == "BOOLEAN") { 
                 this->selectBool = false;
                 break;
@@ -71,6 +67,13 @@ bool QueryEvaluator::evaluateClause(Clause clause, unordered_map<string, vector<
         return NextEvaluator::evaluate(this->declarations, clause, tempResults);
     } else if (rel == "Next*") {
         return NextTEvaluator::evaluate(this->declarations, clause, tempResults);
+    } else if (rel == "Affects") {
+        return AffectsEvaluator::evaluate(this->declarations, clause, tempResults);
+    } else if (rel == "Affects*") {
+        return AffectsTEvaluator::evaluate(this->declarations, clause, tempResults);
+    }
+    else if (rel == "") { // with clause
+        return WithEvaluator::evaluate(this->declarations, clause, tempResults);
     } else { // pattern
         return PatternEvaluator::evaluate(this->declarations, clause, tempResults);
     }
@@ -259,8 +262,9 @@ list<string> QueryEvaluator::evaluateSynonymToSelect(vector<string> toSelect) {
     }
 
     for (string synonym : toSelect) {
-        if (results.find(synonym) == results.end()) { // synonym not in results table
-            unordered_map<string, vector<int>> tempResults = {{synonym, selectAll(this->declarations[synonym])}};
+        string syn = synonym.substr(0, synonym.find('.'));
+        if (results.find(syn) == results.end()) { // synonym not in results table
+            unordered_map<string, vector<int>> tempResults = {{syn, selectAll(this->declarations[syn])}};
             join(tempResults);
         }
     }
@@ -270,10 +274,27 @@ list<string> QueryEvaluator::evaluateSynonymToSelect(vector<string> toSelect) {
     for (int i = 0; i < numRows; i++) {
         string res = "";
         for (int j = 0; j < toSelect.size(); j++) {
-            string synonym = toSelect[j];
+            string synonym, attribute;
+            int pos = toSelect[j].find('.');
+            if (pos == string::npos) {
+                synonym = toSelect[j];
+            } else {
+                synonym = toSelect[j].substr(0, pos);
+                attribute = toSelect[j].substr(pos + 1);
+            }
+
             string toSelectType = this->declarations[synonym];
             int val = results[synonym].at(i);
-            if (toSelectType == PROCEDURE_) {
+            if (toSelectType == CALL_ && attribute == "procName") {
+                int procId = PKB::calls->getCalleeInStmt(val);
+                res += PKB::procTable->getProcName(procId);
+            } else if (toSelectType == READ_ && attribute == "varName") {
+                int varId = PKB::stmtTable->getReadVariableOfStmt(val);
+                res += PKB::varTable->getVarName(varId);
+            } else if (toSelectType == PRINT_ && attribute == "varName") {
+                int varId = PKB::stmtTable->getPrintVariableOfStmt(val);
+                res += PKB::varTable->getVarName(varId);
+            } else if (toSelectType == PROCEDURE_) {
                 res += PKB::procTable->getProcName(val);
             } else if (toSelectType == VARIABLE_) {
                 res += PKB::varTable->getVarName(val);
