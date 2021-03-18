@@ -1,0 +1,365 @@
+1 - if pattern, exist
+if ifs;
+Select ifs pattern ifs("gossamer", _, _)
+6
+5000
+2 - if pattern, exist
+if ifs;
+Select ifs pattern ifs("lesion", _, _)
+6
+5000
+3 - if pattern, exist
+if ifs;
+Select ifs pattern ifs("boro", _, _)
+23
+5000
+4 - if pattern, no exist
+if ifs;
+Select ifs pattern ifs("gogo", _, _)
+none
+5000
+5 - if pattern, no exist but substring
+if ifs;
+Select ifs pattern ifs("goss", _, _)
+none
+5000
+6 - if pattern, no exist but substring
+if ifs;
+Select ifs pattern ifs("les", _, _)
+none
+5000
+7 - if pattern, exist in program bt not in if
+if ifs;
+Select ifs pattern ifs("melody", _, _)
+none
+5000
+8 - if pattern, exist in program bt not in if
+if ifs;
+Select ifs pattern ifs("teacup0", _, _)
+none
+5000
+9 - if pattern, not variable name or synonym
+constant c;
+Select ifs pattern ifs(c, _, _)
+none
+5000
+10 - if pattern, wildcard
+if if; constant c;
+Select if pattern if(_, _, _)
+6, 23
+5000
+11 - if pattern, synonym
+if if; variable v;
+Select v pattern if(v,_,_)
+gossamer, lesion, boro
+5000
+12 - if pattern using while pattern
+if ifs; 
+Select ifs pattern ifs("gossamer", _)
+none
+5000
+13 - if pattern, invalid
+if ifs;
+Select ifs pattern ifs("gossamer", "x", "lesion")
+none
+5000
+14 - if pattern, invalid
+if ifs;
+Select ifs pattern ifs("gossamer", "x", _)
+none
+5000
+15 - if pattern, invalid
+if ifs;
+Select ifs pattern ifs("gossamer", _, "lesion")
+none
+5000
+16 - if pattern, missing quotation
+if ifs;
+Select ifs pattern      ifs(gossamer, _, _)
+none
+5000
+17 - if pattern, missing wildcards
+if ifs;
+Select ifs pattern ifs("gossamer")
+none
+5000
+18 - while pattern, exist
+while w;
+Select w pattern w("melody", _)
+3
+5000
+19 - while pattern, exist
+while w;
+Select w pattern w("maison", _)
+3
+5000
+20 - while pattern, no exist
+while w;
+Select w pattern w("gossamer", _)
+none
+5000
+21 - while pattern, exist in program bt not in while
+while w;
+Select w pattern w("lesion", _)
+none
+5000
+22 - while pattern, wildcard
+while w;
+Select w pattern w(_, _)
+3, 15
+5000
+23 - while pattern, synonym
+while w; variable v;
+Select v pattern w(v,_)
+melody, maison
+5000
+24 - while pattern using w pattern
+while w; 
+Select w pattern w("melody", _, _)
+none
+5000
+25 - while pattern, invalid
+while w;
+Select w pattern w("melody", "lesion")
+none
+5000
+26 - while pattern, invalid
+while w;
+Select w pattern w(_, "lesion")
+none
+5000
+27 - while pattern, missing quotation
+while w;
+Select w pattern      w(melody, _)
+none
+5000
+28 - while pattern, missing wildcards
+while w;
+Select w pattern w("melody")
+none
+5000
+29 - while pattern, synonym
+while w; constant const;
+Select const pattern w(const,_)
+none
+5000
+30 - while pattern, invalid
+while w;
+Select w pattern w(1,_)
+none
+5000
+31 - while pattern, invalid
+while w;
+Select w pattern w("1",_)
+none
+5000
+32 - while pattern, invalid
+while w;
+Select w pattern w(w,_)
+none
+5000
+33 - while pattern, synonym
+while w; constant const;
+Select const pattern w("melody",_)
+1, 2, 5, 8, 23, 56, 258080
+5000
+34 - while pattern, invalid
+while w;
+Select w pattern w("*",_)
+none
+5000
+35 - assign
+assign a;
+Select a pattern a(_,_)
+2, 4, 5, 7, 8, 16, 17, 18, 21, 22, 25, 26
+5000
+36 - assign
+assign a;
+Select a pattern a("guru", "guru")
+26
+5000
+37 - assign
+assign a;
+Select a pattern a("x lesion", _)
+none
+5000
+38 - assign
+assign a;
+Select a pattern a(_, _" lesion "_)
+7, 8
+5000
+39 - assign
+assign a;
+Select a pattern a(_, _"lesion"_)
+7, 8
+5000
+40 - assign
+assign a;
+Select a pattern a(_, _" lesion*2 ")
+7
+5000
+41 - assign
+assign a;
+Select a pattern a(_, _"lesion*2 ")
+7
+5000
+42 - assign
+assign a;
+Select a pattern a(_, "lesion*2"_)
+7, 8
+5000
+43 - assign
+assign a;
+Select a pattern a(_, " lesion*2 "_)
+7, 8
+5000
+44 - assign
+assign a;
+Select a pattern a(_, _"lesion*2"_)
+7, 8
+5000
+45 - assign
+assign a;
+Select a pattern a(_, _"(lesion*2)"_)
+7, 8
+5000
+46 - assign
+assign a;
+Select a pattern a(_, "(lesion*2)"_)
+7, 8
+5000
+47 - assign
+assign a;
+Select a pattern a(_, " (lesion*2 )"_)
+7, 8
+5000
+48 - assign
+assign a;
+Select a pattern a(_, " (lesion*2 "_)
+none
+5000
+49 - assign
+assign a;
+Select a pattern a(_, _"+ 1) / blubell"_)
+none
+5000
+50 - assign
+assign a;
+Select a pattern a(_, "(23+1)/bluebell/5")
+2, 18
+5000
+51 - assign
+assign a;
+Select a pattern a(_, _"(23+1)/bluebell/5")
+2, 18
+5000
+52 - assign
+assign a;
+Select a pattern a(_, "(23+1)/bluebell/5"_)
+2, 18
+5000
+53 - assign
+assign a;
+Select a pattern a(_, _" (23+1)/bluebell/5 "_)
+2, 18
+5000
+54 - assign
+assign a;
+Select a pattern a(_, _"(23+1)/bluebell/5"_)
+2, 18
+5000
+55 - assign
+assign a;
+Select a pattern a(_, _"guru"_)
+26
+5000
+56 - assign
+assign a;
+Select a pattern a(_, "guru")
+26
+5000
+57 - assign
+assign a;
+Select a pattern a(_, _"guru")
+26
+5000
+57 - assign
+assign a;
+Select a pattern a(_, "guru"_)
+26
+5000
+58 - assign
+assign a;
+Select a pattern a(_, " guru")
+26
+5000
+59 - assign
+assign a;
+Select a pattern a(_, "(((((y))))-((1)))")
+4, 16
+5000
+60 - assign
+assign a;
+Select a pattern a(_, _"(((((y))))-((1)))")
+4, 16
+5000
+61 - assign
+assign a;
+Select a pattern a(_, "5 == 5")
+none
+5000
+62 - assign
+assign a;
+Select a pattern a("x",_)
+4, 7, 8, 16
+5000
+63 - assign
+assign a;
+Select a pattern a("x", "lesion* 2")
+7
+5000
+64 - assign
+assign a;
+Select a pattern a(_, _"23 + 1"_)
+2, 18
+5000
+65 - assign
+assign a;
+Select a pattern a(_, _"2 + 8"_)
+22
+5000
+66 - assign
+assign a; variable v;
+Select a pattern a(v, v)
+none
+5000
+67 - assign
+assign a; variable v;
+Select v pattern a(v, _)
+guru, melody, x, lesion, z
+5000
+68 - assign
+assign a; variable v;
+Select v pattern a(v, _"23+1"_)
+lesion
+5000
+69 - assign
+assign a; variable v;
+Select a pattern a(v, _"23+1"_) and a(v, _"5"_)
+2, 18
+5000
+70 - assign
+assign a; variable v;
+Select a pattern a(_, _"23+1"_) and a(_, _"5"_)
+2, 18
+5000
+71 - assign
+assign a, a1, a2; variable v;
+Select a2 pattern a(v, _"23+1"_) and a1(v, _"5"_) such that Uses(a2, v)
+7, 8
+5000
+72 - assign
+assign a, a1, a2; variable v;
+Select a2 pattern a(v, _"23+1"_) and a1(v, _"5") such that Uses(a2, v)
+7, 8
+5000
