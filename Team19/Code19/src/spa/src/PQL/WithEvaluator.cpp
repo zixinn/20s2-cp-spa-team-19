@@ -171,12 +171,42 @@ bool WithEvaluator::compareNames(unordered_map<string, string> firstArgMap, unor
 
 vector<int> WithEvaluator::compareOneArgTypeName(string name, unordered_map<string, string> argMap) {
     vector<int> results;
-    vector<int> allArgValues = getValues(argMap);
+    string argType = argMap["argType"];
+    if (argType == PROCEDURE_) {
+        int procId = PKB::procTable->getProcID(name);
+        if (procId != -1) {
+            results.push_back(procId);
+        }
+    } else if (argType == CALL_) {
+        ID procId = PKB::procTable->getProcID(name);
+        if (procId != -1) {
+            unordered_set<StmtNum> stmts = PKB::calls->getStmtNumThatCallsCallee(procId);
+            results.assign(stmts.begin(), stmts.end());
+        }
+    } else if (argType == VARIABLE_) {
+        ID varId = PKB::varTable->getVarID(name);
+        if (varId != -1) {
+            results.push_back(varId);
+        }
+    } else if (argType == READ_) {
+        ID varId = PKB::varTable->getVarID(name);
+        if (varId != -1) {
+            unordered_set<StmtNum> stmts = PKB::stmtTable->getStmtNumsOfReadWithVar(varId);
+            results.assign(stmts.begin(), stmts.end());
+        }
+    } else { // argType == PRINT_
+        ID varId = PKB::varTable->getVarID(name);
+        if (varId != -1) {
+            unordered_set<StmtNum> stmts = PKB::stmtTable->getStmtNumsOfPrintWithVar(varId);
+            results.assign(stmts.begin(), stmts.end());
+        }
+    }
+    /*vector<int> allArgValues = getValues(argMap);
     for (auto it = allArgValues.begin(); it < allArgValues.end(); it++) {
         if (getName(argMap, *it) == name) {
             results.push_back(*it);
         }
-    }
+    }*/
     return results;
 }
 
