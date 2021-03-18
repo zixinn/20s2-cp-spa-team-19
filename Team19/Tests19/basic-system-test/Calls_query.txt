@@ -1,0 +1,100 @@
+1 - Procedure shikashi (Modifies)
+variable v;
+Select v such that Modifies("shikashi", v)
+z, ardent, guru, pardon
+5000
+2 - Procedure shikashi (Uses)
+variable v;
+Select v such that Uses("shikashi", v)
+boro, guru
+5000
+3 - Procedure something (Modifies)
+variable v;
+Select v such that Modifies("something", v)
+teacup0, x, lesion, melody, z, ardent, guru, pardon
+5000
+4 - Procedure something (Uses)
+variable v;
+Select v such that Uses("something", v)
+something, y, teacup0, bluebell, lesion, coeur, cerveau, boro, guru
+5000
+5 - Procedure Honeysuckle (Modifies)
+variable v;
+Select v such that Modifies("Honeysuckle", v)
+teacup0, x, lesion, melody, z, ardent, guru, pardon
+5000
+6 - Procedure Honeysuckle (Uses)
+variable v;
+Select v such that Uses("Honeysuckle", v)
+something, y, teacup0, bluebell, lesion, coeur, cerveau, boro, guru, melody, maison, gossamer, x
+5000
+7 - Calls
+procedure p;
+Select p such that Calls("Honeysuckle", p)
+something, shikashi
+5000
+8 - Calls
+procedure p;
+Select p such that Calls("shikashi", p)
+none
+5000
+9 - Calls *
+procedure p;
+Select p such that Calls*("Honeysuckle", p)
+something, shikashi
+5000
+10 - Calls *
+procedure p;
+Select p such that Calls*("shikashi", p)
+none
+5000
+11 - Call Statement (Modifies)
+variable v;
+Select v such that Modifies(11, v)
+teacup0, x, lesion, melody, z, ardent, guru, pardon
+5000
+12 - Call Statement (Uses)
+variable v;
+Select v such that Uses(11, v)
+something, y, teacup0, bluebell, lesion, coeur, cerveau, boro, guru
+5000
+13 - Call Statement (Modifies)
+variable v;
+Select v such that Modifies(12, v)
+z, ardent, guru, pardon
+5000
+14 - Call Statement (Uses)
+variable v;
+Select v such that Uses(12, v)
+boro, guru
+5000
+15 - Select all call statements
+call c;
+Select c
+11, 12, 20
+5000
+16 - All call Statement (Uses)
+variable v; call c;
+Select v such that Uses(c, v)
+something, y, teacup0, bluebell, lesion, coeur, cerveau, boro, guru
+5000
+17 - All call Statement (Modifies)
+variable v; call c;
+Select v such that Modifies(c, v)
+teacup0, x, lesion, melody, z, ardent, guru, pardon
+5000
+18 - All procedures
+procedure p;
+Select p
+Honeysuckle, something, shikashi
+5000
+19 - All procedures (Modifies)
+variable v; procedure p;
+Select v such that Modifies(p, v)
+teacup0, x, lesion, melody, z, ardent, guru, pardon
+5000
+20 - All procedures (Uses)
+variable v; procedure p;
+Select v such that Uses(p, v)
+something, y, teacup0, bluebell, lesion, coeur, cerveau, boro, guru, melody, maison, gossamer, x
+5000

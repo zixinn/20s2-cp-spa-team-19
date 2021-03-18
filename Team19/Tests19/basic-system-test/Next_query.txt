@@ -1,0 +1,230 @@
+1 - Next(_,_)
+prog_line n1;
+Select n1 such that Next(_,_)
+1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27
+5000
+2 - Next(_,_)
+stmt s1;
+Select s1 such that Next(_,_)
+1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27
+5000
+3 - Next(_,s)
+stmt s;
+Select s such that Next(_,s)
+2,3,4,5,6,7,8,9,10,11,12,14,15,16,17,18,19,20,21,23,24,25,26,27
+5000
+4 - Next(_,s)
+stmt s1, s2;
+Select s1 such that Next(_,s2)
+1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27
+5000
+5 - Next(_,s) s not declared invalid
+stmt s1, s2;
+Select s1 such that Next(_,s)
+none
+5000
+6 - Next(s,_)
+stmt s;
+Select s such that Next(s,_)
+1,2,3,4,5,6,7,8,9,10,11,13,14,15,16,17,18,19,20,22,23,24,25
+5000
+7 - Next(n,_)
+prog_line n1, n2;
+Select n1 such that Next(n2,_)
+1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27
+5000
+8 - Next(n,_) n not declared invalid
+stmt n1, n2;
+Select n1 such that Next(_,n)
+none
+5000
+9 - Select n, Next(last,_) evaluates to false
+prog_line n;
+Select n such that Next(26,_)
+none
+5000
+10 - Select n, Next(first,_) evaluates to true
+prog_line n;
+Select n such that Next(22,_)
+1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27
+5000
+11 - Select n, Next(_,first) evaluates to false
+prog_line n;
+Select n such that Next(_,22)
+none
+5000
+12 - Select n, Next(_,last) evaluates to true
+prog_line n;
+Select n such that Next(_,26)
+1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27
+5000
+13 - stmt 1, before normal
+prog_line n;
+Select n such that Next(n, 1)
+none
+5000
+14 - stmt 1, after normal
+prog_line n;
+Select n such that Next(1, n)
+2
+5000
+14 - stmt 2, before normal
+prog_line n;
+Select n such that Next(n, 2)
+1
+5000
+15 - stmt 2, after normal
+prog_line n;
+Select n such that Next(2, n)
+3
+5000
+16 - while next
+prog_line n;
+Select n such that Next(n, 3)
+2, 5
+5000
+17 - while next
+prog_line n;
+Select n such that Next(3, n)
+4, 6
+5000
+18 - stmt 4, before first stmt in while
+prog_line n;
+Select n such that Next(n, 4)
+3
+5000
+19 - stmt 4, after first stmt in while
+prog_line n;
+Select n such that Next(4, n)
+5
+5000
+19 - stmt 5, before last stmt in while
+prog_line n;
+Select n such that Next(n, 5)
+4
+5000
+20 - stmt 5, after last stmt in while
+prog_line n;
+Select n such that Next(5, n)
+3
+5000
+21 - stmt 6, before if next
+prog_line n;
+Select n such that Next(n, 6)
+3
+5000
+22 - stmt 6, after if next
+prog_line n;
+Select n such that Next(6, n)
+7, 8
+5000
+23 - stmt 7, before only statement in if block
+prog_line n;
+Select n such that Next(n, 7)
+6
+5000
+24 - stmt 7, after only statement in if block
+prog_line n;
+Select n such that Next(7, n)
+10
+5000
+25 - stmt 8, before first statement in alt block
+prog_line n;
+Select n such that Next(n, 8)
+6
+5000
+26 - stmt 8, after first statement in alt block
+prog_line n;
+Select n such that Next(8, n)
+9
+5000
+27 - stmt 9, before last statement in alt block
+prog_line n;
+Select n such that Next(n, 9)
+8
+5000
+28 - stmt 9, after last statement in alt block
+prog_line n;
+Select n such that Next(9, n)
+10
+5000
+29 - stmt 10, before statement after block
+prog_line n;
+Select n such that Next(n, 10)
+7, 9
+5000
+30 - stmt 10, after statement before call
+prog_line n;
+Select n such that Next(10, n)
+11
+5000
+31 - stmt 11, before call statement
+prog_line n;
+Select n such that Next(n, 11)
+10
+5000
+32 - stmt 11, after call statement
+prog_line n;
+Select n such that Next(11, n)
+12
+5000
+33 - stmt 12, before last statement
+prog_line n;
+Select n such that Next(n, 12)
+11
+5000
+34 - stmt 12, after last statement
+prog_line n;
+Select n such that Next(12, n)
+none
+5000
+35 - Next(known, a)
+assign a;
+Select a such that Next(6, a)
+7, 8
+5000
+36 - Next(_, a)
+assign a;
+Select a such that Next(_, a)
+2, 4, 5, 7, 8, 16, 17, 18, 21, 25, 26
+5000
+37 - Next(a, known)
+assign a;
+Select a such that Next(a, 6)
+none
+5000
+38 - Next(a, _)
+assign a;
+Select a such that Next(a, _)
+2, 4, 5, 7, 8, 16, 17, 18, 22, 25
+5000
+39 - Get all whiles
+while w;
+Select w such that Next(5, 3)
+3, 15
+5000
+40 - Get all whiles
+while w;
+Select w such that Next(2, 1)
+none
+5000
+41 - Get all whiles before assign
+while w; assign a;
+Select w such that Next(w, a)
+3, 15
+5000
+42 - Get all whiles after assign
+while w; assign a;
+Select w such that Next(a, w)
+3
+5000
+43 - Get all whiles before if
+while w; if ifs;
+Select w such that Next(w, ifs)
+3
+5000
+44 - Get all whiles after if
+while w; if ifs;
+Select w such that Next(ifs, w)
+none
+5000
