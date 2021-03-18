@@ -59,6 +59,9 @@ TEST_CASE("checkExpression") {
     REQUIRE_FALSE(checkExpression("\"2 - ?\""));
     REQUIRE_FALSE(checkExpression("\"+1-0\""));
     REQUIRE_FALSE(checkExpression("\"__\""));
+    REQUIRE_FALSE(checkExpression("\"2+\""));
+    REQUIRE_FALSE(checkExpression("\"red1 < red2\""));
+    REQUIRE_FALSE(checkExpression("\"red1 red2\""));
 }
 
 TEST_CASE("checkExpressionWithUnderscores") {
