@@ -146,5 +146,5 @@ procedure t0pUp {
 }
 
 procedure procedure {
-99	else = else;
+99	print else;
 }

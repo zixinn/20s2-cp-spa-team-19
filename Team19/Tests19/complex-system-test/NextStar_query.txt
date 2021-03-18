@@ -126,7 +126,7 @@ Select c such that Next*(c,_)
 26 - Next*(known, known)
 print pn;
 Select pn such that Next*(1,5)
-6,18,23,49,63,66,77,88
+6,18,23,49,63,66,77,88,99
 5000
 27 - Next*(known, known)
 read r;

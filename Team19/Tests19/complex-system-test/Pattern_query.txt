@@ -1,0 +1,150 @@
+1 - if pattern, exist
+if ifs;
+Select ifs pattern ifs("red1", _, _)
+29, 53
+5000
+2 - if pattern, exist
+if ifs;
+Select ifs pattern ifs("ramen", _, _)
+7
+5000
+3 - if pattern, no exist
+if ifs;
+Select ifs pattern ifs("gogo", _, _)
+none
+5000
+4 - if pattern, exist in program bt not in if
+if ifs;
+Select ifs pattern ifs("spring", _, _)
+none
+5000
+5 - if pattern, wildcard
+if if; constant c;
+Select if pattern if(_, _, _)
+7, 17, 29, 45, 46, 53, 72, 82, 92
+5000
+6 - if pattern, synonym
+if if; variable v;
+Select v pattern if(v,_,_)
+duck, chicken, noodle, ramen, rice, red1, red2, green, purple, red, procedure, statement, progline, print, read, w9113t, then, else
+5000
+7 - if pattern using while pattern
+if ifs; 
+Select ifs pattern ifs("green", _)
+none
+5000
+8 - if pattern, invalid
+if ifs;
+Select ifs pattern ifs("green", "purple", "red")
+none
+5000
+9 - if pattern, invalid
+if ifs;
+Select ifs pattern ifs("green", "purple", _)
+none
+5000
+10 - if pattern, invalid
+if ifs;
+Select ifs pattern ifs("green", _, "red")
+none
+5000
+11 - if pattern, missing quotation
+if ifs;
+Select ifs pattern      ifs(red1, _, _)
+none
+5000
+12 - if pattern, missing wildcards
+if ifs;
+Select ifs pattern ifs("red1")
+none
+5000
+13 - while pattern, exist
+while w;
+Select w pattern w("green1", _)
+37, 58, 62
+5000
+14 - while pattern, exist
+while ifs;
+Select ifs pattern ifs("    while    ", _)
+87
+5000
+15 - while pattern, no exist
+while w;
+Select w pattern w("bibi", _)
+none
+5000
+16 - while pattern, exist in program bt not in while
+while w;
+Select w pattern w("else", _)
+none
+5000
+17 - while pattern, wildcard
+while w;
+Select w pattern w(_, _)
+10, 31, 37, 44, 47, 58, 62, 87
+5000
+18 - while pattern, synonym
+while w; variable v;
+Select v pattern w(v,_)
+onion, sprING000Ni0n, green, yellow, blue2, blue1, red1, blue3, red2, purple, spring, green1, ramen, red, green2, while, if
+5000
+19 - while pattern using w pattern
+while w; 
+Select w pattern w("green", _, _)
+none
+5000
+20 - while pattern, invalid
+while w;
+Select w pattern w("green", "purple")
+none
+5000
+21 - while pattern, invalid
+while w;
+Select w pattern w(_, "purple")
+none
+5000
+22 - while pattern, missing quotation
+while w;
+Select w pattern      w(red1, _)
+none
+5000
+23 - while pattern, missing wildcards
+while w;
+Select w pattern w("red1")
+none
+5000
+24 - no overlap with select, if pattern
+constant c; if ifs; variable v;
+Select c pattern ifs(v, _, _)
+0, 1, 12, 2, 4, 6, 10, 3, 234, 456, 789, 7, 5, 9, 500, 5555, 100, 290918238, 424809, 1241242134
+5000
+25 - no overlap with select, while pattern
+constant c; while w; variable v;
+Select c pattern w(v, _)
+0, 1, 12, 2, 4, 6, 10, 3, 234, 456, 789, 7, 5, 9, 500, 5555, 100, 290918238, 424809, 1241242134
+5000
+26 - invalid varname, while pattern 
+while w;
+Select BOOLEAN pattern w("*", _)
+none
+5000
+27 - invalid varname, if pattern
+if ifs;
+Select BOOLEAN pattern ifs("456", _, _)
+none
+5000
+28 - multiple underscores
+if ifs;
+Select BOOLEAN pattern ifs(_, _, _, _)
+none
+5000
+29 - two variables in string
+while w;
+Select w pattern w(" green yellow", _)
+none
+5000
+30 - missing declaration
+
+Select BOOLEAN pattern w("green", _)
+none
+5000

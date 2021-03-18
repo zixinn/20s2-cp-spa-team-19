@@ -88,4 +88,9 @@ TRUE
 Select BOOLEAN with 112 = 11
 FALSE
 5000
+18 - boolean missing declaration
+
+Select BOOLEAN such that Next(s, 2)
+FALSE
+5000
 
