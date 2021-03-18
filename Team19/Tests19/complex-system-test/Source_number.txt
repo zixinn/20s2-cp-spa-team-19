@@ -62,7 +62,8 @@ procedure colors {
 47				while ((blue3 == blue2) || (red != ramen)) {
 48					blue2 = blue2 % red2;
 49					print purple;
-50					red2 = black * red;
+50					red2 = (((884-197)+(gold * 169))-((black-black)+3993   *black) + (((black)/(red))+((((75105820  %9749)/
+(3%21))*(red*(gold+black)))/gold)))%((red*red-yellow  %blue)+(blue*  93238-   926535897+926535897));
 					
 				}
 51				purple = purple;
@@ -85,7 +86,7 @@ procedure colors {
 								}
 							}
 						}
-65						blue = blue;
+65						blue = ((yellow     +orange-314/15)*((blue)+((926535897+orange))))*((red*((red))-(yellow%   blue))+((blue*((93238)))-    926535897    +    926535897))-((46/26)+((green)-26433)*((gold + 8)+((3)-silver))%(((3 *gold)* (3279502))%((blue)*(red/88))));
 					}
 				} else {
 66					print black;
