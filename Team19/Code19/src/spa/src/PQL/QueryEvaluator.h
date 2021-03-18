@@ -18,7 +18,10 @@
 #include "CallsTEvaluator.h"
 #include "NextEvaluator.h"
 #include "NextTEvaluator.h"
+#include "AffectsEvaluator.h"
+#include "AffectsTEvaluator.h"
 #include "PatternEvaluator.h"
+#include "WithEvaluator.h"
 
 class QueryEvaluator {
 public:
