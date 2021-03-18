@@ -15,10 +15,11 @@ list<string> QueryEvaluator::evaluate(Query query) {
     list<string> emptyList;
 
     if (!query.getIsSyntacticallyValid()) {
+        
         return emptyList;
     }
     if (!query.getIsSemanticallyValid()) {
-        if (toSelect.at(0) == "BOOLEAN") { return list<string> {"FALSE"}; }
+        if (toSelect.size() == 1 && toSelect.at(0) == "BOOLEAN") { return list<string> {"FALSE"}; }
         return emptyList;
     }
 
@@ -254,7 +255,7 @@ void QueryEvaluator::join(unordered_map<string, vector<int>> table) {
 
 // Evaluates the synonym to select using the results table and returns a list containing the answers
 list<string> QueryEvaluator::evaluateSynonymToSelect(vector<string> toSelect) {
-    if (toSelect.at(0) == "BOOLEAN") {
+    if (toSelect.size() == 1 && toSelect.at(0) == "BOOLEAN") {
         string ans;
         if (selectBool) { ans = "TRUE"; }
         else { ans = "FALSE"; }
