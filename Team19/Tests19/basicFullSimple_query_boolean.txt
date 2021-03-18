@@ -36,7 +36,7 @@ FALSE
 8 - Boolean with 2 clauses (1 true 1 returns results)
 assign a; stmt s;
 Select BOOLEAN pattern a (“z”, _) such that Parent(s, 16)
-FALSE
+TRUE
 5000
 9 - Boolean with 2 clauses (1 true 1 returns nothing)
 assign a; stmt s;
