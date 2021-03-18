@@ -98,3 +98,73 @@ variable v; procedure p;
 Select v such that Uses(p, v)
 something, y, teacup0, bluebell, lesion, coeur, cerveau, boro, guru, melody, maison, gossamer, x
 5000
+21 - Call And clauses
+procedure p;
+Select p such that Calls("Honeysuckle", p) and Calls(p, "shikashi")
+something
+5000
+22 - Call* And clauses
+procedure p;
+Select p such that Calls*("Honeysuckle", p) and Calls*(p, "shikashi")
+something
+5000
+23 - Call, And, all synonyms
+procedure p, q, r;
+Select q such that Calls(p, q) and Calls(q, r)
+something
+5000
+24 - Call with procName with clause
+procedure p, q;
+Select p such that Calls(p, q) with p.procName = "Honeysuckle"
+Honeysuckle
+5000
+25 - Call with select procName
+procedure p, q;
+Select p.procName such that Calls(p, q)
+Honeysuckle, something
+5000
+26 - Call with stmt# with clause
+call c;
+Select c with c.stmt# = 11
+11
+5000
+27 - Call with stmt# with clause, no such call
+call c;
+Select c with c.stmt# = 17
+none
+5000
+28 - Call with stmt# with clause, and
+stmt s; call c;
+Select s with s.stmt# = 11 and c.procName = "something"
+11
+5000
+28 - Call with stmt# with clause, and
+stmt s; call c;
+Select s with s.stmt# = 18 and c.procName = "something"
+18
+5000
+29 - Call with stmt# with clause, such that, and
+procedure p, q, r;
+Select q such that Calls(p, q) and Calls(q, r) with q.procName = "shikashi"
+none
+5000
+30 - Call with stmt# with clause, such that, and
+procedure p, q, r;
+Select q such that Calls(p, q) and Calls(q, r) with q.procName = "something"
+something
+5000
+31 - Select tuple for Call with such that, and
+procedure p, q, r;
+Select <p,r> such that Calls(p, q) and Calls(q, r)
+Honeysuckle shikashi
+5000
+32 - Select tuple for Call with procName with clause, such that, and
+procedure p, q, r;
+Select <p,q,r> such that Calls(p, q) and Calls(q, r) with q.procName = "something"
+Honeysuckle something shikashi
+5000
+33 - While statement that contains a call statement
+while w; call c;
+Select w pattern w(_, _) such that Parent(w, c)
+none
+5000
