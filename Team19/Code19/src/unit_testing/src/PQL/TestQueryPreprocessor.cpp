@@ -69,6 +69,14 @@ TEST_CASE("process invalid synonym in declaration") {
     REQUIRE(actual == expected);
 }
 
+TEST_CASE("process invalid clause in declaration") {
+    QueryPreprocessor qp = QueryPreprocessor();
+    string query = "assign 1a; while w; \nSelect w such that Parent* (w, a) patten a (\"count\", _)";
+    Query actual = qp.process(query);
+    Query expected = Query({}, {}, {}, false, true);
+    REQUIRE(actual == expected);
+}
+
 TEST_CASE("process synonym not declared") {
     QueryPreprocessor qp = QueryPreprocessor();
     string query = "assign a; while W; \nSelect w such that Parent* (w, a) pattern a (\"count\", _)";

@@ -23,14 +23,6 @@ bool WithEvaluator::evaluate(unordered_map<string, string> declarations, Clause 
         firstArgMap["argType"] == NAME_ && secondArgMap["argType"] == NAME_) {   
         return firstArgMap["arg"] == secondArgMap["arg"];
     }
-    // both argument types and attributes are the same e.g. c1.procName = c2.procName
-    /*if (firstArgMap["argType"] == secondArgMap["argType"] && firstArgMap["attrName"] == secondArgMap["attrName"]) {
-        vector<int> values = getValues(firstArgMap);
-        if (values.empty()) { return false; }
-        tempResults[firstArgMap["arg"]] = values;
-        tempResults[secondArgMap["arg"]] = values;
-        return true;
-    }*/
     // both arguments are varName/procName/name
     if (firstArgMap["argType"] == NAME_ || secondArgMap["argType"] == NAME_ ||
         firstArgMap["attrName"] == "varName" || secondArgMap["attrName"] == "varName" ||

@@ -460,3 +460,38 @@ TEST_CASE("QueryEvaluator evaluate query for edge cases") {
     REQUIRE(actual4.size() == list4.size());
     REQUIRE(actual4 == expected4);
 }
+
+TEST_CASE("QueryEvaluator evaluate ambiguous queries") {
+    PKB::stmtTable = new StmtTable();
+    ast::Stmt* stmtNodeStub = new StmtNodeStub(0);
+    PKB::stmtTable->storeStmt(1, stmtNodeStub, ASSIGN_);
+    PKB::stmtTable->storeStmt(2, stmtNodeStub, ASSIGN_);
+
+    QueryPreprocessor qp = QueryPreprocessor();
+    QueryEvaluator qe = QueryEvaluator();
+
+    string query1 = "stmt BOOLEAN; Select BOOLEAN";
+    Query q1 = qp.process(query1);
+    list<string> list1 = qe.evaluate(q1);
+    unordered_set<string> actual1(begin(list1), end(list1));
+    unordered_set<string> expected1 = { "FALSE" };
+    REQUIRE(actual1.size() == list1.size());
+    REQUIRE(actual1 == expected1);
+
+    string query2 = "assign a; Select <BOOLEAN, a>";
+    Query q2 = qp.process(query2);
+    list<string> list2 = qe.evaluate(q2);
+    unordered_set<string> actual2(begin(list2), end(list2));
+    unordered_set<string> expected2 = { };
+    REQUIRE(actual2.size() == list2.size());
+    REQUIRE(actual2 == expected2);
+
+    string query3 = "assign a; stmt BOOLEAN; Select <BOOLEAN, a>";
+    Query q3 = qp.process(query3);
+    list<string> list3 = qe.evaluate(q3);
+    unordered_set<string> actual3(begin(list3), end(list3));
+    unordered_set<string> expected3 = {"1 1", "1 2", "2 1", "2 2" };
+    REQUIRE(actual3.size() == list3.size());
+    REQUIRE(actual3 == expected3);
+}
+
