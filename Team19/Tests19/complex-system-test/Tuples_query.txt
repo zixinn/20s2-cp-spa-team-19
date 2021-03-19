@@ -1,0 +1,125 @@
+1 - No clauses
+read r; print pn;
+Select <r, pn>
+1 6, 1 18, 1 23, 1 49, 1 63, 1 66, 1 77, 1 88, 1 99, 13 6, 13 18, 13 23, 13 49, 13 63, 13 66, 13 77, 13 88, 13 99, 34 6, 34 18, 34 23, 34 49, 34 63, 34 66, 34 77, 34 88, 34 99, 61 6, 61 18, 61 23, 61 49, 61 63, 61 66, 61 77, 61 88, 61 99, 67 6, 67 18, 67 23, 67 49, 67 63, 67 66, 67 77, 67 88, 67 99, 76 6, 76 18, 76 23, 76 49, 76 63, 76 66, 76 77, 76 88, 76 99, 89 6, 89 18, 89 23, 89 49, 89 63, 89 66, 89 77, 89 88, 89 99, 97 6, 97 18, 97 23, 97 49, 97 63, 97 66, 97 77, 97 88, 97 99
+5000
+2 - Two With Clauses
+stmt s1, s2;
+Select <s1, s2> with s1.stmt# = 29 and s2.stmt# = 90
+29 90
+5000
+3 - Such that Next
+prog_line n1, n2;
+Select <n1, n2> such that Next(n2, 10)
+1 9,2 9,3 9,4 9,5 9,6 9,7 9,8 9,9 9,10 9,11 9,12 9,13 9,14 9,15 9,16 9,17 9,18 9,19 9,20 9,21 9,22 9,23 9,24 9,25 9,26 9,27 9,28 9,29 9,30 9,31 9,32 9,33 9,34 9,35 9,36 9,37 9,38 9,39 9,40 9,41 9,42 9,43 9,44 9,45 9,46 9,47 9,48 9,49 9,50 9,51 9,52 9,53 9,54 9,55 9,56 9,57 9,58 9,59 9,60 9,61 9,62 9,63 9,64 9,65 9,66 9,67 9,68 9,69 9,70 9,71 9,72 9,73 9,74 9,75 9,76 9,77 9,78 9,79 9,80 9,81 9,82 9,83 9,84 9,85 9,86 9,87 9,88 9,89 9,90 9,91 9,92 9,93 9,94 9,95 9,96 9,97 9,98 9,99 9,1 14,2 14,3 14,4 14,5 14,6 14,7 14,8 14,9 14,10 14,11 14,12 14,13 14,14 14,15 14,16 14,17 14,18 14,19 14,20 14,21 14,22 14,23 14,24 14,25 14,26 14,27 14,28 14,29 14,30 14,31 14,32 14,33 14,34 14,35 14,36 14,37 14,38 14,39 14,40 14,41 14,42 14,43 14,44 14,45 14,46 14,47 14,48 14,49 14,50 14,51 14,52 14,53 14,54 14,55 14,56 14,57 14,58 14,59 14,60 14,61 14,62 14,63 14,64 14,65 14,66 14,67 14,68 14,69 14,70 14,71 14,72 14,73 14,74 14,75 14,76 14,77 14,78 14,79 14,80 14,81 14,82 14,83 14,84 14,85 14,86 14,87 14,88 14,89 14,90 14,91 14,92 14,93 14,94 14,95 14,96 14,97 14,98 14,99 14
+5000
+4 - Such that Follows
+if ifs; stmt s;
+Select <ifs, s> such that Follows(1, s)
+7 2,17 2,29 2,32 2,45 2,46 2,53 2,59 2,72 2,82 2,92 2
+5000
+5 - With clause and such that Parent*
+stmt s1, s2;
+Select <s1, s2> with s1.stmt# = 50 such that Parent*(s2, 33)
+50 29, 50 31, 50 32
+5000
+6 - Such that Next, Follows, Parent and with clause
+if ifs; stmt s; prog_line n; while w;
+Select <ifs, n> such that Follows*(30, w) and Parent*(ifs, 50) and Next(s,53) with n = 99
+45 99, 46 99
+5000
+7 - Triple tuples of Procedure names
+procedure p, q, r;
+Select <p, q, r>
+colors colors colors,colors colors f00d,colors colors obj3ct,colors colors procedure,colors colors simple,colors colors t0pUp,colors f00d colors,colors f00d f00d,colors f00d obj3ct,colors f00d procedure,colors f00d simple,colors f00d t0pUp,colors obj3ct colors,colors obj3ct f00d,colors obj3ct obj3ct,colors obj3ct procedure,colors obj3ct simple,colors obj3ct t0pUp,colors procedure colors,colors procedure f00d,colors procedure obj3ct,colors procedure procedure,colors procedure simple,colors procedure t0pUp,colors simple colors,colors simple f00d,colors simple obj3ct,colors simple procedure,colors simple simple,colors simple t0pUp,colors t0pUp colors,colors t0pUp f00d,colors t0pUp obj3ct,colors t0pUp procedure,colors t0pUp simple,colors t0pUp t0pUp,f00d colors colors,f00d colors f00d,f00d colors obj3ct,f00d colors procedure,f00d colors simple,f00d colors t0pUp,f00d f00d colors,f00d f00d f00d,f00d f00d obj3ct,f00d f00d procedure,f00d f00d simple,f00d f00d t0pUp,f00d obj3ct colors,f00d obj3ct f00d,f00d obj3ct obj3ct,f00d obj3ct procedure,f00d obj3ct simple,f00d obj3ct t0pUp,f00d procedure colors,f00d procedure f00d,f00d procedure obj3ct,f00d procedure procedure,f00d procedure simple,f00d procedure t0pUp,f00d simple colors,f00d simple f00d,f00d simple obj3ct,f00d simple procedure,f00d simple simple,f00d simple t0pUp,f00d t0pUp colors,f00d t0pUp f00d,f00d t0pUp obj3ct,f00d t0pUp procedure,f00d t0pUp simple,f00d t0pUp t0pUp,obj3ct colors colors,obj3ct colors f00d,obj3ct colors obj3ct,obj3ct colors procedure,obj3ct colors simple,obj3ct colors t0pUp,obj3ct f00d colors,obj3ct f00d f00d,obj3ct f00d obj3ct,obj3ct f00d procedure,obj3ct f00d simple,obj3ct f00d t0pUp,obj3ct obj3ct colors,obj3ct obj3ct f00d,obj3ct obj3ct obj3ct,obj3ct obj3ct procedure,obj3ct obj3ct simple,obj3ct obj3ct t0pUp,obj3ct procedure colors,obj3ct procedure f00d,obj3ct procedure obj3ct,obj3ct procedure procedure,obj3ct procedure simple,obj3ct procedure t0pUp,obj3ct simple colors,obj3ct simple f00d,obj3ct simple obj3ct,obj3ct simple procedure,obj3ct simple simple,obj3ct simple t0pUp,obj3ct t0pUp colors,obj3ct t0pUp f00d,obj3ct t0pUp obj3ct,obj3ct t0pUp procedure,obj3ct t0pUp simple,obj3ct t0pUp t0pUp,procedure colors colors,procedure colors f00d,procedure colors obj3ct,procedure colors procedure,procedure colors simple,procedure colors t0pUp,procedure f00d colors,procedure f00d f00d,procedure f00d obj3ct,procedure f00d procedure,procedure f00d simple,procedure f00d t0pUp,procedure obj3ct colors,procedure obj3ct f00d,procedure obj3ct obj3ct,procedure obj3ct procedure,procedure obj3ct simple,procedure obj3ct t0pUp,procedure procedure colors,procedure procedure f00d,procedure procedure obj3ct,procedure procedure procedure,procedure procedure simple,procedure procedure t0pUp,procedure simple colors,procedure simple f00d,procedure simple obj3ct,procedure simple procedure,procedure simple simple,procedure simple t0pUp,procedure t0pUp colors,procedure t0pUp f00d,procedure t0pUp obj3ct,procedure t0pUp procedure,procedure t0pUp simple,procedure t0pUp t0pUp,simple colors colors,simple colors f00d,simple colors obj3ct,simple colors procedure,simple colors simple,simple colors t0pUp,simple f00d colors,simple f00d f00d,simple f00d obj3ct,simple f00d procedure,simple f00d simple,simple f00d t0pUp,simple obj3ct colors,simple obj3ct f00d,simple obj3ct obj3ct,simple obj3ct procedure,simple obj3ct simple,simple obj3ct t0pUp,simple procedure colors,simple procedure f00d,simple procedure obj3ct,simple procedure procedure,simple procedure simple,simple procedure t0pUp,simple simple colors,simple simple f00d,simple simple obj3ct,simple simple procedure,simple simple simple,simple simple t0pUp,simple t0pUp colors,simple t0pUp f00d,simple t0pUp obj3ct,simple t0pUp procedure,simple t0pUp simple,simple t0pUp t0pUp,t0pUp colors colors,t0pUp colors f00d,t0pUp colors obj3ct,t0pUp colors procedure,t0pUp colors simple,t0pUp colors t0pUp,t0pUp f00d colors,t0pUp f00d f00d,t0pUp f00d obj3ct,t0pUp f00d procedure,t0pUp f00d simple,t0pUp f00d t0pUp,t0pUp obj3ct colors,t0pUp obj3ct f00d,t0pUp obj3ct obj3ct,t0pUp obj3ct procedure,t0pUp obj3ct simple,t0pUp obj3ct t0pUp,t0pUp procedure colors,t0pUp procedure f00d,t0pUp procedure obj3ct,t0pUp procedure procedure,t0pUp procedure simple,t0pUp procedure t0pUp,t0pUp simple colors,t0pUp simple f00d,t0pUp simple obj3ct,t0pUp simple procedure,t0pUp simple simple,t0pUp simple t0pUp,t0pUp t0pUp colors,t0pUp t0pUp f00d,t0pUp t0pUp obj3ct,t0pUp t0pUp procedure,t0pUp t0pUp simple,t0pUp t0pUp t0pUp
+5000
+8 - Quadruple tuples, pair of same names
+procedure p, q;
+Select <p, p, q, q>
+colors colors colors colors,colors colors f00d f00d,colors colors obj3ct obj3ct,colors colors procedure procedure,colors colors simple simple,colors colors t0pUp t0pUp,f00d f00d colors colors,f00d f00d f00d f00d,f00d f00d obj3ct obj3ct,f00d f00d procedure procedure,f00d f00d simple simple,f00d f00d t0pUp t0pUp,obj3ct obj3ct colors colors,obj3ct obj3ct f00d f00d,obj3ct obj3ct obj3ct obj3ct,obj3ct obj3ct procedure procedure,obj3ct obj3ct simple simple,obj3ct obj3ct t0pUp t0pUp,procedure procedure colors colors,procedure procedure f00d f00d,procedure procedure obj3ct obj3ct,procedure procedure procedure procedure,procedure procedure simple simple,procedure procedure t0pUp t0pUp,simple simple colors colors,simple simple f00d f00d,simple simple obj3ct obj3ct,simple simple procedure procedure,simple simple simple simple,simple simple t0pUp t0pUp,t0pUp t0pUp colors colors,t0pUp t0pUp f00d f00d,t0pUp t0pUp obj3ct obj3ct,t0pUp t0pUp procedure procedure,t0pUp t0pUp simple simple,t0pUp t0pUp t0pUp t0pUp
+5000
+9 - Such that Modifies
+variable v; read r;
+Select <r, v> such that Modifies(r, v)
+1 rice,13 sprING000Ni0n,34 purple,61 green1,67 white,76 read,89 read,97 Kn17e
+5000
+10 - Such that Uses
+variable v; print pn;
+Select <v, pn> such that Uses(pn, v)
+black 66,chi11i 18,chickenRice 6,duck 23,else 99,print 77,print 88,purple 49,rice 63
+5000
+11 - Constants, assign, pattern
+constant cn; assign a;
+Select <cn, a> pattern a(_, _"chicken"_)
+0 2,0 4,1 2,1 4,10 2,10 4,100 2,100 4,12 2,12 4,1241242134 2,1241242134 4,15 2,15 4,169 2,169 4,197 2,197 4,2 2,2 4,21 2,21 4,234 2,234 4,26 2,26 4,26433 2,26433 4,290918238 2,290918238 4,3 2,3 4,314 2,314 4,3279502 2,3279502 4,3993 2,3993 4,4 2,4 4,424809 2,424809 4,456 2,456 4,46 2,46 4,5 2,5 4,500 2,500 4,5555 2,5555 4,6 2,6 4,7 2,7 4,75105820 2,75105820 4,789 2,789 4,8 2,8 4,88 2,88 4,884 2,884 4,9 2,9 4,926535897 2,926535897 4,93238 2,93238 4,9749 2,9749 4
+5000
+12 - Triple tuple, Parent*, Next*, pattern and with clause
+assign a; if ifs; prog_line n;
+Select <a, ifs, n> such that Parent* (ifs, a) and Next* (41, n) pattern a("black", _) with a.stmt# = n
+69 45 69
+5000
+13 - Parent, Follows, Follows
+stmt s; call c; print pn;
+Select <s, c, pn> such that Follows(83, c) and Parent(s, 8) and Follows(76, pn)
+7 84 77
+5000
+14 - Parent, Follows, Follows (multiple results)
+stmt s; call c; read r;
+Select <s, c, r> such that Parent*(s, 63) and Follows(23, c) and Follows(66, r)
+44 24 67,45 24 67,46 24 67,53 24 67,55 24 67,56 24 67,58 24 67,59 24 67,62 24 67
+5000
+15 - Such that Next*
+if ifs; prog_line n;
+Select <ifs, n> such that Next*(45, n)
+17 44,17 45,17 46,17 47,17 48,17 49,17 50,17 51,17 52,17 53,17 54,17 55,17 56,17 57,17 58,17 59,17 60,17 61,17 62,17 63,17 64,17 65,17 66,17 67,17 68,17 69,17 70,17 71,17 72,17 73,17 74,17 75,17 76,17 77,17 78,17 79,29 44,29 45,29 46,29 47,29 48,29 49,29 50,29 51,29 52,29 53,29 54,29 55,29 56,29 57,29 58,29 59,29 60,29 61,29 62,29 63,29 64,29 65,29 66,29 67,29 68,29 69,29 70,29 71,29 72,29 73,29 74,29 75,29 76,29 77,29 78,29 79,32 44,32 45,32 46,32 47,32 48,32 49,32 50,32 51,32 52,32 53,32 54,32 55,32 56,32 57,32 58,32 59,32 60,32 61,32 62,32 63,32 64,32 65,32 66,32 67,32 68,32 69,32 70,32 71,32 72,32 73,32 74,32 75,32 76,32 77,32 78,32 79,45 44,45 45,45 46,45 47,45 48,45 49,45 50,45 51,45 52,45 53,45 54,45 55,45 56,45 57,45 58,45 59,45 60,45 61,45 62,45 63,45 64,45 65,45 66,45 67,45 68,45 69,45 70,45 71,45 72,45 73,45 74,45 75,45 76,45 77,45 78,45 79,46 44,46 45,46 46,46 47,46 48,46 49,46 50,46 51,46 52,46 53,46 54,46 55,46 56,46 57,46 58,46 59,46 60,46 61,46 62,46 63,46 64,46 65,46 66,46 67,46 68,46 69,46 70,46 71,46 72,46 73,46 74,46 75,46 76,46 77,46 78,46 79,53 44,53 45,53 46,53 47,53 48,53 49,53 50,53 51,53 52,53 53,53 54,53 55,53 56,53 57,53 58,53 59,53 60,53 61,53 62,53 63,53 64,53 65,53 66,53 67,53 68,53 69,53 70,53 71,53 72,53 73,53 74,53 75,53 76,53 77,53 78,53 79,59 44,59 45,59 46,59 47,59 48,59 49,59 50,59 51,59 52,59 53,59 54,59 55,59 56,59 57,59 58,59 59,59 60,59 61,59 62,59 63,59 64,59 65,59 66,59 67,59 68,59 69,59 70,59 71,59 72,59 73,59 74,59 75,59 76,59 77,59 78,59 79,7 44,7 45,7 46,7 47,7 48,7 49,7 50,7 51,7 52,7 53,7 54,7 55,7 56,7 57,7 58,7 59,7 60,7 61,7 62,7 63,7 64,7 65,7 66,7 67,7 68,7 69,7 70,7 71,7 72,7 73,7 74,7 75,7 76,7 77,7 78,7 79,72 44,72 45,72 46,72 47,72 48,72 49,72 50,72 51,72 52,72 53,72 54,72 55,72 56,72 57,72 58,72 59,72 60,72 61,72 62,72 63,72 64,72 65,72 66,72 67,72 68,72 69,72 70,72 71,72 72,72 73,72 74,72 75,72 76,72 77,72 78,72 79,82 44,82 45,82 46,82 47,82 48,82 49,82 50,82 51,82 52,82 53,82 54,82 55,82 56,82 57,82 58,82 59,82 60,82 61,82 62,82 63,82 64,82 65,82 66,82 67,82 68,82 69,82 70,82 71,82 72,82 73,82 74,82 75,82 76,82 77,82 78,82 79,92 44,92 45,92 46,92 47,92 48,92 49,92 50,92 51,92 52,92 53,92 54,92 55,92 56,92 57,92 58,92 59,92 60,92 61,92 62,92 63,92 64,92 65,92 66,92 67,92 68,92 69,92 70,92 71,92 72,92 73,92 74,92 75,92 76,92 77,92 78,92 79
+5000
+16 - Select reads and prints when all clauses are true
+read r; print pn; stmt s;
+Select <r, pn> with s.stmt# = 1
+1 18,1 23,1 49,1 6,1 63,1 66,1 77,1 88,1 99,13 18,13 23,13 49,13 6,13 63,13 66,13 77,13 88,13 99,34 18,34 23,34 49,34 6,34 63,34 66,34 77,34 88,34 99,61 18,61 23,61 49,61 6,61 63,61 66,61 77,61 88,61 99,67 18,67 23,67 49,67 6,67 63,67 66,67 77,67 88,67 99,76 18,76 23,76 49,76 6,76 63,76 66,76 77,76 88,76 99,89 18,89 23,89 49,89 6,89 63,89 66,89 77,89 88,89 99,97 18,97 23,97 49,97 6,97 63,97 66,97 77,97 88,97 99
+5000
+17 - Boolean
+print pn;
+Select <w, BOOLEAN>
+none
+5000
+18 - Such that Calls
+call c; procedure p, q;
+Select <p, q> such that Calls(p, q) with c.procName = q.procName
+colors simple,f00d colors,f00d obj3ct,f00d simple,obj3ct colors,obj3ct t0pUp,simple procedure,t0pUp simple
+5000
+19 - False such that clause
+if ifs; stmt s;
+Select <ifs, s> such that Parent(ifs, s) and Next(1, 3)
+none
+5000
+20 - False with clause
+if ifs; stmt s;
+Select <ifs, s> such that Parent(ifs, s) and s.stmt# = 6
+none
+5000
+21 - False pattern clause
+stmt s; variable v; if ifs;
+Select <ifs, s, v> pattern ifs ("chickenRice", _, _)
+none
+5000
+21 - if pattern clause and with clause
+stmt s; if ifs;
+Select <ifs, s> pattern ifs ("chicken", _, _) and ifs("duck",_,_) with s.stmt# = ifs.stmt#
+7 7
+5000
+22 - while pattern clause and with clause
+stmt s; while w;
+Select <w, s> pattern w ("green", _) and w("blue1",_) with s.stmt# = w.stmt#
+31 31
+5000
+23 - Select undeclared tuples
+stmt s; while w;
+Select <s, a, r>
+none
+5000
+24 -
+stmt s; variable v; procedure p, q; while w, w1; call c;
+Select <s, v, p> such that Calls(q, p) and Uses(p, v) and Uses(w, v) and Parent(w1, c) with w.stmt# = s.stmt# and v.varName = "while" and c.procName = p.procName pattern w(v,_)
+87 while colors
+5000
