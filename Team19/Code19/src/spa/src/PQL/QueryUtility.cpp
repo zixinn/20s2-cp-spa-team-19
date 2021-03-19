@@ -33,42 +33,49 @@ bool checkExpression(string s) {
     }
 
     sp::Token::TokenType firstTokenType = tokens.at(0).getType();
-    sp::Token::TokenType lastTokenType = tokens.at(tokens.size() - 1).getType();
+    sp::Token::TokenType lastTokenType = tokens.at(tokens.size() - 2).getType();
     if (isOperator(firstTokenType) || isOperator(lastTokenType)) {
         return false;
     }
 
     int parenCount = 0;
-    bool isPrevOp = false;
+    bool isPrevOperator = false;
+    bool isPrevOperand = false;
     bool isPrevLParen = false;
 
-    for (int i = 0; i < tokens.size(); i++) {
+    for (int i = 0; i < tokens.size() - 1; i++) {
         sp::Token::TokenType tokenType = tokens.at(i).getType();
         string tokenLiteral = tokens.at(i).getLiteral();
         if (tokenType == sp::Token::TokenType::LPAREN) {
             parenCount++;
             isPrevLParen = true;
-            continue;
+            isPrevOperator = false;
+            isPrevOperand = false;
         } else if (tokenType == sp::Token::TokenType::RPAREN) {
-            if (parenCount <= 0 || isPrevOp || isPrevLParen) {
+            if (parenCount <= 0 || isPrevOperator || isPrevLParen) {
                 return false;
             }
             parenCount--;
-            continue;
+            isPrevOperand = false;
         } else if (isOperator(tokenType)) {
-            if (isPrevOp || isPrevLParen) {
+            if (isPrevOperator || isPrevLParen) {
                 return false;
             }
-            isPrevOp = true;
-            continue;
+            isPrevOperator = true;
+            isPrevOperand = false;
         } else if (!checkName(tokenLiteral) && !checkInteger(tokenLiteral))  {
             return false;
+        } else {
+            if (isPrevOperand) {
+                return false;
+            }
+            isPrevOperator = false;
+            isPrevOperand = true;
+            isPrevLParen = false;
         }
-        isPrevOp = false;
-        isPrevLParen = false;
     }
 
-    if (parenCount != 0 || isPrevOp || isPrevLParen) {
+    if (parenCount != 0 || isPrevOperator || isPrevLParen) {
         return false;
     }
     return true;

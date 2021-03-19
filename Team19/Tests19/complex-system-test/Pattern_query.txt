@@ -148,3 +148,263 @@ none
 Select BOOLEAN pattern w("green", _)
 none
 5000
+31 - assign pattern (underscore, expression), exact match
+assign a;
+Select a pattern a(_, "((yellow     +orange-314/15)*((blue)+((926535897+orange))))*((red*((red))-(yellow%   blue))+((blue*((93238)))-    926535897    +    926535897))-((46/26)+((green)-26433)*((gold + 8)+((3)-silver))%(((3 *gold)* (3279502))%((blue)*(red/88))))")
+65
+5000
+32 - assign pattern (underscore, expression), full match, different brackets
+assign a;
+Select a pattern a(_, "purple+ (red           * blue) / ((blue1 -        blue2) - blue3) %(red1 * red2 ) ")
+70
+5000
+33 - assign pattern (underscore, expression), full match, wrong brackets
+assign a;
+Select a pattern a(_, "(884 - 197 + gold * 169 - (black - black + 3993 * black) + (black / red + (((75105820 % 9749 / 3 % 21) * (red * (gold + black))) / gold))) % (((red * red) - yellow % blue) + (blue * 93238 - 926535897 + 926535897))")
+none
+5000
+34 - assign pattern (underscore, expression), full match, constant on rhs
+assign a;
+Select a pattern a(_, "2")
+5, 26
+5000
+35 - assign pattern (underscore, expression), full match, single variable on rhs, boolean
+assign a;
+Select BOOLEAN pattern a(_, "blue")
+TRUE
+5000
+36 - assign pattern (variable, expression), exact match
+assign a;
+Select a pattern a("ramen", "noodle+sprING000Ni0n")
+8
+5000
+37 - assign pattern (variable, expression), full match, different brackets
+assign a;
+Select a pattern a(_, "(884 - 197 + gold * 169 - (black - black + 3993 * black) + (black / red + (((75105820 % 9749 / (3 % 21)) * (red * (gold + black))) / gold))) % (((red * red) - yellow % blue) + (blue * 93238 - 926535897 + 926535897))")
+50
+5000
+38 - assign pattern (variable, expression), full match, wrong brackets, boolean
+assign a;
+Select BOOLEAN pattern a("spring", "2 + 4 * (6 - ((2 + 2) / 0)) % 3")
+FALSE
+5000
+39 - assign pattern (variable, expression), full match, constant on rhs
+assign a;
+Select a pattern a("sci333ors", "290918238")
+80
+5000
+40 - assign pattern (variable, expression), full match, single variable on rhs
+assign a;
+Select a pattern a("purple", "purple")
+36, 40, 51
+5000
+41 - assign pattern (synonym, expression), exact match
+assign a; variable v;
+Select a pattern a(v, "black        %white/    grey")
+69
+5000
+42 - assign pattern (synonym, expression), full match, different brackets, boolean
+assign a; variable v;
+Select BOOLEAN pattern a(v, "((yellow + orange - 314 / 15) * (blue + (926535897 + orange))) * (red * red - yellow % blue + (blue * 93238 - 926535897 + 926535897)) -(46 / 26 + (green - 26433) * (gold + 8 + (3 - silver)) % (3 * gold * 3279502 % (blue * (red / 88))))")
+TRUE
+5000
+43 - assign pattern (synonym, expression), full match, wrong brackets
+assign a; variable v;
+Select a pattern a(v, "(0 + 4 + duck) + (0 + 4)")
+none
+5000
+44 - assign pattern (synonym, expression), full match, constant on rhs
+assign a; variable v;
+Select <v, a> pattern a(v, "5555")
+progline 75
+5000
+45 - assign pattern (synonym, expression), full match, single variable on rhs
+assign a; variable v;
+Select <a, v> pattern a(v, "blue")
+35 red, 39 blue
+5000
+46 - assign pattern (underscore, expression), partial match
+assign a;
+Select a pattern a(_, _"red * red - yellow % blue + (blue * 93238 - 926535897 + 926535897)"_)
+50, 65
+5000
+47 - assign pattern (underscore, expression), partial match, single variable, boolean
+assign a;
+Select BOOLEAN pattern a(_, _"sprING000Ni0n"_)
+TRUE
+5000
+48 - assign pattern (underscore, expression), partial match, constant
+assign a;
+Select a pattern a(_, _"3"_)
+11, 16, 27, 50, 65
+5000
+49 - assign pattern (underscore, expression), partial match, no match
+assign a;
+Select a pattern a(_, _"stmt"_)
+none
+5000
+50 - assign pattern (variable, expression), partial match
+assign a;
+Select a pattern a("red", _"red    *    red"_)
+33
+5000
+51 - assign pattern (variable, expression), partial match, single variable
+assign a;
+Select a pattern a("sprING000Ni0n", _"spring"_)
+11, 15
+5000
+52 - assign pattern (variable, expression), partial match, constant
+assign a;
+Select a pattern a("rice", _"500"_)
+64
+5000
+53 - assign pattern (variable, expression), partial match, full match
+assign a;
+Select a pattern a("onion", _"0 + 4 + duck + 0 + 4"_)
+9
+5000
+54 - assign pattern (variable, expression), partial match, no match
+assign a;
+Select a pattern a("sci33ors", _"Kn17e"_)
+none
+5000
+55 - assign pattern (variable, expression), partial match, no match, boolean
+assign a;
+Select BOOLEAN pattern a("green", _"yellow % blue"_)
+FALSE
+5000
+56 - assign pattern (synonym, expression), partial match
+assign a; variable v; 
+Select <v, a> pattern a(v, _"red * red"_)
+red 33, red2 50, blue 65
+5000
+57 - assign pattern (synonym, expression), partial match, full match
+assign a; variable v; 
+Select <a, v> pattern a(v, _"chicken + rice * chi11i"_)
+4 chickenRice
+5000
+58 - assign pattern (synonym, expression), partial match, single variable
+assign a; variable v; 
+Select v pattern a(v, _"else"_)
+if, Kn17e
+5000
+59 - assign pattern (synonym, expression), partial match, constant, boolean
+assign a; variable v; 
+Select BOOLEAN pattern a(v, _"0"_)
+TRUE
+5000
+60 - assign pattern (synonym, expression), partial match, no match
+assign a; variable v; 
+Select a pattern a(v, _"gold-silver"_)
+none
+5000
+61 - assign pattern (underscore, underscore)
+assign a;
+Select a pattern a(_, _)
+2, 4, 5, 8, 9, 11, 14, 15, 16, 19, 21, 22, 25, 26, 27, 28, 30, 33, 35, 36, 38, 39, 40, 41, 42, 43, 48, 50, 51, 54, 57, 60, 64, 65, 69, 70, 71, 73, 74, 75, 78, 79, 80, 81, 83, 86, 90, 91, 93, 95, 96
+5000
+62 - assign pattern (variable, underscore)
+assign a;
+Select a pattern a("grey", _)
+54, 70
+5000
+63 - assign pattern (variable, underscore), no match
+assign a;
+Select a pattern a("gray", _)
+none
+5000
+64 - assign pattern (variable, underscore), boolean
+assign a;
+Select BOOLEAN pattern a("Kn17e", _)
+TRUE
+5000
+65 - assign pattern (variable, underscore), no match, boolean
+assign a;
+Select BOOLEAN pattern a("n00dle", _)
+FALSE
+5000
+66 - assign pattern (synonym, underscore), assign
+assign a; variable v;
+Select a pattern a(v, _)
+2, 4, 5, 8, 9, 11, 14, 15, 16, 19, 21, 22, 25, 26, 27, 28, 30, 33, 35, 36, 38, 39, 40, 41, 42, 43, 48, 50, 51, 54, 57, 60, 64, 65, 69, 70, 71, 73, 74, 75, 78, 79, 80, 81, 83, 86, 90, 91, 93, 95, 96
+5000
+67 - assign pattern (synonym, underscore), variable
+assign a; variable v;
+Select v pattern a(v, _)
+noodle, chickenRice, duck, ramen, onion, sprING000Ni0n, spring, rice, purple, red1, red2, red, blue, yellow, black, white, blue2, grey, green, progline, then, print, assign, sci333ors, Kn17e, call, if, money
+5000
+68 - assign pattern (synonym, underscore), tuple
+assign a; variable v;
+Select <a, v> pattern a(v, _)
+2 noodle, 4 chickenRice, 5 duck, 8 ramen, 9 onion, 11 sprING000Ni0n, 14 noodle, 15 sprING000Ni0n, 16 spring, 19 duck, 21 rice, 22 chickenRice, 25 purple, 26 red1, 27 red2, 28 red, 30 spring, 33 red, 35 red, 36 purple, 38 blue, 39 blue, 40 purple, 41 yellow, 42 black, 43 white, 48 blue2, 50 red2, 51 purple, 54 grey, 57 blue, 60 green, 64 rice, 65 blue, 69 black, 70 grey, 71 progline, 73 then, 74 print, 75 progline, 78 progline, 79 assign, 80 sci333ors, 81 Kn17e, 83 Kn17e, 86 sci333ors, 90 call, 91 yellow, 93 if, 95 Kn17e, 96 money
+5000
+69 - assign pattern (synonym, underscore), boolean
+assign a; variable v;
+Select BOOLEAN pattern a(v, _)
+TRUE
+5000
+70 - assign pattern, invalid
+assign a;
+Select a pattern a(_, "")
+none
+5000
+71 - assign pattern, invalid
+assign a;
+Select a pattern a(_, " ")
+none
+5000
+72 - assign pattern, invalid
+assign a;
+Select a pattern a(_, _""_)
+none
+5000
+73 - assign pattern, invalid
+assign a;
+Select a pattern a(_, _" "_)
+none
+5000
+74 - assign pattern, invalid
+assign a;
+Select a pattern a(_, _"2+"_)
+none
+5000
+75 - assign pattern, invalid
+assign a;
+Select a pattern a(_, _"/"_)
+none
+5000
+76 - assign pattern, invalid
+assign a;
+Select a pattern a(_, _"%3"_)
+none
+5000
+77 - assign pattern, invalid
+assign a;
+Select a pattern a(_, _")"_)
+none
+5000
+78 - assign pattern, invalid
+assign a;
+Select a pattern a(_, _"red1 red2"_)
+none
+5000
+79 - assign pattern, invalid
+assign a;
+Select a pattern a(_, _"red1 > red2"_)
+none
+5000
+80 - assign pattern, invalid
+
+Select a pattern a(_, _)
+none
+5000
+81 - assign pattern, invalid
+assign a;
+Select a pattern a(_)
+none
+5000
+82 - assign pattern, invalid
+assign a;
+Select a pattern a(_, _, _)
+none
+5000
