@@ -13,6 +13,7 @@ if [ -f "$FILE" ]; then
 	../../Code19/cmake-build-debug/src/autotester/autotester Source.txt Uses_query.txt Uses_out.xml
 	../../Code19/cmake-build-debug/src/autotester/autotester Source.txt Pattern_query.txt Pattern_out.xml
 	../../Code19/cmake-build-debug/src/autotester/autotester Source.txt Tuples_query.txt Tuples_out.xml
+	../../Code19/cmake-build-debug/src/autotester/autotester Source.txt With_query.txt With_out.xml
 else 
 	echo "Enter path to autotester: "
 	read id
@@ -25,5 +26,6 @@ else
 	$id Source.txt Uses_query.txt Uses_out.xml
 	$id Source.txt Pattern_query.txt Pattern_out.xml
 	$id Source.txt Tuples_query.txt Tuples_out.xml
+	$id Source.txt With_query.txt With_out.xml
 fi
 read -p "Press any key to resume ..."
