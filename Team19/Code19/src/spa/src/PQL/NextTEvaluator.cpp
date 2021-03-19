@@ -53,9 +53,20 @@ bool NextTEvaluator::evaluate(unordered_map<string, string> declarations, Clause
 
     }
     else { // s1, s2 or s, _ or _, s
-        if (firstArg == secondArg) {
-            return false;
+        if (firstArg == secondArg) { // s, s
+            vector<int> res;
+            vector<ProgLine> allLines = selectAll(firstType);
+            for (ProgLine n : allLines) {
+                if (PKB::next->isNextStar(n, n)) {
+                    res.push_back(n);
+                }
+            }
+            if (!res.empty()) {
+                tempResults[firstArg] = res;
+            }
+            return !res.empty();
         }
+
         pair<vector<int>, vector<int>> allNext = PKB::next->getAllNextStar();
         if (allNext.first.empty()) {
             return false;

@@ -230,6 +230,14 @@ TEST_CASE("process query with select tuple") {
     declarations1["w3"] = "while";
     expected = Query(declarations1, {"w1", "w2", "w3"}, { c1, c2 }, true, true);
     REQUIRE(actual == expected);
+
+    query = "assign a;\nSelect <a> such that Next* (a, a)";
+    actual = qp.process(query);
+    c = Clause("Next*", {"a", "a"});
+    unordered_map<string, string> declarations2;
+    declarations2["a"] = "assign";
+    expected = Query(declarations2, {"a"}, { c }, true, true);
+    REQUIRE(actual == expected);
 }
 
 TEST_CASE("process query with select attrRef") {

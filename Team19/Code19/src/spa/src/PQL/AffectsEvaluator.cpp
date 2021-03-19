@@ -45,6 +45,20 @@ bool AffectsEvaluator::evaluate(unordered_map<string, string> declarations,
         return true;
 
     } else { // s1, s2 or s, _ or _, s
+        if (firstArg == secondArg) { // s, s
+            vector<int> res;
+            vector<StmtNum> allAssign = selectAll(ASSIGN_);
+            for (StmtNum s : allAssign) {
+                if (PKB::affects->isAffects(s, s)) {
+                    res.push_back(s);
+                }
+            }
+            if (!res.empty()) {
+                tempResults[firstArg] = res;
+            }
+            return !res.empty();
+        }
+
         pair<vector<int>, vector<int>> allAffects = PKB::affects->getAllAffects();
         if (allAffects.first.empty()) {
             return false;

@@ -30,6 +30,10 @@ TEST_CASE("split") {
     vector<string> expected = {"a", "b", "c"};
     REQUIRE(actual == expected);
 
+    actual = split("a", ",");
+    expected = {"a"};
+    REQUIRE(actual == expected);
+
     // split by semicolon
     actual = split("assign a; while w; Select w such that Parent* (w, a) pattern a (\"count\", _)", ";");
     expected = {"assign a", "while w", "Select w such that Parent* (w, a) pattern a (\"count\", _)"};

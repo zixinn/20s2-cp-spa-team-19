@@ -147,6 +147,76 @@ void setupAffectsT2() {
     PKB::populatePKB();
 }
 
+//    procedure s {
+//    1.  x = 9;
+//    2.  while (x > 0) {
+//    3.      y = y * 2;
+//    4.      z = y;
+//    5.      x = x - 1; }
+//
+//    proc ID: s = 1
+//    var ID: x = 1, y = 2, z = 3
+//
+//    Affects(1,5)
+//    Affects(3,3)
+//    Affects(3,4)
+//    Affects(5,5)
+//
+//    Affects*(1,5)
+//    Affects*(3,3)
+//    Affects*(3,4)
+//    Affects*(5,5)
+
+void setupAffectsT3() {
+    PKB::resetPKB();
+
+    ast::Stmt* stmtNodeStub = new StmtNodeStub(1);
+    PKB::stmtTable->storeStmt(1, stmtNodeStub, ASSIGN_);
+    PKB::stmtTable->storeStmt(2, stmtNodeStub, WHILE_);
+    PKB::stmtTable->storeStmt(3, stmtNodeStub, ASSIGN_);
+    PKB::stmtTable->storeStmt(4, stmtNodeStub, ASSIGN_);
+    PKB::stmtTable->storeStmt(5, stmtNodeStub, ASSIGN_);
+
+    PKB::follows->storeFollows(1,2);
+    PKB::follows->storeFollows(3,4);
+    PKB::follows->storeFollows(4,5);
+
+    PKB::parent->storeParent(2,3);
+    PKB::parent->storeParent(2,4);
+    PKB::parent->storeParent(2,5);
+
+    PKB::uses->storeStmtUses(2,1);
+    PKB::uses->storeStmtUses(2,2);
+    PKB::uses->storeStmtUses(2,3);
+    PKB::uses->storeStmtUses(3,2);
+    PKB::uses->storeStmtUses(4,2);
+    PKB::uses->storeStmtUses(5,1);
+
+    PKB::uses->storeProcUses(1, 1);
+    PKB::uses->storeProcUses(1, 2);
+    PKB::uses->storeProcUses(1, 3);
+
+    PKB::modifies->storeStmtModifies(1,1);
+    PKB::modifies->storeStmtModifies(2,1);
+    PKB::modifies->storeStmtModifies(2,2);
+    PKB::modifies->storeStmtModifies(2,3);
+    PKB::modifies->storeStmtModifies(3,2);
+    PKB::modifies->storeStmtModifies(4,3);
+    PKB::modifies->storeStmtModifies(5,1);
+
+    PKB::modifies->storeProcModifies(1,1);
+    PKB::modifies->storeProcModifies(1,2);
+    PKB::modifies->storeProcModifies(1,3);
+
+    PKB::next->storeNext(1,2);
+    PKB::next->storeNext(2,3);
+    PKB::next->storeNext(3,4);
+    PKB::next->storeNext(4,5);
+    PKB::next->storeNext(5,2);
+
+    PKB::populatePKB();
+}
+
 TEST_CASE("AffectsTEvaluator evaluate known known") {
     setupAffectsT();
 
@@ -259,6 +329,14 @@ TEST_CASE("AffectsTEvaluator evaluate synonym synonym") {
     unordered_map<string, vector<int>> expected2 = {};
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
+
+    setupAffectsT3();
+    unordered_map<string, vector<int>> tempResults3;
+    bool b3 = AffectsTEvaluator::evaluate({ {"s", STMT_} }, Clause("Affects", vector<string>{"s", "s"}), tempResults3);
+    unordered_set<int> actual3(tempResults3["s"].begin(), tempResults3["s"].end());
+    unordered_set<int> expected3 {3, 5};
+    REQUIRE(b3);
+    REQUIRE(actual3 == expected3);
 }
 
 TEST_CASE("AffectsTEvaluator evaluate synonym underscore") {

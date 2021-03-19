@@ -201,6 +201,13 @@ TEST_CASE("NextTEvaluator evaluate synonym synonym") {
     unordered_map<string, vector<int>> expected2 = {};
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
+
+    unordered_map<string, vector<int>> tempResults3;
+    bool b3 = NextTEvaluator::evaluate({ {"n", PROGLINE_} }, Clause("Next*", vector<string>{"n", "n"}), tempResults3);
+    unordered_set<int> actual3(tempResults3["n"].begin(), tempResults3["n"].end());
+    unordered_set<int> expected3 {2, 3, 4, 5, 6, 7, 8, 9};
+    REQUIRE(b3);
+    REQUIRE(actual3 == expected3);
 }
 
 TEST_CASE("NextTEvaluator evaluate synonym underscore") {
