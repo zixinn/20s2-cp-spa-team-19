@@ -106,7 +106,7 @@ none
 22 - while pattern, wildcard
 while w;
 Select w pattern w(_, _)
-3, 15
+3
 5000
 23 - while pattern, synonym
 while w; variable v;
@@ -193,173 +193,148 @@ assign a;
 Select a pattern a(_, _"lesion"_)
 7, 8
 5000
-40 - assign
+40 - assign, invalid wildcard use
 assign a;
-Select a pattern a(_, _" lesion*2 ")
-7
+Select a pattern a(_, _"lesion*2")
+none
 5000
-41 - assign
-assign a;
-Select a pattern a(_, _"lesion*2 ")
-7
-5000
-42 - assign
+41 - assign, invalid wildcard use
 assign a;
 Select a pattern a(_, "lesion*2"_)
-7, 8
+none
 5000
-43 - assign
-assign a;
-Select a pattern a(_, " lesion*2 "_)
-7, 8
-5000
-44 - assign
+42 - assign
 assign a;
 Select a pattern a(_, _"lesion*2"_)
 7, 8
 5000
-45 - assign
+43 - assign
 assign a;
 Select a pattern a(_, _"(lesion*2)"_)
 7, 8
 5000
-46 - assign
+44 - assign, invalid wildcard use
 assign a;
-Select a pattern a(_, "(lesion*2)"_)
-7, 8
-5000
-47 - assign
-assign a;
-Select a pattern a(_, " (lesion*2 )"_)
-7, 8
-5000
-48 - assign
-assign a;
-Select a pattern a(_, " (lesion*2 "_)
+Select a pattern a(_, _"(lesion*2"_)
 none
 5000
-49 - assign
+45 - assign, check random space
+assign a;
+Select a pattern a(_, _" (lesion*2 )"_)
+7, 8
+5000
+46 - assign, invalid
 assign a;
 Select a pattern a(_, _"+ 1) / blubell"_)
 none
 5000
-50 - assign
+47 - assign
 assign a;
 Select a pattern a(_, "(23+1)/bluebell/5")
 2, 18
 5000
-51 - assign
+48 - assign
 assign a;
 Select a pattern a(_, _"(23+1)/bluebell/5")
-2, 18
+none
 5000
-52 - assign
+49 - assign
 assign a;
 Select a pattern a(_, "(23+1)/bluebell/5"_)
-2, 18
+none
 5000
-53 - assign
+50 - assign
 assign a;
 Select a pattern a(_, _" (23+1)/bluebell/5 "_)
 2, 18
 5000
-54 - assign
+51 - assign
 assign a;
 Select a pattern a(_, _"(23+1)/bluebell/5"_)
 2, 18
 5000
-55 - assign
+52 - assign
 assign a;
 Select a pattern a(_, _"guru"_)
 26
 5000
-56 - assign
+53 - assign
 assign a;
 Select a pattern a(_, "guru")
 26
 5000
-57 - assign
-assign a;
-Select a pattern a(_, _"guru")
-26
-5000
-57 - assign
-assign a;
-Select a pattern a(_, "guru"_)
-26
-5000
-58 - assign
-assign a;
-Select a pattern a(_, " guru")
-26
-5000
-59 - assign
+54 - assign
 assign a;
 Select a pattern a(_, "(((((y))))-((1)))")
 4, 16
 5000
-60 - assign
+55 - assign, invalid, needs var_name or const_val on both sides of operator
 assign a;
-Select a pattern a(_, _"(((((y))))-((1)))")
-4, 16
+Select a pattern a(_, _"-1"_)
+none
 5000
-61 - assign
+56 - assign
 assign a;
 Select a pattern a(_, "5 == 5")
 none
 5000
-62 - assign
+57 - assign
 assign a;
 Select a pattern a("x",_)
 4, 7, 8, 16
 5000
-63 - assign
+58 - assign
 assign a;
 Select a pattern a("x", "lesion* 2")
 7
 5000
-64 - assign
+59 - assign
 assign a;
 Select a pattern a(_, _"23 + 1"_)
 2, 18
 5000
-65 - assign
+60 - assign
 assign a;
 Select a pattern a(_, _"2 + 8"_)
 22
 5000
-66 - assign
+61 - assign, synonym not allowed in second parameter
 assign a; variable v;
 Select a pattern a(v, v)
 none
 5000
-67 - assign
+62 - assign
 assign a; variable v;
 Select v pattern a(v, _)
 guru, melody, x, lesion, z
 5000
-68 - assign
+63 - assign
+assign a; variable v;
+Select v pattern a(v,)
+none
+5000
+64 - assign
 assign a; variable v;
 Select v pattern a(v, _"23+1"_)
 lesion
 5000
-69 - assign
+65 - assign
 assign a; variable v;
 Select a pattern a(v, _"23+1"_) and a(v, _"5"_)
 2, 18
 5000
-70 - assign
+66 - assign
 assign a; variable v;
 Select a pattern a(_, _"23+1"_) and a(_, _"5"_)
 2, 18
 5000
-71 - assign
+67 - assign
 assign a, a1, a2; variable v;
 Select a2 pattern a(v, _"23+1"_) and a1(v, _"5"_) such that Uses(a2, v)
 7, 8
 5000
-72 - assign
+68 - assign, invalid subclause
 assign a, a1, a2; variable v;
 Select a2 pattern a(v, _"23+1"_) and a1(v, _"5") such that Uses(a2, v)
-7, 8
+none
 5000
