@@ -283,10 +283,16 @@ stmt s1, s2;
 Select s1 such that Modifies*(s1,"guru")
 none
 5000
+58 - Q31
+assign a; while w; prog_line n;
+Select a such that Parent*(w, a) and Next*(2, n) pattern a("x", _) with a.stmt# = n
+4
+5000
+
 
 53 - Q31, this one throws exception dunno why
 assign a; while w; prog_line n;
-Select a such that Parent*(w, a) and Next*(2, n) pattern a(“x”, _) with a.stmt# = n
+Select a such that Parent*(w, a) and Next*(2, n) pattern a("x", _) with a.stmt# = n
 4
 5000
 
