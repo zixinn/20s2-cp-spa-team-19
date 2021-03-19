@@ -441,7 +441,7 @@ TEST_CASE("process query with invalid with clause") {
     unordered_map<string, string> declarations;
     declarations["s"] = "stmt";
     declarations["v"] = "variable";
-    Query expected = Query(declarations, {"s"}, {}, false, true);
+    Query expected = Query(declarations, {"s"}, {}, true, false);
     REQUIRE(actual == expected);
 
     query = "assign a; constant c;\nSelect c with a = c.value";
@@ -449,16 +449,50 @@ TEST_CASE("process query with invalid with clause") {
     unordered_map<string, string> declarations1;
     declarations1["a"] = "assign";
     declarations1["c"] = "constant";
-    expected = Query(declarations1, {"c"}, {}, false, true);
+    expected = Query(declarations1, {"c"}, {}, true, false);
     REQUIRE(actual == expected);
 
-    query = "variable v;\nSelect v with v.procName = \"abc\"";
+    query = "variable v;\nSelect v.varName with v.procName = \"abc\"";
     actual = qp.process(query);
     unordered_map<string, string> declarations2;
     declarations2["v"] = "variable";
-    expected = Query(declarations2, {"v.procName"}, {}, true, false);
-    REQUIRE(actual.getIsSyntacticallyValid() == expected.getIsSyntacticallyValid());
-    REQUIRE(actual.getIsSemanticallyValid() == expected.getIsSemanticallyValid());
+    expected = Query(declarations2, {"v.varName"}, {}, true, false);
+    REQUIRE(actual == expected);
+
+    query = "constant c;\nSelect c with a.stmt# = c.value";
+    actual = qp.process(query);
+    unordered_map<string, string> declarations3;
+    declarations3["c"] = "constant";
+    expected = Query(declarations3, {"c"}, {}, true, false);
+    REQUIRE(actual == expected);
+
+    query = "variable v; constant c;\nSelect BOOLEAN with v.value = c.value";
+    actual = qp.process(query);
+    unordered_map<string, string> declarations4;
+    declarations4["v"] = "variable";
+    declarations4["c"] = "constant";
+    expected = Query(declarations4, {"BOOLEAN"}, {}, true, false);
+    REQUIRE(actual == expected);
+
+    query = "variable v; constant c;\nSelect BOOLEAN with v.value = c.varName";
+    actual = qp.process(query);
+    expected = Query(declarations4, {"BOOLEAN"}, {}, true, false);
+    REQUIRE(actual == expected);
+
+    query = "Select BOOLEAN with -5 = -5";
+    actual = qp.process(query);
+    expected = Query({}, {"BOOLEAN"}, {}, false, true);
+    REQUIRE(actual == expected);
+
+    query = "Select BOOLEAN with \"\" = \"\"";
+    actual = qp.process(query);
+    expected = Query({}, {"BOOLEAN"}, {}, false, true);
+    REQUIRE(actual == expected);
+
+    query = "Select BOOLEAN with \"covid19\" = \"covid  19\"";
+    actual = qp.process(query);
+    expected = Query({}, {"BOOLEAN"}, {}, false, true);
+    REQUIRE(actual == expected);
 }
 
 TEST_CASE("process valid query with with clause") {

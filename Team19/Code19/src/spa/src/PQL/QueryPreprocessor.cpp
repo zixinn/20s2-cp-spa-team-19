@@ -374,8 +374,8 @@ void QueryPreprocessor::parseWithClause(string clause) {
 void QueryPreprocessor::checkWithClause(string left, string right) {
     string leftType = checkRef(left);
     string rightType = checkRef(right);
-    if (leftType != rightType) {
-        this->isSyntacticallyValid = false;
+    if (this->isSyntacticallyValid && leftType != rightType) {
+        this->isSemanticallyValid = false;
     }
 
     if (this->isSyntacticallyValid && this->isSemanticallyValid) {
@@ -386,14 +386,18 @@ void QueryPreprocessor::checkWithClause(string left, string right) {
 string QueryPreprocessor::checkRef(string &ref) {
     string type;
     int pos = ref.find('.');
-    if (pos == string::npos) { // NAME_ | INTEGER_ | PROGLINE_
+    if (pos == string::npos) { // NAME_ | INTEGER_ | synonym
         string argType = getArgType(ref, this->declarations);
         if (argType == NAME_) {
             type = NAME_;
         } else if (argType == INTEGER_ || argType == PROGLINE_) {
             type = INTEGER_;
         } else {
-            this->isSyntacticallyValid = false;
+            if (checkName(ref)) { // synonym
+                this->isSemanticallyValid = false;
+            } else {
+                this->isSyntacticallyValid = false;
+            }
             return type;
         }
     } else { // attrRef
