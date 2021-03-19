@@ -118,7 +118,7 @@ stmt s; while w;
 Select <s, a, r>
 none
 5000
-24 -
+24 - More complex combinations
 stmt s; variable v; procedure p, q; while w, w1; call c;
 Select <s, v, p> such that Calls(q, p) and Uses(p, v) and Uses(w, v) and Parent(w1, c) with w.stmt# = s.stmt# and v.varName = "while" and c.procName = p.procName pattern w(v,_)
 87 while colors
