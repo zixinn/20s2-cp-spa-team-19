@@ -111,11 +111,7 @@ string getArgType(string synonym, unordered_map<string, string> declarations) {
 vector<int> selectAll(string synonymType) {
     vector<int> res;
     if (synonymType == PROCEDURE_) {
-        int size = PKB::procTable->getSize();
-        for (int i = 0; i < size; i++) {
-            res.push_back(i);
-        }
-        return res;
+        return PKB::procTable->getAllProcIDs();
     } else if (synonymType == STMT_ || synonymType == PROGLINE_) {
         return PKB::stmtTable->getAllStmtNums();
     } else if (synonymType == READ_) {
@@ -131,11 +127,7 @@ vector<int> selectAll(string synonymType) {
     } else if (synonymType == IF_) {
         return PKB::stmtTable->getAllIfStmtNums();
     } else if (synonymType == VARIABLE_) {
-        int size = PKB::varTable->getSize();
-        for (int i = 0; i < size; i++) {
-            res.push_back(i);
-        }
-        return res;
+        return PKB::varTable->getAllVarIDs();
     } else if (synonymType == CONSTANT_) {
         return PKB::constTable->getAllConsts();
     }

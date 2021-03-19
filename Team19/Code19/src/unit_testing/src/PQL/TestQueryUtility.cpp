@@ -1,6 +1,8 @@
 #include "PQL/QueryUtility.h"
 #include "catch.hpp"
 
+#include <set>
+
 using namespace std;
 
 TEST_CASE("checkNameWithQuotes") {
@@ -138,16 +140,34 @@ void setupPKB() {
 
 TEST_CASE("selectAll") {
     setupPKB();
-    REQUIRE(selectAll(PROCEDURE_) == vector<int>{0, 1});
-    REQUIRE(selectAll(STMT_) == vector<int>{1, 2, 3, 4, 5, 6, 7, 8});
-    REQUIRE(selectAll(READ_) == vector<int>{2, 8});
+    vector<int> v1 = selectAll(PROCEDURE_);
+    unordered_set<int> s11(v1.begin(), v1.end());
+    unordered_set<int> s12 = { 0, 1 };
+    REQUIRE( s11 == s12);
+    vector<int> v2 = selectAll(STMT_);
+    unordered_set<int> s21(v2.begin(), v2.end());
+    unordered_set<int> s22 = { 1, 2, 3, 4, 5, 6, 7, 8 };
+    REQUIRE( s21 == s22 );
+    vector<int> v3 = selectAll(READ_);
+    unordered_set<int> s31(v3.begin(), v3.end());
+    unordered_set<int> s32 = { 2, 8 };
+    REQUIRE( s31 == s32 );
     REQUIRE(selectAll(PRINT_) == vector<int>{3});
-    REQUIRE(selectAll(ASSIGN_) == vector<int>{1, 7});
+    vector<int> v4 = selectAll(ASSIGN_);
+    unordered_set<int> s41(v4.begin(), v4.end());
+    unordered_set<int> s42 = { 1, 7 };
+    REQUIRE( s41 == s42 );
     REQUIRE(selectAll(CALL_) == vector<int>{4});
     REQUIRE(selectAll(WHILE_) == vector<int>{5});
     REQUIRE(selectAll(IF_) == vector<int>{6});
-    REQUIRE(selectAll(VARIABLE_) == vector<int>{0, 1, 2});
-    REQUIRE(selectAll(CONSTANT_) == vector<int>{2, 8});
+    vector<int> v5 = selectAll(VARIABLE_);
+    unordered_set<int> s51(v5.begin(), v5.end());
+    unordered_set<int> s52 = { 0, 1, 2 };
+    REQUIRE( s51 == s52 );
+    vector<int> v6 = selectAll(CONSTANT_);
+    unordered_set<int> s61(v6.begin(), v6.end());
+    unordered_set<int> s62 = { 2, 8 };
+    REQUIRE( s61 == s62 );
     REQUIRE(selectAll(UNDERSCORE_).empty());
 }
 
