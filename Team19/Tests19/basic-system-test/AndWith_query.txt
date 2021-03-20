@@ -288,17 +288,3 @@ assign a; while w; prog_line n;
 Select a such that Parent*(w, a) and Next*(2, n) pattern a("x", _) with a.stmt# = n
 4
 5000
-
-
-53 - Q31, this one throws exception dunno why
-assign a; while w; prog_line n;
-Select a such that Parent*(w, a) and Next*(2, n) pattern a("x", _) with a.stmt# = n
-4
-5000
-
-
-54 Modifies* doesnt exist
-stmt s1, s2; 
-Select s1 such that Modifies*(s1,"guru")
-none
-5000
