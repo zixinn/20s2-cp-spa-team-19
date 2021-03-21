@@ -198,3 +198,8 @@ stmt s; assign a; print pr; read r; if ifs; while w; constant cons; call c;
 Select c such that Next(re, s)
 none
 5000
+41 - Reflex
+stmt s;
+Select s such that Next(s, s)
+none
+5000

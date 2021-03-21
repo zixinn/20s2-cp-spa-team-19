@@ -73,24 +73,33 @@ assign a;
 Select BOOLEAN pattern a("sci333ors", _)
 TRUE
 5000
-15 - boolean syntax error
+16 - boolean syntax error
 assign a;
 Select BOOLEAN pattern a("v", _, _)
 none
 5000
-16 - boolean meaningless query
+17 - boolean meaningless query
 
 Select BOOLEAN with 112 = 112
 TRUE
 5000
-17 - boolean meaningless query
+18 - boolean meaningless query
 
 Select BOOLEAN with 112 = 11
 FALSE
 5000
-18 - boolean missing declaration
+19 - boolean missing declaration
 
 Select BOOLEAN such that Next(s, 2)
 FALSE
 5000
-
+20 - invalid argument type
+constant c; stmt s;
+Select BOOLEAN such that Next(c, s)
+FALSE
+5000
+21 - boolean (individual clauses contain result but join together no result)
+assign a; variable v; procedure pr;
+Select BOOLEAN such that Modifies(a, v) with v.varName = pr.procName
+FALSE
+5000

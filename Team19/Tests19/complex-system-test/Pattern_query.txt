@@ -408,3 +408,8 @@ assign a;
 Select a pattern a(_, _, _)
 none
 5000
+83 - leading space in variable name
+assign a;
+Select a pattern a(" purple  ", _)
+25, 36, 40, 51
+5000

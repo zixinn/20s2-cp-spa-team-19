@@ -1,0 +1,145 @@
+1 - no synonym in clauses
+constant c;
+Select c such that Next(1,2) and Modifies(70, "grey") such that Calls("f00d", "obj3ct") with 1 = 1
+0,1,10,100,12,1241242134,15,169,197,2,21,234,26,26433,290918238,3,314,3279502,3993,4,424809,456,46,5,500,5555,6,7,75105820,789,8,88,884,9,926535897,93238,9749
+5000
+2 - no common synonym in clauses (3 clauses)
+assign a, aa; variable v; procedure p, p1;
+Select <a, aa, v, p, p1> such that Next*(a, 7) pattern aa(v, _"black - black"_) such that Calls(p, "obj3ct")
+2 50 red2 f00d f00d, 2 50 red2 f00d colors, 2 50 red2 f00d obj3ct, 2 50 red2 f00d simple, 2 50 red2 f00d t0pUp, 2 50 red2 f00d procedure, 4 50 red2 f00d f00d, 4 50 red2 f00d colors, 4 50 red2 f00d obj3ct, 4 50 red2 f00d simple, 4 50 red2 f00d t0pUp, 4 50 red2 f00d procedure, 5 50 red2 f00d f00d, 5 50 red2 f00d obj3ct, 5 50 red2 f00d colors, 5 50 red2 f00d simple, 5 50 red2 f00d t0pUp, 5 50 red2 f00d procedure
+5000
+3 - no common synonym in clauses (4 clauses)
+constant c; procedure p; variable v; stmt s, s1; while w;
+Select v.varName such that Uses(p, v) and Next(s, s1) with c.value = w.stmt# with 54321 = 54321
+chicken, noodle, rice, chi11i, sprING000Ni0n, duck, spring, chickenRice, ramen, red, blue, purple, green, blue1, green2, blue2, red2, black, yellow, orange, silver, gold, white, grey, blue3, progline, assign, call, print, statement, w9113t, Kn17e, procedure, then, else, if, money, earn, used, green1, onion, read, red1, while
+5000 
+4 - no common synonym in clauses (5 clauses)
+assign a, a1, a2; if ifs; while w; variable v, v1; stmt s, s1;
+Select v such that Next(a, ifs) pattern w(v, _) with s.stmt# = 6 and a1.stmt# = s1.stmt# pattern a2(v1, _"blue2"_)
+onion, sprING000Ni0n, green, yellow, blue2, blue1, red1, blue3, red2, purple, spring, green1, ramen, red, green2, while, if
+5000
+5 - 1 common synonym in clauses (2 clauses)
+if ifs; call c;
+Select c.procName such that Next*(ifs, ifs) pattern ifs("green", _, _)
+colors, obj3ct, simple, t0pUp, procedure
+5000
+6 - 1 common synonym in clauses (3 clauses)
+assign a; if ifs;
+Select a.stmt# pattern a("purple", _) such that Next*(a, 79) and Parent(44, 45)
+25, 36, 40, 51
+5000
+7 - 1 common synonym in clauses (4 clauses)
+prog_line s; while w; variable v; assign a; 
+Select <s, w> such that Parent*(w, _) pattern w("red1", _) and w(v, _) with w.stmt# = s
+37 37, 58 58
+5000
+8 - 1 common synonym in clauses (5 clauses)
+assign a; if ifs; variable v, v1; stmt s;
+Select a such that Uses(a, v) pattern a("grey", _) with a.stmt# = s.stmt# and v1.varName = "gold" such that Next(ifs, a) 
+54
+5000
+9 - 2 common synonym in clauses (3 clauses)
+variable v, v1; assign a;
+Select <a, v, v1> such that Uses(a, v) pattern a(v, _) with v.varName = v1.varName
+2 noodle noodle, 15 sprING000Ni0n sprING000Ni0n, 33 red red, 36 purple purple, 38 blue blue, 39 blue blue, 40 purple purple, 48 blue2 blue2, 51 purple purple, 65 blue blue, 69 black black, 71 progline progline, 96 money money 
+5000
+10 - 2 common synonym in clauses (4 clauses)
+if ifs; while w; variable v; call c;
+Select BOOLEAN pattern ifs(v, _, _) and w(v,_) such that Next(ifs, w) and Modifies(c, v)
+FALSE
+5000
+11 - 2 common synonym in clauses (5 clauses)
+constant c; prog_line pl; while w; variable v; call ca;
+Select c.value with c.value = pl such that Next*(pl, w) pattern w(v, _) such that Parent*(w, pl) with ca.stmt# = pl
+12
+5000
+12 - chains 
+while w; assign a; if ifs; variable v;
+Select w such that Parent*(w, a) and Next*(a, ifs) pattern ifs(v, _, _) with v.varName = "green"
+31,37,44,47,55,56,58,62
+5000
+13 - chains
+assign a, a1; while w; variable v, v2; call call; stmt s; prog_line pl;
+Select <a, v, call, v2> pattern a(v, "red   + blue") and a1(v, _) such that Uses(a1, v2) and Modifies(call, v2) with call.stmt# = pl and pl = pl
+25 purple 12 blue,25 purple 12 purple,25 purple 12 red,25 purple 20 blue,25 purple 20 purple,25 purple 20 red,25 purple 3 blue,25 purple 3 purple,25 purple 3 red,25 purple 84 blue,25 purple 84 purple,25 purple 84 red
+5000
+14 - chains
+while w, w1, w2, w3, w4, w5; assign a; variable v, v2;
+Select w.stmt# such that Parent*(w, w1) and Next(w1, w2) and Parent(w2, w3) pattern w3(v, _) and w4(v, _) with w4.stmt# = w5.stmt# such that Uses(w5, v2) pattern a(v2, _) 
+44, 55, 56
+5000
+15 - Query 12 dont chain (test timing)
+while w; assign a; if ifs; variable v;
+Select w pattern ifs(v, _, _) such that Parent*(w, a) with v.varName = "green" such that Next*(a, ifs)
+31,37,44,47,55,56,58,62
+5000
+16 - Query 13 dont chain (test timing)
+assign a, a1; while w; variable v, v2; call call; stmt s; prog_line pl;
+Select <a, v, call, v2> pattern a(v, "red   + blue") such that Uses(a1, v2) with call.stmt# = pl pattern a1(v, _) such that Modifies(call, v2) with pl = pl
+25 purple 12 blue,25 purple 12 purple,25 purple 12 red,25 purple 20 blue,25 purple 20 purple,25 purple 20 red,25 purple 3 blue,25 purple 3 purple,25 purple 3 red,25 purple 84 blue,25 purple 84 purple,25 purple 84 red
+5000
+18 - cycles
+print p; while w;
+Select <p, w> such that Next*(p, p) and Parent(w, p)
+49 47, 63 62, 88 87
+5000
+19 - cycles
+variable v, v1; assign a; call call; procedure pr;
+Select v pattern a(v, _) such that Modifies(pr, v) with pr.procName = call.procName such that Next*(a, call)
+spring, yellow, Kn17e
+5000
+20 - wildcards
+assign a; if ifs; while w;
+Select BOOLEAN such that Next(_, _) and Modifies(_, _) and Uses(_, _) and Follows*(_, _) and Calls*(_, _) and Parent(_, _) pattern a(_, _) and ifs(_, _, _) and w(_, _) with 234 = 234 and "hello" = "hello"
+FALSE
+5000
+21 - wildcards
+assign a; if ifs; while w;
+Select BOOLEAN such that Next(_, _) and Follows*(_, _) and Calls*(_, _) and Parent(_, _) pattern a(_, _) and ifs(_, _, _) and w(_, _) with 234 = 234 and "hello" = "hello"
+TRUE
+5000
+22 - 4 with, all pattern, 5 such that
+stmt s; assign a; print pr; read re; if ifs; while w; constant cons; call c; variable v; procedure p, p1;
+Select re with p.procName = "obj3ct" and c.procName = p1.procName and ifs.stmt# = cons.value and w.stmt# = 87  such that Next(97, _) and Follows*(re, pr) and Modifies(a, v) and Calls(p, p1) and Uses(pr, v) pattern a(_, _) and ifs(_, _, _) and w(_, _)
+1, 76
+5000
+23 - multiple groups (2 groups)
+assign a; variable v; stmt s; read r; while w;
+Select <a, r> pattern a(v, _"red"_) with a.stmt# = s.stmt# such that Modifies(s, v) such that Next*(r, r) and Parent(w, r)
+25 13,25 89,33 13,33 89,41 13,41 89,50 13,50 89,57 13,57 89,65 13,65 89,70 13,70 89
+5000
+24 - multiple groups (2 groups)
+assign a, aa; variable v, v1; procedure p; prog_line pl; constant c; while w; call ca;
+Select <a, pl> such that Next*(a, 7) pattern aa(v, _"black - black"_) such that Calls(p, "obj3ct") with c.value = pl such that Next*(pl, w) pattern w(v1, _) such that Parent*(w, pl) with ca.stmt# = pl
+2 12, 4 12, 5 12
+5000
+25 - multiple groups (3 groups)
+if ifs; variable v, v1, v2; read r; call c; constant constant; print print; assign a;
+Select <ifs, constant, v2> pattern ifs(v, _ , _ ) such that Next(ifs, r) and Uses(c, v1) with c.stmt# = constant.value and print.varName = v2.varName such that Uses(a, v2)
+72 12 black,72 12 chi11i,72 12 chickenRice,72 12 duck,72 12 else,72 12 purple,72 12 rice,72 3 black,72 3 chi11i,72 3 chickenRice,72 3 duck,72 3 else,72 3 purple,72 3 rice
+5000
+26 - multiple groups (4 groups)
+while w, w1, w2; assign a; if ifs, ifs1; variable v, v1; print p; constant constant; call c; stmt s;
+Select <w, p, v1, c> such that Parent*(w, a) and Next*(a, ifs) pattern ifs(v, _, _) with v.varName = "green" such that Next*(p, p) and Parent(w1, p) with p.varName = "rice" pattern w2(v1, _) and ifs1(v1, _, _) with constant.value = s.stmt# such that Follows(s, c)
+31 63 green 3,31 63 purple 3,31 63 ramen 3,31 63 red 3,31 63 red1 3,31 63 red2 3,37 63 green 3,37 63 purple 3,37 63 ramen 3,37 63 red 3,37 63 red1 3,37 63 red2 3,44 63 green 3,44 63 purple 3,44 63 ramen 3,44 63 red 3,44 63 red1 3,44 63 red2 3,47 63 green 3,47 63 purple 3,47 63 ramen 3,47 63 red 3,47 63 red1 3,47 63 red2 3,55 63 green 3,55 63 purple 3,55 63 ramen 3,55 63 red 3,55 63 red1 3,55 63 red2 3,56 63 green 3,56 63 purple 3,56 63 ramen 3,56 63 red 3,56 63 red1 3,56 63 red2 3,58 63 green 3,58 63 purple 3,58 63 ramen 3,58 63 red 3,58 63 red1 3,58 63 red2 3,62 63 green 3,62 63 purple 3,62 63 ramen 3,62 63 red 3,62 63 red1 3,62 63 red2 3
+5000
+27 - multiple groups (one empty result)
+if ifs; variable v, v1; while w; call c;
+Select w pattern ifs(v, _, _) and w(v,_) such that Next(ifs, w) and Modifies(c, v1)
+none
+5000
+28 - invalid (syntax)
+if ifs; variable v, v1; while w; call c;
+Select BOOLEAN pattern ifs(v, _, _) and w(v,_) and Next(ifs, w) and Modifies(c, v1)
+none
+5000
+29 - invalid (syntax)
+read r; print p; variable v;
+Select BOOLEAN such that Modifies(r, v) and Uses(p, v) abc pattern a(v, _)
+none
+5000
+30 - invalid (semantic)
+procedure p; stmt s; print print; assign a; read read;
+Select BOOLEAN such that Next*(read, print) with read.varName = print.varName such that Parent*(p, s) 
+FALSE
+5000

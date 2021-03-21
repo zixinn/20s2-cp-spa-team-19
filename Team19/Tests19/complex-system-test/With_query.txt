@@ -323,3 +323,48 @@ variable v; print pn; read r; constant c1;
 Select v with pn.varName = v.varName and r.varName = v.varName and pn.stmt# = 63 and r.stmt# = c1.value and c1.value = 1
 rice
 5000
+64 - synonym no exist
+constant c;
+Select BOOLEAN with a.stmt# = c.value
+FALSE
+5000
+65 - invalid data type match (exact, exact)
+
+Select BOOLEAN with "string" = 123
+FALSE
+5000
+66 - invalid data type match (attr, attr)
+variable v; constant c;
+Select BOOLEAN with v.varName = c.value
+FALSE
+5000
+67 - invalid data type match (attr, attr)
+call c; read r;
+Select BOOLEAN with r.stmt# = c.procName
+FALSE
+5000
+68 - synonym not of prog_line type
+call c;
+Select BOOLEAN with c = 2
+FALSE
+5000
+69 - invalid attr of synonym
+if ifs;
+Select BOOLEAN with ifs.varName = "spa"
+FALSE
+5000
+70 - invalid attr of synonym
+variable v; constant c;
+Select BOOLEAN with v.value = c.value
+FALSE
+5000
+71 - invalid attr of synonym
+variable v; constant c;
+Select BOOLEAN with v.value = c.varName
+FALSE
+5000
+72 - spaces between the dot
+variable v;
+Select v.varName with v   .    varName = "  else "
+else
+5000

@@ -153,4 +153,8 @@ procedure pr; assign a; stmt s; call c;
 Select c such that Calls(pr, c)
 none
 5000
-
+32 - reflex
+procedure pr;
+Select pr such that Calls(pr, pr)
+none
+5000

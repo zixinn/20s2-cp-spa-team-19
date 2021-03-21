@@ -153,4 +153,8 @@ procedure p32423pp234p3;
 Select p234po342p such that Calls*("obj3ct", p32423pp234p3);
 none
 5000
-
+33 - reflex
+procedure pr;
+Select pr such that Calls*(pr, pr)
+none
+5000

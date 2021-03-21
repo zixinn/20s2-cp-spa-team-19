@@ -37,7 +37,7 @@ private:
     vector<Clause> clauses;
     unordered_map<string, vector<int>> results; // maps synonym declared to possible values for that synonym,
                                                 // each column in the table is represented as an entry in the map
-    bool selectBool;
+   // bool selectBool;
 
     bool evaluateClause(Clause clause, unordered_map<string, vector<int>>& tempResults);
 
