@@ -2,7 +2,6 @@
 
 using namespace std;
 
-// Trim leading and trailing spaces from string s
 string trim(string s) {
     string whitespace = " \t\n\r\f\v";
     s.erase(s.find_last_not_of(whitespace) + 1);
@@ -10,8 +9,6 @@ string trim(string s) {
     return s;
 }
 
-// Split string s by the given delimiter and returns vector containing strings split
-// Strings in vector will be trimmed
 vector<string> split(string s, string delimiter) {
     size_t pos = 0;
     string token;
@@ -28,8 +25,6 @@ vector<string> split(string s, string delimiter) {
     return result;
 }
 
-// Checks LETTER(LETTER | DIGIT)*
-// Returns true if name is valid, false otherwise
 bool checkName(string s) {
     bool isValid = false;
     if (isalpha(s[0])) {
@@ -46,8 +41,6 @@ bool checkName(string s) {
     return isValid;
 }
 
-// Checks DIGIT +
-// Returns true if integer is valid, false otherwise
 bool checkInteger(string s) {
     if (s.length() > 1 && s.at(0) == '0') {
         return false;

@@ -24,8 +24,8 @@ bool CallsEvaluator::evaluate(unordered_map<string, string> declarations, Clause
         int firstProcId = PKB::procTable->getProcID(trim(firstArg.substr(1, firstArg.size() - 2)));
         int secondProcId = PKB::procTable->getProcID(trim(secondArg.substr(1, secondArg.size() - 2)));
         return PKB::calls->isCalls(firstProcId, secondProcId);
-    }
-    else if (firstType == NAME_ && secondType != NAME_) { // known, s or known, _
+
+    } else if (firstType == NAME_ && secondType != NAME_) { // known, s or known, _
         int firstProcId = PKB::procTable->getProcID(trim(firstArg.substr(1, firstArg.size() - 2)));
         unordered_set<StmtNum> callees = PKB::calls->getCallees(firstProcId);
         if (callees.empty()) {
@@ -37,8 +37,8 @@ bool CallsEvaluator::evaluate(unordered_map<string, string> declarations, Clause
             tempResults[secondArg] = res;
         }
         return true;
-    }
-    else if (firstType != NAME_ && secondType == NAME_) { // s, known or _, known
+
+    } else if (firstType != NAME_ && secondType == NAME_) { // s, known or _, known
         int secondProcId = PKB::procTable->getProcID(trim(secondArg.substr(1, secondArg.size() - 2)));
         unordered_set<StmtNum> callers = PKB::calls->getCallers(secondProcId);
         if (callers.empty()) {
@@ -50,8 +50,8 @@ bool CallsEvaluator::evaluate(unordered_map<string, string> declarations, Clause
             tempResults[firstArg] = res;
         }
         return true;
-    }
-    else { // s1, s2 or s, _ or _, s
+
+    } else { // s1, s2 or s, _ or _, s
         if (firstArg == secondArg) {
             return false;
         }
@@ -63,12 +63,10 @@ bool CallsEvaluator::evaluate(unordered_map<string, string> declarations, Clause
             tempResults[firstArg] = allCalls.first;
             tempResults[secondArg] = allCalls.second;
             return true;
-        }
-        else if (firstType != UNDERSCORE_) { // s, _
+        } else if (firstType != UNDERSCORE_) { // s, _
             tempResults[firstArg] = allCalls.first;
             return true;
-        }
-        else { // _, s
+        } else { // _, s
             tempResults[secondArg] = allCalls.second;
             return true;
         }

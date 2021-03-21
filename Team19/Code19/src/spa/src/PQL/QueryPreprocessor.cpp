@@ -147,7 +147,7 @@ int QueryPreprocessor::getNextPos(vector<int> pos) {
             next = po;
         }
     }
-    return next == INT_MAX ?  -1 : next;
+    return next == INT_MAX ? -1 : next;
 }
 
 void QueryPreprocessor::parseToSelect(string resultCl) {

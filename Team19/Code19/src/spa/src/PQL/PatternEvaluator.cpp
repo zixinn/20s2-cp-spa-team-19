@@ -142,8 +142,7 @@ bool PatternEvaluator::evaluateWhileClause(string varName, string firstArg, stri
         if (firstType != UNDERSCORE_) {
             tempResults[firstArg] = allWhilePatterns.second;
         }
-    }
-    else { // first arg is name in quotation marks
+    } else { // first arg is name in quotation marks
         string varString = trimQuotes(firstArg);
         ID id = PKB::varTable->getVarID(varString);
         if (id == -1) {

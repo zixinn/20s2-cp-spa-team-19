@@ -20,8 +20,7 @@ bool ParentTEvaluator::evaluate(unordered_map<string, string> declarations,
     if (firstType == INTEGER_ && secondType == INTEGER_) { // known, known
         return PKB::parent->isParentStar(stoi(firstArg), stoi(secondArg));
 
-    }
-    else if (firstType == INTEGER_ && secondType != INTEGER_) { // known, s or known, _
+    } else if (firstType == INTEGER_ && secondType != INTEGER_) { // known, s or known, _
         unordered_set<int> children = PKB::parent->getChildrenStar(stoi(firstArg));
         if (children.empty()) {
             return false;
@@ -36,8 +35,7 @@ bool ParentTEvaluator::evaluate(unordered_map<string, string> declarations,
         }
         return true;
 
-    }
-    else if (firstType != INTEGER_ && secondType == INTEGER_) { // s, known or _, known
+    } else if (firstType != INTEGER_ && secondType == INTEGER_) { // s, known or _, known
         unordered_set<int> parent = PKB::parent->getParentStar(stoi(secondArg));
         if (parent.empty()) {
             return false;
@@ -52,8 +50,7 @@ bool ParentTEvaluator::evaluate(unordered_map<string, string> declarations,
         }
         return true;
 
-    }
-    else { // s1, s2 or s, _ or _, s
+    } else { // s1, s2 or s, _ or _, s
         if (firstArg == secondArg) {
             return false;
         }
@@ -70,16 +67,14 @@ bool ParentTEvaluator::evaluate(unordered_map<string, string> declarations,
                 tempResults[secondArg] = res.second;
             }
             return nonEmpty;
-        }
-        else if (firstType != UNDERSCORE_) { // s, _
+        } else if (firstType != UNDERSCORE_) { // s, _
             vector<int> res;
             bool nonEmpty = intersectSingleSynonym(allParentStar.first, selectAll(firstType), res);
             if (nonEmpty) {
                 tempResults[firstArg] = res;
             }
             return nonEmpty;
-        }
-        else { // _, s
+        } else { // _, s
             vector<int> res;
             bool nonEmpty = intersectSingleSynonym(allParentStar.second, selectAll(secondType), res);
             if (nonEmpty) {
