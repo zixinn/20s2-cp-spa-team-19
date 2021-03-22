@@ -1,0 +1,47 @@
+procedure Honeysuckle {
+    print teacup0;
+    lesion = ((23 + 1) / bluebell / 5);
+
+    while (melody <= maison) {
+       x = y - 1;
+       lesion = teacup0;
+     }
+
+    if (gossamer == lesion) then {
+        x = lesion * 2;
+    } else {
+        x = (lesion * 2) - 1;
+        print x;
+    }
+
+    print lesion;
+    call something;
+    call shikashi;
+}
+
+procedure something {
+    read teacup0;
+    print something;
+
+    while (5 == 5) {
+       x = y - 1;
+       lesion = teacup0;
+       lesion = ((23 + 1) / bluebell / 5);
+       print lesion;
+       call shikashi;
+     }
+
+    melody = coeur - cerveau;
+}
+
+procedure shikashi {
+    z = 2 + 8;
+
+    if (boro != 1) then {
+        read ardent;
+        z = 258080 / 56;
+        guru = guru;
+    } else {
+        read pardon;
+    }
+}
