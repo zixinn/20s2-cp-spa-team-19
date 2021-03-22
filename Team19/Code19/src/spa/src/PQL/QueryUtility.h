@@ -45,3 +45,6 @@ bool intersectSingleSynonym(unordered_set<int> allResults, vector<int> allCorrec
 // Stores pairs of entries of allResults such that the first entry exists in allCorrectType.first and the second entry exists in allCorrectType.second in results
 // Returns true if results is non-empty, false otherwise
 bool intersectDoubleSynonym(pair<vector<int>, vector<int>> allResults, pair<vector<int>, vector<int>> allCorrectType, pair<vector<int>, vector<int>>& results);
+
+// Projects only synonyms in the set toProject from results, removing duplicates
+void project(unordered_set<string> toProject, unordered_map<string, vector<int>>& results);

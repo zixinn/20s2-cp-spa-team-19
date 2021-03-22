@@ -11,7 +11,7 @@ using namespace std;
 class Query {
 public:
     Query();
-    Query(unordered_map<string, string> declarations, vector<string> toSelect, vector<vector<Clause>>,
+    Query(unordered_map<string, string> declarations, vector<string> toSelect, vector<vector<Clause>> clauses,
             bool isSyntacticallyValid, bool isSemanticallyValid);
 
     unordered_map<string, string> getDeclarations();

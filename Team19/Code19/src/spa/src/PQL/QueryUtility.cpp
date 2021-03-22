@@ -172,3 +172,43 @@ bool intersectDoubleSynonym(pair<vector<int>, vector<int>> allResults, pair<vect
     results = res;
     return !res.first.empty();
 }
+
+void project(unordered_set<string> toProject, unordered_map<string, vector<int>>& results) {
+    // find entries to be removed
+    unordered_set<string> toRemove;
+    for (auto it : results) {
+        string synonym = it.first;
+        if (toProject.find(synonym) == toProject.end()) {
+            toRemove.insert(synonym);
+        }
+    }
+
+    // project
+    for (auto it : toRemove) {
+        results.erase(it);
+    }
+    if (results.empty()) {
+        return;
+    }
+
+    // remove duplicates
+    unordered_map<string, vector<int>> newResults;
+    for (auto it : results) {
+        newResults.insert(make_pair(it.first, vector<int>{}));
+    }
+    unordered_set<string> set;
+    int numRows = results.begin()->second.size();
+    for (int i = 0; i < numRows; i++) {
+        string s;
+        for (auto it : results) {
+            s += to_string(it.second.at(i)) + " ";
+        }
+        if (set.find(s) == set.end()) { // row is unique
+            set.insert(s);
+            for (auto it : results) { // insert row into table
+                newResults.find(it.first)->second.push_back(it.second.at(i));
+            }
+        }
+    }
+    results = newResults;
+}

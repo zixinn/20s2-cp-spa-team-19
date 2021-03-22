@@ -220,3 +220,45 @@ TEST_CASE("intersectDoubleSynonym") {
     REQUIRE_FALSE(nonEmpty2);
     REQUIRE(results2 == make_pair(vector<int>{}, vector<int>{}));
 }
+
+TEST_CASE("project") {
+    // empty result (all columns removed)
+    unordered_set<string> toProject1 {"a", "v"};
+    unordered_map<string, vector<int>> results1;
+    results1["c"] = {9, 8, 7, 6, 5, 4, 3};
+    results1["n"] = {1, 2, 3, 4, 5, 6, 7};
+    project(toProject1, results1);
+    REQUIRE(results1.empty());
+
+    // non-empty result (some columns removed), duplicates
+    unordered_set<string> toProject2 {"a", "v"};
+    unordered_map<string, vector<int>> results2;
+    results2["a"] = {1, 3, 5, 3, 7, 7, 5};
+    results2["c"] = {9, 8, 7, 6, 5, 4, 3};
+    results2["v"] = {2, 4, 6, 4, 8, 9, 6};
+    results2["n"] = {1, 2, 3, 4, 5, 6, 7};
+    project(toProject2, results2);
+    REQUIRE(results2.size() == 2);
+    REQUIRE(results2["a"] == vector<int>{1, 3, 5, 7, 7});
+    REQUIRE(results2["v"] == vector<int>{2, 4, 6, 8, 9});
+
+    // no columns removed, no duplicates
+    unordered_set<string> toProject3 {"c", "n"};
+    unordered_map<string, vector<int>> results3;
+    results3["c"] = {9, 8, 7, 6, 5, 4, 3};
+    results3["n"] = {1, 2, 3, 4, 5, 6, 7};
+    project(toProject3, results3);
+    REQUIRE(results3.size() == 2);
+    REQUIRE(results3["c"] == vector<int>{9, 8, 7, 6, 5, 4, 3});
+    REQUIRE(results3["n"] == vector<int>{1, 2, 3, 4, 5, 6, 7});
+
+    // no columns removed, duplicates
+    unordered_set<string> toProject4 {"a", "v"};
+    unordered_map<string, vector<int>> results4;
+    results4["a"] = {1, 3, 5, 3, 7, 7, 5};
+    results4["v"] = {2, 4, 6, 4, 8, 9, 6};
+    project(toProject4, results4);
+    REQUIRE(results4.size() == 2);
+    REQUIRE(results4["a"] == vector<int>{1, 3, 5, 7, 7});
+    REQUIRE(results4["v"] == vector<int>{2, 4, 6, 8, 9});
+}
