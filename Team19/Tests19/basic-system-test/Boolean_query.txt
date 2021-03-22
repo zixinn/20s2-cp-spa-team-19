@@ -1,0 +1,75 @@
+1 - Boolean only
+
+Select BOOLEAN
+TRUE
+5000
+2 - Boolean with such that
+
+Select BOOLEAN such that Parent(15, 18)
+TRUE
+5000
+3 - Boolean with such that (clause returns false)
+
+Select BOOLEAN such that Parent(1, 2)
+FALSE
+5000
+4 - Boolean with pattern
+assign a;
+Select BOOLEAN pattern a ("x", _)
+TRUE
+5000
+5 - Boolean with pattern (false clause result)
+assign a;
+Select BOOLEAN pattern a ("boro", _)
+FALSE
+5000
+6 - Boolean with 2 clauses (both true)
+assign a;
+Select BOOLEAN pattern a ("z", _) such that Parent(23, 27)
+TRUE
+5000
+7 - Boolean with 2 clauses (1 true 1 false)
+assign a;
+Select BOOLEAN pattern a ("z", _) such that Parent(1, 2)
+FALSE
+5000
+8 - Boolean with 2 clauses (1 true 1 returns results)
+assign a; stmt s;
+Select BOOLEAN pattern a ("z", _) such that Parent(s, 16)
+TRUE
+5000
+9 - Boolean with 2 clauses (1 true 1 returns nothing)
+assign a; stmt s;
+Select BOOLEAN pattern a ("z", _) such that Parent(s, 22)
+FALSE
+5000
+10 - Boolean with 2 clauses (1 false 1 returns nothing)
+assign a; stmt s;
+Select BOOLEAN pattern a ("z", "25550") such that Parent(s, 22)
+FALSE
+5000
+11 - Boolean with such that, wildcard
+
+Select BOOLEAN such that Follows(_,_)
+TRUE
+5000
+12 - Boolean with such that, wildcard - syntactically valid but semantically invalid
+
+Select BOOLEAN such that Uses(_,_)
+FALSE
+5000
+13 - Boolean with assign pattern, wildcard
+assign a;
+Select BOOLEAN pattern a (_, _)
+TRUE
+5000
+14 - Boolean with syntatic error
+
+Select BOOLEAN such that Modif(1,2)
+none
+5000
+15 - Boolean with calls. true because procedures exist
+
+Select BOOLEAN such that Calls (_,_)
+TRUE
+5000
