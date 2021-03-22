@@ -1,0 +1,150 @@
+1 - wildcard, wildcard
+
+Select BOOLEAN such that Uses(_, _)
+FALSE
+5000
+2 - wildcard, synonym
+stmt s; variable v;
+Select s such that Uses(_, v)
+none
+5000
+3 - wildcard, unknown synonym
+prog_line pl;
+Select pl such that Uses(_, s)
+none
+5000
+4 - synonym, wildcard
+stmt s;
+Select s such that Uses(s, _)
+2,3,4,6,7,8,9,10,11,12,14,15,17,18,19,20,21,22,23,24,25,28,29,30,31,32,33,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,62,63,65,66,68,69,70,71,72,73,74,77,78,79,81,82,84,85,86,87,88,90,92,93,94,95,96,98,99
+5000
+5 - synonym, wildcard
+prog_line pl;
+Select pl such that Uses(pl, _)
+2,3,4,6,7,8,9,10,11,12,14,15,17,18,19,20,21,22,23,24,25,28,29,30,31,32,33,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,62,63,65,66,68,69,70,71,72,73,74,77,78,79,81,82,84,85,86,87,88,90,92,93,94,95,96,98,99
+5000
+6 - synonym, wildcard
+procedure p;
+Select p such that Uses(p, _)
+f00d, obj3ct, colors, simple, t0pUp, procedure
+5000
+7 - synonym, wildcard
+call c;
+Select c such that Uses(c, _)
+3, 12, 20, 24, 52, 68, 84, 85, 94, 98
+5000
+8 - synonym, wildcard
+if ifs;
+Select ifs such that Uses(ifs, _)
+7, 17, 29, 32, 45, 46, 53, 59, 72, 82, 92 
+5000
+9 - synonym, wildcard
+while w;
+Select w such that Uses(w, _)
+10, 31, 37, 44, 47, 55, 56, 58, 62, 87
+5000
+10 - unknown synonym, wildcard
+stmt s;
+Select s such that Uses(p, _)
+none
+5000
+11 - proc, exact
+procedure p;
+Select p such that Uses(p, "rice")
+f00d, colors, obj3ct
+5000
+12 - call, exact
+call c;
+Select c such that Uses(c, "earn")
+3, 20, 85
+5000
+13 - while, exact
+while w;
+Select w such that Uses(w, "purple")
+10, 37, 44, 47, 55, 56
+5000
+14 - if, exact
+if ifs;
+Select ifs such that Uses(ifs, "else")
+7, 17, 45, 46, 82, 92
+5000
+15 - assign, exact
+assign a, a1;
+Select a such that Uses(a, "red")
+25, 33, 41, 50, 57, 65, 70
+5000
+16 - stmt, exact
+stmt s;
+Select s such that Uses(s, "black")
+3, 7, 10, 12, 17, 20, 44, 45, 46, 47, 50, 53, 54, 66, 69, 72, 74, 82, 84 
+5000
+17 - progline, exact
+prog_line pl;
+Select pl such that Uses(pl, "black")
+3, 7, 10, 12, 17, 20, 44, 45, 46, 47, 50, 53, 54, 66, 69, 72, 74, 82, 84 
+5000
+18 - stmt, non exist variable
+stmt ssas3248299sdfas9asdf9fasdf;
+Select ssas3248299sdfas9asdf9fasdf such that Uses(ssas3248299sdfas9asdf9fasdf, "curry")
+none
+5000 
+19 - synonym, synonym
+procedure p1, p2, p3; assign a, a5, a8; stmt s, s2, s4; constant c, c2, c3; variable v, v4, v5, v7, v8, v9, f, gg; if ifs, ifs2, ifs4, ifsifs; call cc, cc3; read r, r1, r2, r3; print pr3,pr, pr4, pr5;  
+Select <cc, v> such that Uses(cc, v)
+3 w9113t, 3 Kn17e, 3 red, 3 blue, 3 purple, 3 ramen, 3 rice, 3 spring, 3 red1, 3 red2, 3 green, 3 yellow, 3 blue2, 3 blue1, 3 blue3, 3 green1, 3 green2, 3 black, 3 white, 3 grey, 3 gold, 3 orange, 3 silver, 3 progline, 3 procedure, 3 statement, 3 print, 3 read, 3 assign, 3 call, 3 money, 3 earn, 3 used, 3 while, 3 if, 3 then, 3 else, 12 red, 12 blue, 12 purple, 12 red1, 12 red2, 12 green, 12 ramen, 12 yellow, 12 blue2, 12 blue1, 12 blue3, 12 green1, 12 green2, 12 black, 12 white, 12 grey, 12 gold, 12 orange, 12 silver, 12 progline, 12 procedure, 12 statement, 12 print, 12 read, 12 assign, 12 call, 12 while, 12 if, 12 then, 12 else, 12 spring, 12 rice, 20 w9113t, 20 Kn17e, 20 red, 20 ramen, 20 rice, 20 spring, 20 blue, 20 purple, 20 red1, 20 red2, 20 green, 20 yellow, 20 blue2, 20 blue1, 20 blue3, 20 green1, 20 green2, 20 black, 20 white, 20 grey, 20 gold,20 orange,20 silver, 20 progline, 20 procedure, 20 statement, 20 print, 20 read, 20 assign, 20 call, 20 money, 20 earn, 20 used, 20 while, 20 if, 20 then, 20 else, 24 while, 24 if, 24 then, 24 else, 24 print, 24 assign, 24 procedure, 52 while, 52 if, 52 then, 52 else, 52 print, 52 assign, 52 procedure, 68 while, 68 if, 68 then, 68 else, 68 print, 68 assign, 68 procedure, 84 red, 84 blue, 84 purple, 84 red1, 84 red2, 84 ramen, 84 green, 84 yellow, 84 blue2, 84 blue1, 84 blue3, 84 green1, 84 green2, 84 black, 84 white, 84 grey, 84 gold, 84 orange, 84 silver, 84 progline, 84 procedure, 84 statement, 84 print, 84 read, 84 assign, 84 call, 84 while, 84 if, 84 then, 84 else, 84 spring, 84 rice, 85 money, 85 earn, 85 used, 85 while, 85 if, 85 print, 85 assign, 85 procedure, 85 then, 85 else, 94 else, 98 while, 98 if, 98 print, 98 assign, 98 procedure, 98 then, 98 else
+5000
+20 - synonym, synonym
+read r; variable v; assign a; stmt s, s1; print p;
+Select p such that Uses(p, v)
+6, 18, 23, 49, 63, 66, 77, 88, 99
+5000
+21 - exact stmt, synonym
+variable v;
+Select v such that Uses(53, v)
+red, red1, black, yellow, purple, green, green1, green2, red2, rice, blue, gold, orange, silver
+5000
+22 - exact stmt, synonym
+variable v;
+Select v such that Uses(92, v)
+then, else
+5000
+23 - exact stmt, synonym
+variable v;
+Select v such that Uses(85, v)
+money, earn, used, while, if, print, assign, procedure, then, else
+5000
+24 - exact procedure, synonym
+variable v;
+Select v such that Uses("simple", v)
+while, if, print, assign, procedure, then, else
+5000
+25 - exact procedure, synonym
+variable v;
+Select v such that Uses("procedure", v)
+else
+5000
+26 - non exist stmt, synonym
+variable v;
+Select v such that Uses(100, v)
+none
+5000
+27 - non exist procedure, synonym
+variable v;
+Select v such that Uses("Na4ut0", v)
+none
+5000
+28 - exist bt does not use
+
+Select BOOLEAN such that Uses("colors", "chicken")
+FALSE
+5000
+29 - exist bt does not use
+constant c;
+Select c such that Uses(82, "noodle")
+none
+5000
+30 - synonym, synonym no exist
+assign a;
+Select a such that Uses(a, v)
+none
+5000

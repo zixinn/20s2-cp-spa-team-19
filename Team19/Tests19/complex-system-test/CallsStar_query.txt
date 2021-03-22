@@ -1,0 +1,160 @@
+1 - wildcard, wildcard
+call c;
+Select c such that Calls*(_, _)
+3, 12, 20, 24, 52, 68, 84, 85, 94, 98
+5000
+2 - synonym, wildcard
+procedure p;
+Select p such that Calls*(p, _)
+f00d, colors, obj3ct, simple, t0pUp
+5000
+3 - wildcard, synonym
+procedure p;
+Select p such that Calls*(_, p)
+colors, obj3ct, simple, t0pUp, procedure
+5000
+4 - synonym, synonym
+procedure p, p1;
+Select p such that Calls*(p, p1)
+f00d, colors, obj3ct, simple, t0pUp
+5000
+5 - synonym, synonym (tuple)
+procedure p, p1;
+Select <p, p1> such that Calls*(p, p1)
+f00d obj3ct, f00d colors, f00d simple, f00d t0pUp, f00d procedure, colors simple, colors procedure, obj3ct colors, obj3ct t0pUp, obj3ct simple, obj3ct procedure, simple procedure, t0pUp simple, t0pUp procedure
+5000
+6 - synonym, exact 
+procedure p;
+Select p such that Calls*(p, "colors")
+f00d, obj3ct
+5000
+8 - synonym, exact
+procedure p;
+Select p such that Calls*(p, "obj3ct")
+f00d
+5000
+9 - synonym, exact
+procedure p;
+Select p such that Calls*(p, "t0pUp")
+obj3ct, f00d
+5000
+10 - synonym, exact
+procedure p;
+Select p such that Calls* (p, "simple")
+f00d, colors, t0pUp, obj3ct
+5000
+11 - synonym, exact
+procedure p;
+Select p such that Calls* (p, "procedure")
+f00d, obj3ct, colors, t0pUp, simple
+5000
+12 - synonym, exact
+procedure p;
+Select p such that Calls*(p, "f00d")
+none
+5000
+13 - exact, synonym
+procedure pppp1pp2742194834;
+Select pppp1pp2742194834 such that Calls*("colors", pppp1pp2742194834)
+simple, procedure
+5000
+14 - exact, synonym
+procedure p;
+Select p such that Calls*("obj3ct", p)
+colors, t0pUp, simple, procedure
+5000
+15 - exact, synonym
+procedure p;
+Select p such that Calls*("t0pUp", p)
+simple, procedure
+5000
+16 - exact, synonym
+procedure p; read r; assign a; print pr; constant c; variable v;
+Select r such that Calls*("simple", p)
+1, 13, 34, 61, 67, 76, 89, 97
+5000
+17 - exact, synonym
+procedure p;
+Select p such that Calls*("procedure", p)
+none
+5000
+18 - exact, synonym
+procedure p;
+Select p such that Calls* ("f00d", p)
+obj3ct, colors, simple, t0pUp, procedure
+5000
+19 - exact, exact
+
+Select BOOLEAN such that Calls* ("obj3ct", "procedure")
+TRUE
+5000 
+20 - wildcard, exact 
+procedure p;
+Select p such that Calls*(_, "colors")
+f00d, colors, obj3ct, simple, t0pUp, procedure
+5000
+21 - wildcard, exact
+procedure p;
+Select p such that Calls*(_, "simple")
+f00d, colors, obj3ct, simple, t0pUp, procedure
+5000
+22 - wildcard, exact
+procedure p;
+Select p such that Calls*(_, "f00d")
+none
+5000
+23 - exact, wildcard
+procedure p;
+Select p such that Calls*("f00d", _)
+f00d, colors, obj3ct, simple, t0pUp, procedure
+5000
+24 - exact, wildcard
+procedure p;
+Select p such that Calls*("obj3ct", _)
+f00d, colors, obj3ct, simple, t0pUp, procedure
+5000
+25 - exact, wildcard
+procedure p;
+Select p such that Calls*("procedure", _)
+none
+5000
+26 - procedure not in simple
+procedure p;
+Select p such that Calls*("object", p)
+none
+5000
+27 - procedure not in simple
+procedure p;
+Select p such that Calls*(p, "colorss")
+none
+5000
+28 - both procedures not in simple
+procedure p;
+Select p such that Calls*("food", "colorss")
+none
+5000
+29 - synonym not in declaration
+procedure pr; assign a; stmt s; print p; read r;
+Select pr such that Calls*("obj3ct", proc)
+none
+5000
+30 - synonym is not procedure
+procedure pr; assign a; stmt s; call c;
+Select c such that Calls*(s, pr)
+none
+5000
+31 - synonym is not procedure
+procedure pr; assign a; stmt s; call c;
+Select c such that Calls*(pr, a)
+none
+5000
+32 - select nonexist synonym
+procedure p32423pp234p3;
+Select p234po342p such that Calls*("obj3ct", p32423pp234p3);
+none
+5000
+33 - reflex
+procedure pr;
+Select pr such that Calls*(pr, pr)
+none
+5000

@@ -1,0 +1,151 @@
+procedure f00d {
+1	read rice;
+2	noodle = chicken + noodle;
+3	call obj3ct;
+4	chickenRice = chicken + rice * chi11i;
+5	duck = 2;
+6	print chickenRice;
+7	if ((duck > chicken)    &&(0/(2/4)*6+noodle == 10%ramen)) then {
+8		ramen = noodle + sprING000Ni0n;
+9		onion = 0 + 4 + duck + 0 + 4;
+10		while (onion != sprING000Ni0n) {
+11			sprING000Ni0n = spring + 3*0;
+12			call colors;
+13			read sprING000Ni0n;
+14			noodle = sprING000Ni0n;
+		}
+15		sprING000Ni0n = sprING000Ni0n * sprING000Ni0n / spring;
+	} else {
+16		spring = ((((2)))) + (4 * 6 - ((2 + 2)/0))    % 3;
+17		if (rice != noodle) then {
+18			print chi11i;
+19			duck = chickenRice + ramen;
+		} else {
+20			call obj3ct;
+21			rice = chi11i * 4;
+		}
+	}
+22	chickenRice = duck + 4;
+23	print duck;
+24	call simple;
+}
+
+procedure colors {
+25	purple = red + blue;
+26	red1 = 2;
+27	red2 = 3;
+28	red = purple;
+29	if ((red1) == red2) then {
+30		spring = green;
+31		while ((!((!(green > yellow)) || (!(blue2 == blue2)))) && ((234 + (((456 * 789)))) <= (blue1 + green))) {
+32			if ((234 + 234 + ((234 - (789 - 789)))) != 456) then {
+33				red = red * red;
+			} else {
+34				read purple;
+			}
+35			red = blue;
+		}
+36		purple = purple;
+37		while ((red1 > blue3)&&((red2 < blue2) || (!(purple + spring != green1)))) {
+38			blue = blue - blue;
+39			blue = blue;
+		}
+	} else {
+40		purple = purple;
+	}
+41	yellow = green + red * blue1;
+42	black = 7 + blue;
+43	white = green2 - green2;
+44	while (yellow > 3) {
+45		if (green < 5) then {
+46			if (!(purple == 9)) then {
+47				while ((blue3 == blue2) || (red != ramen)) {
+48					blue2 = blue2 % red2;
+49					print purple;
+50					red2 = (((884-197)+(gold * 169))-((black-black)+3993   *black) + (((black)/(red))+((((75105820  %9749)/
+(3%21))*(red*(gold+black)))/gold)))%((red*red-yellow  %blue)+(blue*  93238-   926535897+926535897));
+					
+				}
+51				purple = purple;
+			} else {
+52				call simple;
+53				if (red != red1) then {
+54					grey = black / yellow;
+55					while (7 > 234) {
+56						while (456 * 2 == 789) {
+57							blue = purple - red;
+58							while ((!((((green) - 2)) >= ((456)*3) - 2)) && (((green1 < 234) || (green2 == green)) ||(!(3*4*(5 - 6) <= ((red1) * (((red2)))))))) {
+59								if (3 * 4 == 12) then{
+60									green = yellow;
+61									read green1;
+								} else {
+62									while (green1 == 1) {
+63										print rice;
+64										rice = 500;
+									}
+								}
+							}
+						}
+65						blue = ((yellow     +orange-314/15)*((blue)+((926535897+orange))))*((red*((red))-(yellow%   blue))+((blue*((93238)))-    926535897    +    926535897))-((46/26)+((green)-26433)*((gold + 8)+((3)-silver))%(((3 *gold)* (3279502))%((blue)*(red/88))));
+					}
+				} else {
+66					print black;
+67					read white;
+				}
+			}
+		} else {
+			
+68			call simple;
+69			black = black % white /grey;
+70			grey = purple + red * blue / (blue1 - blue2-blue3)%(red1 *red2);
+		}
+	}
+71	progline = progline;
+72	if ((procedure > statement) || ((((progline) == (statement))) && (print > read))) then {
+73		then = assign;
+74		print = call - black;
+75		progline = 5555;
+	} else {
+76		read read;
+77		print print;
+78		progline = statement * 100;
+	}
+79	assign = progline;
+}
+
+procedure obj3ct {
+80	sci333ors = 290918238;
+81	Kn17e = 424809 + w9113t;
+82	if (w9113t > 1) then {
+83		Kn17e = 1241242134;
+84		call colors;
+	} else {
+85		call t0pUp;
+	}
+86	sci333ors = Kn17e;
+}
+
+procedure simple {
+87	while (while != if) {
+88		print print;
+89		read read;
+90		call = assign + procedure;		
+	}
+91	yellow = 0;
+92	if (!(then - else == 3)) then {
+93		if = then + else;
+	} else {
+94		call procedure;
+95		Kn17e = else;
+	}
+}
+
+procedure t0pUp {
+96	money = money + earn - used;
+97	read Kn17e;
+98	call simple;
+}
+
+procedure procedure {
+99	print else;
+}

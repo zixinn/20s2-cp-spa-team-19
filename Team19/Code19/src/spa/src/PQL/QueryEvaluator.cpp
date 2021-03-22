@@ -4,38 +4,38 @@ QueryEvaluator::QueryEvaluator() {
 
 }
 
-// Evaluates the query and returns a list containing the answers to the query
 list<string> QueryEvaluator::evaluate(Query query) {
     this->declarations = query.getDeclarations();
     this->toSelect = query.getToSelect();
     this->clauses = query.getClauses();
     this->results.clear();
-    this->selectBool = true;
 
     list<string> emptyList;
 
     if (!query.getIsSyntacticallyValid()) {
-        
         return emptyList;
     }
     if (!query.getIsSemanticallyValid()) {
-        if (toSelect.size() == 1 && toSelect.at(0) == "BOOLEAN") { return list<string> {"FALSE"}; }
+        if (toSelect.size() == 1 && toSelect.at(0) == "BOOLEAN") {
+            return list<string> {"FALSE"};
+        }
         return emptyList;
     }
 
     for (Clause clause : this->clauses) {
         unordered_map<string, vector<int>> tempResults;
         if (!evaluateClause(clause, tempResults)) { // clause returns false
-            // as long as clause returns false and toSelect is BOOLEAN, break
-            if (toSelect.at(0) == "BOOLEAN") { 
-                this->selectBool = false;
-                break;
+            if (toSelect.size() == 1 && toSelect.at(0) == "BOOLEAN") {
+                return list<string> {"FALSE"};
             }
             return emptyList;
         }
         if (!tempResults.empty()) {
             join(tempResults);
-            if (results.empty()) {
+            if (results.empty() || results.begin()->second.empty()) {
+                if (toSelect.size() == 1 && toSelect.at(0) == "BOOLEAN") {
+                    return list<string> {"FALSE"};
+                }
                 return emptyList;
             }
         }
@@ -44,8 +44,6 @@ list<string> QueryEvaluator::evaluate(Query query) {
     return evaluateSynonymToSelect(this->toSelect);
 }
 
-// Evaluates the clause and stores the results for the clause in tempResults
-// Returns false if the clause is false or cannot be satisfied
 bool QueryEvaluator::evaluateClause(Clause clause, unordered_map<string, vector<int>>& tempResults) {
     string rel = clause.getRel();
     if (rel == "Follows") {
@@ -72,15 +70,13 @@ bool QueryEvaluator::evaluateClause(Clause clause, unordered_map<string, vector<
         return AffectsEvaluator::evaluate(this->declarations, clause, tempResults);
     } else if (rel == "Affects*") {
         return AffectsTEvaluator::evaluate(this->declarations, clause, tempResults);
-    }
-    else if (rel == "") { // with clause
+    } else if (rel == "") { // with clause
         return WithEvaluator::evaluate(this->declarations, clause, tempResults);
     } else { // pattern
         return PatternEvaluator::evaluate(this->declarations, clause, tempResults);
     }
 }
 
-// Joins table and results based on common synonyms (if any) and assigns the newResults to results
 void QueryEvaluator::join(unordered_map<string, vector<int>> table) {
     if (results.empty()) {
         results = table;
@@ -143,16 +139,6 @@ void QueryEvaluator::join(unordered_map<string, vector<int>> table) {
                     }
                 }
             }
-//            for (int i = 0; i < resultsNumRows; i++) {
-//                int val = results[commonSynonym].at(i); // value of commonSynonym in results at row i
-//                vector<int> v = table[commonSynonym];
-//                if (find(v.begin(), v.end(), val) != v.end()) {
-//                    // insert row i in results into newResults
-//                    for (pair<string, vector<int>> col : results) {
-//                        newResults[col.first].push_back(col.second.at(i));
-//                    }
-//                }
-//            }
 
         } else if (table.size() == 2) {
             string otherSynonym;
@@ -169,7 +155,7 @@ void QueryEvaluator::join(unordered_map<string, vector<int>> table) {
                 if (map.find(s) != map.end()) {
                     map.find(s)->second.push_back(i);
                 } else {
-                    map.insert({s, {i}});
+                    map.insert({ s, {i} });
                 }
             }
             for (int i = 0; i < resultsNumRows; i++) {
@@ -193,23 +179,6 @@ void QueryEvaluator::join(unordered_map<string, vector<int>> table) {
                     }
                 }
             }
-//            for (int i = 0; i < resultsNumRows; i++) {
-//                int val = results[commonSynonym].at(i); // value of commonSynonym in results at row i
-//                for (int j = 0; j < tableNumRows; j++) {
-//                    if (table[commonSynonym].at(j) == val) {
-//                        // insert row i in results into newResults
-//                        for (pair<string, vector<int>> col : results) {
-//                            newResults[col.first].push_back(col.second.at(i));
-//                        }
-//                        // insert row j in table into newResults
-//                        for (pair<string, vector<int>> col : table) {
-//                            if (col.first != commonSynonym) {
-//                                newResults[col.first].push_back(col.second.at(j));
-//                            }
-//                        }
-//                    }
-//                }
-//            }
         }
 
     } else if (commonSynonyms.size() == 2) {
@@ -233,39 +202,20 @@ void QueryEvaluator::join(unordered_map<string, vector<int>> table) {
                 }
             }
         }
-//        string commonSynonym1 = commonSynonyms.at(0);
-//        string commonSynonym2 = commonSynonyms.at(1);
-//        for (int i = 0; i < resultsNumRows; i++) {
-//            int val1 = results[commonSynonym1].at(i); // value of commonSynonym1 in results at row i
-//            int val2 = results[commonSynonym2].at(i); // value of commonSynonym2 in results at row i
-//            for (int j = 0; j < tableNumRows; j++) {
-//                if (table[commonSynonym1].at(j) == val1 && table[commonSynonym2].at(j) == val2) {
-//                    // insert row i in results into newResults
-//                    for (pair<string, vector<int>> col : results) {
-//                        newResults[col.first].push_back(col.second.at(i));
-//                    }
-//                    break;
-//                }
-//            }
-//        }
     }
 
     results = newResults;
 }
 
-// Evaluates the synonym to select using the results table and returns a list containing the answers
 list<string> QueryEvaluator::evaluateSynonymToSelect(vector<string> toSelect) {
     if (toSelect.size() == 1 && toSelect.at(0) == "BOOLEAN") {
-        string ans;
-        if (selectBool) { ans = "TRUE"; }
-        else { ans = "FALSE"; }
-        return list<string>{ans};
+        return list<string> {"TRUE"};
     }
 
     for (string synonym : toSelect) {
         string syn = synonym.substr(0, synonym.find('.'));
         if (results.find(syn) == results.end()) { // synonym not in results table
-            unordered_map<string, vector<int>> tempResults = {{syn, selectAll(this->declarations[syn])}};
+            unordered_map<string, vector<int>> tempResults = { {syn, selectAll(this->declarations[syn])} };
             join(tempResults);
         }
     }
