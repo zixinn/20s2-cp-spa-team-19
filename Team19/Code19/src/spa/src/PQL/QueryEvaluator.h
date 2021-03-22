@@ -39,8 +39,8 @@ private:
     unordered_map<string, string> declarations;
     // A vector of the synonyms to select
     vector<string> toSelect;
-    // A vector of the clauses in the query
-    vector<Clause> clauses;
+    // A vector of the groups of clauses in the query
+    vector<vector<Clause>> clauses;
     // Maps synonym declared to possible values for that synonym
     // Each column in the table is represented as an entry in the map
     unordered_map<string, vector<int>> results;

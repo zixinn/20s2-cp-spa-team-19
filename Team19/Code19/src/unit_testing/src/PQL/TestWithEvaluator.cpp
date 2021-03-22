@@ -70,7 +70,7 @@ void setupWith1() {
     PKB::procTable = new ProcTable();
     PKB::procTable->storeProcName("proc0"); // 0
     PKB::procTable->storeProcName("proc1"); // 1
-    
+
     PKB::varTable = new VarTable();
     PKB::varTable->storeVarName("proc1"); // 0
     PKB::varTable->storeVarName("proc0"); // 1
@@ -83,7 +83,7 @@ void setupWith1() {
 
 TEST_CASE("With evaluator int = int (positive case)") {
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ }, Clause("", vector<string>{"2", "2"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ }, Clause("", vector<string>{"2", "2"}, {}), tempResults1);
     unordered_map<string, vector<int>> expected1 = { };
     REQUIRE(b1);
     REQUIRE(tempResults1 == expected1);
@@ -91,7 +91,7 @@ TEST_CASE("With evaluator int = int (positive case)") {
 
 TEST_CASE("With evaluator int = int (negative case)") {
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ }, Clause("", vector<string>{"2", "3"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ }, Clause("", vector<string>{"2", "3"}, {}), tempResults1);
     unordered_map<string, vector<int>> expected1 = { };
     REQUIRE_FALSE(b1);
     REQUIRE(tempResults1 == expected1);
@@ -99,7 +99,7 @@ TEST_CASE("With evaluator int = int (negative case)") {
 
 TEST_CASE("With evaluator name = name (positive case)") {
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ }, Clause("", vector<string>{"\"blah\"", "\"blah\""}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ }, Clause("", vector<string>{"\"blah\"", "\"blah\""}, {}), tempResults1);
     unordered_map<string, vector<int>> expected1 = { };
     REQUIRE(b1);
     REQUIRE(tempResults1 == expected1);
@@ -107,7 +107,7 @@ TEST_CASE("With evaluator name = name (positive case)") {
 
 TEST_CASE("With evaluator name = name (negative case)") {
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ }, Clause("", vector<string>{"\"blah1\"", "\"blah\""}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ }, Clause("", vector<string>{"\"blah1\"", "\"blah\""}, {}), tempResults1);
     unordered_map<string, vector<int>> expected1 = { };
     REQUIRE_FALSE(b1);
     REQUIRE(tempResults1 == expected1);
@@ -116,7 +116,7 @@ TEST_CASE("With evaluator name = name (negative case)") {
 TEST_CASE("With Evaluator p1.procName = p2.procName") {
     setupWith();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"p1", PROCEDURE_}, {"p2", PROCEDURE_} }, Clause("", vector<string>{"p1.procName", "p2.procName"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"p1", PROCEDURE_}, {"p2", PROCEDURE_} }, Clause("", vector<string>{"p1.procName", "p2.procName"}, {"p1", "p2"}), tempResults1);
     set<pair<int, int>> actual1;
     for (int i = 0; i < tempResults1.begin()->second.size(); i++) {
         pair<int, int> p = make_pair(tempResults1["p1"].at(i), tempResults1["p2"].at(i));
@@ -131,7 +131,7 @@ TEST_CASE("With Evaluator p1.procName = p2.procName") {
 TEST_CASE("With Evaluator c1.procName = c2.procName") {
     setupWith();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"c1", CALL_}, {"c2", CALL_} }, Clause("", vector<string>{"c1.procName", "c2.procName"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"c1", CALL_}, {"c2", CALL_} }, Clause("", vector<string>{"c1.procName", "c2.procName"}, {"c1", "c2"}), tempResults1);
     set<pair<int, int>> actual1;
     for (int i = 0; i < tempResults1.begin()->second.size(); i++) {
         pair<int, int> p = make_pair(tempResults1["c1"].at(i), tempResults1["c2"].at(i));
@@ -146,7 +146,7 @@ TEST_CASE("With Evaluator c1.procName = c2.procName") {
 TEST_CASE("With Evaluator v1.varName = v2.varName") {
     setupWith();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"v1", VARIABLE_}, {"v2", VARIABLE_} }, Clause("", vector<string>{"v1.varName", "v2.varName"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"v1", VARIABLE_}, {"v2", VARIABLE_} }, Clause("", vector<string>{"v1.varName", "v2.varName"}, {"v1", "v2"}), tempResults1);
     set<pair<int, int>> actual1;
     for (int i = 0; i < tempResults1.begin()->second.size(); i++) {
         pair<int, int> p = make_pair(tempResults1["v1"].at(i), tempResults1["v2"].at(i));
@@ -161,7 +161,7 @@ TEST_CASE("With Evaluator v1.varName = v2.varName") {
 TEST_CASE("With Evaluator r1.varName = r2.varName") {
     setupWith();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"r1", READ_}, {"r2", READ_} }, Clause("", vector<string>{"r1.varName", "r2.varName"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"r1", READ_}, {"r2", READ_} }, Clause("", vector<string>{"r1.varName", "r2.varName"}, {"r1", "r2"}), tempResults1);
     set<pair<int, int>> actual1;
     for (int i = 0; i < tempResults1.begin()->second.size(); i++) {
         pair<int, int> p = make_pair(tempResults1["r1"].at(i), tempResults1["r2"].at(i));
@@ -176,7 +176,7 @@ TEST_CASE("With Evaluator r1.varName = r2.varName") {
 TEST_CASE("With Evaluator p1.varName = p2.varName") {
     setupWith();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"p1", PRINT_}, {"p2", PRINT_} }, Clause("", vector<string>{"p1.varName", "p2.varName"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"p1", PRINT_}, {"p2", PRINT_} }, Clause("", vector<string>{"p1.varName", "p2.varName"}, {"p1", "p2"}), tempResults1);
     set<pair<int, int>> actual1;
     for (int i = 0; i < tempResults1.begin()->second.size(); i++) {
         pair<int, int> p = make_pair(tempResults1["p1"].at(i), tempResults1["p2"].at(i));
@@ -191,7 +191,7 @@ TEST_CASE("With Evaluator p1.varName = p2.varName") {
 TEST_CASE("With Evaluator const1.value = const2.value") {
     setupWith();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"const1", CONSTANT_}, {"const2", CONSTANT_} }, Clause("", vector<string>{"const1.value", "const2.value"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"const1", CONSTANT_}, {"const2", CONSTANT_} }, Clause("", vector<string>{"const1.value", "const2.value"}, {"const1", "const2"}), tempResults1);
     set<pair<int, int>> actual1;
     for (int i = 0; i < tempResults1.begin()->second.size(); i++) {
         pair<int, int> p = make_pair(tempResults1["const1"].at(i), tempResults1["const2"].at(i));
@@ -206,14 +206,14 @@ TEST_CASE("With Evaluator const1.value = const2.value") {
 TEST_CASE("With Evaluator s1.stmt# = s2.stmt#") {
     setupWith();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"s1", STMT_}, {"s2", STMT_} }, Clause("", vector<string>{"s1.stmt#", "s2.stmt#"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"s1", STMT_}, {"s2", STMT_} }, Clause("", vector<string>{"s1.stmt#", "s2.stmt#"}, {"s1", "s2"}), tempResults1);
     set<pair<int, int>> actual1;
     for (int i = 0; i < tempResults1.begin()->second.size(); i++) {
         pair<int, int> p = make_pair(tempResults1["s1"].at(i), tempResults1["s2"].at(i));
         actual1.insert(p);
     }
-    set<pair<int, int>> expected1 = { {make_pair(1, 1), make_pair(2, 2), make_pair(3, 3), make_pair(4, 4), make_pair(5, 5), 
-        make_pair(6, 6), make_pair(7, 7), make_pair(8, 8), make_pair(9, 9), make_pair(10, 10), make_pair(11, 11), make_pair(12, 12), 
+    set<pair<int, int>> expected1 = { {make_pair(1, 1), make_pair(2, 2), make_pair(3, 3), make_pair(4, 4), make_pair(5, 5),
+        make_pair(6, 6), make_pair(7, 7), make_pair(8, 8), make_pair(9, 9), make_pair(10, 10), make_pair(11, 11), make_pair(12, 12),
         make_pair(13, 13), make_pair(14, 14)} };
     REQUIRE(b1);
     REQUIRE(tempResults1.size() == 2);
@@ -223,7 +223,7 @@ TEST_CASE("With Evaluator s1.stmt# = s2.stmt#") {
 TEST_CASE("With Evaluator r1.stmt# = r2.stmt#") {
     setupWith();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"r1", READ_}, {"r2", READ_} }, Clause("", vector<string>{"r1.stmt#", "r2.stmt#"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"r1", READ_}, {"r2", READ_} }, Clause("", vector<string>{"r1.stmt#", "r2.stmt#"}, {"r1", "r2"}), tempResults1);
     set<pair<int, int>> actual1;
     for (int i = 0; i < tempResults1.begin()->second.size(); i++) {
         pair<int, int> p = make_pair(tempResults1["r1"].at(i), tempResults1["r2"].at(i));
@@ -238,7 +238,7 @@ TEST_CASE("With Evaluator r1.stmt# = r2.stmt#") {
 TEST_CASE("With Evaluator p1.stmt# = p2.stmt#") {
     setupWith();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"p1", PRINT_}, {"p2", PRINT_} }, Clause("", vector<string>{"p1.stmt#", "p2.stmt#"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"p1", PRINT_}, {"p2", PRINT_} }, Clause("", vector<string>{"p1.stmt#", "p2.stmt#"}, {"p1", "p2"}), tempResults1);
     set<pair<int, int>> actual1;
     for (int i = 0; i < tempResults1.begin()->second.size(); i++) {
         pair<int, int> p = make_pair(tempResults1["p1"].at(i), tempResults1["p2"].at(i));
@@ -253,7 +253,7 @@ TEST_CASE("With Evaluator p1.stmt# = p2.stmt#") {
 TEST_CASE("With Evaluator c1.stmt# = c2.stmt#") {
     setupWith();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"c1", CALL_}, {"c2", CALL_} }, Clause("", vector<string>{"c1.stmt#", "c2.stmt#"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"c1", CALL_}, {"c2", CALL_} }, Clause("", vector<string>{"c1.stmt#", "c2.stmt#"}, {"c1", "c2"}), tempResults1);
     set<pair<int, int>> actual1;
     for (int i = 0; i < tempResults1.begin()->second.size(); i++) {
         pair<int, int> p = make_pair(tempResults1["c1"].at(i), tempResults1["c2"].at(i));
@@ -268,7 +268,7 @@ TEST_CASE("With Evaluator c1.stmt# = c2.stmt#") {
 TEST_CASE("With Evaluator w1.stmt# = w2.stmt#") {
     setupWith();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"w1", WHILE_}, {"w2", WHILE_} }, Clause("", vector<string>{"w1.stmt#", "w2.stmt#"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"w1", WHILE_}, {"w2", WHILE_} }, Clause("", vector<string>{"w1.stmt#", "w2.stmt#"}, {"w1", "w2"}), tempResults1);
     set<pair<int, int>> actual1;
     for (int i = 0; i < tempResults1.begin()->second.size(); i++) {
         pair<int, int> p = make_pair(tempResults1["w1"].at(i), tempResults1["w2"].at(i));
@@ -283,7 +283,7 @@ TEST_CASE("With Evaluator w1.stmt# = w2.stmt#") {
 TEST_CASE("With Evaluator ifs1.stmt# = ifs2.stmt#") {
     setupWith();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"ifs1", IF_}, {"ifs2", IF_} }, Clause("", vector<string>{"ifs1.stmt#", "ifs2.stmt#"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"ifs1", IF_}, {"ifs2", IF_} }, Clause("", vector<string>{"ifs1.stmt#", "ifs2.stmt#"}, {"ifs1", "ifs2"}), tempResults1);
     set<pair<int, int>> actual1;
     for (int i = 0; i < tempResults1.begin()->second.size(); i++) {
         pair<int, int> p = make_pair(tempResults1["ifs1"].at(i), tempResults1["ifs2"].at(i));
@@ -298,7 +298,7 @@ TEST_CASE("With Evaluator ifs1.stmt# = ifs2.stmt#") {
 TEST_CASE("With Evaluator a1.stmt# = a2.stmt#") {
     setupWith();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"a1", ASSIGN_}, {"a2", ASSIGN_} }, Clause("", vector<string>{"a1.stmt#", "a2.stmt#"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"a1", ASSIGN_}, {"a2", ASSIGN_} }, Clause("", vector<string>{"a1.stmt#", "a2.stmt#"}, {"a1", "a2"}), tempResults1);
     set<pair<int, int>> actual1;
     for (int i = 0; i < tempResults1.begin()->second.size(); i++) {
         pair<int, int> p = make_pair(tempResults1["a1"].at(i), tempResults1["a2"].at(i));
@@ -313,13 +313,13 @@ TEST_CASE("With Evaluator a1.stmt# = a2.stmt#") {
 TEST_CASE("With evaluator name = p.procName / p.procName = name (positive case)") {
     setupWith();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"p", PROCEDURE_} }, Clause("", vector<string>{"\"proc0\"", "p.procName"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"p", PROCEDURE_} }, Clause("", vector<string>{"\"proc0\"", "p.procName"}, {"p"}), tempResults1);
     unordered_map<string, vector<int>> expected1 = { {"p", vector<int>{0}} };
     REQUIRE(b1);
     REQUIRE(tempResults1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = WithEvaluator::evaluate({ {"p", PROCEDURE_} }, Clause("", vector<string>{"p.procName", "\"proc1\""}), tempResults2);
+    bool b2 = WithEvaluator::evaluate({ {"p", PROCEDURE_} }, Clause("", vector<string>{"p.procName", "\"proc1\""}, {"p"}), tempResults2);
     unordered_map<string, vector<int>> expected2 = { {"p", vector<int>{1}} };
     REQUIRE(b2);
     REQUIRE(tempResults2 == expected2);
@@ -328,13 +328,13 @@ TEST_CASE("With evaluator name = p.procName / p.procName = name (positive case)"
 TEST_CASE("With evaluator name = p.procName / p.procName = name (negative case)") {
     setupWith();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"p", PROCEDURE_} }, Clause("", vector<string>{"\"proc00\"", "p.procName"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"p", PROCEDURE_} }, Clause("", vector<string>{"\"proc00\"", "p.procName"}, {"p"}), tempResults1);
     unordered_map<string, vector<int>> expected1 = { };
     REQUIRE_FALSE(b1);
     REQUIRE(tempResults1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = WithEvaluator::evaluate({ {"p", PROCEDURE_} }, Clause("", vector<string>{"p.procName", "\"proc5\""}), tempResults2);
+    bool b2 = WithEvaluator::evaluate({ {"p", PROCEDURE_} }, Clause("", vector<string>{"p.procName", "\"proc5\""}, {"p"}), tempResults2);
     unordered_map<string, vector<int>> expected2 = { };
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
@@ -343,13 +343,13 @@ TEST_CASE("With evaluator name = p.procName / p.procName = name (negative case)"
 TEST_CASE("With evaluator name = c.procName / c.procName = name (positive case)") {
     setupWith();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"c", CALL_} }, Clause("", vector<string>{"\"proc2\"", "c.procName"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"c", CALL_} }, Clause("", vector<string>{"\"proc2\"", "c.procName"}, {"c"}), tempResults1);
     unordered_map<string, vector<int>> expected1 = { {"c", vector<int>{9}} };
     REQUIRE(b1);
     REQUIRE(tempResults1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = WithEvaluator::evaluate({ {"c", CALL_} }, Clause("", vector<string>{"c.procName", "\"proc1\""}), tempResults2);
+    bool b2 = WithEvaluator::evaluate({ {"c", CALL_} }, Clause("", vector<string>{"c.procName", "\"proc1\""}, {"c"}), tempResults2);
     unordered_map<string, vector<int>> expected2 = { {"c", vector<int>{4}} };
     REQUIRE(b2);
     REQUIRE(tempResults2 == expected2);
@@ -358,13 +358,13 @@ TEST_CASE("With evaluator name = c.procName / c.procName = name (positive case)"
 TEST_CASE("With evaluator name = c.procName / c.procName = name (negative case)") {
     setupWith();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"c", CALL_} }, Clause("", vector<string>{"\"proc0\"", "c.procName"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"c", CALL_} }, Clause("", vector<string>{"\"proc0\"", "c.procName"}, {"c"}), tempResults1);
     unordered_map<string, vector<int>> expected1 = { };
     REQUIRE_FALSE(b1);
     REQUIRE(tempResults1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = WithEvaluator::evaluate({ {"c", CALL_} }, Clause("", vector<string>{"c.procName", "\"proc6\""}), tempResults2);
+    bool b2 = WithEvaluator::evaluate({ {"c", CALL_} }, Clause("", vector<string>{"c.procName", "\"proc6\""}, {"c"}), tempResults2);
     unordered_map<string, vector<int>> expected2 = { };
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
@@ -373,13 +373,13 @@ TEST_CASE("With evaluator name = c.procName / c.procName = name (negative case)"
 TEST_CASE("With evaluator name = v.varName / v.varName = name (positive case)") {
     setupWith();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"v", VARIABLE_} }, Clause("", vector<string>{"\"urgh\"", "v.varName"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"v", VARIABLE_} }, Clause("", vector<string>{"\"urgh\"", "v.varName"}, {"v"}), tempResults1);
     unordered_map<string, vector<int>> expected1 = { {"v", vector<int>{3}} };
     REQUIRE(b1);
     REQUIRE(tempResults1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = WithEvaluator::evaluate({ {"v", VARIABLE_} }, Clause("", vector<string>{"v.varName", "\"v\""}), tempResults2);
+    bool b2 = WithEvaluator::evaluate({ {"v", VARIABLE_} }, Clause("", vector<string>{"v.varName", "\"v\""}, {"v"}), tempResults2);
     unordered_map<string, vector<int>> expected2 = { {"v", vector<int>{1}} };
     REQUIRE(b2);
     REQUIRE(tempResults2 == expected2);
@@ -388,13 +388,13 @@ TEST_CASE("With evaluator name = v.varName / v.varName = name (positive case)") 
 TEST_CASE("With evaluator name = v.varName / v.varName = name (negative case)") {
     setupWith();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"v", VARIABLE_} }, Clause("", vector<string>{"\"urgh2\"", "v.varName"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"v", VARIABLE_} }, Clause("", vector<string>{"\"urgh2\"", "v.varName"}, {"v"}), tempResults1);
     unordered_map<string, vector<int>> expected1 = { };
     REQUIRE_FALSE(b1);
     REQUIRE(tempResults1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = WithEvaluator::evaluate({ {"v", VARIABLE_} }, Clause("", vector<string>{"v.varName", "\"urgh2\""}), tempResults2);
+    bool b2 = WithEvaluator::evaluate({ {"v", VARIABLE_} }, Clause("", vector<string>{"v.varName", "\"urgh2\""}, {"v"}), tempResults2);
     unordered_map<string, vector<int>> expected2 = { };
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
@@ -403,13 +403,13 @@ TEST_CASE("With evaluator name = v.varName / v.varName = name (negative case)") 
 TEST_CASE("With evaluator name = r.varName / r.varName = name (positive case)") {
     setupWith();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"r", READ_} }, Clause("", vector<string>{"\"x\"", "r.varName"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"r", READ_} }, Clause("", vector<string>{"\"x\"", "r.varName"}, {"r"}), tempResults1);
     unordered_map<string, vector<int>> expected1 = { {"r", vector<int>{8, 13}} };
     REQUIRE(b1);
     REQUIRE(tempResults1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = WithEvaluator::evaluate({ {"r", READ_} }, Clause("", vector<string>{"r.varName", "\"x\""}), tempResults2);
+    bool b2 = WithEvaluator::evaluate({ {"r", READ_} }, Clause("", vector<string>{"r.varName", "\"x\""}, {"r"}), tempResults2);
     unordered_map<string, vector<int>> expected2 = { {"r", vector<int>{8, 13}} };
     REQUIRE(b2);
     REQUIRE(tempResults2 == expected2);
@@ -418,13 +418,13 @@ TEST_CASE("With evaluator name = r.varName / r.varName = name (positive case)") 
 TEST_CASE("With evaluator name = r.varName / r.varName = name (negative case)") {
     setupWith();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"r", READ_} }, Clause("", vector<string>{"\"p00\"", "r.varName"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"r", READ_} }, Clause("", vector<string>{"\"p00\"", "r.varName"}, {"r"}), tempResults1);
     unordered_map<string, vector<int>> expected1 = { };
     REQUIRE_FALSE(b1);
     REQUIRE(tempResults1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = WithEvaluator::evaluate({ {"r", READ_} }, Clause("", vector<string>{"r.varName", "\"cenX\""}), tempResults2);
+    bool b2 = WithEvaluator::evaluate({ {"r", READ_} }, Clause("", vector<string>{"r.varName", "\"cenX\""}, {"r"}), tempResults2);
     unordered_map<string, vector<int>> expected2 = { };
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
@@ -433,13 +433,13 @@ TEST_CASE("With evaluator name = r.varName / r.varName = name (negative case)") 
 TEST_CASE("With evaluator name = pn.varName / pn.varName = name (positive case)") {
     setupWith();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"pn", PRINT_} }, Clause("", vector<string>{"\"v\"", "pn.varName"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"pn", PRINT_} }, Clause("", vector<string>{"\"v\"", "pn.varName"}, {"pn"}), tempResults1);
     unordered_map<string, vector<int>> expected1 = { {"pn", vector<int>{11}} };
     REQUIRE(b1);
     REQUIRE(tempResults1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = WithEvaluator::evaluate({ {"pn", PRINT_} }, Clause("", vector<string>{"pn.varName", "\"v\""}), tempResults2);
+    bool b2 = WithEvaluator::evaluate({ {"pn", PRINT_} }, Clause("", vector<string>{"pn.varName", "\"v\""}, {"pn"}), tempResults2);
     unordered_map<string, vector<int>> expected2 = { {"pn", vector<int>{11}} };
     REQUIRE(b2);
     REQUIRE(tempResults2 == expected2);
@@ -448,13 +448,13 @@ TEST_CASE("With evaluator name = pn.varName / pn.varName = name (positive case)"
 TEST_CASE("With evaluator name = pn.varName / pn.varName = name (negative case)") {
     setupWith();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"pn", PRINT_} }, Clause("", vector<string>{"\"x\"", "pn.varName"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"pn", PRINT_} }, Clause("", vector<string>{"\"x\"", "pn.varName"}, {"pn"}), tempResults1);
     unordered_map<string, vector<int>> expected1 = { };
     REQUIRE_FALSE(b1);
     REQUIRE(tempResults1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = WithEvaluator::evaluate({ {"pn", PRINT_} }, Clause("", vector<string>{"pn.varName", "\"x\""}), tempResults2);
+    bool b2 = WithEvaluator::evaluate({ {"pn", PRINT_} }, Clause("", vector<string>{"pn.varName", "\"x\""}, {"pn"}), tempResults2);
     unordered_map<string, vector<int>> expected2 = { };
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
@@ -463,7 +463,7 @@ TEST_CASE("With evaluator name = pn.varName / pn.varName = name (negative case)"
 TEST_CASE("With evaluator p.procName = c.procName / c.procName = p.procName (positive case)") {
     setupWith();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"p", PROCEDURE_}, {"c", CALL_} }, Clause("", vector<string>{"p.procName", "c.procName"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"p", PROCEDURE_}, {"c", CALL_} }, Clause("", vector<string>{"p.procName", "c.procName"}, {"p", "c"}), tempResults1);
     set<pair<int, int>> actual1;
     for (int i = 0; i < tempResults1.begin()->second.size(); i++) {
         pair<int, int> p = make_pair(tempResults1["p"].at(i), tempResults1["c"].at(i));
@@ -475,7 +475,7 @@ TEST_CASE("With evaluator p.procName = c.procName / c.procName = p.procName (pos
     REQUIRE(actual1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = WithEvaluator::evaluate({ {"p", PROCEDURE_}, {"c", CALL_} }, Clause("", vector<string>{"c.procName", "p.procName"}), tempResults2);
+    bool b2 = WithEvaluator::evaluate({ {"p", PROCEDURE_}, {"c", CALL_} }, Clause("", vector<string>{"c.procName", "p.procName"}, {"c", "p"}), tempResults2);
     set<pair<int, int>> actual2;
     for (int i = 0; i < tempResults2.begin()->second.size(); i++) {
         pair<int, int> p = make_pair(tempResults2["c"].at(i), tempResults2["p"].at(i));
@@ -492,13 +492,13 @@ TEST_CASE("With evaluator p.procName = c.procName / c.procName = p.procName (neg
     PKB::calls = new Calls();
 
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"p", PROCEDURE_}, {"c", CALL_} }, Clause("", vector<string>{"p.procName", "c.procName"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"p", PROCEDURE_}, {"c", CALL_} }, Clause("", vector<string>{"p.procName", "c.procName"}, {"p", "c"}), tempResults1);
     unordered_map<string, vector<int>> expected1 = { };
     REQUIRE_FALSE(b1);
     REQUIRE(tempResults1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = WithEvaluator::evaluate({ {"p", PROCEDURE_}, {"c", CALL_} }, Clause("", vector<string>{"c.procName", "p.procName"}), tempResults2);
+    bool b2 = WithEvaluator::evaluate({ {"p", PROCEDURE_}, {"c", CALL_} }, Clause("", vector<string>{"c.procName", "p.procName"}, {"c", "p"}), tempResults2);
     unordered_map<string, vector<int>> expected2 = { };
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
@@ -507,7 +507,7 @@ TEST_CASE("With evaluator p.procName = c.procName / c.procName = p.procName (neg
 TEST_CASE("With evaluator p.procName = v.varName / v.varName = p.procName (positive case)") {
     setupWith1();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"p", PROCEDURE_}, {"v", VARIABLE_} }, Clause("", vector<string>{"p.procName", "v.varName"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"p", PROCEDURE_}, {"v", VARIABLE_} }, Clause("", vector<string>{"p.procName", "v.varName"}, {"p", "v"}), tempResults1);
     set<pair<int, int>> actual1;
     for (int i = 0; i < tempResults1.begin()->second.size(); i++) {
         pair<int, int> p = make_pair(tempResults1["p"].at(i), tempResults1["v"].at(i));
@@ -519,7 +519,7 @@ TEST_CASE("With evaluator p.procName = v.varName / v.varName = p.procName (posit
     REQUIRE(actual1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = WithEvaluator::evaluate({ {"p", PROCEDURE_}, {"v", VARIABLE_} }, Clause("", vector<string>{"v.varName", "p.procName"}), tempResults2);
+    bool b2 = WithEvaluator::evaluate({ {"p", PROCEDURE_}, {"v", VARIABLE_} }, Clause("", vector<string>{"v.varName", "p.procName"}, {"v", "p"}), tempResults2);
     set<pair<int, int>> actual2;
     for (int i = 0; i < tempResults2.begin()->second.size(); i++) {
         pair<int, int> p = make_pair(tempResults2["v"].at(i), tempResults2["p"].at(i));
@@ -534,13 +534,13 @@ TEST_CASE("With evaluator p.procName = v.varName / v.varName = p.procName (posit
 TEST_CASE("With evaluator p.procName = v.varName / v.varName = p.procName (negative case)") {
     setupWith();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"p", PROCEDURE_}, {"v", VARIABLE_} }, Clause("", vector<string>{"p.procName", "v.varName"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"p", PROCEDURE_}, {"v", VARIABLE_} }, Clause("", vector<string>{"p.procName", "v.varName"}, {"p", "v"}), tempResults1);
     unordered_map<string, vector<int>> expected1 = { };
     REQUIRE_FALSE(b1);
     REQUIRE(tempResults1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = WithEvaluator::evaluate({ {"p", PROCEDURE_}, {"v", VARIABLE_} }, Clause("", vector<string>{"v.varName", "p.procName"}), tempResults2);
+    bool b2 = WithEvaluator::evaluate({ {"p", PROCEDURE_}, {"v", VARIABLE_} }, Clause("", vector<string>{"v.varName", "p.procName"}, {"v", "p"}), tempResults2);
     unordered_map<string, vector<int>> expected2 = { };
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
@@ -549,7 +549,7 @@ TEST_CASE("With evaluator p.procName = v.varName / v.varName = p.procName (negat
 TEST_CASE("With evaluator p.procName = r.varName / r.varName = p.procName (positive case)") {
     setupWith1();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"p", PROCEDURE_}, {"r", READ_} }, Clause("", vector<string>{"p.procName", "r.varName"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"p", PROCEDURE_}, {"r", READ_} }, Clause("", vector<string>{"p.procName", "r.varName"}, {"p", "r"}), tempResults1);
     set<pair<int, int>> actual1;
     for (int i = 0; i < tempResults1.begin()->second.size(); i++) {
         pair<int, int> p = make_pair(tempResults1["p"].at(i), tempResults1["r"].at(i));
@@ -561,7 +561,7 @@ TEST_CASE("With evaluator p.procName = r.varName / r.varName = p.procName (posit
     REQUIRE(actual1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = WithEvaluator::evaluate({ {"p", PROCEDURE_}, {"r", READ_} }, Clause("", vector<string>{"r.varName", "p.procName"}), tempResults2);
+    bool b2 = WithEvaluator::evaluate({ {"p", PROCEDURE_}, {"r", READ_} }, Clause("", vector<string>{"r.varName", "p.procName"}, {"r", "p"}), tempResults2);
     set<pair<int, int>> actual2;
     for (int i = 0; i < tempResults2.begin()->second.size(); i++) {
         pair<int, int> p = make_pair(tempResults2["r"].at(i), tempResults2["p"].at(i));
@@ -576,13 +576,13 @@ TEST_CASE("With evaluator p.procName = r.varName / r.varName = p.procName (posit
 TEST_CASE("With evaluator p.procName = r.varName / r.varName = p.procName (negative case)") {
     setupWith();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"p", PROCEDURE_}, {"r", READ_} }, Clause("", vector<string>{"p.procName", "r.varName"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"p", PROCEDURE_}, {"r", READ_} }, Clause("", vector<string>{"p.procName", "r.varName"}, {"p", "r"}), tempResults1);
     unordered_map<string, vector<int>> expected1 = { };
     REQUIRE_FALSE(b1);
     REQUIRE(tempResults1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = WithEvaluator::evaluate({ {"p", PROCEDURE_}, {"r", READ_} }, Clause("", vector<string>{"r.varName", "p.procName"}), tempResults2);
+    bool b2 = WithEvaluator::evaluate({ {"p", PROCEDURE_}, {"r", READ_} }, Clause("", vector<string>{"r.varName", "p.procName"}, {"r", "p"}), tempResults2);
     unordered_map<string, vector<int>> expected2 = { };
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
@@ -591,7 +591,7 @@ TEST_CASE("With evaluator p.procName = r.varName / r.varName = p.procName (negat
 TEST_CASE("With evaluator p.procName = pn.varName / pn.varName = p.procName (positive case)") {
     setupWith1();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"p", PROCEDURE_}, {"pn", PRINT_} }, Clause("", vector<string>{"p.procName", "pn.varName"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"p", PROCEDURE_}, {"pn", PRINT_} }, Clause("", vector<string>{"p.procName", "pn.varName"}, {"p", "pn"}), tempResults1);
     set<pair<int, int>> actual1;
     for (int i = 0; i < tempResults1.begin()->second.size(); i++) {
         pair<int, int> p = make_pair(tempResults1["p"].at(i), tempResults1["pn"].at(i));
@@ -603,7 +603,7 @@ TEST_CASE("With evaluator p.procName = pn.varName / pn.varName = p.procName (pos
     REQUIRE(actual1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = WithEvaluator::evaluate({ {"p", PROCEDURE_}, {"pn", PRINT_} }, Clause("", vector<string>{"pn.varName", "p.procName"}), tempResults2);
+    bool b2 = WithEvaluator::evaluate({ {"p", PROCEDURE_}, {"pn", PRINT_} }, Clause("", vector<string>{"pn.varName", "p.procName"}, {"pn", "p"}), tempResults2);
     set<pair<int, int>> actual2;
     for (int i = 0; i < tempResults2.begin()->second.size(); i++) {
         pair<int, int> p = make_pair(tempResults2["pn"].at(i), tempResults2["p"].at(i));
@@ -618,13 +618,13 @@ TEST_CASE("With evaluator p.procName = pn.varName / pn.varName = p.procName (pos
 TEST_CASE("With evaluator p.procName = pn.varName / pn.varName = p.procName (negative case)") {
     setupWith();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"p", PROCEDURE_}, {"pn", PRINT_} }, Clause("", vector<string>{"p.procName", "pn.varName"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"p", PROCEDURE_}, {"pn", PRINT_} }, Clause("", vector<string>{"p.procName", "pn.varName"}, {"p", "pn"}), tempResults1);
     unordered_map<string, vector<int>> expected1 = { };
     REQUIRE_FALSE(b1);
     REQUIRE(tempResults1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = WithEvaluator::evaluate({ {"p", PROCEDURE_}, {"pn", PRINT_} }, Clause("", vector<string>{"pn.varName", "p.procName"}), tempResults2);
+    bool b2 = WithEvaluator::evaluate({ {"p", PROCEDURE_}, {"pn", PRINT_} }, Clause("", vector<string>{"pn.varName", "p.procName"}, {"pn", "p"}), tempResults2);
     unordered_map<string, vector<int>> expected2 = { };
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
@@ -633,7 +633,7 @@ TEST_CASE("With evaluator p.procName = pn.varName / pn.varName = p.procName (neg
 TEST_CASE("With evaluator c.procName = v.varName / v.varName = c.procName (positive case)") {
     setupWith1();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"c", CALL_}, {"v", VARIABLE_} }, Clause("", vector<string>{"c.procName", "v.varName"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"c", CALL_}, {"v", VARIABLE_} }, Clause("", vector<string>{"c.procName", "v.varName"}, {"c", "v"}), tempResults1);
     set<pair<int, int>> actual1;
     for (int i = 0; i < tempResults1.begin()->second.size(); i++) {
         pair<int, int> p = make_pair(tempResults1["c"].at(i), tempResults1["v"].at(i));
@@ -645,7 +645,7 @@ TEST_CASE("With evaluator c.procName = v.varName / v.varName = c.procName (posit
     REQUIRE(actual1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = WithEvaluator::evaluate({ {"c", CALL_}, {"v", VARIABLE_} }, Clause("", vector<string>{"v.varName", "c.procName"}), tempResults2);
+    bool b2 = WithEvaluator::evaluate({ {"c", CALL_}, {"v", VARIABLE_} }, Clause("", vector<string>{"v.varName", "c.procName"}, {"v", "c"}), tempResults2);
     set<pair<int, int>> actual2;
     for (int i = 0; i < tempResults2.begin()->second.size(); i++) {
         pair<int, int> p = make_pair(tempResults2["v"].at(i), tempResults2["c"].at(i));
@@ -660,13 +660,13 @@ TEST_CASE("With evaluator c.procName = v.varName / v.varName = c.procName (posit
 TEST_CASE("With evaluator c.procName = v.varName / v.varName = c.procName (negative case)") {
     setupWith();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"c", CALL_}, {"v", VARIABLE_} }, Clause("", vector<string>{"c.procName", "v.varName"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"c", CALL_}, {"v", VARIABLE_} }, Clause("", vector<string>{"c.procName", "v.varName"}, {"c", "v"}), tempResults1);
     unordered_map<string, vector<int>> expected1 = { };
     REQUIRE_FALSE(b1);
     REQUIRE(tempResults1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = WithEvaluator::evaluate({ {"c", CALL_}, {"v", VARIABLE_} }, Clause("", vector<string>{"v.varName", "c.procName"}), tempResults2);
+    bool b2 = WithEvaluator::evaluate({ {"c", CALL_}, {"v", VARIABLE_} }, Clause("", vector<string>{"v.varName", "c.procName"}, {"v", "c"}), tempResults2);
     unordered_map<string, vector<int>> expected2 = { };
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
@@ -675,7 +675,7 @@ TEST_CASE("With evaluator c.procName = v.varName / v.varName = c.procName (negat
 TEST_CASE("With evaluator c.procName = r.varName / r.varName = c.procName (positive case)") {
     setupWith1();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"c", CALL_}, {"r", READ_} }, Clause("", vector<string>{"c.procName", "r.varName"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"c", CALL_}, {"r", READ_} }, Clause("", vector<string>{"c.procName", "r.varName"}, {"c", "r"}), tempResults1);
     set<pair<int, int>> actual1;
     for (int i = 0; i < tempResults1.begin()->second.size(); i++) {
         pair<int, int> p = make_pair(tempResults1["c"].at(i), tempResults1["r"].at(i));
@@ -687,7 +687,7 @@ TEST_CASE("With evaluator c.procName = r.varName / r.varName = c.procName (posit
     REQUIRE(actual1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = WithEvaluator::evaluate({ {"c", CALL_}, {"r", READ_} }, Clause("", vector<string>{"r.varName", "c.procName"}), tempResults2);
+    bool b2 = WithEvaluator::evaluate({ {"c", CALL_}, {"r", READ_} }, Clause("", vector<string>{"r.varName", "c.procName"}, {"r", "c"}), tempResults2);
     set<pair<int, int>> actual2;
     for (int i = 0; i < tempResults2.begin()->second.size(); i++) {
         pair<int, int> p = make_pair(tempResults2["r"].at(i), tempResults2["c"].at(i));
@@ -702,13 +702,13 @@ TEST_CASE("With evaluator c.procName = r.varName / r.varName = c.procName (posit
 TEST_CASE("With evaluator c.procName = r.varName / r.varName = c.procName (negative case)") {
     setupWith();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"c", CALL_}, {"r", READ_} }, Clause("", vector<string>{"c.procName", "r.varName"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"c", CALL_}, {"r", READ_} }, Clause("", vector<string>{"c.procName", "r.varName"}, {"c", "r"}), tempResults1);
     unordered_map<string, vector<int>> expected1 = { };
     REQUIRE_FALSE(b1);
     REQUIRE(tempResults1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = WithEvaluator::evaluate({ {"c", CALL_}, {"r", READ_} }, Clause("", vector<string>{"r.varName", "c.procName"}), tempResults2);
+    bool b2 = WithEvaluator::evaluate({ {"c", CALL_}, {"r", READ_} }, Clause("", vector<string>{"r.varName", "c.procName"}, {"r", "c"}), tempResults2);
     unordered_map<string, vector<int>> expected2 = { };
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
@@ -717,7 +717,7 @@ TEST_CASE("With evaluator c.procName = r.varName / r.varName = c.procName (negat
 TEST_CASE("With evaluator c.procName = pn.varName / pn.varName = c.procName (positive case)") {
     setupWith1();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"c", CALL_}, {"pn", PRINT_} }, Clause("", vector<string>{"c.procName", "pn.varName"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"c", CALL_}, {"pn", PRINT_} }, Clause("", vector<string>{"c.procName", "pn.varName"}, {"c", "pn"}), tempResults1);
     set<pair<int, int>> actual1;
     for (int i = 0; i < tempResults1.begin()->second.size(); i++) {
         pair<int, int> p = make_pair(tempResults1["c"].at(i), tempResults1["pn"].at(i));
@@ -729,7 +729,7 @@ TEST_CASE("With evaluator c.procName = pn.varName / pn.varName = c.procName (pos
     REQUIRE(actual1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = WithEvaluator::evaluate({ {"c", CALL_}, {"pn", PRINT_} }, Clause("", vector<string>{"pn.varName", "c.procName"}), tempResults2);
+    bool b2 = WithEvaluator::evaluate({ {"c", CALL_}, {"pn", PRINT_} }, Clause("", vector<string>{"pn.varName", "c.procName"}, {"pn", "c"}), tempResults2);
     set<pair<int, int>> actual2;
     for (int i = 0; i < tempResults2.begin()->second.size(); i++) {
         pair<int, int> p = make_pair(tempResults2["pn"].at(i), tempResults2["c"].at(i));
@@ -744,13 +744,13 @@ TEST_CASE("With evaluator c.procName = pn.varName / pn.varName = c.procName (pos
 TEST_CASE("With evaluator c.procName = pn.varName / pn.varName = c.procName (negative case)") {
     setupWith();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"c", CALL_}, {"pn", PRINT_} }, Clause("", vector<string>{"c.procName", "pn.varName"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"c", CALL_}, {"pn", PRINT_} }, Clause("", vector<string>{"c.procName", "pn.varName"}, {"c", "pn"}), tempResults1);
     unordered_map<string, vector<int>> expected1 = { };
     REQUIRE_FALSE(b1);
     REQUIRE(tempResults1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = WithEvaluator::evaluate({ {"c", CALL_}, {"pn", PRINT_} }, Clause("", vector<string>{"pn.varName", "c.procName"}), tempResults2);
+    bool b2 = WithEvaluator::evaluate({ {"c", CALL_}, {"pn", PRINT_} }, Clause("", vector<string>{"pn.varName", "c.procName"}, {"pn", "c"}), tempResults2);
     unordered_map<string, vector<int>> expected2 = { };
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
@@ -759,7 +759,7 @@ TEST_CASE("With evaluator c.procName = pn.varName / pn.varName = c.procName (neg
 TEST_CASE("With evaluator v.varName = r.varName / r.varName = v.varName (positive case)") {
     setupWith1();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"v", VARIABLE_}, {"r", READ_} }, Clause("", vector<string>{"v.varName", "r.varName"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"v", VARIABLE_}, {"r", READ_} }, Clause("", vector<string>{"v.varName", "r.varName"}, {"v", "r"}), tempResults1);
     set<pair<int, int>> actual1;
     for (int i = 0; i < tempResults1.begin()->second.size(); i++) {
         pair<int, int> p = make_pair(tempResults1["v"].at(i), tempResults1["r"].at(i));
@@ -771,7 +771,7 @@ TEST_CASE("With evaluator v.varName = r.varName / r.varName = v.varName (positiv
     REQUIRE(actual1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = WithEvaluator::evaluate({ {"v", VARIABLE_}, {"r", READ_} }, Clause("", vector<string>{"r.varName", "v.varName"}), tempResults2);
+    bool b2 = WithEvaluator::evaluate({ {"v", VARIABLE_}, {"r", READ_} }, Clause("", vector<string>{"r.varName", "v.varName"}, {"r", "v"}), tempResults2);
     set<pair<int, int>> actual2;
     for (int i = 0; i < tempResults2.begin()->second.size(); i++) {
         pair<int, int> p = make_pair(tempResults2["r"].at(i), tempResults2["v"].at(i));
@@ -786,13 +786,13 @@ TEST_CASE("With evaluator v.varName = r.varName / r.varName = v.varName (positiv
 TEST_CASE("With evaluator v.varName = r.varName / r.varName = v.varName (negative case)") {
     PKB::stmtTable = new StmtTable();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"v", VARIABLE_}, {"r", READ_} }, Clause("", vector<string>{"v.varName", "r.varName"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"v", VARIABLE_}, {"r", READ_} }, Clause("", vector<string>{"v.varName", "r.varName"}, {"v", "r"}), tempResults1);
     unordered_map<string, vector<int>> expected1 = { };
     REQUIRE_FALSE(b1);
     REQUIRE(tempResults1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = WithEvaluator::evaluate({ {"v", VARIABLE_}, {"r", READ_} }, Clause("", vector<string>{"r.varName", "v.varName"}), tempResults2);
+    bool b2 = WithEvaluator::evaluate({ {"v", VARIABLE_}, {"r", READ_} }, Clause("", vector<string>{"r.varName", "v.varName"}, {"r", "v"}), tempResults2);
     unordered_map<string, vector<int>> expected2 = { };
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
@@ -801,7 +801,7 @@ TEST_CASE("With evaluator v.varName = r.varName / r.varName = v.varName (negativ
 TEST_CASE("With evaluator v.varName = pn.varName / pn.varName = v.varName (positive case)") {
     setupWith1();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"pn", PRINT_}, {"v", VARIABLE_} }, Clause("", vector<string>{"pn.varName", "v.varName"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"pn", PRINT_}, {"v", VARIABLE_} }, Clause("", vector<string>{"pn.varName", "v.varName"}, {"pn", "v"}), tempResults1);
     set<pair<int, int>> actual1;
     for (int i = 0; i < tempResults1.begin()->second.size(); i++) {
         pair<int, int> p = make_pair(tempResults1["pn"].at(i), tempResults1["v"].at(i));
@@ -813,7 +813,7 @@ TEST_CASE("With evaluator v.varName = pn.varName / pn.varName = v.varName (posit
     REQUIRE(actual1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = WithEvaluator::evaluate({ {"pn", PRINT_}, {"v", VARIABLE_} }, Clause("", vector<string>{"v.varName", "pn.varName"}), tempResults2);
+    bool b2 = WithEvaluator::evaluate({ {"pn", PRINT_}, {"v", VARIABLE_} }, Clause("", vector<string>{"v.varName", "pn.varName"}, {"v", "pn"}), tempResults2);
     set<pair<int, int>> actual2;
     for (int i = 0; i < tempResults2.begin()->second.size(); i++) {
         pair<int, int> p = make_pair(tempResults2["v"].at(i), tempResults2["pn"].at(i));
@@ -828,13 +828,13 @@ TEST_CASE("With evaluator v.varName = pn.varName / pn.varName = v.varName (posit
 TEST_CASE("With evaluator v.varName = pn.varName / pn.varName = v.varName (negative case)") {
     PKB::stmtTable = new StmtTable();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"pn", PRINT_}, {"v", VARIABLE_} }, Clause("", vector<string>{"pn.varName", "v.varName"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"pn", PRINT_}, {"v", VARIABLE_} }, Clause("", vector<string>{"pn.varName", "v.varName"}, {"pn", "v"}), tempResults1);
     unordered_map<string, vector<int>> expected1 = { };
     REQUIRE_FALSE(b1);
     REQUIRE(tempResults1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = WithEvaluator::evaluate({ {"pn", PRINT_}, {"v", VARIABLE_} }, Clause("", vector<string>{"v.varName", "pn.varName"}), tempResults2);
+    bool b2 = WithEvaluator::evaluate({ {"pn", PRINT_}, {"v", VARIABLE_} }, Clause("", vector<string>{"v.varName", "pn.varName"}, {"v", "pn"}), tempResults2);
     unordered_map<string, vector<int>> expected2 = { };
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
@@ -843,7 +843,7 @@ TEST_CASE("With evaluator v.varName = pn.varName / pn.varName = v.varName (negat
 TEST_CASE("With evaluator r.varName = pn.varName / pn.varName = r.varName (positive case)") {
     setupWith1();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"pn", PRINT_}, {"r", READ_} }, Clause("", vector<string>{"pn.varName", "r.varName"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"pn", PRINT_}, {"r", READ_} }, Clause("", vector<string>{"pn.varName", "r.varName"}, {"pn", "r"}), tempResults1);
     set<pair<int, int>> actual1;
     for (int i = 0; i < tempResults1.begin()->second.size(); i++) {
         pair<int, int> p = make_pair(tempResults1["pn"].at(i), tempResults1["r"].at(i));
@@ -855,7 +855,7 @@ TEST_CASE("With evaluator r.varName = pn.varName / pn.varName = r.varName (posit
     REQUIRE(actual1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = WithEvaluator::evaluate({ {"pn", PRINT_}, {"r", READ_} }, Clause("", vector<string>{"r.varName", "pn.varName"}), tempResults2);
+    bool b2 = WithEvaluator::evaluate({ {"pn", PRINT_}, {"r", READ_} }, Clause("", vector<string>{"r.varName", "pn.varName"}, {"r", "pn"}), tempResults2);
     set<pair<int, int>> actual2;
     for (int i = 0; i < tempResults2.begin()->second.size(); i++) {
         pair<int, int> p = make_pair(tempResults2["r"].at(i), tempResults2["pn"].at(i));
@@ -870,13 +870,13 @@ TEST_CASE("With evaluator r.varName = pn.varName / pn.varName = r.varName (posit
 TEST_CASE("With evaluator r.varName = pn.varName / pn.varName = r.varName (negative case)") {
     PKB::stmtTable = new StmtTable();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"pn", PRINT_}, {"r", READ_} }, Clause("", vector<string>{"pn.varName", "r.varName"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"pn", PRINT_}, {"r", READ_} }, Clause("", vector<string>{"pn.varName", "r.varName"}, {"pn", "r"}), tempResults1);
     unordered_map<string, vector<int>> expected1 = { };
     REQUIRE_FALSE(b1);
     REQUIRE(tempResults1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = WithEvaluator::evaluate({ {"pn", PRINT_}, {"r", READ_} }, Clause("", vector<string>{"r.varName", "pn.varName"}), tempResults2);
+    bool b2 = WithEvaluator::evaluate({ {"pn", PRINT_}, {"r", READ_} }, Clause("", vector<string>{"r.varName", "pn.varName"}, {"r", "pn"}), tempResults2);
     unordered_map<string, vector<int>> expected2 = { };
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
@@ -886,19 +886,19 @@ TEST_CASE("With evaluator constant.value = integer") {
     setupWith();
 
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"c", CONSTANT_} }, Clause("", vector<string>{"c.value", "2"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"c", CONSTANT_} }, Clause("", vector<string>{"c.value", "2"}, {"c"}), tempResults1);
     unordered_map<string, vector<int>> expected1 = { {"c", vector<int>{2}} };
     REQUIRE(b1);
     REQUIRE(tempResults1 == expected1);
 
     unordered_map<string, vector<int>> tempResults3;
-    bool b3 = WithEvaluator::evaluate({ {"c", CONSTANT_} }, Clause("", vector<string>{"2", "c.value"}), tempResults3);
+    bool b3 = WithEvaluator::evaluate({ {"c", CONSTANT_} }, Clause("", vector<string>{"2", "c.value"}, {"c"}), tempResults3);
     unordered_map<string, vector<int>> expected3 = { {"c", vector<int>{2}} };
     REQUIRE(b3);
     REQUIRE(tempResults3 == expected3);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = WithEvaluator::evaluate({ {"c", CONSTANT_} }, Clause("", vector<string>{"c.value", "5"}), tempResults2);
+    bool b2 = WithEvaluator::evaluate({ {"c", CONSTANT_} }, Clause("", vector<string>{"c.value", "5"}, {"c"}), tempResults2);
     unordered_map<string, vector<int>> expected2 = { };
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
@@ -909,7 +909,7 @@ TEST_CASE("With evaluator constant.value = s.stmt# (positive case)") {
     // case 1: no stmt num 290 in pkb
     setupWith();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"c", CONSTANT_}, {"s", STMT_} }, Clause("", vector<string>{"c.value", "s.stmt#"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"c", CONSTANT_}, {"s", STMT_} }, Clause("", vector<string>{"c.value", "s.stmt#"}, {"c", "s"}), tempResults1);
     set<pair<int, int>> actual1;
     for (int i = 0; i < tempResults1.begin()->second.size(); i++) {
         pair<int, int> p = make_pair(tempResults1["c"].at(i), tempResults1["s"].at(i));
@@ -930,7 +930,7 @@ TEST_CASE("With evaluator constant.value = s.stmt# (positive case)") {
     PKB::constTable->storeConst("290");
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = WithEvaluator::evaluate({ {"c", CONSTANT_}, {"s", STMT_} }, Clause("", vector<string>{"c.value", "s.stmt#"}), tempResults2);
+    bool b2 = WithEvaluator::evaluate({ {"c", CONSTANT_}, {"s", STMT_} }, Clause("", vector<string>{"c.value", "s.stmt#"}, {"c", "s"}), tempResults2);
     set<pair<int, int>> actual2;
     for (int i = 0; i < tempResults2.begin()->second.size(); i++) {
         pair<int, int> p = make_pair(tempResults2["c"].at(i), tempResults2["s"].at(i));
@@ -951,7 +951,7 @@ TEST_CASE("With evaluator constant.value = s.stmt# (negative case)") {
     PKB::constTable->storeConst("2");
     PKB::constTable->storeConst("290");
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"c", CONSTANT_}, {"s", STMT_} }, Clause("", vector<string>{"c.value", "s.stmt#"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"c", CONSTANT_}, {"s", STMT_} }, Clause("", vector<string>{"c.value", "s.stmt#"}, {"c", "s"}), tempResults1);
     unordered_map<string, vector<int>> expected1 = { };
     REQUIRE_FALSE(b1);
     REQUIRE(tempResults1 == expected1);
@@ -961,19 +961,19 @@ TEST_CASE("With evaluator t.stmt# = integer / integer = t.stmt#") {
     setupWith();
 
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"w", WHILE_} }, Clause("", vector<string>{"w.stmt#", "5"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"w", WHILE_} }, Clause("", vector<string>{"w.stmt#", "5"}, {"w"}), tempResults1);
     unordered_map<string, vector<int>> expected1 = { {"w", vector<int>{5}} };
     REQUIRE(b1);
     REQUIRE(tempResults1 == expected1);
 
     unordered_map<string, vector<int>> tempResults3;
-    bool b3 = WithEvaluator::evaluate({ {"ifs", IF_} }, Clause("", vector<string>{"10", "ifs.stmt#"}), tempResults3);
+    bool b3 = WithEvaluator::evaluate({ {"ifs", IF_} }, Clause("", vector<string>{"10", "ifs.stmt#"}, {"ifs"}), tempResults3);
     unordered_map<string, vector<int>> expected3 = { {"ifs", vector<int>{10}} };
     REQUIRE(b3);
     REQUIRE(tempResults3 == expected3);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = WithEvaluator::evaluate({ {"pn", PRINT_} }, Clause("", vector<string>{"pn.stmt#", "1"}), tempResults2);
+    bool b2 = WithEvaluator::evaluate({ {"pn", PRINT_} }, Clause("", vector<string>{"pn.stmt#", "1"}, {"pn"}), tempResults2);
     unordered_map<string, vector<int>> expected2 = { };
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
@@ -982,7 +982,7 @@ TEST_CASE("With evaluator t.stmt# = integer / integer = t.stmt#") {
 TEST_CASE("With evaluator t.stmt# = prog_line / prog_line = t.stmt# (positive case)") {
     setupWith();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"c", CALL_}, {"n", PROGLINE_} }, Clause("", vector<string>{"c.stmt#", "n"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"c", CALL_}, {"n", PROGLINE_} }, Clause("", vector<string>{"c.stmt#", "n"}, {"c", "n"}), tempResults1);
     set<pair<int, int>> actual1;
     for (int i = 0; i < tempResults1.begin()->second.size(); i++) {
         pair<int, int> p = make_pair(tempResults1["c"].at(i), tempResults1["n"].at(i));
@@ -994,7 +994,7 @@ TEST_CASE("With evaluator t.stmt# = prog_line / prog_line = t.stmt# (positive ca
     REQUIRE(actual1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = WithEvaluator::evaluate({ {"n", PROGLINE_}, {"r", READ_} }, Clause("", vector<string>{"n", "r.stmt#"}), tempResults2);
+    bool b2 = WithEvaluator::evaluate({ {"n", PROGLINE_}, {"r", READ_} }, Clause("", vector<string>{"n", "r.stmt#"}, {"n", "r"}), tempResults2);
     set<pair<int, int>> actual2;
     for (int i = 0; i < tempResults2.begin()->second.size(); i++) {
         pair<int, int> p = make_pair(tempResults2["n"].at(i), tempResults2["r"].at(i));
@@ -1009,13 +1009,13 @@ TEST_CASE("With evaluator t.stmt# = prog_line / prog_line = t.stmt# (positive ca
 TEST_CASE("With evaluator integer = prog_line / prog_line = integer (negative case)") {
     setupWith();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"n", PROGLINE_} }, Clause("", vector<string>{"15", "n"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"n", PROGLINE_} }, Clause("", vector<string>{"15", "n"}, {"n"}), tempResults1);
     unordered_map<string, vector<int>> expected1 = { };
     REQUIRE_FALSE(b1);
     REQUIRE(tempResults1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = WithEvaluator::evaluate({ {"n", PROGLINE_}, {"r", READ_} }, Clause("", vector<string>{"n", "15"}), tempResults2);
+    bool b2 = WithEvaluator::evaluate({ {"n", PROGLINE_}, {"r", READ_} }, Clause("", vector<string>{"n", "15"}, {"n"}), tempResults2);
     unordered_map<string, vector<int>> expected2 = { };
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
@@ -1024,7 +1024,7 @@ TEST_CASE("With evaluator integer = prog_line / prog_line = integer (negative ca
 TEST_CASE("With evaluator s.stmt# = t.stmt# / t.stmt# = s.stmt# (positive case)") {
     setupWith();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"s", STMT_}, {"w", WHILE_} }, Clause("", vector<string>{"s.stmt#", "w.stmt#"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"s", STMT_}, {"w", WHILE_} }, Clause("", vector<string>{"s.stmt#", "w.stmt#"}, {"s", "w"}), tempResults1);
     set<pair<int, int>> actual1;
     for (int i = 0; i < tempResults1.begin()->second.size(); i++) {
         pair<int, int> p = make_pair(tempResults1["s"].at(i), tempResults1["w"].at(i));
@@ -1036,7 +1036,7 @@ TEST_CASE("With evaluator s.stmt# = t.stmt# / t.stmt# = s.stmt# (positive case)"
     REQUIRE(actual1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = WithEvaluator::evaluate({ {"s", STMT_}, {"ifs", IF_} }, Clause("", vector<string>{"ifs.stmt#", "s.stmt#"}), tempResults2);
+    bool b2 = WithEvaluator::evaluate({ {"s", STMT_}, {"ifs", IF_} }, Clause("", vector<string>{"ifs.stmt#", "s.stmt#"}, {"ifs", "s"}), tempResults2);
     set<pair<int, int>> actual2;
     for (int i = 0; i < tempResults2.begin()->second.size(); i++) {
         pair<int, int> p = make_pair(tempResults2["ifs"].at(i), tempResults2["s"].at(i));
@@ -1051,13 +1051,13 @@ TEST_CASE("With evaluator s.stmt# = t.stmt# / t.stmt# = s.stmt# (positive case)"
 TEST_CASE("With evaluator s.stmt# = t.stmt# / t.stmt# = s.stmt# (negative case)") {
     PKB::stmtTable = new StmtTable();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = WithEvaluator::evaluate({ {"s", STMT_}, {"w", WHILE_} }, Clause("", vector<string>{"s.stmt#", "w.stmt#"}), tempResults1);
+    bool b1 = WithEvaluator::evaluate({ {"s", STMT_}, {"w", WHILE_} }, Clause("", vector<string>{"s.stmt#", "w.stmt#"}, {"s", "w"}), tempResults1);
     unordered_map<string, vector<int>> expected1 = { };
     REQUIRE_FALSE(b1);
     REQUIRE(tempResults1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = WithEvaluator::evaluate({ {"s", STMT_}, {"ifs", IF_} }, Clause("", vector<string>{"ifs.stmt#", "s.stmt#"}), tempResults2);
+    bool b2 = WithEvaluator::evaluate({ {"s", STMT_}, {"ifs", IF_} }, Clause("", vector<string>{"ifs.stmt#", "s.stmt#"}, {"ifs", "s"}), tempResults2);
     unordered_map<string, vector<int>> expected2 = { };
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);

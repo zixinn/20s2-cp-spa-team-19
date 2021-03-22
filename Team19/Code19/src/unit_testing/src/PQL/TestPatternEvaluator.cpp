@@ -168,7 +168,7 @@ TEST_CASE("PatternEvaluator evaluate stmt Name Underscore") {
 
 	// a("x", _)
 	unordered_map<string, vector<int>> tempResults1;
-	bool result1 = PatternEvaluator::evaluate({ {"a", VARIABLE_} }, Clause("a", vector<string>{"\"x\"", "_"}), tempResults1);
+	bool result1 = PatternEvaluator::evaluate({ {"a", VARIABLE_} }, Clause("a", vector<string>{"\"x\"", "_"}, {"a"}), tempResults1);
 	unordered_set<int> actual1(tempResults1["a"].begin(), tempResults1["a"].end());
 	unordered_set<int> expected1{ 1, 7 };
 	REQUIRE(actual1 == expected1);
@@ -176,7 +176,7 @@ TEST_CASE("PatternEvaluator evaluate stmt Name Underscore") {
 	
 	// a("y", _)
 	unordered_map<string, vector<int>> tempResults2;
-	bool result2 = PatternEvaluator::evaluate({ {"a", VARIABLE_} }, Clause("a", vector<string>{"\"y\"", "_"}), tempResults2);
+	bool result2 = PatternEvaluator::evaluate({ {"a", VARIABLE_} }, Clause("a", vector<string>{"\"y\"", "_"}, {"a"}), tempResults2);
 	unordered_set<int> actual2(tempResults2["a"].begin(), tempResults2["a"].end());
 	unordered_set<int> expected2{};
 	REQUIRE(actual2 == expected2);
@@ -188,7 +188,7 @@ TEST_CASE("PatternEvaluator evaluate stmt Name Name") {
 
 	// a("x", "y")
 	unordered_map<string, vector<int>> tempResults2;
-	bool result2 = PatternEvaluator::evaluate({ {"a", VARIABLE_} }, Clause("a", vector<string>{"\"x\"", "\"y\""}), tempResults2);
+	bool result2 = PatternEvaluator::evaluate({ {"a", VARIABLE_} }, Clause("a", vector<string>{"\"x\"", "\"y\""}, {"a"}), tempResults2);
 	unordered_set<int> actual2(tempResults2["a"].begin(), tempResults2["a"].end());
 	unordered_set<int> expected2{ 7 };
 	REQUIRE(actual2 == expected2);
@@ -196,7 +196,7 @@ TEST_CASE("PatternEvaluator evaluate stmt Name Name") {
 
 	// a("x", "z")
 	unordered_map<string, vector<int>> tempResults1;
-	bool result1 = PatternEvaluator::evaluate({ {"a", VARIABLE_} }, Clause("a", vector<string>{"\"x\"", "\"z\""}), tempResults1);
+	bool result1 = PatternEvaluator::evaluate({ {"a", VARIABLE_} }, Clause("a", vector<string>{"\"x\"", "\"z\""}, {"a"}), tempResults1);
 	unordered_set<int> actual1(tempResults1["a"].begin(), tempResults1["a"].end());
 	unordered_set<int> expected1{};
 	REQUIRE(actual1 == expected1);
@@ -209,7 +209,7 @@ TEST_CASE("PatternEvaluator evaluate stmt Name Expression") {
 
 	// a("urgh", "3 * ((2 - 4) / w)")
 	unordered_map<string, vector<int>> tempResults2;
-	bool result2 = PatternEvaluator::evaluate({ {"a", VARIABLE_} }, Clause("a", vector<string>{"\"urgh\"", "\"3 * ((2 - 4) / w)\""}), tempResults2);
+	bool result2 = PatternEvaluator::evaluate({ {"a", VARIABLE_} }, Clause("a", vector<string>{"\"urgh\"", "\"3 * ((2 - 4) / w)\""}, {"a"}), tempResults2);
 	unordered_set<int> actual2(tempResults2["a"].begin(), tempResults2["a"].end());
 	unordered_set<int> expected2{ 3 };
 	REQUIRE(actual2 == expected2);
@@ -217,7 +217,7 @@ TEST_CASE("PatternEvaluator evaluate stmt Name Expression") {
 
 	// a("x", "x * y")
 	unordered_map<string, vector<int>> tempResults1;
-	bool result1 = PatternEvaluator::evaluate({ {"a", VARIABLE_} }, Clause("a", vector<string>{"\"x\"", "\"x * y\""}), tempResults1);
+	bool result1 = PatternEvaluator::evaluate({ {"a", VARIABLE_} }, Clause("a", vector<string>{"\"x\"", "\"x * y\""}, {"a"}), tempResults1);
 	unordered_set<int> actual1(tempResults1["a"].begin(), tempResults1["a"].end());
 	unordered_set<int> expected1{};
 	REQUIRE(actual1 == expected1);
@@ -229,7 +229,7 @@ TEST_CASE("PatternEvaluator evaluate stmt Name ExpressionWithUnderscore") {
 
 	// a("urgh", _"3 * ((2 - 4) / w)"_)
 	unordered_map<string, vector<int>> tempResults2;
-	bool result2 = PatternEvaluator::evaluate({ {"a", VARIABLE_} }, Clause("a", vector<string>{"\"urgh\"", "_\"3 * ((2 - 4) / w)\"_"}), tempResults2);
+	bool result2 = PatternEvaluator::evaluate({ {"a", VARIABLE_} }, Clause("a", vector<string>{"\"urgh\"", "_\"3 * ((2 - 4) / w)\"_"}, {"a"}), tempResults2);
 	unordered_set<int> actual2(tempResults2["a"].begin(), tempResults2["a"].end());
 	unordered_set<int> expected2{ 3 }; 
 	REQUIRE(actual2 == expected2);
@@ -238,7 +238,7 @@ TEST_CASE("PatternEvaluator evaluate stmt Name ExpressionWithUnderscore") {
 	
 	// a("cenX", _"2 - 4"_)
 	unordered_map<string, vector<int>> tempResults3;
-	bool result3 = PatternEvaluator::evaluate({ {"a", VARIABLE_} }, Clause("a", vector<string>{"\"cenX\"", "_\"2 - 4\"_"}), tempResults3);
+	bool result3 = PatternEvaluator::evaluate({ {"a", VARIABLE_} }, Clause("a", vector<string>{"\"cenX\"", "_\"2 - 4\"_"}, {"a"}), tempResults3);
 	unordered_set<int> actual3(tempResults3["a"].begin(), tempResults3["a"].end());
 	unordered_set<int> expected3{ 2 };
 	REQUIRE(actual3 == expected3);
@@ -246,7 +246,7 @@ TEST_CASE("PatternEvaluator evaluate stmt Name ExpressionWithUnderscore") {
 
 	// a("t", _"y"_)
 	unordered_map<string, vector<int>> tempResults4;
-	bool result4 = PatternEvaluator::evaluate({ {"a", VARIABLE_} }, Clause("a", vector<string>{"\"t\"", "_\"y\"_"}), tempResults4);
+	bool result4 = PatternEvaluator::evaluate({ {"a", VARIABLE_} }, Clause("a", vector<string>{"\"t\"", "_\"y\"_"}, {"a"}), tempResults4);
 	unordered_set<int> actual4(tempResults4["a"].begin(), tempResults4["a"].end());
 	unordered_set<int> expected4{ 21 };
 	REQUIRE(actual4 == expected4);
@@ -254,7 +254,7 @@ TEST_CASE("PatternEvaluator evaluate stmt Name ExpressionWithUnderscore") {
 
 	// a("x", "v + z * t")
 	unordered_map<string, vector<int>> tempResults1;
-	bool result1 = PatternEvaluator::evaluate({ {"a", VARIABLE_} }, Clause("a", vector<string>{"\"x\"", "\"v + z * t\""}), tempResults1);
+	bool result1 = PatternEvaluator::evaluate({ {"a", VARIABLE_} }, Clause("a", vector<string>{"\"x\"", "\"v + z * t\""}, {"a"}), tempResults1);
 	unordered_set<int> actual1(tempResults1["a"].begin(), tempResults1["a"].end());
 	unordered_set<int> expected1{};
 	REQUIRE(actual1 == expected1);
@@ -266,7 +266,7 @@ TEST_CASE("PatternEvaluator evaluate Variable Underscore (assignment stmts exist
 
 	// a(x, _)
 	unordered_map<string, vector<int>> tempResults1;
-	bool result1 = PatternEvaluator::evaluate({ {"a", VARIABLE_}, {"x", VARIABLE_} }, Clause("a", vector<string>{"x", "_"}), tempResults1);
+	bool result1 = PatternEvaluator::evaluate({ {"a", VARIABLE_}, {"x", VARIABLE_} }, Clause("a", vector<string>{"x", "_"}, {"a", "x"}), tempResults1);
 	unordered_set<int> actual1(tempResults1["a"].begin(), tempResults1["a"].end());
 	unordered_set<int> actual2(tempResults1["x"].begin(), tempResults1["x"].end());
 	unordered_set<int> expected1{ 1, 2, 3, 7, 21, 22};
@@ -280,7 +280,7 @@ TEST_CASE("PatternEvaluator evaluate Variable Underscore (assignment stmts does 
 	DesignExtractor::signalReset();
 	// a(x, _)
 	unordered_map<string, vector<int>> tempResults1;
-	bool result1 = PatternEvaluator::evaluate({ {"a", VARIABLE_}, {"x", VARIABLE_} }, Clause("a", vector<string>{"x", "_"}), tempResults1);
+	bool result1 = PatternEvaluator::evaluate({ {"a", VARIABLE_}, {"x", VARIABLE_} }, Clause("a", vector<string>{"x", "_"}, {"a", "x"}), tempResults1);
 	unordered_set<int> actual1(tempResults1["a"].begin(), tempResults1["a"].end());
 	unordered_set<int> actual2(tempResults1["x"].begin(), tempResults1["x"].end());
 	unordered_set<int> expected1{};
@@ -295,7 +295,7 @@ TEST_CASE("PatternEvaluator evaluate stmt Variable Name") {
 
 	// a(v, "y")
 	unordered_map<string, vector<int>> tempResults1;
-	bool result1 = PatternEvaluator::evaluate({ {"a", VARIABLE_}, {"v", VARIABLE_} }, Clause("a", vector<string>{"v", "\"y\""}), tempResults1);
+	bool result1 = PatternEvaluator::evaluate({ {"a", VARIABLE_}, {"v", VARIABLE_} }, Clause("a", vector<string>{"v", "\"y\""}, {"a", "v"}), tempResults1);
 	unordered_set<int> actual1(tempResults1["a"].begin(), tempResults1["a"].end());
 	unordered_set<int> actual2(tempResults1["v"].begin(), tempResults1["v"].end());
 	unordered_set<int> expected1{ 7, 21 };
@@ -306,7 +306,7 @@ TEST_CASE("PatternEvaluator evaluate stmt Variable Name") {
 	
 	// a(v, "v")
 	unordered_map<string, vector<int>> tempResults2;
-	bool result2 = PatternEvaluator::evaluate({ {"a", VARIABLE_}, {"v", VARIABLE_} }, Clause("a", vector<string>{"v", "\"v\""}), tempResults2);
+	bool result2 = PatternEvaluator::evaluate({ {"a", VARIABLE_}, {"v", VARIABLE_} }, Clause("a", vector<string>{"v", "\"v\""}, {"a", "v"}), tempResults2);
 	unordered_set<int> actual3(tempResults2["a"].begin(), tempResults2["a"].end());
 	unordered_set<int> actual4(tempResults2["v"].begin(), tempResults2["v"].end());
 	unordered_set<int> expected3{};
@@ -321,7 +321,7 @@ TEST_CASE("PatternEvaluator evaluate stmt Variable expression") {
 
 	// a(v, "3 * 4 + (2 - 4)")
 	unordered_map<string, vector<int>> tempResults1;
-	bool result1 = PatternEvaluator::evaluate({ {"a", VARIABLE_}, {"v", VARIABLE_} }, Clause("a", vector<string>{"v", "\"3 * 4 + (2 - 4)\""}), tempResults1);
+	bool result1 = PatternEvaluator::evaluate({ {"a", VARIABLE_}, {"v", VARIABLE_} }, Clause("a", vector<string>{"v", "\"3 * 4 + (2 - 4)\""}, {"a", "v"}), tempResults1);
 	unordered_set<int> actual1(tempResults1["a"].begin(), tempResults1["a"].end());
 	unordered_set<int> actual2(tempResults1["v"].begin(), tempResults1["v"].end());
 	unordered_set<int> expected1{ 2 };
@@ -332,7 +332,7 @@ TEST_CASE("PatternEvaluator evaluate stmt Variable expression") {
 
 	// a(v, "3 * 4")
 	unordered_map<string, vector<int>> tempResults2;
-	bool result2 = PatternEvaluator::evaluate({ {"a", VARIABLE_}, {"v", VARIABLE_} }, Clause("a", vector<string>{"v", "\"3 * 4\""}), tempResults2);
+	bool result2 = PatternEvaluator::evaluate({ {"a", VARIABLE_}, {"v", VARIABLE_} }, Clause("a", vector<string>{"v", "\"3 * 4\""}, {"a", "v"}), tempResults2);
 	unordered_set<int> actual3(tempResults2["a"].begin(), tempResults2["a"].end());
 	unordered_set<int> actual4(tempResults2["v"].begin(), tempResults2["v"].end());
 	unordered_set<int> expected3{};
@@ -347,7 +347,7 @@ TEST_CASE("PatternEvaluator evaluate stmt Variable ExpressionWithUnderscore") {
 
 	// a(v, _"3 * 4 + (2 - 4)"_)
 	unordered_map<string, vector<int>> tempResults1;
-	bool result1 = PatternEvaluator::evaluate({ {"a", VARIABLE_}, {"v", VARIABLE_} }, Clause("a", vector<string>{"v", "_\"3 * 4 + (2 - 4)\"_"}), tempResults1);
+	bool result1 = PatternEvaluator::evaluate({ {"a", VARIABLE_}, {"v", VARIABLE_} }, Clause("a", vector<string>{"v", "_\"3 * 4 + (2 - 4)\"_"}, {"a", "v"}), tempResults1);
 	unordered_set<int> actual1(tempResults1["a"].begin(), tempResults1["a"].end());
 	unordered_set<int> actual2(tempResults1["v"].begin(), tempResults1["v"].end());
 	unordered_set<int> expected1{ 2 };
@@ -358,7 +358,7 @@ TEST_CASE("PatternEvaluator evaluate stmt Variable ExpressionWithUnderscore") {
 
 	// a(v, _"3 * 4"_)
 	unordered_map<string, vector<int>> tempResults2;
-	bool result2 = PatternEvaluator::evaluate({ {"a", VARIABLE_}, {"v", VARIABLE_} }, Clause("a", vector<string>{"v", "_\"3 * 4\"_"}), tempResults2);
+	bool result2 = PatternEvaluator::evaluate({ {"a", VARIABLE_}, {"v", VARIABLE_} }, Clause("a", vector<string>{"v", "_\"3 * 4\"_"}, {"a", "v"}), tempResults2);
 	unordered_set<int> actual3(tempResults2["a"].begin(), tempResults2["a"].end());
 	unordered_set<int> actual4(tempResults2["v"].begin(), tempResults2["v"].end());
 	unordered_set<int> expected3{ 2 };
@@ -369,7 +369,7 @@ TEST_CASE("PatternEvaluator evaluate stmt Variable ExpressionWithUnderscore") {
 
 	// a(v, _"4 / w"_)
 	unordered_map<string, vector<int>> tempResults3;
-	bool result3 = PatternEvaluator::evaluate({ {"a", VARIABLE_}, {"v", VARIABLE_} }, Clause("a", vector<string>{"v", "_\"4 / w\"_"}), tempResults3);
+	bool result3 = PatternEvaluator::evaluate({ {"a", VARIABLE_}, {"v", VARIABLE_} }, Clause("a", vector<string>{"v", "_\"4 / w\"_"}, {"a", "v"}), tempResults3);
 	unordered_set<int> actual5(tempResults3["a"].begin(), tempResults3["a"].end());
 	unordered_set<int> actual6(tempResults3["v"].begin(), tempResults3["v"].end());
 	unordered_set<int> expected5{};
@@ -380,7 +380,7 @@ TEST_CASE("PatternEvaluator evaluate stmt Variable ExpressionWithUnderscore") {
 
 	// a(v, _"y"_)
 	unordered_map<string, vector<int>> tempResults4;
-	bool result5 = PatternEvaluator::evaluate({ {"a", VARIABLE_},  {"v", VARIABLE_}}, Clause("a", vector<string>{"v", "_\"y\"_"}), tempResults4);
+	bool result5 = PatternEvaluator::evaluate({ {"a", VARIABLE_},  {"v", VARIABLE_}}, Clause("a", vector<string>{"v", "_\"y\"_"}, {"a", "v"}), tempResults4);
 	unordered_set<int> actual7(tempResults4["a"].begin(), tempResults4["a"].end());
 	unordered_set<int> actual8(tempResults4["v"].begin(), tempResults4["v"].end());
 	unordered_set<int> expected7{ 1, 7, 21 };
@@ -395,7 +395,7 @@ TEST_CASE("PatternEvaluator evaluate stmt Underscore Underscore (assignment stmt
 
 	// a(_, _)
 	unordered_map<string, vector<int>> tempResults1;
-	bool result1 = PatternEvaluator::evaluate({ {"a", VARIABLE_}}, Clause("a", vector<string>{"_", "_"}), tempResults1);
+	bool result1 = PatternEvaluator::evaluate({ {"a", VARIABLE_}}, Clause("a", vector<string>{"_", "_"}, {"a"}), tempResults1);
 	unordered_set<int> actual1(tempResults1["a"].begin(), tempResults1["a"].end());
 	unordered_set<int> expected1{ 1, 2, 3, 7, 21, 22};
 	REQUIRE(actual1 == expected1);
@@ -407,7 +407,7 @@ TEST_CASE("PatternEvaluator evaluate stmt Underscore Underscore (assignment stmt
 
 	// a(_, _)
 	unordered_map<string, vector<int>> tempResults1;
-	bool result1 = PatternEvaluator::evaluate({ {"a", VARIABLE_} }, Clause("a", vector<string>{"_", "_"}), tempResults1);
+	bool result1 = PatternEvaluator::evaluate({ {"a", VARIABLE_} }, Clause("a", vector<string>{"_", "_"}, {"a"}), tempResults1);
 	unordered_set<int> actual1(tempResults1["a"].begin(), tempResults1["a"].end());
 	unordered_set<int> expected1{};
 	REQUIRE(actual1 == expected1);
@@ -419,7 +419,7 @@ TEST_CASE("PatternEvaluator evaluate stmt Underscore Name") {
 
 	// a(_, "y")
 	unordered_map<string, vector<int>> tempResults2;
-	bool result2 = PatternEvaluator::evaluate({ {"a", VARIABLE_} }, Clause("a", vector<string>{"_", "\"y\""}), tempResults2);
+	bool result2 = PatternEvaluator::evaluate({ {"a", VARIABLE_} }, Clause("a", vector<string>{"_", "\"y\""}, {"a"}), tempResults2);
 	unordered_set<int> actual2(tempResults2["a"].begin(), tempResults2["a"].end());
 	unordered_set<int> expected2{ 7, 21 };
 	REQUIRE(actual2 == expected2);
@@ -427,7 +427,7 @@ TEST_CASE("PatternEvaluator evaluate stmt Underscore Name") {
 
 	// a(_, "z")
 	unordered_map<string, vector<int>> tempResults1;
-	bool result1 = PatternEvaluator::evaluate({ {"a", VARIABLE_} }, Clause("a", vector<string>{"_", "\"z\""}), tempResults1);
+	bool result1 = PatternEvaluator::evaluate({ {"a", VARIABLE_} }, Clause("a", vector<string>{"_", "\"z\""}, {"a"}), tempResults1);
 	unordered_set<int> actual1(tempResults1["a"].begin(), tempResults1["a"].end());
 	unordered_set<int> expected1{};
 	REQUIRE(actual1 == expected1);
@@ -439,7 +439,7 @@ TEST_CASE("PatternEvaluator evaluate stmt Underscore expression") {
 
 	// a(_, "y")
 	unordered_map<string, vector<int>> tempResults1;
-	bool result1 = PatternEvaluator::evaluate({ {"a", VARIABLE_} }, Clause("a", vector<string>{"_", "\"y\""}), tempResults1);
+	bool result1 = PatternEvaluator::evaluate({ {"a", VARIABLE_} }, Clause("a", vector<string>{"_", "\"y\""}, {"a"}), tempResults1);
 	unordered_set<int> actual1(tempResults1["a"].begin(), tempResults1["a"].end());
 	unordered_set<int> expected1{ 7, 21 };
 	REQUIRE(actual1 == expected1);
@@ -447,7 +447,7 @@ TEST_CASE("PatternEvaluator evaluate stmt Underscore expression") {
 
 	// a(_, "3 * 4")
 	unordered_map<string, vector<int>> tempResults2;
-	bool result2 = PatternEvaluator::evaluate({ {"a", VARIABLE_}}, Clause("a", vector<string>{"_", "\"3 * 4\""}), tempResults2);
+	bool result2 = PatternEvaluator::evaluate({ {"a", VARIABLE_}}, Clause("a", vector<string>{"_", "\"3 * 4\""}, {"a"}), tempResults2);
 	unordered_set<int> actual2(tempResults2["a"].begin(), tempResults2["a"].end());
 	unordered_set<int> expected2{};
 	REQUIRE(actual2 == expected2);
@@ -455,7 +455,7 @@ TEST_CASE("PatternEvaluator evaluate stmt Underscore expression") {
 
 	// a(_, "3 * ((2 - 4) / w)")
 	unordered_map<string, vector<int>> tempResults3;
-	bool result3 = PatternEvaluator::evaluate({ {"a", VARIABLE_} }, Clause("a", vector<string>{"_", "\"3 * ((2 - 4) / w)\""}), tempResults3);
+	bool result3 = PatternEvaluator::evaluate({ {"a", VARIABLE_} }, Clause("a", vector<string>{"_", "\"3 * ((2 - 4) / w)\""}, {"a"}), tempResults3);
 	unordered_set<int> actual3(tempResults3["a"].begin(), tempResults3["a"].end());
 	unordered_set<int> expected3{ 3 };
 	REQUIRE(actual3 == expected3);
@@ -467,7 +467,7 @@ TEST_CASE("PatternEvaluator evaluate stmt Underscore ExpressionWithUnderscore") 
 
 	// a(_, _"y"_)
 	unordered_map<string, vector<int>> tempResults1;
-	bool result1 = PatternEvaluator::evaluate({ {"a", VARIABLE_} }, Clause("a", vector<string>{"_", "_\"y\"_"}), tempResults1);
+	bool result1 = PatternEvaluator::evaluate({ {"a", VARIABLE_} }, Clause("a", vector<string>{"_", "_\"y\"_"}, {"a"}), tempResults1);
 	unordered_set<int> actual1(tempResults1["a"].begin(), tempResults1["a"].end());
 	unordered_set<int> expected1{ 1, 7, 21 };
 	REQUIRE(actual1 == expected1);
@@ -475,7 +475,7 @@ TEST_CASE("PatternEvaluator evaluate stmt Underscore ExpressionWithUnderscore") 
 
 	// a(_, _"3 / w"_)
 	unordered_map<string, vector<int>> tempResults2;
-	bool result2 = PatternEvaluator::evaluate({ {"a", VARIABLE_} }, Clause("a", vector<string>{"_", "_\"3 / w\"_"}), tempResults2);
+	bool result2 = PatternEvaluator::evaluate({ {"a", VARIABLE_} }, Clause("a", vector<string>{"_", "_\"3 / w\"_"}, {"a"}), tempResults2);
 	unordered_set<int> actual2(tempResults2["a"].begin(), tempResults2["a"].end());
 	unordered_set<int> expected2{};
 	REQUIRE(actual2 == expected2);
@@ -483,7 +483,7 @@ TEST_CASE("PatternEvaluator evaluate stmt Underscore ExpressionWithUnderscore") 
 
 	// a(_, _"(2 - 4) / w"_)
 	unordered_map<string, vector<int>> tempResults3;
-	bool result3 = PatternEvaluator::evaluate({ {"a", VARIABLE_} }, Clause("a", vector<string>{"_", "_\"(2 - 4) / w\"_"}), tempResults3);
+	bool result3 = PatternEvaluator::evaluate({ {"a", VARIABLE_} }, Clause("a", vector<string>{"_", "_\"(2 - 4) / w\"_"}, {"a"}), tempResults3);
 	unordered_set<int> actual3(tempResults3["a"].begin(), tempResults3["a"].end());
 	unordered_set<int> expected3{ 3 };
 	REQUIRE(actual3 == expected3);
@@ -495,7 +495,7 @@ TEST_CASE("PatternEvaluator evaluate stmt underscore substring (edge case)") {
 
 	// a(_, _"1"_)
 	unordered_map<string, vector<int>> tempResults1;
-	bool result1 = PatternEvaluator::evaluate({ {"a", VARIABLE_} }, Clause("a", vector<string>{"_", "_\"1\"_"}), tempResults1);
+	bool result1 = PatternEvaluator::evaluate({ {"a", VARIABLE_} }, Clause("a", vector<string>{"_", "_\"1\"_"}, {"a"}), tempResults1);
 	unordered_set<int> actual1(tempResults1["a"].begin(), tempResults1["a"].end());
 	unordered_set<int> expected1{};
 	REQUIRE(actual1 == expected1);
@@ -507,7 +507,7 @@ TEST_CASE("PatternEvalautor evalaute if stmt synonym underscore underscore") {
 
 	// ifs(v,_,_)
 	unordered_map<string, vector<int>> tempResults1;
-	bool result1 = PatternEvaluator::evaluate({ {"v", VARIABLE_}, {"ifs", IF_} }, Clause("ifs", vector<string>{"v", "_", "_"}), tempResults1);
+	bool result1 = PatternEvaluator::evaluate({ {"v", VARIABLE_}, {"ifs", IF_} }, Clause("ifs", vector<string>{"v", "_", "_"}, {"ifs", "v"}), tempResults1);
 	unordered_set<int> actual11(tempResults1["v"].begin(), tempResults1["v"].end());
 	unordered_set<int> actual12(tempResults1["ifs"].begin(), tempResults1["ifs"].end());
 	unordered_set<int> expected11{0, 1, 2, 3, 4, 7};
@@ -519,7 +519,7 @@ TEST_CASE("PatternEvalautor evalaute if stmt synonym underscore underscore") {
 	// ifs(v,_,_)
 	DesignExtractor::signalReset();
 	unordered_map<string, vector<int>> tempResults2;
-	bool result2 = PatternEvaluator::evaluate({ {"v", VARIABLE_}, {"ifs", IF_} }, Clause("ifs", vector<string>{"v", "_", "_"}), tempResults2);
+	bool result2 = PatternEvaluator::evaluate({ {"v", VARIABLE_}, {"ifs", IF_} }, Clause("ifs", vector<string>{"v", "_", "_"}, {"ifs", "v"}), tempResults2);
 	unordered_set<int> actual2(tempResults2["ifs"].begin(), tempResults2["ifs"].end());
 	unordered_set<int> expected2{};
 	REQUIRE(actual2 == expected2);
@@ -531,7 +531,7 @@ TEST_CASE("PatternEvalautor evalaute if stmt underscore underscore underscore") 
 
 	// ifs(_,_,_)
 	unordered_map<string, vector<int>> tempResults1;
-	bool result1 = PatternEvaluator::evaluate({ {"ifs", IF_} }, Clause("ifs", vector<string>{"_", "_", "_"}), tempResults1);
+	bool result1 = PatternEvaluator::evaluate({ {"ifs", IF_} }, Clause("ifs", vector<string>{"_", "_", "_"}, {"ifs"}), tempResults1);
 	unordered_set<int> actual1(tempResults1["ifs"].begin(), tempResults1["ifs"].end());
 	unordered_set<int> expected1{ 1, 2, 4, 6, 10, 13 };
 	REQUIRE(actual1 == expected1);
@@ -540,7 +540,7 @@ TEST_CASE("PatternEvalautor evalaute if stmt underscore underscore underscore") 
 	// ifs(_,_,_)
 	DesignExtractor::signalReset();
 	unordered_map<string, vector<int>> tempResults2;
-	bool result2 = PatternEvaluator::evaluate({ {"ifs", IF_} }, Clause("ifs", vector<string>{"_", "_", "_"}), tempResults2);
+	bool result2 = PatternEvaluator::evaluate({ {"ifs", IF_} }, Clause("ifs", vector<string>{"_", "_", "_"}, {"ifs"}), tempResults2);
 	unordered_set<int> actual2(tempResults2["ifs"].begin(), tempResults2["ifs"].end());
 	unordered_set<int> expected2{};
 	REQUIRE(actual2 == expected2);
@@ -552,7 +552,7 @@ TEST_CASE("PatternEvalautor evalaute if stmt name underscore underscore") {
 
 	// ifs("x",_,_)
 	unordered_map<string, vector<int>> tempResults1;
-	bool result1 = PatternEvaluator::evaluate({ {"ifs", IF_} }, Clause("ifs", vector<string>{"\"x\"", "_", "_"}), tempResults1);
+	bool result1 = PatternEvaluator::evaluate({ {"ifs", IF_} }, Clause("ifs", vector<string>{"\"x\"", "_", "_"}, {"ifs"}), tempResults1);
 	unordered_set<int> actual1(tempResults1["ifs"].begin(), tempResults1["ifs"].end());
 	unordered_set<int> expected1{ 1, 4 };
 	REQUIRE(actual1 == expected1);
@@ -560,7 +560,7 @@ TEST_CASE("PatternEvalautor evalaute if stmt name underscore underscore") {
 
 	// ifs("urgh",_,_)
 	unordered_map<string, vector<int>> tempResults2;
-	bool result2 = PatternEvaluator::evaluate({ {"ifs", IF_} }, Clause("ifs", vector<string>{"\"urgh\"", "_", "_"}), tempResults2);
+	bool result2 = PatternEvaluator::evaluate({ {"ifs", IF_} }, Clause("ifs", vector<string>{"\"urgh\"", "_", "_"}, {"ifs"}), tempResults2);
 	unordered_set<int> actual2(tempResults2["ifs"].begin(), tempResults2["ifs"].end());
 	unordered_set<int> expected2{ 13 };
 	REQUIRE(actual2 == expected2);
@@ -568,7 +568,7 @@ TEST_CASE("PatternEvalautor evalaute if stmt name underscore underscore") {
 
 	// ifs("cenX",_,_)
 	unordered_map<string, vector<int>> tempResults3;
-	bool result3 = PatternEvaluator::evaluate({ {"ifs", IF_} }, Clause("ifs", vector<string>{"\"cenX\"", "_", "_"}), tempResults3);
+	bool result3 = PatternEvaluator::evaluate({ {"ifs", IF_} }, Clause("ifs", vector<string>{"\"cenX\"", "_", "_"}, {"ifs"}), tempResults3);
 	unordered_set<int> actual3(tempResults3["ifs"].begin(), tempResults3["ifs"].end());
 	unordered_set<int> expected3{};
 	REQUIRE(actual3 == expected3);
@@ -580,7 +580,7 @@ TEST_CASE("PatternEvalautor evalaute while stmt synonym underscore") {
 
 	// w(v,_)
 	unordered_map<string, vector<int>> tempResults1;
-	bool result1 = PatternEvaluator::evaluate({ {"v", VARIABLE_}, {"w", WHILE_} }, Clause("w", vector<string>{"v", "_"}), tempResults1);
+	bool result1 = PatternEvaluator::evaluate({ {"v", VARIABLE_}, {"w", WHILE_} }, Clause("w", vector<string>{"v", "_"}, {"w", "v"}), tempResults1);
 	unordered_set<int> actual11(tempResults1["v"].begin(), tempResults1["v"].end());
 	unordered_set<int> actual12(tempResults1["w"].begin(), tempResults1["w"].end());
 	unordered_set<int> expected11{ 1, 2, 6, 7, 8 };
@@ -592,7 +592,7 @@ TEST_CASE("PatternEvalautor evalaute while stmt synonym underscore") {
 	// w(v,_)
 	DesignExtractor::signalReset();
 	unordered_map<string, vector<int>> tempResults2;
-	bool result2 = PatternEvaluator::evaluate({ {"v", VARIABLE_}, {"w",	WHILE_} }, Clause("w", vector<string>{"v", "_"}), tempResults2);
+	bool result2 = PatternEvaluator::evaluate({ {"v", VARIABLE_}, {"w",	WHILE_} }, Clause("w", vector<string>{"v", "_"}, {"w", "v"}), tempResults2);
 	unordered_set<int> actual2(tempResults2["w"].begin(), tempResults2["w"].end());
 	unordered_set<int> expected2{};
 	REQUIRE(actual2 == expected2);
@@ -604,7 +604,7 @@ TEST_CASE("PatternEvalautor evalaute while stmt underscore underscore") {
 
 	// w(_, _)
 	unordered_map<string, vector<int>> tempResults1;
-	bool result1 = PatternEvaluator::evaluate({ {"w", WHILE_} }, Clause("w", vector<string>{"_", "_"}), tempResults1);
+	bool result1 = PatternEvaluator::evaluate({ {"w", WHILE_} }, Clause("w", vector<string>{"_", "_"}, {"w"}), tempResults1);
 	unordered_set<int> actual1(tempResults1["w"].begin(), tempResults1["w"].end());
 	unordered_set<int> expected1{ 3, 9, 16, 17 };
 	REQUIRE(actual1 == expected1);
@@ -613,7 +613,7 @@ TEST_CASE("PatternEvalautor evalaute while stmt underscore underscore") {
 	// w(_, _)
 	DesignExtractor::signalReset();
 	unordered_map<string, vector<int>> tempResults2;
-	bool result2 = PatternEvaluator::evaluate({ {"w", WHILE_} }, Clause("w", vector<string>{"_", "_"}), tempResults2);
+	bool result2 = PatternEvaluator::evaluate({ {"w", WHILE_} }, Clause("w", vector<string>{"_", "_"}, {"w"}), tempResults2);
 	unordered_set<int> actual2(tempResults2["w"].begin(), tempResults2["w"].end());
 	unordered_set<int> expected2{};
 	REQUIRE(actual2 == expected2);
@@ -625,7 +625,7 @@ TEST_CASE("PatternEvalautor evalaute while stmt name underscore") {
 
 	// w("w", _)
 	unordered_map<string, vector<int>> tempResults1;
-	bool result1 = PatternEvaluator::evaluate({ {"w", WHILE_} }, Clause("w", vector<string>{"\"w\"", "_"}), tempResults1);
+	bool result1 = PatternEvaluator::evaluate({ {"w", WHILE_} }, Clause("w", vector<string>{"\"w\"", "_"}, {"w"}), tempResults1);
 	unordered_set<int> actual1(tempResults1["w"].begin(), tempResults1["w"].end());
 	unordered_set<int> expected1{ 9 };
 	REQUIRE(actual1 == expected1);
@@ -633,7 +633,7 @@ TEST_CASE("PatternEvalautor evalaute while stmt name underscore") {
 
 	// w("z",_)
 	unordered_map<string, vector<int>> tempResults2;
-	bool result2 = PatternEvaluator::evaluate({ {"w", WHILE_} }, Clause("w", vector<string>{"\"z\"", "_"}), tempResults2);
+	bool result2 = PatternEvaluator::evaluate({ {"w", WHILE_} }, Clause("w", vector<string>{"\"z\"", "_"}, {"w"}), tempResults2);
 	unordered_set<int> actual2(tempResults2["w"].begin(), tempResults2["w"].end());
 	unordered_set<int> expected2{ 3 };
 	REQUIRE(actual2 == expected2);
@@ -641,7 +641,7 @@ TEST_CASE("PatternEvalautor evalaute while stmt name underscore") {
 
 	// w("y",_)
 	unordered_map<string, vector<int>> tempResults3;
-	bool result3 = PatternEvaluator::evaluate({ {"w", WHILE_} }, Clause("w", vector<string>{"\"y\"", "_"}), tempResults3);
+	bool result3 = PatternEvaluator::evaluate({ {"w", WHILE_} }, Clause("w", vector<string>{"\"y\"", "_"}, {"w"}), tempResults3);
 	unordered_set<int> actual3(tempResults3["w"].begin(), tempResults3["w"].end());
 	unordered_set<int> expected3{ 3 };
 	REQUIRE(actual3 == expected3);
@@ -649,7 +649,7 @@ TEST_CASE("PatternEvalautor evalaute while stmt name underscore") {
 
 	// w("x", _)
 	unordered_map<string, vector<int>> tempResults4;
-	bool result4 = PatternEvaluator::evaluate({ {"w", WHILE_} }, Clause("w", vector<string>{"\"x\"", "_"}), tempResults4);
+	bool result4 = PatternEvaluator::evaluate({ {"w", WHILE_} }, Clause("w", vector<string>{"\"x\"", "_"}, {"w"}), tempResults4);
 	unordered_set<int> actual4(tempResults4["w"].begin(), tempResults4["w"].end());
 	unordered_set<int> expected4{};
 	REQUIRE(actual4 == expected4);

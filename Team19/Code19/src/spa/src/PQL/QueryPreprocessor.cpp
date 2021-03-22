@@ -83,7 +83,7 @@ Query QueryPreprocessor::process(string query) {
         parseSelect(trim(statements[statements.size() - 1].substr(7)));
     }
 
-    return Query(this->declarations, this->toSelect, this->clauses, this->isSyntacticallyValid, this->isSemanticallyValid);
+    return Query(this->declarations, this->toSelect, { this->clauses }, this->isSyntacticallyValid, this->isSemanticallyValid);
 }
 
 void QueryPreprocessor::parseDeclaration(string designEntity, string synonyms) {
@@ -255,6 +255,7 @@ void QueryPreprocessor::parseSuchThatClause(string clause) {
 }
 
 void QueryPreprocessor::checkSuchThatClause(string rel, vector<string> args) {
+    unordered_set<string> synonyms = unordered_set<string>();
     if (this->validSuchThatArgType.find(rel) == this->validSuchThatArgType.end()) {
         this->isSyntacticallyValid = false;
     } else {
@@ -262,6 +263,9 @@ void QueryPreprocessor::checkSuchThatClause(string rel, vector<string> args) {
         for (int i = 0; i < validArgType.size(); i++) {
             string argType = getArgType(args[i], this->declarations);
             if (validArgType[i].find(argType) != validArgType[i].end()) {
+                if (checkDesignEntity(argType)) {
+                    synonyms.insert(args[i]);
+                }
                 continue;
             }
             if (argType == UNDERSCORE_ || checkName(args[i])) {
@@ -274,7 +278,7 @@ void QueryPreprocessor::checkSuchThatClause(string rel, vector<string> args) {
     }
 
     if (this->isSyntacticallyValid && this->isSemanticallyValid) {
-        this->clauses.push_back(Clause(rel, args));
+        this->clauses.push_back(Clause(rel, args, synonyms));
     }
 }
 
@@ -317,10 +321,12 @@ void QueryPreprocessor::parsePatternClause(string clause) {
 }
 
 void QueryPreprocessor::checkPatternClause(string syn, vector<string> args) {
+    unordered_set<string> synonyms = unordered_set<string>();
     string synArgType = getArgType(syn, this->declarations);
     if (synArgType != ASSIGN_ && synArgType != WHILE_ && synArgType != IF_) {
         this->isSyntacticallyValid = false;
     } else {
+        synonyms.insert(syn);
         vector<unordered_set<string>> validArgType = this->validPatternArgType.find(synArgType)->second;
         if (args.size() != validArgType.size()) {
             this->isSyntacticallyValid = false;
@@ -329,6 +335,9 @@ void QueryPreprocessor::checkPatternClause(string syn, vector<string> args) {
         for (int i = 0; i < validArgType.size() && this->isSyntacticallyValid; i++) {
             string argType = getArgType(args[i], this->declarations);
             if (validArgType[i].find(argType) != validArgType[i].end()) {
+                if (checkDesignEntity(argType)) {
+                    synonyms.insert(args[i]);
+                }
                 continue;
             }
             if (i == 0 && checkName(args[i])) {
@@ -341,7 +350,7 @@ void QueryPreprocessor::checkPatternClause(string syn, vector<string> args) {
     }
 
     if (this->isSyntacticallyValid && this->isSemanticallyValid) {
-        this->clauses.push_back(Clause(syn, args));
+        this->clauses.push_back(Clause(syn, args, synonyms));
     }
 }
 
@@ -372,26 +381,30 @@ void QueryPreprocessor::parseWithClause(string clause) {
 }
 
 void QueryPreprocessor::checkWithClause(string left, string right) {
-    string leftType = checkRef(left);
-    string rightType = checkRef(right);
+    unordered_set<string> synonyms = unordered_set<string>();
+    string leftType = checkRef(left, synonyms);
+    string rightType = checkRef(right, synonyms);
     if (this->isSyntacticallyValid && leftType != rightType) {
         this->isSemanticallyValid = false;
     }
 
     if (this->isSyntacticallyValid && this->isSemanticallyValid) {
-        this->clauses.push_back(Clause("", {left, right}));
+        this->clauses.push_back(Clause("", {left, right}, synonyms));
     }
 }
 
-string QueryPreprocessor::checkRef(string &ref) {
+string QueryPreprocessor::checkRef(string &ref, unordered_set<string>& synonyms) {
     string type;
     int pos = ref.find('.');
     if (pos == string::npos) { // NAME_ | INTEGER_ | synonym
         string argType = getArgType(ref, this->declarations);
         if (argType == NAME_) {
             type = NAME_;
-        } else if (argType == INTEGER_ || argType == PROGLINE_) {
+        } else if (argType == INTEGER_) {
             type = INTEGER_;
+        } else if (argType == PROGLINE_) {
+            type = INTEGER_;
+            synonyms.insert(ref);
         } else {
             if (checkName(ref)) { // synonym
                 this->isSemanticallyValid = false;
@@ -413,6 +426,7 @@ string QueryPreprocessor::checkRef(string &ref) {
             } else {
                 type = NAME_;
             }
+            synonyms.insert(synonym);
         }
         ref = synonym.append(".").append(attrName);
     }

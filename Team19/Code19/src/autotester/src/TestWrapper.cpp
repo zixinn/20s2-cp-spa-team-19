@@ -3,6 +3,7 @@
 #include "TestWrapper.h"
 #include "SP/Parser.h"
 #include "PQL/QueryPreprocessor.h"
+#include "PQL/QueryOptimizer.h"
 #include "PQL/QueryEvaluator.h"
 
 // implementation code of WrapperFactory - do NOT modify the next 5 lines
@@ -66,6 +67,9 @@ void TestWrapper::evaluate(std::string query, std::list<std::string>& results){
     if (valid) {
         QueryPreprocessor qp = QueryPreprocessor();
         Query q = qp.process(trim(query));
+
+        QueryOptimizer qo = QueryOptimizer();
+        q = qo.optimize(q);
 
         QueryEvaluator qe = QueryEvaluator();
         results = qe.evaluate(q);

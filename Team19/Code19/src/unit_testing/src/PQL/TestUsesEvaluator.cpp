@@ -76,13 +76,13 @@ TEST_CASE("UsesEvaluator evaluate stmt known known") {
     setupUses();
 
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = UsesEvaluator::evaluate({}, Clause("Uses", vector<string>{"7", "\"cenX\""}), tempResults1);
+    bool b1 = UsesEvaluator::evaluate({}, Clause("Uses", vector<string>{"7", "\"cenX\""}, {}), tempResults1);
     unordered_map<string, vector<int>> expected1 = {};
     REQUIRE(b1);
     REQUIRE(tempResults1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = UsesEvaluator::evaluate({}, Clause("Uses", vector<string>{"12", "\"flag\""}), tempResults2);
+    bool b2 = UsesEvaluator::evaluate({}, Clause("Uses", vector<string>{"12", "\"flag\""}, {}), tempResults2);
     unordered_map<string, vector<int>> expected2 = {};
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
@@ -92,13 +92,13 @@ TEST_CASE("UsesEvaluator evaluate stmt known synonym") {
     setupUses();
 
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = UsesEvaluator::evaluate({ {"v", VARIABLE_} }, Clause("Uses", vector<string>{"13", "v"}), tempResults1);
+    bool b1 = UsesEvaluator::evaluate({ {"v", VARIABLE_} }, Clause("Uses", vector<string>{"13", "v"}, {"v"}), tempResults1);
     unordered_map<string, vector<int>> expected1 = { {"v", vector<int>{2}} };
     REQUIRE(b1);
     REQUIRE(tempResults1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = UsesEvaluator::evaluate({ {"v", VARIABLE_} }, Clause("Uses", vector<string>{"4", "v"}), tempResults2);
+    bool b2 = UsesEvaluator::evaluate({ {"v", VARIABLE_} }, Clause("Uses", vector<string>{"4", "v"}, {"v"}), tempResults2);
     unordered_set<int> actual2(tempResults2["v"].begin(), tempResults2["v"].end());
     unordered_set<int> expected2{ 3, 4 };
     REQUIRE(b2);
@@ -109,13 +109,13 @@ TEST_CASE("UsesEvaluator evaluate stmt known underscore") {
     setupUses();
 
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = UsesEvaluator::evaluate({}, Clause("Uses", vector<string>{"1", "_"}), tempResults1);
+    bool b1 = UsesEvaluator::evaluate({}, Clause("Uses", vector<string>{"1", "_"}, {}), tempResults1);
     unordered_map<string, vector<int>> expected1 = {};
     REQUIRE(b1);
     REQUIRE(tempResults1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = UsesEvaluator::evaluate({}, Clause("Uses", vector<string>{"14", "_"}), tempResults2);
+    bool b2 = UsesEvaluator::evaluate({}, Clause("Uses", vector<string>{"14", "_"}, {}), tempResults2);
     unordered_map<string, vector<int>> expected2 = {};
     REQUIRE(b2);
     REQUIRE(tempResults2 == expected2);
@@ -125,20 +125,20 @@ TEST_CASE("UsesEvaluator evaluate stmt synonym known") {
     setupUses();
 
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = UsesEvaluator::evaluate({ {"s", STMT_} }, Clause("Uses", vector<string>{"s", "\"cenX\""}), tempResults1);
+    bool b1 = UsesEvaluator::evaluate({ {"s", STMT_} }, Clause("Uses", vector<string>{"s", "\"cenX\""}, {"s"}), tempResults1);
     unordered_set<int> actual1(tempResults1["s"].begin(), tempResults1["s"].end());
     unordered_set<int> expected1{ 2, 5, 7, 10, 12 };
     REQUIRE(b1);
     REQUIRE(actual1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = UsesEvaluator::evaluate({ {"w", WHILE_} }, Clause("Uses", vector<string>{"w", "\"count\""}), tempResults2);
+    bool b2 = UsesEvaluator::evaluate({ {"w", WHILE_} }, Clause("Uses", vector<string>{"w", "\"count\""}, {"w"}), tempResults2);
     unordered_map<string, vector<int>> expected2 = { {"w", vector<int>{5}} };
     REQUIRE(b2);
     REQUIRE(tempResults2 == expected2);
 
     unordered_map<string, vector<int>> tempResults3;
-    bool b3 = UsesEvaluator::evaluate({ {"ifs", IF_} }, Clause("Uses", vector<string>{"ifs", "\"normSq\""}), tempResults3);
+    bool b3 = UsesEvaluator::evaluate({ {"ifs", IF_} }, Clause("Uses", vector<string>{"ifs", "\"normSq\""}, {"ifs"}), tempResults3);
     unordered_map<string, vector<int>> expected3 = {};
     REQUIRE_FALSE(b3);
     REQUIRE(tempResults3 == expected3);
@@ -148,7 +148,7 @@ TEST_CASE("UsesEvaluator evaluate stmt synonym synonym") {
     setupUses();
 
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = UsesEvaluator::evaluate({ {"ifs", IF_}, {"v", "variable"} }, Clause("Uses", vector<string>{"ifs", "v"}), tempResults1);
+    bool b1 = UsesEvaluator::evaluate({ {"ifs", IF_}, {"v", "variable"} }, Clause("Uses", vector<string>{"ifs", "v"}, {"ifs", "v"}), tempResults1);
     set<pair<int, int>> actual1;
     for (int i = 0; i < tempResults1.begin()->second.size(); i++) {
         pair<int, int> p = make_pair(tempResults1["ifs"].at(i), tempResults1["v"].at(i));
@@ -160,7 +160,7 @@ TEST_CASE("UsesEvaluator evaluate stmt synonym synonym") {
     REQUIRE(actual1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = UsesEvaluator::evaluate({ {"r", READ_}, {"v", VARIABLE_} }, Clause("Uses", vector<string>{"r", "v"}), tempResults2);
+    bool b2 = UsesEvaluator::evaluate({ {"r", READ_}, {"v", VARIABLE_} }, Clause("Uses", vector<string>{"r", "v"}, {"r", "v"}), tempResults2);
     unordered_map<string, vector<int>> expected2 = {};
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
@@ -170,14 +170,14 @@ TEST_CASE("UsesEvaluator evaluate stmt synonym underscore") {
     setupUses();
 
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = UsesEvaluator::evaluate({ {"a", ASSIGN_} }, Clause("Uses", vector<string>{"a", "_"}), tempResults1);
+    bool b1 = UsesEvaluator::evaluate({ {"a", ASSIGN_} }, Clause("Uses", vector<string>{"a", "_"}, {"a"}), tempResults1);
     unordered_set<int> actual1(tempResults1["a"].begin(), tempResults1["a"].end());
     unordered_set<int> expected1{ 1, 2, 3, 6, 7, 8, 11, 12, 13, 14 };
     REQUIRE(b1);
     REQUIRE(actual1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = UsesEvaluator::evaluate({ {"r", READ_} }, Clause("Uses", vector<string>{"r", "_"}), tempResults2);
+    bool b2 = UsesEvaluator::evaluate({ {"r", READ_} }, Clause("Uses", vector<string>{"r", "_"}, {"r"}), tempResults2);
     unordered_map<string, vector<int>> expected2 = {};
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
@@ -187,13 +187,13 @@ TEST_CASE("UsesEvaluator evaluate proc known known") {
     setupUses();
 
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = UsesEvaluator::evaluate({}, Clause("Uses", vector<string>{"\"computeCentroid\"", "\"y\""}), tempResults1);
+    bool b1 = UsesEvaluator::evaluate({}, Clause("Uses", vector<string>{"\"computeCentroid\"", "\"y\""}, {}), tempResults1);
     unordered_map<string, vector<int>> expected1 = {};
     REQUIRE(b1);
     REQUIRE(tempResults1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = UsesEvaluator::evaluate({}, Clause("Uses", vector<string>{"\"computeCentroid\"", "\"z\""}), tempResults2);
+    bool b2 = UsesEvaluator::evaluate({}, Clause("Uses", vector<string>{"\"computeCentroid\"", "\"z\""}, {}), tempResults2);
     unordered_map<string, vector<int>> expected2 = {};
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
@@ -203,7 +203,7 @@ TEST_CASE("UsesEvaluator evaluate proc known synonym") {
     setupUses();
 
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = UsesEvaluator::evaluate({ {"v", VARIABLE_} }, Clause("Uses", vector<string>{"\"computeCentroid\"", "v"}), tempResults1);
+    bool b1 = UsesEvaluator::evaluate({ {"v", VARIABLE_} }, Clause("Uses", vector<string>{"\"computeCentroid\"", "v"}, {"v"}), tempResults1);
     unordered_set<int> actual1(tempResults1["v"].begin(), tempResults1["v"].end());
     unordered_set<int> expected1{ 0, 1, 2, 3, 4, 5, 6 };
     REQUIRE(b1);
@@ -214,7 +214,7 @@ TEST_CASE("UsesEvaluator evaluate proc known underscore") {
     setupUses();
 
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = UsesEvaluator::evaluate({ {"v", VARIABLE_} }, Clause("Uses", vector<string>{"\"computeCentroid\"", "_"}), tempResults1);
+    bool b1 = UsesEvaluator::evaluate({ {"v", VARIABLE_} }, Clause("Uses", vector<string>{"\"computeCentroid\"", "_"}, {}), tempResults1);
     unordered_map<string, vector<int>> expected1 = {};
     REQUIRE(b1);
     REQUIRE(tempResults1 == expected1);
@@ -224,13 +224,13 @@ TEST_CASE("UsesEvaluator evaluate proc synonym known") {
     setupUses();
 
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = UsesEvaluator::evaluate({ {"p", PROCEDURE_} }, Clause("Uses", vector<string>{"p", "\"flag\""}), tempResults1);
+    bool b1 = UsesEvaluator::evaluate({ {"p", PROCEDURE_} }, Clause("Uses", vector<string>{"p", "\"flag\""}, {"p"}), tempResults1);
     unordered_map<string, vector<int>> expected1 = { {"p", vector<int>{0}} };
     REQUIRE(b1);
     REQUIRE(tempResults1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = UsesEvaluator::evaluate({ {"p", PROCEDURE_} }, Clause("Uses", vector<string>{"p", "\"z\""}), tempResults2);
+    bool b2 = UsesEvaluator::evaluate({ {"p", PROCEDURE_} }, Clause("Uses", vector<string>{"p", "\"z\""}, {"p"}), tempResults2);
     unordered_map<string, vector<int>> expected2 = {};
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
@@ -240,7 +240,7 @@ TEST_CASE("UsesEvaluator evaluate proc synonym synonym") {
     setupUses();
 
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = UsesEvaluator::evaluate({ {"p", PROCEDURE_}, {"v", VARIABLE_} }, Clause("Uses", vector<string>{"p", "v"}), tempResults1);
+    bool b1 = UsesEvaluator::evaluate({ {"p", PROCEDURE_}, {"v", VARIABLE_} }, Clause("Uses", vector<string>{"p", "v"}, {"p", "v"}), tempResults1);
     set<pair<int, int>> actual1;
     for (int i = 0; i < tempResults1.begin()->second.size(); i++) {
         pair<int, int> p = make_pair(tempResults1["p"].at(i), tempResults1["v"].at(i));
@@ -256,7 +256,7 @@ TEST_CASE("UsesEvaluator evaluate proc synonym underscore") {
     setupUses();
 
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = UsesEvaluator::evaluate({ {"p", PROCEDURE_} }, Clause("Uses", vector<string>{"p", "_"}), tempResults1);
+    bool b1 = UsesEvaluator::evaluate({ {"p", PROCEDURE_} }, Clause("Uses", vector<string>{"p", "_"}, {"p"}), tempResults1);
     unordered_map<string, vector<int>> expected1 = { {"p", vector<int>{0}} };
     REQUIRE(b1);
     REQUIRE(tempResults1 == expected1);

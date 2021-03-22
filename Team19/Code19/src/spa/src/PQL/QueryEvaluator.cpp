@@ -22,21 +22,23 @@ list<string> QueryEvaluator::evaluate(Query query) {
         return emptyList;
     }
 
-    for (Clause clause : this->clauses) {
-        unordered_map<string, vector<int>> tempResults;
-        if (!evaluateClause(clause, tempResults)) { // clause returns false
-            if (toSelect.size() == 1 && toSelect.at(0) == "BOOLEAN") {
-                return list<string> {"FALSE"};
-            }
-            return emptyList;
-        }
-        if (!tempResults.empty()) {
-            join(tempResults);
-            if (results.empty() || results.begin()->second.empty()) {
+    for (vector<Clause> clauses : this->clauses) {
+        for (Clause clause : clauses) {
+            unordered_map<string, vector<int>> tempResults;
+            if (!evaluateClause(clause, tempResults)) { // clause returns false
                 if (toSelect.size() == 1 && toSelect.at(0) == "BOOLEAN") {
                     return list<string> {"FALSE"};
                 }
                 return emptyList;
+            }
+            if (!tempResults.empty()) {
+                join(tempResults);
+                if (results.empty() || results.begin()->second.empty()) {
+                    if (toSelect.size() == 1 && toSelect.at(0) == "BOOLEAN") {
+                        return list<string> {"FALSE"};
+                    }
+                    return emptyList;
+                }
             }
         }
     }

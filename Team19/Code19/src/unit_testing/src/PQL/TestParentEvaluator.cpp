@@ -44,25 +44,25 @@ TEST_CASE("ParentEvaluator evaluate known known") {
     setupParent();
 
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = ParentEvaluator::evaluate({}, Clause("Parent", vector<string>{"1", "2"}), tempResults1);
+    bool b1 = ParentEvaluator::evaluate({}, Clause("Parent", vector<string>{"1", "2"}, {}), tempResults1);
     unordered_map<string, vector<int>> expected1 = {};
     REQUIRE(b1);
     REQUIRE(tempResults1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = ParentEvaluator::evaluate({}, Clause("Parent", vector<string>{"10", "14"}), tempResults2);
+    bool b2 = ParentEvaluator::evaluate({}, Clause("Parent", vector<string>{"10", "14"}, {}), tempResults2);
     unordered_map<string, vector<int>> expected2 = {};
     REQUIRE(b2);
     REQUIRE(tempResults2 == expected2);
 
     unordered_map<string, vector<int>> tempResults3;
-    bool b3 = ParentEvaluator::evaluate({}, Clause("Parent", vector<string>{"5", "7"}), tempResults3);
+    bool b3 = ParentEvaluator::evaluate({}, Clause("Parent", vector<string>{"5", "7"}, {}), tempResults3);
     unordered_map<string, vector<int>> expected3 = {};
     REQUIRE_FALSE(b3);
     REQUIRE(tempResults3 == expected3);
 
     unordered_map<string, vector<int>> tempResults4;
-    bool b4 = ParentEvaluator::evaluate({}, Clause("Parent", vector<string>{"11", "13"}), tempResults4);
+    bool b4 = ParentEvaluator::evaluate({}, Clause("Parent", vector<string>{"11", "13"}, {}), tempResults4);
     unordered_map<string, vector<int>> expected4 = {};
     REQUIRE_FALSE(b4);
     REQUIRE(tempResults4 == expected4);
@@ -72,19 +72,19 @@ TEST_CASE("ParentEvaluator evaluate known synonym") {
     setupParent();
 
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = ParentEvaluator::evaluate({ {"w", WHILE_} }, Clause("Parent", vector<string>{"5", "w"}), tempResults1);
+    bool b1 = ParentEvaluator::evaluate({ {"w", WHILE_} }, Clause("Parent", vector<string>{"5", "w"}, {"w"}), tempResults1);
     unordered_map<string, vector<int>> expected1 = { {"w", vector<int>{6}} };
     REQUIRE(b1);
     REQUIRE(tempResults1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = ParentEvaluator::evaluate({ {"a", ASSIGN_} }, Clause("Parent", vector<string>{"2", "a"}), tempResults2);
+    bool b2 = ParentEvaluator::evaluate({ {"a", ASSIGN_} }, Clause("Parent", vector<string>{"2", "a"}, {"a"}), tempResults2);
     unordered_map<string, vector<int>> expected2 = {};
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
 
     unordered_map<string, vector<int>> tempResults3;
-    bool b3 = ParentEvaluator::evaluate({ {"s", STMT_} }, Clause("Parent", vector<string>{"14", "s"}), tempResults3);
+    bool b3 = ParentEvaluator::evaluate({ {"s", STMT_} }, Clause("Parent", vector<string>{"14", "s"}, {"s"}), tempResults3);
     unordered_map<string, vector<int>> expected3 = {};
     REQUIRE_FALSE(b3);
     REQUIRE(tempResults3 == expected3);
@@ -94,13 +94,13 @@ TEST_CASE("ParentEvaluator evaluate known underscore") {
     setupParent();
 
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = ParentEvaluator::evaluate({}, Clause("Parent", vector<string>{"5", "_"}), tempResults1);
+    bool b1 = ParentEvaluator::evaluate({}, Clause("Parent", vector<string>{"5", "_"}, {}), tempResults1);
     unordered_map<string, vector<int>> expected1 = {};
     REQUIRE(b1);
     REQUIRE(tempResults1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = ParentEvaluator::evaluate({}, Clause("Parent", vector<string>{"4", "_"}), tempResults2);
+    bool b2 = ParentEvaluator::evaluate({}, Clause("Parent", vector<string>{"4", "_"}, {}), tempResults2);
     unordered_map<string, vector<int>> expected2 = {};
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
@@ -110,19 +110,19 @@ TEST_CASE("ParentEvaluator evaluate synonym known") {
     setupParent();
 
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = ParentEvaluator::evaluate({ {"ifs", IF_} }, Clause("Parent", vector<string>{"ifs", "2"}), tempResults1);
+    bool b1 = ParentEvaluator::evaluate({ {"ifs", IF_} }, Clause("Parent", vector<string>{"ifs", "2"}, {"ifs"}), tempResults1);
     unordered_map<string, vector<int>> expected1 = { {"ifs", vector<int>{1}} };
     REQUIRE(b1);
     REQUIRE(tempResults1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = ParentEvaluator::evaluate({ {"c", CALL_} }, Clause("Parent", vector<string>{"c", "5"}), tempResults2);
+    bool b2 = ParentEvaluator::evaluate({ {"c", CALL_} }, Clause("Parent", vector<string>{"c", "5"}, {"c"}), tempResults2);
     unordered_map<string, vector<int>> expected2 = {};
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
 
     unordered_map<string, vector<int>> tempResults3;
-    bool b3 = ParentEvaluator::evaluate({ {"s", STMT_} }, Clause("Parent", vector<string>{"s", "1"}), tempResults3);
+    bool b3 = ParentEvaluator::evaluate({ {"s", STMT_} }, Clause("Parent", vector<string>{"s", "1"}, {"s"}), tempResults3);
     unordered_map<string, vector<int>> expected3 = {};
     REQUIRE_FALSE(b3);
     REQUIRE(tempResults3 == expected3);
@@ -132,13 +132,13 @@ TEST_CASE("ParentEvaluator evaluate underscore known") {
     setupParent();
 
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = ParentEvaluator::evaluate({}, Clause("Parent", vector<string>{"_", "7"}), tempResults1);
+    bool b1 = ParentEvaluator::evaluate({}, Clause("Parent", vector<string>{"_", "7"}, {}), tempResults1);
     unordered_map<string, vector<int>> expected1 = {};
     REQUIRE(b1);
     REQUIRE(tempResults1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = ParentEvaluator::evaluate({}, Clause("Parent", vector<string>{"_", "8"}), tempResults2);
+    bool b2 = ParentEvaluator::evaluate({}, Clause("Parent", vector<string>{"_", "8"}, {}), tempResults2);
     unordered_map<string, vector<int>> expected2 = {};
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
@@ -148,7 +148,7 @@ TEST_CASE("ParentEvaluator evaluate synonym synonym") {
     setupParent();
 
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = ParentEvaluator::evaluate({ {"ifs", IF_}, {"c", CALL_} }, Clause("Parent", vector<string>{"ifs", "c"}), tempResults1);
+    bool b1 = ParentEvaluator::evaluate({ {"ifs", IF_}, {"c", CALL_} }, Clause("Parent", vector<string>{"ifs", "c"}, {"ifs", "c"}), tempResults1);
     set<pair<int, int>> actual1;
     for (int i = 0; i < tempResults1.begin()->second.size(); i++) {
         pair<int, int> p = make_pair(tempResults1["ifs"].at(i), tempResults1["c"].at(i));
@@ -160,7 +160,7 @@ TEST_CASE("ParentEvaluator evaluate synonym synonym") {
     REQUIRE(actual1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = ParentEvaluator::evaluate({ {"ifs", IF_}, {"w", WHILE_} }, Clause("Parent", vector<string>{"ifs", "w"}), tempResults2);
+    bool b2 = ParentEvaluator::evaluate({ {"ifs", IF_}, {"w", WHILE_} }, Clause("Parent", vector<string>{"ifs", "w"}, {"ifs", "w"}), tempResults2);
     unordered_map<string, vector<int>> expected2 = {};
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
@@ -170,14 +170,14 @@ TEST_CASE("ParentEvaluator evaluate synonym underscore") {
     setupParent();
 
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = ParentEvaluator::evaluate({ {"w", WHILE_} }, Clause("Parent", vector<string>{"w", "_"}), tempResults1);
+    bool b1 = ParentEvaluator::evaluate({ {"w", WHILE_} }, Clause("Parent", vector<string>{"w", "_"}, {"w"}), tempResults1);
     unordered_set<int> actual1(tempResults1["w"].begin(), tempResults1["w"].end());
     unordered_set<int> expected1{ 5, 6 };
     REQUIRE(b1);
     REQUIRE(actual1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = ParentEvaluator::evaluate({ {"a", ASSIGN_} }, Clause("Parent", vector<string>{"a", "_"}), tempResults2);
+    bool b2 = ParentEvaluator::evaluate({ {"a", ASSIGN_} }, Clause("Parent", vector<string>{"a", "_"}, {"a"}), tempResults2);
     unordered_map<string, vector<int>> expected2 = { };
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
@@ -187,14 +187,14 @@ TEST_CASE("ParentEvaluator evaluate underscore synonym") {
     setupParent();
 
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = ParentEvaluator::evaluate({ {"a", ASSIGN_} }, Clause("Parent", vector<string>{"_", "a"}), tempResults1);
+    bool b1 = ParentEvaluator::evaluate({ {"a", ASSIGN_} }, Clause("Parent", vector<string>{"_", "a"}, {"a"}), tempResults1);
     unordered_set<int> actual1(tempResults1["a"].begin(), tempResults1["a"].end());
     unordered_set<int> expected1{ 2, 3, 7, 11, 12, 13, 14 };
     REQUIRE(b1);
     REQUIRE(actual1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = ParentEvaluator::evaluate({ {"p", PRINT_} }, Clause("Parent", vector<string>{"_", "p"}), tempResults2);
+    bool b2 = ParentEvaluator::evaluate({ {"p", PRINT_} }, Clause("Parent", vector<string>{"_", "p"}, {"p"}), tempResults2);
     unordered_map<string, vector<int>> expected2 = {};
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
@@ -203,7 +203,7 @@ TEST_CASE("ParentEvaluator evaluate underscore synonym") {
 TEST_CASE("ParentEvaluator evaluate underscore underscore") {
     setupParent();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = ParentEvaluator::evaluate({}, Clause("Parent", vector<string>{"_", "_"}), tempResults1);
+    bool b1 = ParentEvaluator::evaluate({}, Clause("Parent", vector<string>{"_", "_"}, {}), tempResults1);
     unordered_map<string, vector<int>> expected1 = {};
     REQUIRE(b1);
     REQUIRE(tempResults1 == expected1);
