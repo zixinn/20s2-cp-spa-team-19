@@ -14,6 +14,7 @@ if exist ..\..\Code19\build_win\x86-Debug\src\autotester\autotester.exe (
 	..\..\Code19\build_win\x86-Debug\src\autotester\autotester.exe complexFullSimple_source.txt Tuples_query.txt Tuples_out.xml
 	..\..\Code19\build_win\x86-Debug\src\autotester\autotester.exe complexFullSimple_source.txt With_query.txt With_out.xml
 	..\..\Code19\build_win\x86-Debug\src\autotester\autotester.exe complexFullSimple_source.txt MultiClause_query.txt MultiClause_out.xml
+	..\..\Code19\build_win\x86-Debug\src\autotester\autotester.exe complexFullSimple_source.txt Affects_query.txt Affects_out.xml
 ) else (
 	set /p id=Enter path to your autotester:
 	%id% complexFullSimple_source.txt Boolean_query.txt Boolean_out.xml
@@ -27,6 +28,7 @@ if exist ..\..\Code19\build_win\x86-Debug\src\autotester\autotester.exe (
 	%id% complexFullSimple_source.txt Tuples_query.txt Tuples_out.xml
 	%id% complexFullSimple_source.txt With_query.txt With_out.xml
 	%id% complexFullSimple_source.txt MultiClause_query.txt MultiClause_out.xml
+	%id% complexFullSimple_source.txt Affects_query.txt Affects_out.xml
 ) 
 
 pause
