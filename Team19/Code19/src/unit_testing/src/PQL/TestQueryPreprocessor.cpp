@@ -164,7 +164,7 @@ TEST_CASE("process valid query with comma in declaration") {
     QueryPreprocessor qp = QueryPreprocessor();
     string query = "stmt s1, s2; \nSelect s1 such that Follows(s1, s2)";
     Query actual = qp.process(query);
-    Clause c = Clause("Follows", {"s1", "s2"}, {"s1", "s2"});
+    Clause c = Clause("Follows", {"s1", "s2"}, {"s1", "s2"}, 0);
     unordered_map<string, string> declarations;
     declarations["s1"] = "stmt";
     declarations["s2"] = "stmt";
@@ -183,7 +183,7 @@ TEST_CASE("process query with select BOOLEAN") {
 
     query = "assign a; stmt BOOLEAN;\n Select <BOOLEAN, a> such that Affects (a, 11)";
     actual = qp.process(query);
-    Clause c = Clause("Affects", {"a", "11"}, {"a"});
+    Clause c = Clause("Affects", {"a", "11"}, {"a"}, 1);
     unordered_map<string, string> declarations1;
     declarations1["a"] = "assign";
     declarations1["BOOLEAN"] = "stmt";
@@ -199,7 +199,7 @@ TEST_CASE("process query with select BOOLEAN") {
 
     query = "Select BOOLEAN such that Next* (2, 9)";
     actual = qp.process(query);
-    c = Clause("Next*", {"2", "9"}, {});
+    c = Clause("Next*", {"2", "9"}, {}, 2);
     expected = Query({}, {"BOOLEAN"}, { {c} }, true, true);
     REQUIRE(actual == expected);
 
@@ -213,7 +213,7 @@ TEST_CASE("process query with select tuple") {
     QueryPreprocessor qp = QueryPreprocessor();
     string query = "procedure p, q;\n Select <p, q> such that Calls (p, q)";
     Query actual = qp.process(query);
-    Clause c = Clause("Calls", {"p", "q"}, {"p", "q"});
+    Clause c = Clause("Calls", {"p", "q"}, {"p", "q"}, 0);
     unordered_map<string, string> declarations;
     declarations["p"] = "procedure";
     declarations["q"] = "procedure";
@@ -222,8 +222,8 @@ TEST_CASE("process query with select tuple") {
 
     query = "while w1, w2, w3;\nSelect <w1, w2, w3> such that Parent* (w1, w2) and Parent* (w2, w3)";
     actual = qp.process(query);
-    Clause c1 = Clause("Parent*", {"w1", "w2"}, {"w1", "w2"});
-    Clause c2 = Clause("Parent*", {"w2", "w3"}, {"w2", "w3"});
+    Clause c1 = Clause("Parent*", {"w1", "w2"}, {"w1", "w2"}, 0);
+    Clause c2 = Clause("Parent*", {"w2", "w3"}, {"w2", "w3"}, 0);
     unordered_map<string, string> declarations1;
     declarations1["w1"] = "while";
     declarations1["w2"] = "while";
@@ -233,7 +233,7 @@ TEST_CASE("process query with select tuple") {
 
     query = "assign a;\nSelect <a> such that Next* (a, a)";
     actual = qp.process(query);
-    c = Clause("Next*", {"a", "a"}, {"a"});
+    c = Clause("Next*", {"a", "a"}, {"a"}, 0);
     unordered_map<string, string> declarations2;
     declarations2["a"] = "assign";
     expected = Query(declarations2, {"a"}, { {c} }, true, true);
@@ -260,7 +260,7 @@ TEST_CASE("process query with select attrRef") {
 
     query = "prog_line n; stmt s;\nSelect s.stmt# such that Follows* (s, n)";
     actual = qp.process(query);
-    Clause c = Clause("Follows*", {"s", "n"}, {"s", "n"});
+    Clause c = Clause("Follows*", {"s", "n"}, {"s", "n"}, 0);
     unordered_map<string, string> declarations2;
     declarations2["n"] = "prog_line";
     declarations2["s"] = "stmt";
@@ -269,7 +269,7 @@ TEST_CASE("process query with select attrRef") {
 
     query = "assign a1, a2;\nSelect <a1.stmt#, a2> such that Affects (a1, a2)";
     actual = qp.process(query);
-    c = Clause("Affects", {"a1", "a2"}, {"a1", "a2"});
+    c = Clause("Affects", {"a1", "a2"}, {"a1", "a2"}, 0);
     unordered_map<string, string> declarations3;
     declarations3["a1"] = "assign";
     declarations3["a2"] = "assign";
@@ -281,7 +281,7 @@ TEST_CASE("process valid query with such that clause") {
     QueryPreprocessor qp = QueryPreprocessor();
     string query = "assign a; while w; \nSelect w such that Parent* (w, a)";
     Query actual = qp.process(query);
-    Clause c = Clause("Parent*", {"w", "a"}, {"w", "a"});
+    Clause c = Clause("Parent*", {"w", "a"}, {"w", "a"}, 0);
     unordered_map<string, string> declarations;
     declarations["a"] = "assign";
     declarations["w"] = "while";
@@ -290,7 +290,7 @@ TEST_CASE("process valid query with such that clause") {
 
     query = "variable v; procedure p;\nSelect p such that Modifies (p, \"x\")";
     actual = qp.process(query);
-    c = Clause("Modifies", { "p", "\"x\"" }, {"p"});
+    c = Clause("Modifies", { "p", "\"x\"" }, {"p"}, 1);
     unordered_map<string, string> declarations1;
     declarations1["v"] = "variable";
     declarations1["p"] = "procedure";
@@ -299,7 +299,7 @@ TEST_CASE("process valid query with such that clause") {
 
     query = "prog_line n; stmt s; \nSelect s such that Follows* (s, n)";
     actual = qp.process(query);
-    c = Clause("Follows*", { "s", "n" }, {"s", "n"});
+    c = Clause("Follows*", { "s", "n" }, {"s", "n"}, 0);
     unordered_map<string, string> declarations2;
     declarations2["n"] = "prog_line";
     declarations2["s"] = "stmt";
@@ -308,7 +308,7 @@ TEST_CASE("process valid query with such that clause") {
 
     query = "prog_line n; \nSelect n such that Next (5, n)";
     actual = qp.process(query);
-    c = Clause("Next", { "5", "n" }, {"n"});
+    c = Clause("Next", { "5", "n" }, {"n"}, 1);
     unordered_map<string, string> declarations3;
     declarations3["n"] = "prog_line";
     expected = Query(declarations3, {"n"}, { {c} }, true, true);
@@ -319,7 +319,7 @@ TEST_CASE("process valid query with pattern clause") {
     QueryPreprocessor qp = QueryPreprocessor();
     string query = "assign a; \nSelect a pattern a (_, \"count + 1\")";
     Query actual = qp.process(query);
-    Clause c = Clause("a", { "_", "\"count + 1\"" }, {"a"});
+    Clause c = Clause("a", { "_", "\"count + 1\"" }, {"a"}, 1);
     unordered_map<string, string> declarations;
     declarations["a"] = "assign";
     Query expected = Query(declarations, {"a"}, { {c} }, true, true);
@@ -327,7 +327,7 @@ TEST_CASE("process valid query with pattern clause") {
 
     query = "while w; \nSelect w pattern w (\"x\", _)";
     actual = qp.process(query);
-    c = Clause("w", { "\"x\"", "_" }, {"w"});
+    c = Clause("w", { "\"x\"", "_" }, {"w"}, 1);
     unordered_map<string, string> declarations1;
     declarations1["w"] = "while";
     expected = Query(declarations1, {"w"}, { {c} }, true, true);
@@ -335,7 +335,7 @@ TEST_CASE("process valid query with pattern clause") {
 
     query = "if ifs; \nSelect ifs pattern ifs (\"count\", _, _)";
     actual = qp.process(query);
-    c = Clause("ifs", { "\"count\"", "_", "_" }, {"ifs"});
+    c = Clause("ifs", { "\"count\"", "_", "_" }, {"ifs"}, 1);
     unordered_map<string, string> declarations2;
     declarations2["ifs"] = "if";
     expected = Query(declarations2, {"ifs"}, { {c} }, true, true);
@@ -346,8 +346,8 @@ TEST_CASE("process valid query with such that and pattern clause") {
     QueryPreprocessor qp = QueryPreprocessor();
     string query = "assign a; while w;\nSelect a pattern a (\"x\", _) such that Uses (a, \"x\")";
     Query actual = qp.process(query);
-    Clause c1 = Clause("Uses", { "a", "\"x\"" }, {"a"});
-    Clause c2 = Clause("a", { "\"x\"", "_" }, {"a"});
+    Clause c1 = Clause("Uses", { "a", "\"x\"" }, {"a"}, 1);
+    Clause c2 = Clause("a", { "\"x\"", "_" }, {"a"}, 1);
     unordered_map<string, string> declarations;
     declarations["a"] = "assign";
     declarations["w"] = "while";
@@ -356,8 +356,8 @@ TEST_CASE("process valid query with such that and pattern clause") {
 
     query = "assign a; while w;\nSelect a such that Uses (a, \"x\") pattern a (\"x\", _) ";
     actual = qp.process(query);
-    c1 = Clause("Uses", { "a", "\"x\"" }, {"a"});
-    c2 = Clause("a", { "\"x\"", "_" }, {"a"});
+    c1 = Clause("Uses", { "a", "\"x\"" }, {"a"}, 1);
+    c2 = Clause("a", { "\"x\"", "_" }, {"a"}, 1);
     unordered_map<string, string> declarations1;
     declarations1["a"] = "assign";
     declarations1["w"] = "while";
@@ -369,10 +369,10 @@ TEST_CASE("process valid query with multiple clauses") {
     QueryPreprocessor qp = QueryPreprocessor();
     string query = "assign a; while w;\nSelect a pattern a (_, \"x + 1\") such that Parent (w, a) such that Uses (a, \"x\") pattern a (\"x\", _) ";
     Query actual = qp.process(query);
-    Clause c1 = Clause("a", { "_", "\"x + 1\"" }, {"a"});
-    Clause c2 = Clause("Parent", { "w", "a" }, {"w", "a"});
-    Clause c3 = Clause("Uses", { "a", "\"x\"" }, {"a"});
-    Clause c4 = Clause("a", { "\"x\"", "_" }, {"a"});
+    Clause c1 = Clause("a", { "_", "\"x + 1\"" }, {"a"}, 1);
+    Clause c2 = Clause("Parent", { "w", "a" }, {"w", "a"}, 0);
+    Clause c3 = Clause("Uses", { "a", "\"x\"" }, {"a"}, 1);
+    Clause c4 = Clause("a", { "\"x\"", "_" }, {"a"}, 1);
     unordered_map<string, string> declarations;
     declarations["a"] = "assign";
     declarations["w"] = "while";
@@ -384,7 +384,7 @@ TEST_CASE("process invalid query with and in clause") {
     QueryPreprocessor qp = QueryPreprocessor();
     string query = "assign a; while w;\nSelect a such that Parent* (w, a) and Modifies (a, \"x\") and such that Next* (1, a)";
     Query actual = qp.process(query);
-    Clause c1 = Clause("Parent*", { "w", "a" }, {"w", "a"});
+    Clause c1 = Clause("Parent*", { "w", "a" }, {"w", "a"}, 0);
     unordered_map<string, string> declarations;
     declarations["a"] = "assign";
     declarations["w"] = "while";
@@ -401,8 +401,8 @@ TEST_CASE("process invalid query with and in clause") {
 
     query = "assign a; while w;\nSelect a such that Parent* (w, a) pattern a (\"x\", _) and Next* (1, a)";
     actual = qp.process(query);
-    c1 = Clause("Parent*", { "w", "a" }, {"w", "a"});
-    Clause c2 = Clause("a", { "\"x\"", "_" }, {"a"});
+    c1 = Clause("Parent*", { "w", "a" }, {"w", "a"}, 0);
+    Clause c2 = Clause("a", { "\"x\"", "_" }, {"a"}, 1);
     unordered_map<string, string> declarations2;
     declarations2["a"] = "assign";
     declarations2["w"] = "while";
@@ -414,8 +414,8 @@ TEST_CASE("process valid query with and in clause") {
     QueryPreprocessor qp = QueryPreprocessor();
     string query = "prog_line n;\nSelect n such that Next* (5, n) and Next* (n, 12)";
     Query actual = qp.process(query);
-    Clause c1 = Clause("Next*", { "5", "n" }, {"n"});
-    Clause c2 = Clause("Next*", { "n", "12" }, {"n"});
+    Clause c1 = Clause("Next*", { "5", "n" }, {"n"}, 1);
+    Clause c2 = Clause("Next*", { "n", "12" }, {"n"}, 1);
     unordered_map<string, string> declarations;
     declarations["n"] = "prog_line";
     Query expected = Query(declarations, {"n"}, { {c1, c2} }, true, true);
@@ -423,9 +423,9 @@ TEST_CASE("process valid query with and in clause") {
 
     query = "assign a, a1; while w; \nSelect a pattern a (\"x\", _) pattern a1 (\"y\", _\"1\"_) and w (\"count\", _)";
     actual = qp.process(query);
-    c1 = Clause("a", { "\"x\"", "_" }, {"a"});
-    c2 = Clause("a1", { "\"y\"", "_\"1\"_" }, {"a1"});
-    Clause c3 = Clause("w", { "\"count\"", "_" }, {"w"});
+    c1 = Clause("a", { "\"x\"", "_" }, {"a"}, 1);
+    c2 = Clause("a1", { "\"y\"", "_\"1\"_" }, {"a1"}, 2);
+    Clause c3 = Clause("w", { "\"count\"", "_" }, {"w"}, 1);
     unordered_map<string, string> declarations1;
     declarations1["a"] = "assign";
     declarations1["a1"] = "assign";
@@ -499,7 +499,7 @@ TEST_CASE("process valid query with with clause") {
     QueryPreprocessor qp = QueryPreprocessor();
     string query = "stmt s; constant c;\nSelect s with s.stmt# = c.value";
     Query actual = qp.process(query);
-    Clause c1 = Clause("", { "s.stmt#", "c.value" }, {"s", "c"});
+    Clause c1 = Clause("", { "s.stmt#", "c.value" }, {"s", "c"}, 0);
     unordered_map<string, string> declarations;
     declarations["s"] = "stmt";
     declarations["c"] = "constant";
@@ -508,9 +508,9 @@ TEST_CASE("process valid query with with clause") {
 
     query = "procedure p, q;\nSelect p such that Calls (p, q) with q.procName = \"Third\" such that Modifies (p, \"i\")";
     actual = qp.process(query);
-    c1 = Clause("Calls", { "p", "q" }, {"p", "q"});
-    Clause c2 = Clause("", { "q.procName", "\"Third\"" }, {"q"});
-    Clause c3 = Clause("Modifies", { "p", "\"i\"" }, {"p"});
+    c1 = Clause("Calls", { "p", "q" }, {"p", "q"}, 0);
+    Clause c2 = Clause("", { "q.procName", "\"Third\"" }, {"q"}, 1);
+    Clause c3 = Clause("Modifies", { "p", "\"i\"" }, {"p"}, 1);
     unordered_map<string, string> declarations1;
     declarations1["p"] = "procedure";
     declarations1["q"] = "procedure";
@@ -519,9 +519,9 @@ TEST_CASE("process valid query with with clause") {
 
     query = "stmt s, s1; prog_line n;\nSelect s.stmt# such that Follows* (s, s1) with s1 . stmt#=n and 10=n";
     actual = qp.process(query);
-    c1 = Clause("Follows*", { "s", "s1" }, {"s", "s1"});
-    c2 = Clause("", { "s1.stmt#", "n" }, {"s1", "n"});
-    c3 = Clause("", { "10", "n" }, {"n"});
+    c1 = Clause("Follows*", { "s", "s1" }, {"s", "s1"}, 0);
+    c2 = Clause("", { "s1.stmt#", "n" }, {"s1", "n"}, 0);
+    c3 = Clause("", { "10", "n" }, {"n"}, 1);
     unordered_map<string, string> declarations2;
     declarations2["s"] = "stmt";
     declarations2["s1"] = "stmt";
@@ -531,10 +531,10 @@ TEST_CASE("process valid query with with clause") {
 
     query = "assign a; while w; prog_line n;\nSelect a such that Parent* (w, a) and Next* (60, n) pattern a(\"x\", _) with a.stmt# = n";
     actual = qp.process(query);
-    c1 = Clause("Parent*", { "w", "a" }, {"w", "a"});
-    c2 = Clause("Next*", { "60", "n" }, {"n"});
-    c3 = Clause("a", { "\"x\"", "_" }, {"a"});
-    Clause c4 = Clause("", { "a.stmt#", "n" }, {"a", "n"});
+    c1 = Clause("Parent*", { "w", "a" }, {"w", "a"}, 0);
+    c2 = Clause("Next*", { "60", "n" }, {"n"}, 1);
+    c3 = Clause("a", { "\"x\"", "_" }, {"a"}, 1);
+    Clause c4 = Clause("", { "a.stmt#", "n" }, {"a", "n"}, 0);
     unordered_map<string, string> declarations3;
     declarations3["a"] = "assign";
     declarations3["w"] = "while";

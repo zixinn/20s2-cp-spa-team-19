@@ -8,6 +8,7 @@
 #include "../Utility.h"
 #include "../PKB/PKB.h"
 #include "../SP/Lexer.h"
+#include "Clause.h"
 
 // Checks if name with quotes conforms to naming standards
 // Returns true if name is valid, false otherwise
@@ -48,3 +49,6 @@ bool intersectDoubleSynonym(pair<vector<int>, vector<int>> allResults, pair<vect
 
 // Projects only synonyms in the set toProject from results, removing duplicates
 void project(unordered_set<string> toProject, unordered_map<string, vector<int>>& results);
+
+// Returns the size of the relation for the clause
+int getSize(Clause clause, unordered_map<string, string>& declarations);

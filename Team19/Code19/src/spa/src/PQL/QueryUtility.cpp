@@ -212,3 +212,57 @@ void project(unordered_set<string> toProject, unordered_map<string, vector<int>>
     }
     results = newResults;
 }
+
+int getSize(Clause clause, unordered_map<string, string>& declarations) {
+    string rel = clause.getRel();
+    if (rel == "Follows") {
+        return PKB::follows->getFollowsSize();
+    } else if (rel == "Follows*") {
+        return PKB::follows->getFollowsStarSize();
+    } else if (rel == "Parent") {
+        return PKB::parent->getParentSize();
+    } else if (rel == "Parent*") {
+        return PKB::parent->getParentStarSize();
+    } else if (rel == "Uses") {
+        string argType = getArgType(clause.getArgs().at(0), declarations);
+        if (argType == NAME_ || argType == PROCEDURE_) {
+            return PKB::uses->getProcSize();
+        } else {
+            return PKB::uses->getStmtSize();
+        }
+    } else if (rel == "Modifies") {
+        string argType = getArgType(clause.getArgs().at(0), declarations);
+        if (argType == NAME_ || argType == PROCEDURE_) {
+            return PKB::modifies->getProcSize();
+        } else {
+            return PKB::modifies->getStmtSize();
+        }
+    } else if (rel == "Calls") {
+        return PKB::calls->getCallsSize();
+    } else if (rel == "Calls*") {
+        return PKB::calls->getCallsStarSize();
+    } else if (rel == "Next") {
+        return PKB::next->getNextSize();
+    } else if (rel == "Next*") {
+        return PKB::next->getNextStarSize();
+    } else if (rel == "Affects") {
+        return PKB::affects->getAffectsSize();
+    } else if (rel == "Affects*") {
+        return PKB::affects->getAffectsStarSize();
+    } else if (rel == "") { // with clause
+        if (clause.getNumOfKnown() > 0) {
+            return 0;
+        }
+        return max(max(PKB::procTable->getSize(), PKB::varTable->getSize()),
+                   max(PKB::constTable->getSize(), PKB::stmtTable->getSize()));
+    } else { // pattern clause
+        string argType = getArgType(rel, declarations);
+        if (argType == ASSIGN_) {
+            return PKB::stmtTable->getAllAssignStmtNums().size();
+        } else if (argType == WHILE_) {
+            return PKB::stmtTable->getAllWhileStmtNums().size();
+        } else { // argType == IF_
+            return PKB::stmtTable->getAllIfStmtNums().size();
+        }
+    }
+}

@@ -256,6 +256,7 @@ void QueryPreprocessor::parseSuchThatClause(string clause) {
 
 void QueryPreprocessor::checkSuchThatClause(string rel, vector<string> args) {
     unordered_set<string> synonyms = unordered_set<string>();
+    int numOfKnown = 0;
     if (this->validSuchThatArgType.find(rel) == this->validSuchThatArgType.end()) {
         this->isSyntacticallyValid = false;
     } else {
@@ -263,7 +264,9 @@ void QueryPreprocessor::checkSuchThatClause(string rel, vector<string> args) {
         for (int i = 0; i < validArgType.size(); i++) {
             string argType = getArgType(args[i], this->declarations);
             if (validArgType[i].find(argType) != validArgType[i].end()) {
-                if (checkDesignEntity(argType)) {
+                if (argType == INTEGER_ || argType == NAME_) {
+                    numOfKnown++;
+                } else if (checkDesignEntity(argType)) {
                     synonyms.insert(args[i]);
                 }
                 continue;
@@ -278,7 +281,7 @@ void QueryPreprocessor::checkSuchThatClause(string rel, vector<string> args) {
     }
 
     if (this->isSyntacticallyValid && this->isSemanticallyValid) {
-        this->clauses.push_back(Clause(rel, args, synonyms));
+        this->clauses.push_back(Clause(rel, args, synonyms, numOfKnown));
     }
 }
 
@@ -322,6 +325,7 @@ void QueryPreprocessor::parsePatternClause(string clause) {
 
 void QueryPreprocessor::checkPatternClause(string syn, vector<string> args) {
     unordered_set<string> synonyms = unordered_set<string>();
+    int numOfKnown = 0;
     string synArgType = getArgType(syn, this->declarations);
     if (synArgType != ASSIGN_ && synArgType != WHILE_ && synArgType != IF_) {
         this->isSyntacticallyValid = false;
@@ -335,7 +339,9 @@ void QueryPreprocessor::checkPatternClause(string syn, vector<string> args) {
         for (int i = 0; i < validArgType.size() && this->isSyntacticallyValid; i++) {
             string argType = getArgType(args[i], this->declarations);
             if (validArgType[i].find(argType) != validArgType[i].end()) {
-                if (checkDesignEntity(argType)) {
+                if (argType == NAME_ || argType == EXPRESSION_ || argType == EXPRESSIONWITHUNDERSCORE_) {
+                    numOfKnown++;
+                } else if (checkDesignEntity(argType)) {
                     synonyms.insert(args[i]);
                 }
                 continue;
@@ -350,7 +356,7 @@ void QueryPreprocessor::checkPatternClause(string syn, vector<string> args) {
     }
 
     if (this->isSyntacticallyValid && this->isSemanticallyValid) {
-        this->clauses.push_back(Clause(syn, args, synonyms));
+        this->clauses.push_back(Clause(syn, args, synonyms, numOfKnown));
     }
 }
 
@@ -382,26 +388,29 @@ void QueryPreprocessor::parseWithClause(string clause) {
 
 void QueryPreprocessor::checkWithClause(string left, string right) {
     unordered_set<string> synonyms = unordered_set<string>();
-    string leftType = checkRef(left, synonyms);
-    string rightType = checkRef(right, synonyms);
+    int numOfKnown = 0;
+    string leftType = checkRef(left, synonyms, numOfKnown);
+    string rightType = checkRef(right, synonyms, numOfKnown);
     if (this->isSyntacticallyValid && leftType != rightType) {
         this->isSemanticallyValid = false;
     }
 
     if (this->isSyntacticallyValid && this->isSemanticallyValid) {
-        this->clauses.push_back(Clause("", {left, right}, synonyms));
+        this->clauses.push_back(Clause("", {left, right}, synonyms, numOfKnown));
     }
 }
 
-string QueryPreprocessor::checkRef(string &ref, unordered_set<string>& synonyms) {
+string QueryPreprocessor::checkRef(string &ref, unordered_set<string>& synonyms, int& numOfKnown) {
     string type;
     int pos = ref.find('.');
     if (pos == string::npos) { // NAME_ | INTEGER_ | synonym
         string argType = getArgType(ref, this->declarations);
         if (argType == NAME_) {
             type = NAME_;
+            numOfKnown++;
         } else if (argType == INTEGER_) {
             type = INTEGER_;
+            numOfKnown++;
         } else if (argType == PROGLINE_) {
             type = INTEGER_;
             synonyms.insert(ref);

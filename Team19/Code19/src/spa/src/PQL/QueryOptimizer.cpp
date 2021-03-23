@@ -8,9 +8,16 @@ void QueryOptimizer::setIsGroup(bool isGroup) {
     this->isGroup = isGroup;
 }
 
+void QueryOptimizer::setIsOrderClauses(bool isOrderClauses) {
+    this->isOrderClauses = isOrderClauses;
+}
+
 Query QueryOptimizer::optimize(Query query) {
     if (isGroup) {
         groupClauses(query);
+    }
+    if (isOrderClauses) {
+        orderClauses(query);
     }
     return query;
 }
@@ -83,6 +90,53 @@ void QueryOptimizer::dfs(int source, vector<unordered_set<int>> adj, vector<bool
         if (!visited.at(v)) {
             dfs(v, adj, visited, indexOfSynonymsInGroup);
         }
+    }
+}
+
+void QueryOptimizer::orderClauses(Query& query) {
+    // sort by number of synonyms computed, then by number of known, then by size of table in PKB
+    struct ClauseComparator {
+        unordered_set<string> synonymsComputed;
+        unordered_map<string, string> declarations;
+
+        bool operator()(Clause& c1, Clause& c2) {
+            int numSynComputedC1 = 0;
+            for (string synonym : c1.getSynonyms()) {
+                if (synonymsComputed.find(synonym) != synonymsComputed.end()) {
+                    numSynComputedC1++;
+                }
+            }
+
+            int numSynComputedC2 = 0;
+            for (string synonym : c2.getSynonyms()) {
+                if (synonymsComputed.find(synonym) != synonymsComputed.end()) {
+                    numSynComputedC2++;
+                }
+            }
+
+            if (numSynComputedC1 == numSynComputedC2) {
+                if (c1.getNumOfKnown() == c2.getNumOfKnown()) {
+                    return getSize(c1, declarations) < getSize(c2, declarations);
+                } else {
+                    return c1.getNumOfKnown() > c2.getNumOfKnown();
+                }
+            } else {
+                return numSynComputedC1 > numSynComputedC2;
+            }
+        }
+    };
+
+    for (int i = 0; i < query.getClauses().size(); i++) { // for each group
+        unordered_set<string> synonymsComputed;
+        vector<Clause> oldClauses = query.getClauses().at(i);
+        vector<Clause> newClauses;
+        while (!oldClauses.empty()) {
+            sort(oldClauses.begin(), oldClauses.end(), ClauseComparator({synonymsComputed, query.getDeclarations()}));
+            newClauses.push_back(oldClauses.front());
+            synonymsComputed.insert(oldClauses.front().getSynonyms().begin(), oldClauses.front().getSynonyms().end());
+            oldClauses.erase(oldClauses.begin());
+        }
+        query.setClausesAtIdx(newClauses, i);
     }
 }
 

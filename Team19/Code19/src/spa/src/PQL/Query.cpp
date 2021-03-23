@@ -37,6 +37,10 @@ void Query::setClauses(vector<vector<Clause>> clauses) {
     this->clauses = clauses;
 }
 
+void Query::setClausesAtIdx(vector<Clause> clauses, int idx) {
+    this->clauses.at(idx) = clauses;
+}
+
 bool operator==(const Query& q1, const Query& q2) {
     return q1.declarations == q2.declarations && q1.toSelect == q2.toSelect && q1.clauses == q2.clauses
             && q1.isSyntacticallyValid == q2.isSyntacticallyValid && q1.isSemanticallyValid == q2.isSemanticallyValid;

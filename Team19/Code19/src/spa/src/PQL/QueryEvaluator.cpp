@@ -103,7 +103,7 @@ bool QueryEvaluator::evaluateClause(Clause clause, unordered_map<string, vector<
         return AffectsTEvaluator::evaluate(this->declarations, clause, tempResults);
     } else if (rel == "") { // with clause
         return WithEvaluator::evaluate(this->declarations, clause, tempResults);
-    } else { // pattern
+    } else { // pattern clause
         return PatternEvaluator::evaluate(this->declarations, clause, tempResults);
     }
 }

@@ -21,6 +21,7 @@ public:
     bool getIsSemanticallyValid();
 
     void setClauses(vector<vector<Clause>> clauses);
+    void setClausesAtIdx(vector<Clause> clauses, int idx);
 
     friend bool operator==(const Query& q1, const Query& q2);
 

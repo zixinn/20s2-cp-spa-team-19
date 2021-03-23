@@ -262,3 +262,135 @@ TEST_CASE("project") {
     REQUIRE(results4["a"] == vector<int>{1, 3, 5, 7, 7});
     REQUIRE(results4["v"] == vector<int>{2, 4, 6, 8, 9});
 }
+
+//    procedure sumDigits {
+//    1.  read number;
+//    2.  sum = 0;
+//    3.  while (number > 0) {
+//    4.      digit = number % 10;
+//    5.      sum = sum + digit;
+//    6.      number = number / 10;
+//        }
+//    7.  print sum;
+//    }
+
+void setupPKB2() {
+    PKB::resetPKB();
+
+    ast::Stmt* stmtNodeStub = new StmtNodeStub(0);
+
+    PKB::procTable->storeProcName("sumDigits"); // 0
+
+    PKB::varTable->storeVarName("number"); // 0
+    PKB::varTable->storeVarName("sum"); // 1
+    PKB::varTable->storeVarName("digit"); // 2
+
+    PKB::constTable->storeConst("0");
+    PKB::constTable->storeConst("10");
+
+    PKB::stmtTable->storeStmt(1, stmtNodeStub, READ_);
+    PKB::stmtTable->storeStmt(2, stmtNodeStub, ASSIGN_);
+    PKB::stmtTable->storeStmt(3, stmtNodeStub, WHILE_);
+    PKB::stmtTable->storeStmt(4, stmtNodeStub, ASSIGN_);
+    PKB::stmtTable->storeStmt(5, stmtNodeStub, ASSIGN_);
+    PKB::stmtTable->storeStmt(6, stmtNodeStub, ASSIGN_);
+    PKB::stmtTable->storeStmt(7, stmtNodeStub, PRINT_);
+
+    PKB::follows->storeFollows(1, 2);
+    PKB::follows->storeFollows(2, 3);
+    PKB::follows->storeFollows(4, 5);
+    PKB::follows->storeFollows(5, 6);
+    PKB::follows->storeFollows(3, 7);
+
+    PKB::parent->storeParent(3, 4);
+    PKB::parent->storeParent(3, 5);
+    PKB::parent->storeParent(3, 6);
+
+    PKB::uses->storeStmtUses(3, 0);
+    PKB::uses->storeStmtUses(3, 1);
+    PKB::uses->storeStmtUses(3, 2);
+    PKB::uses->storeStmtUses(4, 0);
+    PKB::uses->storeStmtUses(5, 1);
+    PKB::uses->storeStmtUses(5, 2);
+    PKB::uses->storeStmtUses(6, 0);
+    PKB::uses->storeStmtUses(7, 1);
+    PKB::uses->storeProcUses(0, 0);
+    PKB::uses->storeProcUses(0, 1);
+    PKB::uses->storeProcUses(0, 2);
+
+    PKB::modifies->storeStmtModifies(1, 0);
+    PKB::modifies->storeStmtModifies(2, 1);
+    PKB::modifies->storeStmtModifies(3, 0);
+    PKB::modifies->storeStmtModifies(3, 1);
+    PKB::modifies->storeStmtModifies(3, 2);
+    PKB::modifies->storeStmtModifies(4, 2);
+    PKB::modifies->storeStmtModifies(5, 1);
+    PKB::modifies->storeStmtModifies(6, 0);
+    PKB::modifies->storeProcModifies(0, 1);
+    PKB::modifies->storeProcModifies(0, 2);
+    PKB::modifies->storeProcModifies(0, 3);
+
+    PKB::next->storeNext(1, 2);
+    PKB::next->storeNext(2, 3);
+    PKB::next->storeNext(3, 4);
+    PKB::next->storeNext(3, 7);
+    PKB::next->storeNext(4, 5);
+    PKB::next->storeNext(5, 6);
+    PKB::next->storeNext(6, 7);
+    PKB::next->storeNext(6, 3);
+
+    PKB::populatePKB();
+}
+
+TEST_CASE("getSize") {
+    setupPKB2();
+    REQUIRE(PKB::follows->getFollowsSize() == 5);
+    REQUIRE(PKB::follows->getFollowsStarSize() == 9);
+    REQUIRE(PKB::parent->getParentSize() == 3);
+    REQUIRE(PKB::parent->getParentStarSize() == 3);
+    REQUIRE(PKB::uses->getProcSize() == 3);
+    REQUIRE(PKB::uses->getStmtSize() == 8);
+    REQUIRE(PKB::modifies->getProcSize() == 3);
+    REQUIRE(PKB::modifies->getStmtSize() == 8);
+    REQUIRE(PKB::calls->getCallsSize() == 0);
+    REQUIRE(PKB::calls->getCallsStarSize() == 0);
+    REQUIRE(PKB::next->getNextSize() == 8);
+    REQUIRE(PKB::next->getNextStarSize() == 31);
+    REQUIRE(PKB::affects->getAffectsSize() == 5);
+    REQUIRE(PKB::affects->getAffectsStarSize() == 6);
+    REQUIRE(PKB::procTable->getSize() == 1);
+    REQUIRE(PKB::varTable->getSize() == 3);
+    REQUIRE(PKB::constTable->getSize() == 2);
+    REQUIRE(PKB::stmtTable->getSize() == 7);
+    REQUIRE(PKB::stmtTable->getAllAssignStmtNums().size() == 4);
+    REQUIRE(PKB::stmtTable->getAllWhileStmtNums().size() == 1);
+    REQUIRE(PKB::stmtTable->getAllIfStmtNums().size() == 0);
+
+    unordered_map<string, string> declarations = {{"s", STMT_}, {"r", READ_}, {"pn", PRINT_}, {"a", ASSIGN_},
+                                                  {"c", CALL_}, {"w", WHILE_}, {"ifs", IF_}, {"v", VARIABLE_},
+                                                  {"cc", CONSTANT_}, {"p", PROCEDURE_}, {"n1", PROGLINE_}};
+
+    Clause c1 = Clause("Follows", {"6", "s"}, {"s"}, 1);
+    REQUIRE(getSize(c1, declarations) == 5);
+
+    Clause c2 = Clause("Parent*", {"w", "a"}, {"w", "a"}, 0);
+    REQUIRE(getSize(c2, declarations) == 3);
+
+    Clause c3 = Clause("Uses", {"3", "_"}, {}, 1);
+    REQUIRE(getSize(c3, declarations) == 8);
+
+    Clause c4 = Clause("Modifies", {"p", "v"}, {"p", "v"}, 0);
+    REQUIRE(getSize(c4, declarations) == 3);
+
+    Clause c5 = Clause("", {"\"x0\"", "\"x0\""}, {}, 2);
+    REQUIRE(getSize(c5, declarations) == 0);
+
+    Clause c6 = Clause("", {"v.varName", "r.varName"}, {"v", "r"}, 0);
+    REQUIRE(getSize(c6, declarations) == 7);
+
+    Clause c7 = Clause("a", {"_", "_\"10\"_"}, {"a"}, 1);
+    REQUIRE(getSize(c7, declarations) == 4);
+
+    Clause c8 = Clause("ifs", {"v", "_", "_"}, {"ifs", "v"}, 0);
+    REQUIRE(getSize(c8, declarations) == 0);
+}
