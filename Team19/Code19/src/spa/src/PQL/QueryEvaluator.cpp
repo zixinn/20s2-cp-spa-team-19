@@ -41,7 +41,8 @@ list<string> QueryEvaluator::evaluate(Query query) {
             if (!tempResults.empty()) {
                 unordered_set<string> toProject = this->synonymsToSelect; // add synonyms in result-cl
                 for (int k = j + 1; k < clauses.size(); k++) { // add synonyms in remaining clauses
-                    toProject.insert(clauses.at(k).getSynonyms().begin(), clauses.at(k).getSynonyms().end());
+                    unordered_set<string> synonyms = clauses.at(k).getSynonyms();
+                    toProject.insert(synonyms.begin(), synonyms.end());
                 }
                 vector<string> commonSynonyms;
                 for (pair<string, vector<int>> col : tempResults) {

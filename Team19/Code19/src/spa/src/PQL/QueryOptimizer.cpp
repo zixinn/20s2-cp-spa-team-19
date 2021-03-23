@@ -33,7 +33,7 @@ void QueryOptimizer::groupClauses(Query& query) {
     }
 
     // populate adjacency list
-    vector<unordered_set<int>> adj(declarations.size(), {});
+    vector<unordered_set<int>> adj(declarations.size(), unordered_set<int>{});
     vector<Clause> clauses = query.getClauses().at(0);
     for (Clause clause : clauses) {
         unordered_set<string> synonymsInClause = clause.getSynonyms();
@@ -68,7 +68,7 @@ void QueryOptimizer::groupClauses(Query& query) {
     // group the clauses based on connected synonyms
     // first group contains clauses without synonyms
     // some groups may be empty, e.g. unused declarations
-    vector<vector<Clause>> groups = vector<vector<Clause>>(groupNum, {});
+    vector<vector<Clause>> groups = vector<vector<Clause>>(groupNum, vector<Clause>{});
     for (Clause clause : clauses) {
         if (clause.getSynonyms().empty()) { // no synonym in clause
             groups.at(0).push_back(clause); // insert at the front
@@ -133,7 +133,8 @@ void QueryOptimizer::orderClauses(Query& query) {
         while (!oldClauses.empty()) {
             sort(oldClauses.begin(), oldClauses.end(), ClauseComparator({synonymsComputed, query.getDeclarations()}));
             newClauses.push_back(oldClauses.front());
-            synonymsComputed.insert(oldClauses.front().getSynonyms().begin(), oldClauses.front().getSynonyms().end());
+            unordered_set<string> synonyms = oldClauses.front().getSynonyms();
+            synonymsComputed.insert(synonyms.begin(), synonyms.end());
             oldClauses.erase(oldClauses.begin());
         }
         query.setClausesAtIdx(newClauses, i);

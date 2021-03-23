@@ -123,7 +123,11 @@ TEST_CASE("QueryOptimizer optimize groupClauses - 1 group, no synonym") {
     Query q1 = Query({{"v", VARIABLE_}}, {"v"}, {{c11}}, true, true);
     Query actual1 = qo.optimize(q1);
     Query expected1 = Query({{"v", VARIABLE_}}, {"v"}, {{c11}, {}}, true, true);
-    REQUIRE(actual1 == expected1);
+    REQUIRE(actual1.getDeclarations() == expected1.getDeclarations());
+    REQUIRE(actual1.getToSelect() == expected1.getToSelect());
+    REQUIRE_THAT(actual1.getClauses(), Catch::Matchers::UnorderedEquals(expected1.getClauses()));
+    REQUIRE(actual1.getIsSyntacticallyValid() == expected1.getIsSyntacticallyValid());
+    REQUIRE(actual1.getIsSemanticallyValid() == expected1.getIsSemanticallyValid());
 
     // Select BOOLEAN such that Calls*(_, _) with "x" = "x" and 6 = 9
     Clause c21 = Clause("Calls*", {"_", "_"}, {}, 0);
@@ -132,7 +136,11 @@ TEST_CASE("QueryOptimizer optimize groupClauses - 1 group, no synonym") {
     Query q2 = Query({}, {"BOOLEAN"}, {{c21, c22, c23}}, true, true);
     Query actual2 = qo.optimize(q2);
     Query expected2 = Query({}, {"BOOLEAN"}, {{c21, c22, c23}}, true, true);
-    REQUIRE(actual2 == expected2);
+    REQUIRE(actual2.getDeclarations() == expected2.getDeclarations());
+    REQUIRE(actual2.getToSelect() == expected2.getToSelect());
+    REQUIRE_THAT(actual2.getClauses(), Catch::Matchers::UnorderedEquals(expected2.getClauses()));
+    REQUIRE(actual2.getIsSyntacticallyValid() == expected2.getIsSyntacticallyValid());
+    REQUIRE(actual2.getIsSemanticallyValid() == expected2.getIsSemanticallyValid());
 }
 
 TEST_CASE("QueryOptimizer optimize groupClauses - 1 group, with synonym") {
@@ -147,7 +155,11 @@ TEST_CASE("QueryOptimizer optimize groupClauses - 1 group, with synonym") {
     Query q1 = Query({{"s", STMT_}}, {"s"}, {{c11, c12}}, true, true);
     Query actual1 = qo.optimize(q1);
     Query expected1 = Query({{"s", STMT_}}, {"s"}, {{}, {c11, c12}}, true, true);;
-    REQUIRE(actual1 == expected1);
+    REQUIRE(actual1.getDeclarations() == expected1.getDeclarations());
+    REQUIRE(actual1.getToSelect() == expected1.getToSelect());
+    REQUIRE_THAT(actual1.getClauses(), Catch::Matchers::UnorderedEquals(expected1.getClauses()));
+    REQUIRE(actual1.getIsSyntacticallyValid() == expected1.getIsSyntacticallyValid());
+    REQUIRE(actual1.getIsSemanticallyValid() == expected1.getIsSemanticallyValid());
 
     // assign a; variable v; while w;
     // Select w pattern a(v, "x") and w(v, _) with a.stmt# = 8
@@ -157,7 +169,11 @@ TEST_CASE("QueryOptimizer optimize groupClauses - 1 group, with synonym") {
     Query q2 = Query({{"a", ASSIGN_}, {"v", VARIABLE_}, {"w", WHILE_}}, {"w"}, {{c21, c22, c23}}, true, true);
     Query actual2 = qo.optimize(q2);
     Query expected2 = Query({{"a", ASSIGN_}, {"v", VARIABLE_}, {"w", WHILE_}}, {"w"}, {{}, {c21, c22, c23}}, true, true);
-    REQUIRE(actual2 == expected2);
+    REQUIRE(actual2.getDeclarations() == expected2.getDeclarations());
+    REQUIRE(actual2.getToSelect() == expected2.getToSelect());
+    REQUIRE_THAT(actual2.getClauses(), Catch::Matchers::UnorderedEquals(expected2.getClauses()));
+    REQUIRE(actual2.getIsSyntacticallyValid() == expected2.getIsSyntacticallyValid());
+    REQUIRE(actual2.getIsSemanticallyValid() == expected2.getIsSemanticallyValid());
 }
 
 TEST_CASE("QueryOptimizer optimize groupClauses - 2 groups, with and without synonym") {
@@ -177,7 +193,11 @@ TEST_CASE("QueryOptimizer optimize groupClauses - 2 groups, with and without syn
     Query actual1 = qo.optimize(q1);
     Query expected1 = Query({{"ifs", IF_}, {"n", PROGLINE_}, {"v", VARIABLE_}},
                             {"n"}, {{c11, c13}, {c12, c14, c15}}, true, true);
-    REQUIRE(actual1 == expected1);
+    REQUIRE(actual1.getDeclarations() == expected1.getDeclarations());
+    REQUIRE(actual1.getToSelect() == expected1.getToSelect());
+    REQUIRE_THAT(actual1.getClauses(), Catch::Matchers::UnorderedEquals(expected1.getClauses()));
+    REQUIRE(actual1.getIsSyntacticallyValid() == expected1.getIsSyntacticallyValid());
+    REQUIRE(actual1.getIsSemanticallyValid() == expected1.getIsSemanticallyValid());
 }
 
 TEST_CASE("QueryOptimizer optimize groupClauses - 2 groups, both with synonym") {
@@ -197,7 +217,11 @@ TEST_CASE("QueryOptimizer optimize groupClauses - 2 groups, both with synonym") 
     Query actual1 = qo.optimize(q1);
     Query expected1 = Query({{"a", ASSIGN_}, {"v", VARIABLE_}, {"s", STMT_}, {"r", READ_}, {"w", WHILE_}},
                             {"a", "r"}, {{}, {c11, c14}, {c12, c13, c15}}, true, true);
-    REQUIRE(actual1 == expected1);
+    REQUIRE(actual1.getDeclarations() == expected1.getDeclarations());
+    REQUIRE(actual1.getToSelect() == expected1.getToSelect());
+    REQUIRE_THAT(actual1.getClauses(), Catch::Matchers::UnorderedEquals(expected1.getClauses()));
+    REQUIRE(actual1.getIsSyntacticallyValid() == expected1.getIsSyntacticallyValid());
+    REQUIRE(actual1.getIsSemanticallyValid() == expected1.getIsSemanticallyValid());
 }
 
 TEST_CASE("QueryOptimizer optimize groupClauses - multiple groups, 1 group with no synonym") {
@@ -224,7 +248,11 @@ TEST_CASE("QueryOptimizer optimize groupClauses - multiple groups, 1 group with 
     Query actual1 = qo.optimize(q1);
     Query expected1 = Query({{"a", ASSIGN_}, {"ifs", IF_}, {"v", VARIABLE_}, {"v1", VARIABLE_}, {"v2", VARIABLE_}, {"cc", CONSTANT_}, {"r", READ_}, {"pn", PRINT_}, {"c", CALL_}},
                             {"ifs", "cc", "v2"}, {{c12, c14, c19}, {c15, c16}, {c13, c17}, {c11, c18}}, true, true);
-    REQUIRE(actual1 == expected1);
+    REQUIRE(actual1.getDeclarations() == expected1.getDeclarations());
+    REQUIRE(actual1.getToSelect() == expected1.getToSelect());
+    REQUIRE_THAT(actual1.getClauses(), Catch::Matchers::UnorderedEquals(expected1.getClauses()));
+    REQUIRE(actual1.getIsSyntacticallyValid() == expected1.getIsSyntacticallyValid());
+    REQUIRE(actual1.getIsSemanticallyValid() == expected1.getIsSemanticallyValid());
 }
 
 TEST_CASE("QueryOptimizer optimize groupClauses - multiple groups, all groups with synonym") {
@@ -251,7 +279,11 @@ TEST_CASE("QueryOptimizer optimize groupClauses - multiple groups, all groups wi
     Query actual1 = qo.optimize(q1);
     Query expected1 = Query({{"s", STMT_}, {"a", ASSIGN_}, {"w", WHILE_}, {"w1", WHILE_}, {"w2", WHILE_}, {"ifs", IF_}, {"ifs1", IF_}, {"v", VARIABLE_}, {"v1", VARIABLE_}, {"cc", CONSTANT_}, {"pn", PRINT_}, {"c", CALL_}},
                             {"w", "p", "v1", "c"}, {{}, {c14}, {c12, c15, c18}, {}, {c11}, {c13, c16, c17, c19}, {}}, true, true);
-    REQUIRE(actual1 == expected1);
+    REQUIRE(actual1.getDeclarations() == expected1.getDeclarations());
+    REQUIRE(actual1.getToSelect() == expected1.getToSelect());
+    REQUIRE_THAT(actual1.getClauses(), Catch::Matchers::UnorderedEquals(expected1.getClauses()));
+    REQUIRE(actual1.getIsSyntacticallyValid() == expected1.getIsSyntacticallyValid());
+    REQUIRE(actual1.getIsSemanticallyValid() == expected1.getIsSemanticallyValid());
 }
 
 TEST_CASE("QueryOptimizer optimize orderClauses - 1 group, no synonym") {
