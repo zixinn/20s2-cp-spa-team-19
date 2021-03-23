@@ -52,7 +52,8 @@ private:
     bool evaluateClause(Clause clause, unordered_map<string, vector<int>>& tempResults);
 
     // Joins table and results based on common synonyms (if any) and assigns the newResults to results
-    void join(unordered_map<string, vector<int>> table, unordered_map<string, vector<int>>& results);
+    // Assumes table is non-empty
+    void join(unordered_map<string, vector<int>> table, unordered_map<string, vector<int>>& results, vector<string> commonSynonyms);
 
     // Evaluates the synonym to select using the results table and returns a list containing the answers
     list<string> evaluateSynonymToSelect(vector<string> toSelect);

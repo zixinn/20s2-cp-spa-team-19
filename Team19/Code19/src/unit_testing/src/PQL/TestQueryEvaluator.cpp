@@ -292,7 +292,7 @@ TEST_CASE("QueryEvaluator evaluate query with multiple such that clauses") {
 
     // variable v; stmt s; Select v such that Follows* (5, s) such that Modifies (s, v)
     Clause c21 = Clause("Follows*", vector<string>{"5", "s"}, {"s"});
-    Clause c22 = Clause("Modifies", vector<string>{"s", "v"}, {"v"});
+    Clause c22 = Clause("Modifies", vector<string>{"s", "v"}, {"s", "v"});
     Query q2 = Query({ {"v", VARIABLE_}, {"s", STMT_} }, { "v" }, { {c21, c22} }, true, true);
     list<string> list2 = qe.evaluate(q2);
     unordered_set<string> actual2(begin(list2), end(list2));

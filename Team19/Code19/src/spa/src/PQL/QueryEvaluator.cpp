@@ -29,7 +29,8 @@ list<string> QueryEvaluator::evaluate(Query query) {
 
     for (vector<Clause> clauses : this->clauses) {
         unordered_map<string, vector<int>> groupResults;
-        for (Clause clause : clauses) {
+        for (int j = 0; j < clauses.size(); j++) {
+            Clause clause = clauses.at(j);
             unordered_map<string, vector<int>> tempResults;
             if (!evaluateClause(clause, tempResults)) { // clause returns false
                 if (toSelect.size() == 1 && toSelect.at(0) == "BOOLEAN") {
@@ -38,24 +39,36 @@ list<string> QueryEvaluator::evaluate(Query query) {
                 return emptyList;
             }
             if (!tempResults.empty()) {
-                join(tempResults, groupResults);
-                if (groupResults.empty() || groupResults.begin()->second.empty()) {
-                    if (toSelect.size() == 1 && toSelect.at(0) == "BOOLEAN") {
-                        return list<string> {"FALSE"};
+                unordered_set<string> toProject = this->synonymsToSelect; // add synonyms in result-cl
+                for (int k = j + 1; k < clauses.size(); k++) { // add synonyms in remaining clauses
+                    toProject.insert(clauses.at(k).getSynonyms().begin(), clauses.at(k).getSynonyms().end());
+                }
+                vector<string> commonSynonyms;
+                for (pair<string, vector<int>> col : tempResults) {
+                    if (groupResults.find(col.first) != groupResults.end()) {
+                        commonSynonyms.push_back(col.first);
                     }
-                    return emptyList;
+                }
+                unordered_set<string> toProjectWithCommonSynonyms;
+                toProjectWithCommonSynonyms.insert(toProject.begin(), toProject.end());
+                toProjectWithCommonSynonyms.insert(commonSynonyms.begin(), commonSynonyms.end());
+                project(toProjectWithCommonSynonyms, tempResults);
+
+                if (!tempResults.empty()) {
+                    join(tempResults, groupResults, commonSynonyms);
+                    if (groupResults.empty() || groupResults.begin()->second.empty()) {
+                        if (toSelect.size() == 1 && toSelect.at(0) == "BOOLEAN") {
+                            return list<string> {"FALSE"};
+                        }
+                        return emptyList;
+                    }
+                    project(toProject, groupResults);
                 }
             }
         }
         project(this->synonymsToSelect, groupResults);
         if (!groupResults.empty()) {
-            join(groupResults, results);
-            if (results.empty() || results.begin()->second.empty()) {
-                if (toSelect.size() == 1 && toSelect.at(0) == "BOOLEAN") {
-                    return list<string> {"FALSE"};
-                }
-                return emptyList;
-            }
+            join(groupResults, results, vector<string>());
         }
     }
 
@@ -95,7 +108,7 @@ bool QueryEvaluator::evaluateClause(Clause clause, unordered_map<string, vector<
     }
 }
 
-void QueryEvaluator::join(unordered_map<string, vector<int>> table, unordered_map<string, vector<int>>& results) {
+void QueryEvaluator::join(unordered_map<string, vector<int>> table, unordered_map<string, vector<int>>& results, vector<string> commonSynonyms) {
     if (results.empty()) {
         results = table;
         return;
@@ -114,17 +127,9 @@ void QueryEvaluator::join(unordered_map<string, vector<int>> table, unordered_ma
         newResults.insert({ synonym, v });
     }
 
-    vector<string> commonSynonyms;
-    for (pair<string, vector<int>> col : table) {
-        if (results.find(col.first) != results.end()) {
-            commonSynonyms.push_back(col.first);
-        }
-    }
-
     int resultsNumRows = results.begin()->second.size();
     int tableNumRows = table.begin()->second.size();
-    // table will have at most 2 cols
-    if (commonSynonyms.empty()) {
+    if (commonSynonyms.empty()) { // cross product
         for (int i = 0; i < resultsNumRows; i++) {
             for (int j = 0; j < tableNumRows; j++) {
                 // insert row i in results into newResults
@@ -138,6 +143,7 @@ void QueryEvaluator::join(unordered_map<string, vector<int>> table, unordered_ma
             }
         }
 
+    // table will have at most 2 cols
     } else if (commonSynonyms.size() == 1) {
         string commonSynonym = commonSynonyms.at(0);
         if (table.size() == 1) {
@@ -226,7 +232,7 @@ list<string> QueryEvaluator::evaluateSynonymToSelect(vector<string> toSelect) {
     for (string synonym : synonymsToSelect) {
         if (results.find(synonym) == results.end()) { // synonym not in results table
             unordered_map<string, vector<int>> tempResults = { {synonym, selectAll(this->declarations[synonym])} };
-            join(tempResults, results);
+            join(tempResults, results, vector<string>());
         }
     }
 
