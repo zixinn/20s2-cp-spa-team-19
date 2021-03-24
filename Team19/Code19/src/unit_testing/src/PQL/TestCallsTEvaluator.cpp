@@ -55,7 +55,7 @@ TEST_CASE("CallsTEvaluator evaluate underscore underscore (when proc Calls* exis
 
     // Calls* (_, _)
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = CallsTEvaluator::evaluate({ }, Clause("Calls*", vector<string>{"_", "_"}), tempResults1);
+    bool b1 = CallsTEvaluator::evaluate({ }, Clause("Calls*", vector<string>{"_", "_"}, {}, 0), tempResults1);
     unordered_map<string, vector<int>> expected1 = { };
     REQUIRE(b1);
     REQUIRE(tempResults1 == expected1);
@@ -69,7 +69,7 @@ TEST_CASE("CallsTEvaluator evaluate underscore underscore (when proc Calls* does
     PKB::calls->processCalls();
     // Calls* (_, _)
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = CallsTEvaluator::evaluate({ }, Clause("Calls*", vector<string>{"_", "_"}), tempResults1);
+    bool b1 = CallsTEvaluator::evaluate({ }, Clause("Calls*", vector<string>{"_", "_"}, {}, 0), tempResults1);
     unordered_map<string, vector<int>> expected1 = { };
     REQUIRE_FALSE(b1);
     REQUIRE(tempResults1 == expected1);
@@ -80,21 +80,21 @@ TEST_CASE("CallsTEvaluator evaluate known known") {
 
     // Calls* ("proc2", "proc3")
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = CallsTEvaluator::evaluate({}, Clause("Calls*", vector<string>{"\"proc2\"", "\"proc3\""}), tempResults1);
+    bool b1 = CallsTEvaluator::evaluate({}, Clause("Calls*", vector<string>{"\"proc2\"", "\"proc3\""}, {}, 2), tempResults1);
     unordered_map<string, vector<int>> expected1 = {};
     REQUIRE(b1);
     REQUIRE(tempResults1 == expected1);
 
     // Calls* ("proc4", "proc0")
     unordered_map<string, vector<int>> tempResults3;
-    bool b3 = CallsTEvaluator::evaluate({}, Clause("Calls*", vector<string>{"\"proc4\"", "\"proc0\""}), tempResults3);
+    bool b3 = CallsTEvaluator::evaluate({}, Clause("Calls*", vector<string>{"\"proc4\"", "\"proc0\""}, {}, 2), tempResults3);
     unordered_map<string, vector<int>> expected3 = {};
     REQUIRE(b3);
     REQUIRE(tempResults3 == expected3);
 
     // Calls* ("proc8", "proc4")
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = CallsTEvaluator::evaluate({}, Clause("Calls*", vector<string>{"\"proc8\"", "\"proc4\""}), tempResults2);
+    bool b2 = CallsTEvaluator::evaluate({}, Clause("Calls*", vector<string>{"\"proc8\"", "\"proc4\""}, {}, 2), tempResults2);
     unordered_map<string, vector<int>> expected2 = {};
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
@@ -105,7 +105,7 @@ TEST_CASE("CallsTEvaluator evaluate known synonym") {
 
     // Calls* ("proc4", p)
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = CallsTEvaluator::evaluate({ {"p", PROCEDURE_} }, Clause("Calls*", vector<string>{"\"proc4\"", "p"}), tempResults1);
+    bool b1 = CallsTEvaluator::evaluate({ {"p", PROCEDURE_} }, Clause("Calls*", vector<string>{"\"proc4\"", "p"}, {"p"}, 1), tempResults1);
     unordered_set<int> actual1(tempResults1["p"].begin(), tempResults1["p"].end());
     unordered_set<int> expected1{ 1, 2, 3, 5, 7, 0 };
     REQUIRE(b1);
@@ -113,7 +113,7 @@ TEST_CASE("CallsTEvaluator evaluate known synonym") {
     
     // Calls* ("proc3", p)
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = CallsTEvaluator::evaluate({ {"p", PROCEDURE_} }, Clause("Calls*", vector<string>{"\"proc3\"", "p"}), tempResults2);
+    bool b2 = CallsTEvaluator::evaluate({ {"p", PROCEDURE_} }, Clause("Calls*", vector<string>{"\"proc3\"", "p"}, {"p"}, 1), tempResults2);
     unordered_map<string, vector<int>> expected2 = { };
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
@@ -124,7 +124,7 @@ TEST_CASE("CallsTEvaluator evaluate synonym known") {
 
     // Calls* (p, "proc7")
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = CallsTEvaluator::evaluate({ {"p", PROCEDURE_} }, Clause("Calls*", vector<string>{"p", "\"proc7\""}), tempResults1);
+    bool b1 = CallsTEvaluator::evaluate({ {"p", PROCEDURE_} }, Clause("Calls*", vector<string>{"p", "\"proc7\""}, {"p"}, 1), tempResults1);
     unordered_set<int> actual1(tempResults1["p"].begin(), tempResults1["p"].end());
     unordered_set<int> expected1{ 4, 5, 6, 8 };
     REQUIRE(b1);
@@ -132,7 +132,7 @@ TEST_CASE("CallsTEvaluator evaluate synonym known") {
     
     // Calls* (p, "proc4")
     unordered_map<string, vector<int>> tempResults3;
-    bool b3 = CallsTEvaluator::evaluate({ {"p", PROCEDURE_} }, Clause("Calls*", vector<string>{"p", "\"proc4\""}), tempResults3);
+    bool b3 = CallsTEvaluator::evaluate({ {"p", PROCEDURE_} }, Clause("Calls*", vector<string>{"p", "\"proc4\""}, {"p"}, 1), tempResults3);
     unordered_map<string, vector<int>> expected3 = { };
     REQUIRE_FALSE(b3);
     REQUIRE(tempResults3 == expected3);
@@ -143,14 +143,14 @@ TEST_CASE("CallsTEvaluator evaluate known underscore") {
 
     // Calls* ("proc7", _)
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = CallsTEvaluator::evaluate({ }, Clause("Calls*", vector<string>{"\"proc7\"", "_"}), tempResults1);
+    bool b1 = CallsTEvaluator::evaluate({ }, Clause("Calls*", vector<string>{"\"proc7\"", "_"}, {}, 1), tempResults1);
     unordered_map<string, vector<int>> expected1 = { };
     REQUIRE(b1);
     REQUIRE(tempResults1 == expected1);
 
     // Calls* ("proc3", _)
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = CallsTEvaluator::evaluate({ }, Clause("Calls*", vector<string>{"\"proc3\"", "_"}), tempResults2);
+    bool b2 = CallsTEvaluator::evaluate({ }, Clause("Calls*", vector<string>{"\"proc3\"", "_"}, {}, 1), tempResults2);
     unordered_map<string, vector<int>> expected2 = { };
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
@@ -161,14 +161,14 @@ TEST_CASE("CallsTEvaluator evaluate underscore known") {
 
     // Calls* (_, "proc1")
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = CallsTEvaluator::evaluate({ }, Clause("Calls*", vector<string>{"_", "\"proc1\""}), tempResults1);
+    bool b1 = CallsTEvaluator::evaluate({ }, Clause("Calls*", vector<string>{"_", "\"proc1\""}, {}, 1), tempResults1);
     unordered_map<string, vector<int>> expected1 = { };
     REQUIRE(b1);
     REQUIRE(tempResults1 == expected1);
 
     // Calls* (_, "proc4")
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = CallsTEvaluator::evaluate({ }, Clause("Calls*", vector<string>{"_", "\"proc4\""}), tempResults2);
+    bool b2 = CallsTEvaluator::evaluate({ }, Clause("Calls*", vector<string>{"_", "\"proc4\""}, {}, 1), tempResults2);
     unordered_map<string, vector<int>> expected2 = { };
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
@@ -179,7 +179,7 @@ TEST_CASE("CallsTEvaluator evaluate synonym synonym") {
 
     // Calls* (p, p1)
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = CallsTEvaluator::evaluate({ {"p", PROCEDURE_}, {"p1", PROCEDURE_} }, Clause("Calls*", vector<string>{"p", "p1"}), tempResults1);
+    bool b1 = CallsTEvaluator::evaluate({ {"p", PROCEDURE_}, {"p1", PROCEDURE_} }, Clause("Calls*", vector<string>{"p", "p1"}, {"p", "p1"}, 0), tempResults1);
     set<pair<int, int>> actual1;
     for (int i = 0; i < tempResults1.begin()->second.size(); i++) {
         pair<int, int> p = make_pair(tempResults1["p"].at(i), tempResults1["p1"].at(i));
@@ -204,7 +204,7 @@ TEST_CASE("CallsTEvaluator evaluate underscore synonym") {
 
     // Calls* (_, p)
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = CallsTEvaluator::evaluate({ {"p", PROCEDURE_} }, Clause("Calls*", vector<string>{"_", "p"}), tempResults1);
+    bool b1 = CallsTEvaluator::evaluate({ {"p", PROCEDURE_} }, Clause("Calls*", vector<string>{"_", "p"}, {"p"}, 0), tempResults1);
     unordered_set<int> actual1(tempResults1["p"].begin(), tempResults1["p"].end());
     unordered_set<int> expected1{ 0, 1, 2, 3, 5, 7 };
     REQUIRE(b1);
@@ -217,7 +217,7 @@ TEST_CASE("CallsTEvaluator evaluate underscore synonym") {
     PKB::calls->processCalls();
     // Calls* (_, p)
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = CallsTEvaluator::evaluate({ {"p", PROCEDURE_} }, Clause("Calls*", vector<string>{"_", "p"}), tempResults2);
+    bool b2 = CallsTEvaluator::evaluate({ {"p", PROCEDURE_} }, Clause("Calls*", vector<string>{"_", "p"}, {"p"}, 0), tempResults2);
     unordered_map<string, vector<int>> expected2 = { };
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
@@ -228,7 +228,7 @@ TEST_CASE("CallsTEvaluator evaluate synonym underscore") {
 
     // Calls* (p, _)
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = CallsTEvaluator::evaluate({ {"p", PROCEDURE_} }, Clause("Calls*", vector<string>{"p", "_"}), tempResults1);
+    bool b1 = CallsTEvaluator::evaluate({ {"p", PROCEDURE_} }, Clause("Calls*", vector<string>{"p", "_"}, {"p"}, 0), tempResults1);
     unordered_set<int> actual1(tempResults1["p"].begin(), tempResults1["p"].end());
     unordered_set<int> expected1{ 0, 1, 2, 4, 5, 6, 7, 8 };
     REQUIRE(b1);
@@ -241,7 +241,7 @@ TEST_CASE("CallsTEvaluator evaluate synonym underscore") {
     PKB::calls->processCalls();
     // Calls* (p, _)
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = CallsTEvaluator::evaluate({ {"p", PROCEDURE_} }, Clause("Calls*", vector<string>{"p", "_"}), tempResults2);
+    bool b2 = CallsTEvaluator::evaluate({ {"p", PROCEDURE_} }, Clause("Calls*", vector<string>{"p", "_"}, {"p"}, 0), tempResults2);
     unordered_map<string, vector<int>> expected2 = { };
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
