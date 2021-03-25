@@ -127,6 +127,7 @@ void DesignExtractor::storeNewElse() {
     // An if-then and its else statement has their own separate stmtLsts
     // So, it's necessary to populate the if-part abstractions and reset the local state variables
     storeCurrentStmtLstRelationships();
+    StmtNum startStmt = currentStmtLst.front();
 
     // Last stmt in currentNext is the last statement in 'then'
     // Thus, its Next relationship is with the stmt after the IfElse statement.
@@ -140,11 +141,14 @@ void DesignExtractor::storeNewElse() {
     // To store the ProgLine of the branching Then
     storedNextEntries.push_back(lastThenStmt);
     DEStack<vector<set<ProgLine>>>::stackPush(nextStack, storedNextEntries);
+
+    PKB::stmtTable->storeIfStmt(currentParent, startStmt, lastThenStmt);
 }
 
 void DesignExtractor::endIfElse() {
     // Called when exiting an if-else statement.
     storeCurrentStmtLstRelationships(); // Store If stmt's stmtLst's relationships
+    StmtNum startStmt = currentStmtLst.front();
     set<ProgLine> lastElseStmt = currentNext.back();
 //    cerr << "lastElseStmt is " ;
 //    for (int e: lastElseStmt)
@@ -157,6 +161,7 @@ void DesignExtractor::endIfElse() {
     for (int e: lastElseStmt) {
         currentNext.back().insert(e);   // add to the previous currentNext
     }
+    PKB::stmtTable->storeElseStmt(currentParent, startStmt, lastElseStmt);
 }
 
 void DesignExtractor::storeNewAssignment(StmtNum stmtNum, STRING variableName, AssignStmt* AST) {

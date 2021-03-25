@@ -177,6 +177,24 @@ int StmtTable::getWhilePatternsSize() {
     return cnt;
 }
 
+pair<StmtNum, set<StmtNum>> StmtTable::getIfStmtRange(StmtNum stmtNum) {
+    if (ifStmtMap.find(stmtNum) == ifStmtMap.end()) {
+        cerr << "Stmt " << stmtNum << " is not an if stmt." << endl;
+        throw exception();
+    } else {
+        return ifStmtMap.find(stmtNum)->second;
+    }
+}
+
+pair<StmtNum, set<StmtNum>> StmtTable::getElseStmtRange(StmtNum stmtNum) {
+    if (elseStmtMap.find(stmtNum) == elseStmtMap.end()) {
+        cerr << "Stmt " << stmtNum << " is not an if stmt." << endl;
+        throw exception();
+    } else {
+        return elseStmtMap.find(stmtNum)->second;
+    }
+}
+
 bool StmtTable::storeStmt(StmtNum stmtNum, ast::Stmt *stmtNode, STRING type) {
     bool inserted = stmtASTMap.insert({stmtNum, stmtNode}).second;
 
@@ -296,6 +314,14 @@ bool StmtTable::storeWhilePattern(StmtNum stmtNum, ID controlVarID) {
     }
 
     return true;
+}
+
+bool StmtTable::storeIfStmt(StmtNum ifStmtNum, StmtNum startStmt, const set<StmtNum>& endStmt) {
+    return ifStmtMap.insert({ifStmtNum, make_pair(startStmt, endStmt)}).second;
+}
+
+bool StmtTable::storeElseStmt(StmtNum elseStmtNum, StmtNum startStmt, const set<StmtNum>& endStmt) {
+    return elseStmtMap.insert({elseStmtNum, make_pair(startStmt, endStmt)}).second;
 }
 
 bool StmtTable::hasStmt(StmtNum stmtNum) {

@@ -43,6 +43,9 @@ public:
     // E.g. if the nextStarMap has [1: {2,3}], then the size is 2. Because there are pairs (1,2) and (1,3).
     int getNextStarSize();
 
+    // Returns the nextMap
+    unordered_map<ProgLine, unordered_set<ProgLine> > getNextMap();
+
     // Stores a Next relationship into the nextMap. Returns true if the information is successfully added to the PKB.
     bool storeNext(ProgLine n1, ProgLine n2);
 
