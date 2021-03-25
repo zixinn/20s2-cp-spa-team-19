@@ -1,0 +1,275 @@
+1 - No clause call
+call c;
+Select c
+3, 12, 20, 24, 56, 72, 88, 89, 98, 102, 113, 117, 161, 162, 170, 189, 202, 233, 260, 298, 299, 300, 302, 303, 304, 305, 307, 320, 336, 340, 342, 343, 347, 348, 349, 350, 351, 352, 355, 360, 364, 365, 366, 368, 371, 372, 374, 375, 377, 381, 383, 386, 388, 389, 390, 392, 394, 395, 402, 403, 405, 407, 422, 423, 434, 441, 445, 462, 472, 483, 487, 492, 498, 499, 506, 515, 518
+5000
+2 - wildcard, wildcard
+call c;
+Select c such that Calls*(_, _)
+3, 12, 20, 24, 56, 72, 88, 89, 98, 102, 113, 117, 161, 162, 170, 189, 202, 233, 260, 298, 299, 300, 302, 303, 304, 305, 307, 320, 336, 340, 342, 343, 347, 348, 349, 350, 351, 352, 355, 360, 364, 365, 366, 368, 371, 372, 374, 375, 377, 381, 383, 386, 388, 389, 390, 392, 394, 395, 402, 403, 405, 407, 422, 423, 434, 441, 445, 462, 472, 483, 487, 492, 498, 499, 506, 515, 518
+5000
+3 - synonym, wildcard
+procedure p;
+Select p such that Calls*(p, _)
+Animal,Honeysuckle,animal,assign,book,colors,colors2,cube,f00d,lAst,month,obj3ct,p1,p10,p11,p17,p18,p21,p22,p24,p26,p27,p3,p30,p5,p6,p7,p9,pain,simple,something,t0pUp,yellow
+5000
+4 - wildcard, synonym
+procedure p;
+Select p such that Calls*(_, p)
+Animal,animal,assign,book,call,colors,cube,lAst,month,obj3ct,p1,p11,p17,p18,p2,p20,p21,p22,p23,p24,p25,p26,p27,p28,p3,p30,p5,p6,p7,p8,p9,pain,procedure,shikashi,simple,something,t0pUp
+5000
+5 - synonym, synonym
+procedure p, p1;
+Select p such that Calls*(p, p1)
+Animal,Honeysuckle,animal,assign,book,colors,colors2,cube,f00d,lAst,month,obj3ct,p1,p10,p11,p17,p18,p21,p22,p24,p26,p27,p3,p30,p5,p6,p7,p9,pain,simple,something,t0pUp,yellow
+5000
+6 - synonym, synonym (tuple)
+procedure p, p1;
+Select <p, p1> such that Calls*(p, p1)
+Animal book,Animal call,Animal colors,Animal cube,Animal lAst,Animal month,Animal p1,Animal p2,Animal p3,Animal p5,Animal p7,Animal p8,Animal pain,Animal procedure,Animal shikashi,Animal simple,Animal something,animal assign,animal book,animal call,animal colors,animal cube,animal lAst,animal month,animal p1,animal p2,animal p3,animal p5,animal p7,animal p8,animal pain,animal shikashi,animal simple,animal something,assign book,assign call,assign colors,assign lAst,assign month,assign p1,assign p2,assign p3,assign p5,assign p7,assign p8,assign procedure,assign shikashi,assign simple,assign something,book colors,book p7,book p8,book procedure,book simple,colors procedure,cube procedure,cube shikashi,f00d procedure,f00d t0pUp,lAst call,lAst colors,lAst p1,lAst p2,lAst p3,lAst p5,lAst p7,lAst p8,lAst procedure,lAst simple,month p8,obj3ct procedure,obj3ct simple,p1 procedure,p1 simple,p10 colors,p10 p1,p10 p11,p10 p17,p10 p20,p10 p7,p10 p8,p10 procedure,p10 simple,p17 colors,p17 procedure,p17 simple,p18 colors,p18 obj3ct,p18 p24,p18 p25,p18 p26,p18 p27,p18 p28,p18 p30,p18 p8,p18 procedure,p18 shikashi,p18 simple,p18 t0pUp,p21 colors,p21 obj3ct,p21 p25,p21 p26,p21 p27,p21 p28,p21 p30,p21 p8,p21 procedure,p21 shikashi,p21 simple,p21 t0pUp,p22 colors,p22 obj3ct,p22 p30,p22 p8,p22 procedure,p22 shikashi,p22 simple,p22 t0pUp,p24 colors,p24 obj3ct,p24 p25,p24 p26,p24 p30,p24 p8,p24 procedure,p24 shikashi,p24 simple,p24 t0pUp,p26 colors,p26 p25,p26 p8,p26 simple,p26 t0pUp,p27 colors,p27 obj3ct,p27 p25,p27 p30,p27 p8,p27 procedure,p27 shikashi,p27 simple,p27 t0pUp,p3 p8,p30 procedure,p30 simple,p6 p8,p9 colors,p9 p1,p9 p20,p9 procedure,p9 simple,pain book,pain call,pain colors,pain month,pain p1,pain p2,pain p3,pain p5,pain p7,pain p8,pain procedure,t0pUp procedure,yellow Animal,yellow assign,yellow book,yellow call,yellow colors,yellow cube,yellow lAst,yellow month,yellow obj3ct,yellow p1,yellow p2,yellow p21,yellow p22,yellow p23,yellow p24,yellow p25,yellow p26,yellow p27,yellow p28,yellow p3,yellow p30,yellow p5,yellow p7,yellow p8,yellow pain,yellow procedure,yellow shikashi,yellow simple,yellow something,yellow t0pUp, Animal assign,Honeysuckle shikashi,Honeysuckle something,animal Animal,animal procedure,assign cube,assign pain,book call,book p1,book p2,book p3,colors simple,colors2 procedure,colors2 shikashi,cube simple,cube something,f00d colors,f00d obj3ct,f00d simple,lAst book,lAst month,month p2,month p5,month p7,obj3ct colors,obj3ct t0pUp,p1 colors,p10 p6,p10 p9,p11 p20,p17 p1,p18 p21,p18 p22,p18 p23,p21 p24,p22 p25,p22 p26,p24 p27,p24 p28,p26 obj3ct,p26 p30,p26 procedure,p26 shikashi,p27 p26,p3 p7,p30 colors,p30 p25,p30 p8,p30 shikashi,p5 p8,p6 p7,p7 p8,p9 p11,p9 p17,pain lAst,pain simple,simple procedure,something shikashi,t0pUp simple,yellow animal,yellow p18
+5000
+7 - synonym, exact 
+procedure p;
+Select p such that Calls*(p, "colors")
+f00d, obj3ct, p1, p30, Animal,animal,assign,book,lAst,p10,p17,p18,p21,p22,p24,p26,p27,p9,pain,yellow
+5000
+8 - synonym, exact
+procedure p;
+Select p such that Calls*(p, "obj3ct")
+f00d, p26, p18,p21,p22,p24,p27,yellow
+5000
+9 - synonym, exact
+procedure p;
+Select p such that Calls*(p, "month")
+Animal,animal,assign,lAst,pain,yellow
+5000
+10 - synonym, exact
+procedure p;
+Select p such that Calls*(p, "simple")
+f00d, colors, t0pUp, cube, pain, Animal,animal,assign,book,lAst,obj3ct,p1,p10,p17,p18,p21,p22,p24,p26,p27,p30,p9,yellow
+5000
+11 - synonym, exact
+procedure p;
+Select p such that Calls*(p, "procedure")
+animal,colors2,p26,simple,Animal,assign,book,colors,cube,f00d,lAst,obj3ct,p1,p10,p17,p18,p21,p22,p24,p27,p30,p9,pain,t0pUp,yellow
+5000
+12 - synonym, exact
+procedure p;
+Select p such that Calls*(p, "f00d")
+none
+5000
+13 - exact, synonym
+procedure pppp1pp;
+Select pppp1pp such that Calls*("animal", pppp1pp)
+Animal, procedure, assign,book,call,colors,cube,lAst,month,p1,p2,p3,p5,p7,p8,pain,shikashi,simple,something
+5000
+14 - exact, synonym
+procedure p;
+Select p such that Calls*("yellow", p)
+colors,t0pUp,Animal,animal,assign,book,call,cube,lAst,month,obj3ct,p1,p18,p2,p21,p22,p23,p24,p25,p26,p27,p28,p3,p30,p5,p7,p8,pain,procedure,shikashi,simple,something
+5000
+15 - exact, synonym
+procedure p;
+Select p such that Calls*("book", p)
+call, p1, p2, p3, colors,p7,p8,procedure,simple
+5000
+16 - exact, synonym
+procedure p; read r; assign a; print pr; constant c; variable v;
+Select r such that Calls*("simple", p)
+1, 13, 34, 65, 71, 80, 93, 101, 108, 112, 123, 125, 136, 149, 163, 174, 177, 183, 185, 186, 196, 211, 215, 225, 230, 231, 232, 235, 253, 258, 272, 274, 276, 280, 281, 285, 291, 296, 329, 335, 359, 376, 378, 398, 413, 419, 432, 439, 440, 449, 451, 452, 453, 459, 466, 480, 485, 489, 490, 510
+5000
+17 - exact, synonym
+procedure p;
+Select p such that Calls*("procedure", p)
+none
+5000
+18 - exact, synonym
+procedure p;
+Select p such that Calls* ("f00d", p)
+obj3ct, colors, simple, procedure, t0pUp
+5000
+19 - exact, exact
+
+Select BOOLEAN such that Calls* ("Honeysuckle", "shikashi")
+TRUE
+5000 
+20 - wildcard, exact 
+procedure p;
+Select p such that Calls*(_, "colors")
+Animal,Honeysuckle,animal,assign,book,call,colors,colors2,cube,f00d,lAst,month,obj3ct,p1,p10,p11,p17,p18,p2,p20,p21,p22,p23,p24,p25,p26,p27,p28,p3,p30,p5,p6,p7,p8,p9,pain,procedure,shikashi,simple,something,t0pUp,yellow
+5000
+21 - wildcard, exact
+procedure p;
+Select p such that Calls*(_, "shikashi")
+Animal,Honeysuckle,animal,assign,book,call,colors,colors2,cube,f00d,lAst,month,obj3ct,p1,p10,p11,p17,p18,p2,p20,p21,p22,p23,p24,p25,p26,p27,p28,p3,p30,p5,p6,p7,p8,p9,pain,procedure,shikashi,simple,something,t0pUp,yellow
+5000
+22 - wildcard, exact
+procedure p;
+Select p such that Calls*(_, "f00d")
+none
+5000
+23 - exact, wildcard
+procedure p;
+Select p such that Calls*("p1", _)
+Animal,Honeysuckle,animal,assign,book,call,colors,colors2,cube,f00d,lAst,month,obj3ct,p1,p10,p11,p17,p18,p2,p20,p21,p22,p23,p24,p25,p26,p27,p28,p3,p30,p5,p6,p7,p8,p9,pain,procedure,shikashi,simple,something,t0pUp,yellow
+5000
+24 - exact, wildcard
+procedure p;
+Select p such that Calls*("p11", _)
+Animal,Honeysuckle,animal,assign,book,call,colors,colors2,cube,f00d,lAst,month,obj3ct,p1,p10,p11,p17,p18,p2,p20,p21,p22,p23,p24,p25,p26,p27,p28,p3,p30,p5,p6,p7,p8,p9,pain,procedure,shikashi,simple,something,t0pUp,yellow
+5000
+25 - exact, wildcard
+procedure p;
+Select p such that Calls*("procedure", _)
+none
+5000
+26 - procedure not in simple
+procedure p;
+Select p such that Calls*("object", p)
+none
+5000
+27 - procedure not in simple
+procedure p;
+Select p such that Calls*(p, "colorss")
+none
+5000
+28 - both procedures not in simple
+procedure p;
+Select p such that Calls*("food", "colorss")
+none
+5000
+29 - synonym not in declaration
+procedure pr; assign a; stmt s; print p; read r;
+Select pr such that Calls*("obj3ct", proc)
+none
+5000
+30 - reflex
+procedure pr;
+Select pr such that Calls*(pr, pr)
+none
+5000
+31 - proc, assign
+procedure pr; assign a; read r; if ifs; while w; variable v; constant c; print p; stmt s; prog_line pl;
+Select BOOLEAN such that Calls*(pr, a)
+FALSE
+5000
+32 - proc, read
+procedure pr; assign a; read r; if ifs; while w; variable v; constant c; print p; stmt s; prog_line pl;
+Select BOOLEAN such that Calls*(pr, r)
+FALSE
+5000
+33 - proc, if
+procedure pr; assign a; read r; if ifs; while w; variable v; constant c; print p; stmt s; prog_line pl;
+Select pr such that Calls*(pr, ifs)
+none
+5000
+34 - proc, while
+procedure pr; assign a; read r; if ifs; while w; variable v; constant c; print p; stmt s; prog_line pl;
+Select BOOLEAN such that Calls*(pr, w)
+FALSE
+5000
+35 - proc, variable
+procedure pr; assign a; read r; if ifs; while w; variable v; constant c; print p; stmt s; prog_line pl;
+Select BOOLEAN such that Calls*(pr, v)
+FALSE
+5000
+36 - proc, constant
+procedure pr; assign a; read r; if ifs; while w; variable v; constant c; print p; stmt s; prog_line pl;
+Select BOOLEAN such that Calls*(pr, c)
+FALSE
+5000
+37 - proc, print
+procedure pr; assign a; read r; if ifs; while w; variable v; constant c; print p; stmt s; prog_line pl;
+Select BOOLEAN such that Calls*(pr, p)
+FALSE
+5000
+38 - proc, stmt
+procedure pr; assign a; read r; if ifs; while w; variable v; constant c; print p; stmt s; prog_line pl;
+Select BOOLEAN such that Calls*(pr, s)
+FALSE
+5000
+39 - proc, prog_line
+procedure pr; assign a; read r; if ifs; while w; variable v; constant c; print p; stmt s; prog_line pl;
+Select BOOLEAN such that Calls*(pr, pl)
+FALSE
+5000
+40 - proc, call
+procedure pr; assign a; read r; if ifs; call call; while w; variable v; constant c; print p; stmt s; prog_line pl;
+Select BOOLEAN such that Calls*(pr, call)
+FALSE
+5000
+41 - assign, proc
+procedure pr; assign a; read r; if ifs; while w; variable v; constant c; print p; stmt s; prog_line pl;
+Select BOOLEAN such that Calls*(a, pr)
+FALSE
+5000
+42 - read, proc 
+procedure pr; assign a; read r; if ifs; while w; variable v; constant c; print p; stmt s; prog_line pl;
+Select BOOLEAN such that Calls*(r, pr)
+FALSE
+5000
+43 - if, proc
+procedure pr; assign a; read r; if ifs; while w; variable v; constant c; print p; stmt s; prog_line pl;
+Select BOOLEAN such that Calls*(ifs, pr)
+FALSE
+5000
+44 - while, proc
+procedure pr; assign a; read r; if ifs; while w; variable v; constant c; print p; stmt s; prog_line pl;
+Select BOOLEAN such that Calls*(w, pr)
+FALSE
+5000
+45 - variable, proc
+procedure pr; assign a; read r; if ifs; while w; variable v; constant c; print p; stmt s; prog_line pl;
+Select BOOLEAN such that Calls*(v, pr)
+FALSE
+5000
+46 - constant, proc
+procedure pr; assign a; read r; if ifs; while w; variable v; constant c; print p; stmt s; prog_line pl;
+Select BOOLEAN such that Calls*(c, pr)
+FALSE
+5000
+47 - print, proc
+procedure pr; assign a; read r; if ifs; while w; variable v; constant c; print p; stmt s; prog_line pl;
+Select BOOLEAN such that Calls*(p, pr)
+FALSE
+5000
+48 - stmt, proc
+procedure pr; assign a; read r; if ifs; while w; variable v; constant c; print p; stmt s; prog_line pl;
+Select BOOLEAN such that Calls*(s, pr)
+FALSE
+5000
+49 - prog_line, proc
+procedure pr; assign a; read r; if ifs; while w; variable v; constant c; print p; stmt s; prog_line pl;
+Select BOOLEAN such that Calls*(pl, pr)
+FALSE
+5000
+50 - call, proc
+procedure pr; assign a; read r; if ifs; while w; call call; variable v; constant c; print p; stmt s; prog_line pl;
+Select BOOLEAN such that Calls*(call, pr)
+FALSE
+5000
+51 - assign, read
+procedure pr; assign a; read r; if ifs; while w; variable v; constant c; print p; stmt s; prog_line pl;
+Select BOOLEAN such that Calls*(a, r)
+FALSE
+5000
+52 - if, while
+procedure pr; assign a; read r; if ifs; while w; variable v; constant c; print p; stmt s; prog_line pl;
+Select BOOLEAN such that Calls*(ifs, w)
+FALSE
+5000
+53 - variable, constant
+procedure pr; assign a; read r; if ifs; while w; variable v; constant c; print p; stmt s; prog_line pl;
+Select BOOLEAN such that Calls*(v, c)
+FALSE
+5000
+54 - call, print
+procedure pr; call call; assign a; read r; if ifs; while w; variable v; constant c; print p; stmt s; prog_line pl;
+Select call such that Calls*(call, p)
+none
+5000
+55 - stmt, prog_line
+procedure pr; assign a; read r; if ifs; while w; variable v; constant c; print p; stmt s; prog_line pl;
+Select BOOLEAN such that Calls*(s, pl)
+FALSE
+5000
