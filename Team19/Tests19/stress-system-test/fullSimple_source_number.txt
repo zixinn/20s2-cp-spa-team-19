@@ -491,7 +491,7 @@ procedure pain {
 								} else {
 330									while (green1 == 1) {
 331										print rice;
-332										rice = 500;
+332										rice = 500 + while - fox * call + procedure - yellow;
 									}
 								}
 							}
@@ -516,12 +516,12 @@ procedure pain {
 
 procedure lAst {
 339	x = x * x;
-340	call book;
+340	call purple;
 341	z = y;
 342	call month;
 }
 
-procedure book {
+procedure purple {
 343	call call;
 344	y = 3;
 345	z =  x;
@@ -555,23 +555,23 @@ procedure p2 {
 }
 
 procedure p7 {
-360	call p8;
+360	call while;
 }
 
 procedure p5 {
 361	orange = orange;
-362	while (w9113t == 1) {
+362	while ((w9113t == 1) &&(read + print - call == if * else - then)) {
 363		yellow = orange - red;
 	}
-364	call p8;
-365	call p8;
-366	call p8;
+364	call while;
+365	call while;
+366	call while;
 367	yellow = blue + orange;
-368	call p8;
+368	call while;
 }
 
-procedure p8 {
-369	orange = animal + cat;
+procedure while {
+369	orange = animal + while;
 }
 
 procedure p9 {
@@ -592,7 +592,7 @@ procedure p11 {
 }
 
 procedure p17 {
-378	read gold;
+378	read while;
 379	while (chickenRice > chicken) {
 380		chickenRice = chicken + rice - duck;
 381		call p1;
@@ -615,10 +615,10 @@ procedure p1 {
 }
 
 procedure p18 {
-387	print gold;
+387	print while;
 388	call p21;
 389	call p22;
-390	call p23;
+390	call fox;
 }
 
 procedure p21 {
@@ -634,8 +634,8 @@ procedure p22 {
 }
 
 
-procedure p23 {
-396	if (call> 100) then {
+procedure fox {
+396		if ((call> 100 - fox) || (black + procedure == blue)) then {
 397		elprimo = fox + animal;
 398		read brown;
 	} else {
@@ -673,7 +673,7 @@ procedure p25 {
 414	progline = 1 + 2 + 3 - statement;
 }
 
-procedure p30 {
+procedure black {
 415	statement = assign + call;
 416	if (purple == purple) then {
 417		while (black + white == grey) {
@@ -706,7 +706,7 @@ procedure p30 {
 438									if ( 1<2 + green) then {
 439										read chickenRice;
 440										read purple;
-441										call p8;
+441										call while;
 									} else {
 442										while (2 < 0 + yellow) {
 443											print white;
@@ -747,7 +747,7 @@ procedure p26 {
 459	read while;
 460	while ((!(while + if != else))|| (darryl + byron == animal + fox)) {
 461		while ((statement != progline)&&(assign != print / read)) {
-462			call p30;
+462			call black;
 463			call = (else + procedure) + (2 - 3) * (10);
 464			print print;
 465			while ((gold + 1 == silver)||(brown - mouse == orange)) {
@@ -757,7 +757,7 @@ procedure p26 {
 469					print read;
 470					assign = else * else + else - assign + print * statement - call;
 471					print call;
-472					call p30;
+472					call black;
 473					while (raBBit == racc00n) {
 474						raBBit = raBBit + frog;
 475						frog = dog + cat;
@@ -768,11 +768,11 @@ procedure p26 {
 480								read statement;
 481								statement = statement + statement;
 482								while (!(if + 456 == 789 - red2)) {
-483									call p30;
+483									call black;
 484									while ((brown == 45)) {
 485										read brown;
 486										while (bryon > x) {
-487											call p30;
+487											call black;
 488											statement = 2;
 										}
 489										read statement;
@@ -781,7 +781,7 @@ procedure p26 {
 490								read statement;
 491								print gold;
 							}
-492							call p30;
+492							call black;
 493							progline = read - if;
 494							print procedure;
 						}
@@ -819,7 +819,7 @@ procedure p26 {
 	} else {
 516		while (!((((statement >= while + if)&&(raBBit == 1))||(raBBit==4))||(melody + money == mouse%1%2%3%350))) {
 517			while = cat - power * gold *10;
-518			call p30;
+518			call black;
 519			if = statement + racc00n;
 		}
 	}
