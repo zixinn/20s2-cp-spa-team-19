@@ -25,6 +25,10 @@ vector<vector<Clause>> Query::getClauses() {
     return this->clauses;
 }
 
+vector<unordered_set<string>> Query::getSynonyms() {
+    return this->synonyms;
+}
+
 bool Query::getIsSyntacticallyValid() {
     return this->isSyntacticallyValid;
 }
@@ -39,6 +43,10 @@ void Query::setClauses(vector<vector<Clause>> clauses) {
 
 void Query::setClausesAtIdx(vector<Clause> clauses, int idx) {
     this->clauses.at(idx) = clauses;
+}
+
+void Query::setSynonyms(vector<unordered_set<string>> synonyms) {
+    this->synonyms = synonyms;
 }
 
 bool operator==(const Query& q1, const Query& q2) {

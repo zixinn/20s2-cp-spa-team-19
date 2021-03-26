@@ -1,6 +1,8 @@
 #include "PQL/QueryOptimizer.h"
 #include "catch.hpp"
 
+#include <algorithm>
+
 using namespace std;
 
 class StmtNodeStub : public ast::Stmt {
@@ -87,6 +89,12 @@ void setUpQo() {
     PKB::populatePKB();
 }
 
+// ignores order of clauses within a group, checks if two groups contain the same clauses
+bool checkPermutation(vector<Clause> g1, vector<Clause> g2) {
+    return is_permutation(g1.begin(), g1.end(), g2.begin(), g2.end());
+}
+
+
 TEST_CASE("QueryOptimizer test setUpQo") {
     setUpQo();
     REQUIRE(PKB::follows->getFollowsSize() == 5);
@@ -116,6 +124,7 @@ TEST_CASE("QueryOptimizer optimize groupClauses - 1 group, no synonym") {
     QueryOptimizer qo = QueryOptimizer();
     qo.setIsGroup(true);
     qo.setIsOrderClauses(false);
+    qo.setIsOrderGroups(false);
 
     // variable v;
     // Select v such that Parent(_, _)
@@ -147,6 +156,7 @@ TEST_CASE("QueryOptimizer optimize groupClauses - 1 group, with synonym") {
     QueryOptimizer qo = QueryOptimizer();
     qo.setIsGroup(true);
     qo.setIsOrderClauses(false);
+    qo.setIsOrderGroups(false);
 
     // stmt s;
     // Select s such that Follows*(6, s) and Affects(6, s)
@@ -180,6 +190,7 @@ TEST_CASE("QueryOptimizer optimize groupClauses - 2 groups, with and without syn
     QueryOptimizer qo = QueryOptimizer();
     qo.setIsGroup(true);
     qo.setIsOrderClauses(false);
+    qo.setIsOrderGroups(false);
 
     // if ifs; prog_line n; variable v;
     // Select n such that Affects(_, _) and Next*(n, 11) with 99 = 99 and ifs.stmt# = n pattern ifs(v, _, _)
@@ -204,6 +215,7 @@ TEST_CASE("QueryOptimizer optimize groupClauses - 2 groups, both with synonym") 
     QueryOptimizer qo = QueryOptimizer();
     qo.setIsGroup(true);
     qo.setIsOrderClauses(false);
+    qo.setIsOrderGroups(false);
 
     // assign a; variable v; stmt s; read r; while w;
     // Select <a, r> such that Parent(w, r) with a.stmt# = s.stmt# pattern a(v, _"red"_) such that Next*(r, r) and Modifies(s, v)
@@ -228,6 +240,7 @@ TEST_CASE("QueryOptimizer optimize groupClauses - multiple groups, 1 group with 
     QueryOptimizer qo = QueryOptimizer();
     qo.setIsGroup(true);
     qo.setIsOrderClauses(false);
+    qo.setIsOrderGroups(false);
 
     // assign a; if ifs; variable v, v1, v2; constant cc; read r; print pn; call c;
     // Select <ifs, cc, v2>
@@ -259,6 +272,7 @@ TEST_CASE("QueryOptimizer optimize groupClauses - multiple groups, all groups wi
     QueryOptimizer qo = QueryOptimizer();
     qo.setIsGroup(true);
     qo.setIsOrderClauses(false);
+    qo.setIsOrderGroups(false);
 
     // stmt s; assign a; while w, w1, w2; if ifs, ifs1; variable v, v1; constant cc; print pn; call c;
     // Select <w, p, v1, c>
@@ -290,6 +304,7 @@ TEST_CASE("QueryOptimizer optimize orderClauses - 1 group, no synonym") {
     QueryOptimizer qo = QueryOptimizer();
     qo.setIsGroup(false);
     qo.setIsOrderClauses(true);
+    qo.setIsOrderGroups(false);
     setUpQo();
 
     // variable v;
@@ -314,6 +329,7 @@ TEST_CASE("QueryOptimizer optimize orderClauses - 1 group, with synonym") {
     QueryOptimizer qo = QueryOptimizer();
     qo.setIsGroup(false);
     qo.setIsOrderClauses(true);
+    qo.setIsOrderGroups(false);
     setUpQo();
 
     // stmt s;
@@ -340,6 +356,7 @@ TEST_CASE("QueryOptimizer optimize orderClauses - 2 groups, with and without syn
     QueryOptimizer qo = QueryOptimizer();
     qo.setIsGroup(false);
     qo.setIsOrderClauses(true);
+    qo.setIsOrderGroups(false);
     setUpQo();
 
     // if ifs; prog_line n; variable v;
@@ -361,6 +378,7 @@ TEST_CASE("QueryOptimizer optimize orderClauses - 2 groups, both with synonym") 
     QueryOptimizer qo = QueryOptimizer();
     qo.setIsGroup(false);
     qo.setIsOrderClauses(true);
+    qo.setIsOrderGroups(false);
     setUpQo();
 
     // assign a; variable v; stmt s; read r; while w;
@@ -382,6 +400,7 @@ TEST_CASE("QueryOptimizer optimize orderClauses - multiple groups, 1 group with 
     QueryOptimizer qo = QueryOptimizer();
     qo.setIsGroup(false);
     qo.setIsOrderClauses(true);
+    qo.setIsOrderGroups(false);
     setUpQo();
 
     // assign a; if ifs; variable v, v1, v2; constant cc; read r; print pn; call c;
@@ -410,6 +429,7 @@ TEST_CASE("QueryOptimizer optimize orderClauses - multiple groups, all groups wi
     QueryOptimizer qo = QueryOptimizer();
     qo.setIsGroup(false);
     qo.setIsOrderClauses(true);
+    qo.setIsOrderGroups(false);
     setUpQo();
 
     // stmt s; assign a; while w, w1, w2; if ifs, ifs1; variable v, v1; constant cc; print pn; call c;
@@ -432,4 +452,140 @@ TEST_CASE("QueryOptimizer optimize orderClauses - multiple groups, all groups wi
     Query expected1 = Query({{"s", STMT_}, {"a", ASSIGN_}, {"w", WHILE_}, {"w1", WHILE_}, {"w2", WHILE_}, {"ifs", IF_}, {"ifs1", IF_}, {"v", VARIABLE_}, {"v1", VARIABLE_}, {"cc", CONSTANT_}, {"pn", PRINT_}, {"c", CALL_}},
                             {"w", "p", "v1", "c"}, {{c14}, {c12, c15, c18}, {c11}, {c13, c19, c17, c16}}, true, true);
     REQUIRE(actual1 == expected1);
+}
+
+TEST_CASE("QueryOptimizer optimize orderGroups - 1 group no synonym, 1 group no synonym in select, 1 group synonym in select") {
+    QueryOptimizer qo = QueryOptimizer();
+    qo.setIsGroup(true);
+    qo.setIsOrderClauses(false);
+    qo.setIsOrderGroups(true);
+    setUpQo();
+
+    // if ifs; variable v1, v2; constant cc; print pn; call c;
+    // Select <ifs, cc, v2>
+    // such that Uses(c, v1) and Uses(8, "x") and Modifies(8, "x")
+    // with pn.varName = v1.varName and ifs.stmt# = cc.value and 12 = 12
+    Clause c11 = Clause("Uses", { "c", "v1" }, { "c", "v1" }, 0);
+    Clause c12 = Clause("Uses", { "8", "\"x\"" }, {}, 1);
+    Clause c13 = Clause("Uses", { "ifs", "v2" }, { "ifs", "v2" }, 0);
+    Clause c14 = Clause("Modifies", { "8", "\"x\"" }, {}, 1);
+    Clause c17 = Clause("", { "pn.varName", "v1.varName" }, { "pn", "v1" }, 0);
+    Clause c18 = Clause("", { "ifs.stmt#", "cc.value" }, { "ifs", "cc" }, 0);
+    Clause c19 = Clause("", { "12", "12" }, {}, 2);
+    Query q1 = Query({ {"ifs", IF_}, {"v1", VARIABLE_}, {"v2", VARIABLE_}, {"cc", CONSTANT_}, {"pn", PRINT_}, {"c", CALL_} },
+        { "ifs", "cc", "v2" }, { {c19, c12, c14, c17, c13, c18, c11} }, true, true);
+    Query actual1 = qo.optimize(q1);
+    Query expected1 = Query({ {"ifs", IF_}, {"v1", VARIABLE_}, {"v2", VARIABLE_}, {"cc", CONSTANT_}, {"pn", PRINT_}, {"c", CALL_} },
+        { "ifs", "cc", "v2" }, { {c19, c14, c12}, {c11, c17}, {c18, c13} }, true, true);
+
+    int i = 0;
+    for (vector<Clause> group : actual1.getClauses()) {
+        vector<Clause> expectedGroup = expected1.getClauses().at(i);
+        REQUIRE(checkPermutation(group, expectedGroup));
+        i++;
+    }
+    REQUIRE(actual1.getDeclarations() == expected1.getDeclarations());
+    REQUIRE(actual1.getToSelect() == expected1.getToSelect());
+    REQUIRE(actual1.getIsSyntacticallyValid() == expected1.getIsSyntacticallyValid());
+    REQUIRE(actual1.getIsSemanticallyValid() == expected1.getIsSemanticallyValid());
+}
+
+TEST_CASE("QueryOptimizer optimize orderGroups - 2 groups no synonym in select, 1 group synonym in select") {
+    QueryOptimizer qo = QueryOptimizer();
+    qo.setIsGroup(true);
+    qo.setIsOrderClauses(false);
+    qo.setIsOrderGroups(true);
+    setUpQo();
+
+    // variable v1, v2; constant cc; print pn; call c; stmt s;
+    // Select s.stmt#
+    // such that Uses(c, v1) and Modifies(s, "x")
+    // with pn.varName = v1.varName and s.stmt# = cc.value and v2.stmt# = 12
+    Clause c11 = Clause("Uses", { "c", "v1" }, { "c", "v1" }, 0);
+    Clause c14 = Clause("Modifies", { "s", "\"x\"" }, {"s"}, 1);
+    Clause c17 = Clause("", { "pn.varName", "v1.varName" }, { "pn", "v1" }, 0);
+    Clause c18 = Clause("", { "s.stmt#", "cc.value" }, { "s", "cc" }, 0);
+    Clause c19 = Clause("", { "v2.stmt#", "12" }, {"v2"}, 2);
+    Query q1 = Query({ {"v1", VARIABLE_}, {"v2", VARIABLE_}, {"cc", CONSTANT_}, {"pn", PRINT_}, {"c", CALL_}, {"s", STMT_} },
+        { "s.stmt#" }, { {c19, c14, c17, c18, c11} }, true, true);
+    Query actual1 = qo.optimize(q1);
+    Query expected1 = Query({ {"v1", VARIABLE_}, {"v2", VARIABLE_}, {"cc", CONSTANT_}, {"pn", PRINT_}, {"c", CALL_}, {"s", STMT_} },
+        { "s.stmt#" }, { {c11, c17}, {c19}, {c14, c18} }, true, true);
+    int i = 0;
+    for (vector<Clause> group : actual1.getClauses()) {
+        vector<Clause> expectedGroup = expected1.getClauses().at(i);
+        REQUIRE(checkPermutation(group, expectedGroup));
+        i++;
+    }
+    REQUIRE(actual1.getDeclarations() == expected1.getDeclarations());
+    REQUIRE(actual1.getToSelect() == expected1.getToSelect());
+    REQUIRE(actual1.getIsSyntacticallyValid() == expected1.getIsSyntacticallyValid());
+    REQUIRE(actual1.getIsSemanticallyValid() == expected1.getIsSemanticallyValid());
+}
+
+TEST_CASE("QueryOptimizer optimize orderGroups - multiple groups no synonym in select, multiple groups synonym in select") {
+    QueryOptimizer qo = QueryOptimizer();
+    qo.setIsGroup(true);
+    qo.setIsOrderClauses(false);
+    qo.setIsOrderGroups(true);
+    setUpQo();
+
+    // stmt s; assign a; while w, w1, w2; if ifs, ifs1; variable v, v1; constant cc; print pn; call c;
+    // Select <w, p, v1, c>
+    // pattern ifs1(v1, _, _) with pn.varName = "rice" and v.varName = "green"
+    // with cc.value = s.stmt# such that Parent(w1, pn) and Parent*(w, a) and Next*(a, ifs) and Next*(pn, pn) and Uses(c, "x")
+    // pattern ifs(v, _, _)
+    Clause c11 = Clause("ifs1", { "v1", "_", "_" }, { "ifs1", "v1" }, 0);
+    Clause c12 = Clause("", { "pn.varName", "\"rice\"" }, { "pn" }, 1);
+    Clause c13 = Clause("", { "v.varName", "\"green\"" }, { "v" }, 1);
+    Clause c14 = Clause("", { "cc.value", "s.stmt#" }, { "cc", "s" }, 0);
+    Clause c15 = Clause("Parent", { "w1", "pn" }, { "w1", "pn" }, 0);
+    Clause c16 = Clause("Parent*", { "w", "a" }, { "w", "a" }, 0);
+    Clause c17 = Clause("Next*", { "a", "ifs" }, { "a", "ifs" }, 0);
+    Clause c18 = Clause("Next*", { "pn", "pn" }, { "pn" }, 0);
+    Clause c19 = Clause("ifs", { "v", "_", "_" }, { "ifs", "v" }, 0);
+    Clause c20 = Clause("Uses", { "c", "\"x\"" }, { "c" }, 1);
+    Query q1 = Query({ {"s", STMT_}, {"a", ASSIGN_}, {"w", WHILE_}, {"w1", WHILE_}, {"w2", WHILE_}, {"ifs", IF_}, {"ifs1", IF_}, {"v", VARIABLE_}, {"v1", VARIABLE_}, {"cc", CONSTANT_}, {"pn", PRINT_}, {"c", CALL_} },
+        { "w", "v1", "c" }, { {c11, c12, c13, c14, c15, c16, c17, c18, c19, c20 } }, true, true);
+    Query actual1 = qo.optimize(q1);
+    Query expected1 = Query({ {"s", STMT_}, {"a", ASSIGN_}, {"w", WHILE_}, {"w1", WHILE_}, {"w2", WHILE_}, {"ifs", IF_}, {"ifs1", IF_}, {"v", VARIABLE_}, {"v1", VARIABLE_}, {"cc", CONSTANT_}, {"pn", PRINT_}, {"c", CALL_} },
+        { "w", "v1", "c" }, { {c14}, {c12, c15, c18}, {c11}, {c13, c19, c17, c16}, {c20} }, true, true);
+    int i = 0;
+    for (vector<Clause> group : actual1.getClauses()) {
+        vector<Clause> expectedGroup = expected1.getClauses().at(i);
+        REQUIRE(checkPermutation(group, expectedGroup));
+        i++;
+    }
+    REQUIRE(actual1.getDeclarations() == expected1.getDeclarations());
+    REQUIRE(actual1.getToSelect() == expected1.getToSelect());
+    REQUIRE(actual1.getIsSyntacticallyValid() == expected1.getIsSyntacticallyValid());
+    REQUIRE(actual1.getIsSemanticallyValid() == expected1.getIsSemanticallyValid());
+}
+
+TEST_CASE("QueryOptimizer optimize orderGroups - select BOOLEAN (i.e. all groups no synonym in select)") {
+    QueryOptimizer qo = QueryOptimizer();
+    qo.setIsGroup(true);
+    qo.setIsOrderClauses(false);
+    qo.setIsOrderGroups(true);
+    setUpQo();
+
+    // variable v1, v2; constant cc; print pn; call c; stmt s;
+    // Select BOOLEAN
+    // such that Uses(c, v1) and Modifies(s, "x")
+    // with pn.varName = v1.varName and s.stmt# = cc.value and v2.stmt# = 12
+    Clause c11 = Clause("Uses", { "c", "v1" }, { "c", "v1" }, 0);
+    Clause c14 = Clause("Modifies", { "s", "\"x\"" }, { "s" }, 1);
+    Clause c17 = Clause("", { "pn.varName", "v1.varName" }, { "pn", "v1" }, 0);
+    Clause c18 = Clause("", { "s.stmt#", "cc.value" }, { "s", "cc" }, 0);
+    Clause c19 = Clause("", { "v2.stmt#", "12" }, { "v2" }, 2);
+    Query q1 = Query({ {"v1", VARIABLE_}, {"v2", VARIABLE_}, {"cc", CONSTANT_}, {"pn", PRINT_}, {"c", CALL_}, {"s", STMT_} },
+        { "BOOLEAN" }, { {c19, c14, c17, c18, c11} }, true, true);
+    Query actual1 = qo.optimize(q1);
+    Query expected1 = Query({ {"v1", VARIABLE_}, {"v2", VARIABLE_}, {"cc", CONSTANT_}, {"pn", PRINT_}, {"c", CALL_}, {"s", STMT_} },
+        { "BOOLEAN" }, { {c11, c17}, {c19}, {c14, c18} }, true, true);
+    REQUIRE_THAT(actual1.getClauses(), Catch::Matchers::UnorderedEquals(expected1.getClauses()));
+    REQUIRE(actual1.getDeclarations() == expected1.getDeclarations());
+    REQUIRE(actual1.getToSelect() == expected1.getToSelect());
+    REQUIRE(actual1.getIsSyntacticallyValid() == expected1.getIsSyntacticallyValid());
+    REQUIRE(actual1.getIsSemanticallyValid() == expected1.getIsSemanticallyValid());
 }
