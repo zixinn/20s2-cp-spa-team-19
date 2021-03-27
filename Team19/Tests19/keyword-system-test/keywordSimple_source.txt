@@ -13,77 +13,6 @@ procedure program {
     call Uses;
 }
 
-// print
-// print print;
-// print read;
-// print call;
-// print while;
-// print if;
-// print then;
-// print else;
-// print procedure;
-// print program;
-// print Uses;
-// print Follows;
-
-// read
-//read print;
-// read read;
-// read call;
-// read while;
-// read if;
-// read then;
-// read else;
-// read procedure;
-// read program;
-// read Uses;
-// read Follows;
-
-// while
-//while (print != 121) {}
-// while (122 > read) {}
-// while ((123 == purple) && (!((eunectes + lancet > 124) || (call <= green)))) {}
-// while (125 + 126 / 130 < (127 - 128) * 129 ) {}
-// while (((((print + read) % call) >= while * if) && (then - 131)) || ((!(else / 132 > 133)) && (!((procedure != program)) || (Uses + Follows < 134))) {}
-// while (((((print + read) % call) >= while * if) && (then - Next)) || ((!(else / Affects > OR)) && (!((procedure != program)) || (Uses + Follows < AND))) {}
-
-// if
-// if (if + NOT < AND * (then)) then {} else {}
-// if ((!(201 <= else)) || (Uses + procedure % program > Follows)) then {} else {}
-// if (johnlee > zhongli) then {} else {}
-
-
-// assign LHS
-// johnlee = print;
-// johnlee = 301;
-// johnlee = read + 302;
-// johnlee = 302 + read;
-// cocogoat = call / while;
-// cocogoat = (303 - call) / while * if;
-// cocogoat = johnlee;
-// xiao = johnlee + then;
-// keqing = (program % (procedure + else - then) * if + (while - call + read) / print);
-// keqing = cocogoat;
-// ninguang = Follows * (Uses / program % (procedure + else - Uses / then) * if + (while - cocogoat % call + read) / print);
-// johnlee = hutao;
-// beidou = 304 + xiangling * program;
-// xiangling = beidou + 305 % (if * then);
-
-// assign RHS
-// print = 401;
-// read = 402 + xiangling - (johnlee + cocogoat) * keqing;
-// call = childe;
-// while = 404 * (johnlee / childe) + 403 % 405;
-// if = childe + fatui / klee;
-// then = (406 / 401);
-// else = (((((407)))));
-// procedure = print + read / call * (while - if * (then + else)) % procedure;
-// program = program;
-// Uses = print + print + print / (read - read - read) + (call + (call - call) * (while / while + while)) / (if * if * if - (then % then % then) % (else + else - else * else / else % else) + (procedure + procedure - procedure * (Uses - Uses % Uses)))
-// Follows = program + childe + 407;
-
-
-
 procedure procedure {
     print print;
     call print;
@@ -147,7 +76,7 @@ procedure read {
 
 procedure call {
     call while;
-    while (((((print + read) % call) >= while * if) && (then - 131)) || ((!(else / 132 > 133)) && (!((procedure != program)) || (Uses + Follows < 134))) {
+    while ((((((print + read) % call) >= while * if) && (then - 131 > then)) || ((!(else / 132 > 133)) && ((!((procedure != program))) || (Uses + Follows < 134))))) {
 
         print if;
         read if;
@@ -169,12 +98,12 @@ procedure while {
         johnlee = hutao;
         read program;
     } else {
-        while (((((print + read) % call) >= while * if) && (then - Next)) || ((!(else / Affects > OR)) && (!((procedure != program)) || (Uses + Follows < AND))) {
+        while (((((((print + read) % call) >= while * if) && (then - Next != then)) || ((!(else / Affects > OR)))) && (!((procedure != program)))) || (Uses + Follows < AND)) {
             keqing = cocogoat;
             if (johnlee > zhongli) then {
                 keqing = (program % (procedure + else - then) * if + (while - call + read) / print);
                 if = childe + fatui / klee;
-                Uses = print + print + print / (read - read - read) + (call + (call - call) * (while / while + while)) / (if * if * if - (then % then % then) % (else + else - else * else / else % else) + (procedure + procedure - procedure * (Uses - Uses % Uses)))
+                Uses = print + print + print / (read - read - read) + (call + (call - call) * (while / while + while)) / (if * if * if - (then % then % then) % (else + else - else * else / else % else) + (procedure + procedure - procedure * (Uses - Uses % Uses)));
 		call Uses;
             } else {
                 cocogoat = johnlee;
@@ -254,7 +183,7 @@ procedure else {
     else = (((((407)))));
     procedure = print + read / call * (while - if * (then + else)) % procedure;
     program = program;
-    Uses = print + print + print / (read - read - read) + (call + (call - call) * (while / while + while)) / (if * if * if - (then % then % then) % (else + else - else * else / else % else) + (procedure + procedure - procedure * (Uses - Uses % Uses)))
+    Uses = print + print + print / (read - read - read) + (call + (call - call) * (while / while + while)) / (if * if * if - (then % then % then) % (else + else - else * else / else % else) + (procedure + procedure - procedure * (Uses - Uses % Uses)));
     Follows = program + childe + 407;
 
 
