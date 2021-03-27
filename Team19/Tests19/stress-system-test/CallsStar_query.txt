@@ -11,27 +11,27 @@ Select c such that Calls*(_, _)
 3 - synonym, wildcard
 procedure p;
 Select p such that Calls*(p, _)
-Animal,Honeysuckle,animal,assign,book,colors,colors2,cube,f00d,lAst,month,obj3ct,p1,p10,p11,p17,p18,p21,p22,p24,p26,p27,p3,p30,p5,p6,p7,p9,pain,simple,something,t0pUp,yellow
+Animal,Honeysuckle,animal,assign,purple,colors,colors2,cube,f00d,lAst,month,obj3ct,p1,p10,p11,p17,p18,p21,p22,p24,p26,p27,p3,black,p5,p6,p7,p9,pain,simple,something,t0pUp,yellow
 5000
 4 - wildcard, synonym
 procedure p;
 Select p such that Calls*(_, p)
-Animal,animal,assign,book,call,colors,cube,lAst,month,obj3ct,p1,p11,p17,p18,p2,p20,p21,p22,p23,p24,p25,p26,p27,p28,p3,p30,p5,p6,p7,p8,p9,pain,procedure,shikashi,simple,something,t0pUp
+Animal,animal,assign,purple,call,colors,cube,lAst,month,obj3ct,p1,p11,p17,p18,p2,p20,p21,p22,fox,p24,p25,p26,p27,p28,p3,black,p5,p6,p7,while,p9,pain,procedure,shikashi,simple,something,t0pUp
 5000
 5 - synonym, synonym
 procedure p, p1;
 Select p such that Calls*(p, p1)
-Animal,Honeysuckle,animal,assign,book,colors,colors2,cube,f00d,lAst,month,obj3ct,p1,p10,p11,p17,p18,p21,p22,p24,p26,p27,p3,p30,p5,p6,p7,p9,pain,simple,something,t0pUp,yellow
+Animal,Honeysuckle,animal,assign,purple,colors,colors2,cube,f00d,lAst,month,obj3ct,p1,p10,p11,p17,p18,p21,p22,p24,p26,p27,p3,black,p5,p6,p7,p9,pain,simple,something,t0pUp,yellow
 5000
 6 - synonym, synonym (tuple)
 procedure p, p1;
 Select <p, p1> such that Calls*(p, p1)
-Animal book,Animal call,Animal colors,Animal cube,Animal lAst,Animal month,Animal p1,Animal p2,Animal p3,Animal p5,Animal p7,Animal p8,Animal pain,Animal procedure,Animal shikashi,Animal simple,Animal something,animal assign,animal book,animal call,animal colors,animal cube,animal lAst,animal month,animal p1,animal p2,animal p3,animal p5,animal p7,animal p8,animal pain,animal shikashi,animal simple,animal something,assign book,assign call,assign colors,assign lAst,assign month,assign p1,assign p2,assign p3,assign p5,assign p7,assign p8,assign procedure,assign shikashi,assign simple,assign something,book colors,book p7,book p8,book procedure,book simple,colors procedure,cube procedure,cube shikashi,f00d procedure,f00d t0pUp,lAst call,lAst colors,lAst p1,lAst p2,lAst p3,lAst p5,lAst p7,lAst p8,lAst procedure,lAst simple,month p8,obj3ct procedure,obj3ct simple,p1 procedure,p1 simple,p10 colors,p10 p1,p10 p11,p10 p17,p10 p20,p10 p7,p10 p8,p10 procedure,p10 simple,p17 colors,p17 procedure,p17 simple,p18 colors,p18 obj3ct,p18 p24,p18 p25,p18 p26,p18 p27,p18 p28,p18 p30,p18 p8,p18 procedure,p18 shikashi,p18 simple,p18 t0pUp,p21 colors,p21 obj3ct,p21 p25,p21 p26,p21 p27,p21 p28,p21 p30,p21 p8,p21 procedure,p21 shikashi,p21 simple,p21 t0pUp,p22 colors,p22 obj3ct,p22 p30,p22 p8,p22 procedure,p22 shikashi,p22 simple,p22 t0pUp,p24 colors,p24 obj3ct,p24 p25,p24 p26,p24 p30,p24 p8,p24 procedure,p24 shikashi,p24 simple,p24 t0pUp,p26 colors,p26 p25,p26 p8,p26 simple,p26 t0pUp,p27 colors,p27 obj3ct,p27 p25,p27 p30,p27 p8,p27 procedure,p27 shikashi,p27 simple,p27 t0pUp,p3 p8,p30 procedure,p30 simple,p6 p8,p9 colors,p9 p1,p9 p20,p9 procedure,p9 simple,pain book,pain call,pain colors,pain month,pain p1,pain p2,pain p3,pain p5,pain p7,pain p8,pain procedure,t0pUp procedure,yellow Animal,yellow assign,yellow book,yellow call,yellow colors,yellow cube,yellow lAst,yellow month,yellow obj3ct,yellow p1,yellow p2,yellow p21,yellow p22,yellow p23,yellow p24,yellow p25,yellow p26,yellow p27,yellow p28,yellow p3,yellow p30,yellow p5,yellow p7,yellow p8,yellow pain,yellow procedure,yellow shikashi,yellow simple,yellow something,yellow t0pUp, Animal assign,Honeysuckle shikashi,Honeysuckle something,animal Animal,animal procedure,assign cube,assign pain,book call,book p1,book p2,book p3,colors simple,colors2 procedure,colors2 shikashi,cube simple,cube something,f00d colors,f00d obj3ct,f00d simple,lAst book,lAst month,month p2,month p5,month p7,obj3ct colors,obj3ct t0pUp,p1 colors,p10 p6,p10 p9,p11 p20,p17 p1,p18 p21,p18 p22,p18 p23,p21 p24,p22 p25,p22 p26,p24 p27,p24 p28,p26 obj3ct,p26 p30,p26 procedure,p26 shikashi,p27 p26,p3 p7,p30 colors,p30 p25,p30 p8,p30 shikashi,p5 p8,p6 p7,p7 p8,p9 p11,p9 p17,pain lAst,pain simple,simple procedure,something shikashi,t0pUp simple,yellow animal,yellow p18
+Animal purple,Animal call,Animal colors,Animal cube,Animal lAst,Animal month,Animal p1,Animal p2,Animal p3,Animal p5,Animal p7,Animal while,Animal pain,Animal procedure,Animal shikashi,Animal simple,Animal something,animal assign,animal purple,animal call,animal colors,animal cube,animal lAst,animal month,animal p1,animal p2,animal p3,animal p5,animal p7,animal while,animal pain,animal shikashi,animal simple,animal something,assign purple,assign call,assign colors,assign lAst,assign month,assign p1,assign p2,assign p3,assign p5,assign p7,assign while,assign procedure,assign shikashi,assign simple,assign something,purple colors,purple p7,purple while,purple procedure,purple simple,colors procedure,cube procedure,cube shikashi,f00d procedure,f00d t0pUp,lAst call,lAst colors,lAst p1,lAst p2,lAst p3,lAst p5,lAst p7,lAst while,lAst procedure,lAst simple,month while,obj3ct procedure,obj3ct simple,p1 procedure,p1 simple,p10 colors,p10 p1,p10 p11,p10 p17,p10 p20,p10 p7,p10 while,p10 procedure,p10 simple,p17 colors,p17 procedure,p17 simple,p18 colors,p18 obj3ct,p18 p24,p18 p25,p18 p26,p18 p27,p18 p28,p18 black,p18 while,p18 procedure,p18 shikashi,p18 simple,p18 t0pUp,p21 colors,p21 obj3ct,p21 p25,p21 p26,p21 p27,p21 p28,p21 black,p21 while,p21 procedure,p21 shikashi,p21 simple,p21 t0pUp,p22 colors,p22 obj3ct,p22 black,p22 while,p22 procedure,p22 shikashi,p22 simple,p22 t0pUp,p24 colors,p24 obj3ct,p24 p25,p24 p26,p24 black,p24 while,p24 procedure,p24 shikashi,p24 simple,p24 t0pUp,p26 colors,p26 p25,p26 while,p26 simple,p26 t0pUp,p27 colors,p27 obj3ct,p27 p25,p27 black,p27 while,p27 procedure,p27 shikashi,p27 simple,p27 t0pUp,p3 while,black procedure,black simple,p6 while,p9 colors,p9 p1,p9 p20,p9 procedure,p9 simple,pain purple,pain call,pain colors,pain month,pain p1,pain p2,pain p3,pain p5,pain p7,pain while,pain procedure,t0pUp procedure,yellow Animal,yellow assign,yellow purple,yellow call,yellow colors,yellow cube,yellow lAst,yellow month,yellow obj3ct,yellow p1,yellow p2,yellow p21,yellow p22,yellow fox,yellow p24,yellow p25,yellow p26,yellow p27,yellow p28,yellow p3,yellow black,yellow p5,yellow p7,yellow while,yellow pain,yellow procedure,yellow shikashi,yellow simple,yellow something,yellow t0pUp, Animal assign,Honeysuckle shikashi,Honeysuckle something,animal Animal,animal procedure,assign cube,assign pain,purple call,purple p1,purple p2,purple p3,colors simple,colors2 procedure,colors2 shikashi,cube simple,cube something,f00d colors,f00d obj3ct,f00d simple,lAst purple,lAst month,month p2,month p5,month p7,obj3ct colors,obj3ct t0pUp,p1 colors,p10 p6,p10 p9,p11 p20,p17 p1,p18 p21,p18 p22,p18 fox,p21 p24,p22 p25,p22 p26,p24 p27,p24 p28,p26 obj3ct,p26 black,p26 procedure,p26 shikashi,p27 p26,p3 p7,black colors,black p25,black while,black shikashi,p5 while,p6 p7,p7 while,p9 p11,p9 p17,pain lAst,pain simple,simple procedure,something shikashi,t0pUp simple,yellow animal,yellow p18
 5000
 7 - synonym, exact 
 procedure p;
 Select p such that Calls*(p, "colors")
-f00d, obj3ct, p1, p30, Animal,animal,assign,book,lAst,p10,p17,p18,p21,p22,p24,p26,p27,p9,pain,yellow
+f00d, obj3ct, p1, black, Animal,animal,assign,purple,lAst,p10,p17,p18,p21,p22,p24,p26,p27,p9,pain,yellow
 5000
 8 - synonym, exact
 procedure p;
@@ -46,12 +46,12 @@ Animal,animal,assign,lAst,pain,yellow
 10 - synonym, exact
 procedure p;
 Select p such that Calls*(p, "simple")
-f00d, colors, t0pUp, cube, pain, Animal,animal,assign,book,lAst,obj3ct,p1,p10,p17,p18,p21,p22,p24,p26,p27,p30,p9,yellow
+f00d, colors, t0pUp, cube, pain, Animal,animal,assign,purple,lAst,obj3ct,p1,p10,p17,p18,p21,p22,p24,p26,p27,black,p9,yellow
 5000
 11 - synonym, exact
 procedure p;
 Select p such that Calls*(p, "procedure")
-animal,colors2,p26,simple,Animal,assign,book,colors,cube,f00d,lAst,obj3ct,p1,p10,p17,p18,p21,p22,p24,p27,p30,p9,pain,t0pUp,yellow
+animal,colors2,p26,simple,Animal,assign,purple,colors,cube,f00d,lAst,obj3ct,p1,p10,p17,p18,p21,p22,p24,p27,black,p9,pain,t0pUp,yellow
 5000
 12 - synonym, exact
 procedure p;
@@ -61,17 +61,17 @@ none
 13 - exact, synonym
 procedure pppp1pp;
 Select pppp1pp such that Calls*("animal", pppp1pp)
-Animal, procedure, assign,book,call,colors,cube,lAst,month,p1,p2,p3,p5,p7,p8,pain,shikashi,simple,something
+Animal, procedure, assign,purple,call,colors,cube,lAst,month,p1,p2,p3,p5,p7,while,pain,shikashi,simple,something
 5000
 14 - exact, synonym
 procedure p;
 Select p such that Calls*("yellow", p)
-colors,t0pUp,Animal,animal,assign,book,call,cube,lAst,month,obj3ct,p1,p18,p2,p21,p22,p23,p24,p25,p26,p27,p28,p3,p30,p5,p7,p8,pain,procedure,shikashi,simple,something
+colors,t0pUp,Animal,animal,assign,purple,call,cube,lAst,month,obj3ct,p1,p18,p2,p21,p22,fox,p24,p25,p26,p27,p28,p3,black,p5,p7,while,pain,procedure,shikashi,simple,something
 5000
 15 - exact, synonym
 procedure p;
-Select p such that Calls*("book", p)
-call, p1, p2, p3, colors,p7,p8,procedure,simple
+Select p such that Calls*("purple", p)
+call, p1, p2, p3, colors,p7,while,procedure,simple
 5000
 16 - exact, synonym
 procedure p; read r; assign a; print pr; constant c; variable v;
@@ -96,12 +96,12 @@ TRUE
 20 - wildcard, exact 
 procedure p;
 Select p such that Calls*(_, "colors")
-Animal,Honeysuckle,animal,assign,book,call,colors,colors2,cube,f00d,lAst,month,obj3ct,p1,p10,p11,p17,p18,p2,p20,p21,p22,p23,p24,p25,p26,p27,p28,p3,p30,p5,p6,p7,p8,p9,pain,procedure,shikashi,simple,something,t0pUp,yellow
+Animal,Honeysuckle,animal,assign,purple,call,colors,colors2,cube,f00d,lAst,month,obj3ct,p1,p10,p11,p17,p18,p2,p20,p21,p22,fox,p24,p25,p26,p27,p28,p3,black,p5,p6,p7,while,p9,pain,procedure,shikashi,simple,something,t0pUp,yellow
 5000
 21 - wildcard, exact
 procedure p;
 Select p such that Calls*(_, "shikashi")
-Animal,Honeysuckle,animal,assign,book,call,colors,colors2,cube,f00d,lAst,month,obj3ct,p1,p10,p11,p17,p18,p2,p20,p21,p22,p23,p24,p25,p26,p27,p28,p3,p30,p5,p6,p7,p8,p9,pain,procedure,shikashi,simple,something,t0pUp,yellow
+Animal,Honeysuckle,animal,assign,purple,call,colors,colors2,cube,f00d,lAst,month,obj3ct,p1,p10,p11,p17,p18,p2,p20,p21,p22,fox,p24,p25,p26,p27,p28,p3,black,p5,p6,p7,while,p9,pain,procedure,shikashi,simple,something,t0pUp,yellow
 5000
 22 - wildcard, exact
 procedure p;
@@ -111,12 +111,12 @@ none
 23 - exact, wildcard
 procedure p;
 Select p such that Calls*("p1", _)
-Animal,Honeysuckle,animal,assign,book,call,colors,colors2,cube,f00d,lAst,month,obj3ct,p1,p10,p11,p17,p18,p2,p20,p21,p22,p23,p24,p25,p26,p27,p28,p3,p30,p5,p6,p7,p8,p9,pain,procedure,shikashi,simple,something,t0pUp,yellow
+Animal,Honeysuckle,animal,assign,purple,call,colors,colors2,cube,f00d,lAst,month,obj3ct,p1,p10,p11,p17,p18,p2,p20,p21,p22,fox,p24,p25,p26,p27,p28,p3,black,p5,p6,p7,while,p9,pain,procedure,shikashi,simple,something,t0pUp,yellow
 5000
 24 - exact, wildcard
 procedure p;
 Select p such that Calls*("p11", _)
-Animal,Honeysuckle,animal,assign,book,call,colors,colors2,cube,f00d,lAst,month,obj3ct,p1,p10,p11,p17,p18,p2,p20,p21,p22,p23,p24,p25,p26,p27,p28,p3,p30,p5,p6,p7,p8,p9,pain,procedure,shikashi,simple,something,t0pUp,yellow
+Animal,Honeysuckle,animal,assign,purple,call,colors,colors2,cube,f00d,lAst,month,obj3ct,p1,p10,p11,p17,p18,p2,p20,p21,p22,fox,p24,p25,p26,p27,p28,p3,black,p5,p6,p7,while,p9,pain,procedure,shikashi,simple,something,t0pUp,yellow
 5000
 25 - exact, wildcard
 procedure p;

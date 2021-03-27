@@ -15,7 +15,7 @@ TRUE
 5000
 4 - boolean (clause return false)
 
-Select BOOLEAN such that Follows(244, 245)
+Select BOOLEAN such that Affects*(245, 249)
 FALSE
 5000
 5 - boolean (clause return nth)
@@ -40,7 +40,7 @@ TRUE
 5000
 9 - boolean (one clause return table, one clause return nothing)
 stmt s, s1; assign a;
-Select BOOLEAN such that Follows*(s, s1) pattern a("chilli", "1")
+Select BOOLEAN such that Affects*(s, s1) pattern a("chilli", "1")
 FALSE
 5000
 10 - boolean (one clause false, one clause return table)
@@ -99,7 +99,7 @@ Select BOOLEAN such that Next(c, s)
 FALSE
 5000
 21 - boolean (individual clauses contain result but join together no result)
-read a; variable v; procedure pr; print p;
-Select BOOLEAN such that Modifies(a, v) and Next(a, p) with v.varName = pr.procName
+read a; variable v; procedure pr; print p; assign as, as1;
+Select BOOLEAN such that Modifies(as, v) and Affects(as1, as1) and Follows(as1, p) with v.varName = p.procName and as.stmt# = as1.stmt#
 FALSE
 5000
