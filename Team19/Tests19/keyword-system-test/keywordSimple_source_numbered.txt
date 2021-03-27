@@ -1,123 +1,544 @@
 procedure nian {
+    call main;
 }
 
 procedure main {
+    call program;
+    call procedure;
 }
 
 procedure program {
+    read program;
+    read nian;
+    call Uses;
 }
 
 // print
-print print;
-print read;
-print call;
-print while;
-print if;
-print then;
-print else;
-print procedure;
-print program;
-print Uses;
-print Follows;
+// print print;
+// print read;
+// print call;
+// print while;
+// print if;
+// print then;
+// print else;
+// print procedure;
+// print program;
+// print Uses;
+// print Follows;
 
 // read
-read print;
-read read;
-read call;
-read while;
-read if;
-read then;
-read else;
-read procedure;
-read program;
-read Uses;
-read Follows;
+//read print;
+// read read;
+// read call;
+// read while;
+// read if;
+// read then;
+// read else;
+// read procedure;
+// read program;
+// read Uses;
+// read Follows;
 
 // while
-while (print != 121) {}
-while (122 > read) {}
-while ((123 == purple) && (!((eunectes + lancet > 124) || (call <= green)))) {}
-while (125 + 126 / 130 < (127 - 128) * 129 ) {}
-while (((((print + read) % call) >= while * if) && (then - 131)) || ((!(else / 132 > 133)) && (!((procedure != program)) || (Uses + Follows < 134))) {}
-while (((((print + read) % call) >= while * if) && (then - Next)) || ((!(else / Affects > OR)) && (!((procedure != program)) || (Uses + Follows < AND))) {}
+//while (print != 121) {}
+// while (122 > read) {}
+// while ((123 == purple) && (!((eunectes + lancet > 124) || (call <= green)))) {}
+// while (125 + 126 / 130 < (127 - 128) * 129 ) {}
+// while (((((print + read) % call) >= while * if) && (then - 131)) || ((!(else / 132 > 133)) && (!((procedure != program)) || (Uses + Follows < 134))) {}
+// while (((((print + read) % call) >= while * if) && (then - Next)) || ((!(else / Affects > OR)) && (!((procedure != program)) || (Uses + Follows < AND))) {}
 
 // if
-if (if + NOT < AND * (then)) {}
-if ((!(201 <= else)) || (Uses + procedure % program > Follows)) {}
-if (johnlee > zhongli) {}
+// if (if + NOT < AND * (then)) then {} else {}
+// if ((!(201 <= else)) || (Uses + procedure % program > Follows)) then {} else {}
+// if (johnlee > zhongli) then {} else {}
+
 
 // assign LHS
-johnlee = print;
-johnlee = 301;
-johnlee = read + 302;
-johnlee = 302 + read;
-cocogoat = call / while;
-cocogoat = (303 - call) / while * if;
-cocogoat = johnlee;
-xiao = johnlee + then;
-keqing = (program % (procedure + else - then) * if + (while - call + read) / print);
-keqing = cocogoat;
-ninguang = Follows * (Uses / program % (procedure + else - Uses / then) * if + (while - cocogoat % call + read) / print);
-johnlee = hutao;
-beidou = 304 + xiangling * program;
-xiangling = beidou + 305 % (if * then);
+// johnlee = print;
+// johnlee = 301;
+// johnlee = read + 302;
+// johnlee = 302 + read;
+// cocogoat = call / while;
+// cocogoat = (303 - call) / while * if;
+// cocogoat = johnlee;
+// xiao = johnlee + then;
+// keqing = (program % (procedure + else - then) * if + (while - call + read) / print);
+// keqing = cocogoat;
+// ninguang = Follows * (Uses / program % (procedure + else - Uses / then) * if + (while - cocogoat % call + read) / print);
+// johnlee = hutao;
+// beidou = 304 + xiangling * program;
+// xiangling = beidou + 305 % (if * then);
 
 // assign RHS
-print = 401;
-read = 402 + xiangling - (johnlee + cocogoat) * keqing;
-call = childe;
-while = 404 * (johnlee / childe) + 403 % 405;
-if = childe + fatui / klee;
-then = (406 / 401);
-else = (((((407)))));
-procedure = print + read / call * (while - if * (then + else)) % procedure;
-program = program;
-Uses = print + print + print / (read - read - read) + (call + (call - call) * (while / while + while)) / (if * if * if - (then % then % then) % (else + else - else * else / else % else) + (procedure + procedure - procedure * (Uses - Uses % Uses)))
-Follows = program + childe + 407;
+// print = 401;
+// read = 402 + xiangling - (johnlee + cocogoat) * keqing;
+// call = childe;
+// while = 404 * (johnlee / childe) + 403 % 405;
+// if = childe + fatui / klee;
+// then = (406 / 401);
+// else = (((((407)))));
+// procedure = print + read / call * (while - if * (then + else)) % procedure;
+// program = program;
+// Uses = print + print + print / (read - read - read) + (call + (call - call) * (while / while + while)) / (if * if * if - (then % then % then) % (else + else - else * else / else % else) + (procedure + procedure - procedure * (Uses - Uses % Uses)))
+// Follows = program + childe + 407;
 
 
 
 procedure procedure {
+    print print;
     call print;
 
     while (a + b > c) {
+	read print;
         call read;
+        while (print != 121) {
+            xiangling = beidou + 305 % (if * then);
+            if (if + NOT < AND * (then)) then {
+                johnlee = print;
+                call while;
+                johnlee = 301;
+	    } else {
+                johnlee = read + 302;
+                call then;
+
+		read hashtagprocedure;
+		hashtagprocedure = hashtagprocedure;
+	    }
+            call if;
+            print procedure;
+	}
     }
 
-    call while;
-    call then;
-    call if;
 }
 
 procedure print {
+    print read;
+    while (122 > read) {
+        johnlee = 302 + read;
+        print = 401;
+        print program;
+
+	read hashtagprint;
+	hashtagprint = hashtagprint;
+    }
     call call;
+    read read;
 }
 
 procedure read {
-    call print;
-    call while;
+    read call;
+    if (912 == 911+1) then {
+        johnlee = 302 + read;
+        print Uses;
+        while ((123 == purple) && (!((eunectes + lancet > 124) || (call <= green)))) {
+            call print;
+            print call;
+            beidou = 304 + xiangling * program;
+
+	    read hashtagread;
+	    hashtagread = hashtagread;
+        }
+        read = 402 + xiangling - (johnlee + cocogoat) * keqing;
+    } else {
+        call while;
+        cocogoat = call / while;
+    }
 }
 
 procedure call {
     call while;
+    while (((((print + read) % call) >= while * if) && (then - 131)) || ((!(else / 132 > 133)) && (!((procedure != program)) || (Uses + Follows < 134))) {
+
+        print if;
+        read if;
+        cocogoat = johnlee;
+        Follows = program + childe + 407;
+        call = childe;
+        read procedure;
+
+	read hashtagcall;
+	hashtagcall = hashtagcall;
+    }
+    print Follows;
 }
 
 procedure while {
+    print then;
+    read then;
+    if ((!(201 <= else)) || (Uses + procedure % program > Follows)) then {
+        johnlee = hutao;
+        read program;
+    } else {
+        while (((((print + read) % call) >= while * if) && (then - Next)) || ((!(else / Affects > OR)) && (!((procedure != program)) || (Uses + Follows < AND))) {
+            keqing = cocogoat;
+            if (johnlee > zhongli) then {
+                keqing = (program % (procedure + else - then) * if + (while - call + read) / print);
+                if = childe + fatui / klee;
+                Uses = print + print + print / (read - read - read) + (call + (call - call) * (while / while + while)) / (if * if * if - (then % then % then) % (else + else - else * else / else % else) + (procedure + procedure - procedure * (Uses - Uses % Uses)))
+		call Uses;
+            } else {
+                cocogoat = johnlee;
+                xiao = johnlee + then;
+
+	        read hashtagwhile;
+	        hashtagwhile = hashtagwhile;
+            }
+            while = 404 * (johnlee / childe) + 403 % 405;
+        }
+        ninguang = Follows * (Uses / program % (procedure + else - Uses / then) * if + (while - cocogoat % call + read) / print);
+    }
+    johnlee = hutao;
+
 }
 
 procedure if {
     call print;
-    call read;
-    call while;
-    call then;
+    while (125 + 126 / 130 < (127 - 128) * 129 ) {
+        if (912 != 911+a) then {
+            call read;
+            program = program;
+	} else {
+            read while;
+            call while;
+	}
+        call then;
+        cocogoat = (303 - call) / while * if;
+        if (912+a != 911) then {
+            call = childe;
+            read Uses;
+
+	    read hashtagif;
+	    hashtagif = hashtagif;
+	} else {
+            print while;
+	}
+    }
 }
 
 procedure then {
+    print else;
+    read else;
+    else = (((((407)))));
     call while;
+    procedure = print + read / call * (while - if * (then + else)) % procedure;
+    then = (406 / 401);
+    read Follows;
+
+    read hashtagthen;
+    hashtagthen = hashtagthen;
 }
 
 procedure else {
+    johnlee = print;
+    johnlee = 301;
+    johnlee = read + 302;
+    johnlee = 302 + read;
+    cocogoat = call / while;
+    cocogoat = (303 - call) / while * if;
+    cocogoat = johnlee;
+    xiao = johnlee + then;
+    keqing = (program % (procedure + else - then) * if + (while - call + read) / print);
+    keqing = cocogoat;
+    ninguang = Follows * (Uses / program % (procedure + else - Uses / then) * if + (while - cocogoat % call + read) / print);
+    johnlee = hutao;
+    beidou = 304 + xiangling * program;
+    xiangling = beidou + 305 % (if * then);
+
+
+    print = 401;
+    read = 402 + xiangling - (johnlee + cocogoat) * keqing;
+    call = childe;
+    while = 404 * (johnlee / childe) + 403 % 405;
+    if = childe + fatui / klee;
+    then = (406 / 401);
+    else = (((((407)))));
+    procedure = print + read / call * (while - if * (then + else)) % procedure;
+    program = program;
+    Uses = print + print + print / (read - read - read) + (call + (call - call) * (while / while + while)) / (if * if * if - (then % then % then) % (else + else - else * else / else % else) + (procedure + procedure - procedure * (Uses - Uses % Uses)))
+    Follows = program + childe + 407;
+
+
+    read hashtagelse;
+    hashtagelse = hashtagelse;
 }
 
 procedure Uses {
+    barbara = rosaria + 1;
+    guac01 = guac00 + print;
+    while (aa1 * print > b + 1) {
+        guac02 = guac01 + read;
+        jean = barabara + 2;
+        while (aa2 % read > b + 2) {
+	    diluc = jean + 3;
+            guac03 = guac02 + call;
+            while (call / aa3 > b + 3) {
+                guac04 = guac03 + while;
+		diona = diluc + 4;
+                while (while - aa4 > b + 4) {
+                    guac05 = guac04 + if;
+		    kaeya = 5 + diona;
+                    while (aa5 > if - b + 5) {
+		        albedo = 6 * (6 + kaeya);
+                        guac06 = guac05 + then;
+                        while (aa6 > b + 6 * then) {
+                            guac07 = guac06 + else;
+			    klee = albedo;
+                            while (aa7 > b + else / 7) {
+                                guac08 = guac07 + procedure;
+			        sucrose = klee;
+			    }
+                            guac09 = guac08 + program;
+			    lisa = sucrose;
+	                    if (procedure != program + procedure + aa8) then {
+                                guac10 = guac09 + Uses;
+			        razer = lisa;
+	                        while (Uses == follows - aa9) {
+                                    guac11 = guac10 + Follows;
+				    bennet = razer;
+	                        }
+                                guac12 = print * guac11;
+				fischl = bennet;
+	                    } else {
+                                guac13 = read * guac12;
+			        noelle = fischl;
+	                        while (aa10 - print > read) {
+                                    guac14 = call * guac13;
+				    amber = noelle;
+	                        }
+                                guac15 = while * guac14;
+				mona = amber;
+	                    }
+                            guac16 = if * guac15;
+			    chen = mona;
+			}
+                        guac17 = then * guac16;
+			siege = chen;
+	                if (procedure % aa11 != program) then {
+                            guac18 = else * guac17;
+			    shining = siege;
+	                    while (Uses == aa12 - follows) {
+                                guac19 = procedure * guac18;
+			        nightingale = shining;
+	                    }
+			    ifrit = nightingale;
+                            guac20 = program * guac19;
+	                } else {
+                            guac21 = Uses * guac20;
+			    eyjafjalla = ifrit;
+	                    while (print > aa13 + read) {
+                                guac22 = Follows * guac21;
+			        angelina = eyjafjalla;
+	                    }
+                            guac23 = guac22 % print;
+			    silverash = angelina;
+	                }
+                        guac24 = guac23 % read;
+			hoshiguma = silverash;
+                    }
+		    saria = hoshiguma;
+                    guac25 = guac24 % call;
+	            if (procedure != aa14 - program) then {
+                        guac26 = guac25 % while;
+		        skadi = saria;
+	                while (aa15 + Uses == follows) {
+                            guac27 = guac26 % if;
+			    schwarz = skadi;
+	                }
+                        guac28 = guac27 % then;
+			hellagur = schwarz;
+	            } else {
+                        guac29 = guac28 % else;
+		        magallan = hellagur;
+	                while (aa16 + print > read) {
+			    mostima = magallan;
+                            guac30 = guac29 % procedure;
+	                }
+			blaze = mostima;
+                        guac31 = guac30 % program;
+	            }
+                    guac32 = guac31 % Uses;
+		    aak = mostima;
+                }
+                guac33 = guac32 % Follows;
+		nian = aak;
+	        if (aa17 % procedure != program) then {
+                    guac34 = print - guac33;
+		    ceobe = nian;
+	            while (aa18 + Uses == follows) {
+		        bagpipe = ceobe;
+                        guac35 = read - guac34;
+	                if (aa19 - procedure != program) then {
+                            guac36 = call - guac35;
+			    phantom = bagpipe;
+	                    while (aa20 % Uses == follows) {
+                                guac37 = while - guac36;
+			        w = phantom;
+	                        if (aa21 + procedure != program) then {
+                                    guac38 = if - guac37;
+				    weedy = w;
+	                            while (aa22 + Uses == follows) {
+                                        guac39 = then - guac38;
+				        rosa = weedy;
+	                            }
+                                    guac40 = else - guac39;
+				    suzuran = rosa;
+	                        } else {
+                                    guac41 = procedure - guac40;
+				    thorns = suzuran;
+	                            while (aa23 + print > read) {
+				        eunectes = thorns;
+                                        guac42 = program - guac41;
+	                                if (aa24 + procedure != program) then {
+					    surtr = eunectes;
+                                            guac43 = Uses - guac42;
+	                                    while (aa25 + Uses == follows) {
+					        blemishine = surtr;
+                                                guac44 = Follows - guac43;
+	                                        if (aa26 + procedure != program) then {
+                                                    guac45 = guac44 / print;
+						    rosmontis = blemishine;
+	                                            while (aa27 + Uses == follows) {
+						        mudrock = rosmontis;
+                                                        guac46 = guac45 / read;
+	                                            }
+                                                    guac47 = guac46 / call;
+						    mountain = mudrock;
+	                                        } else {
+                                                    guac48 = guac47 / while;
+						    archetto = mountain;
+	                                            while (aa28 + print > read) {
+                                                        guac49 = guac48 / if;
+						        dusk = archetto;
+	                                            }
+						    saga = dusk;
+                                                    guac50 = guac49 / then;
+	                                        }
+                                                guac51 = guac50 / else;
+						ash = saga;
+	                                    }
+                                            guac52 = guac51 / procedure;
+					    savage = ash;
+	                                } else {
+                                            guac53 = guac52 / program;
+					    texas = savage;
+	                                    while (aa29 + print > read) {
+					        zima = texas;
+                                                guac54 = guac53 / Uses;
+	                                        if (aa30 + procedure != program) then {
+						    ptilopsis = zima;
+                                                    guac55 = guac54 / Follows;
+	                                            while (aa31 + Uses == follows) {
+						        silence = ptilopsis;
+                                                        guac56 = guac55 / (print + x);
+	                                            }
+                                                    warfarin = silence;
+                                                    guac57 = guac56 / (read + x);
+	                                        } else {
+						    amiya = warfarin;
+                                                    guac58 = guac57 / (call + x);
+	                                            while (aa32 + print > read) {
+                                                        guac59 = guac58 / (while + x);
+						        nightmare = amiya;
+
+                                                        read hashtagUses;
+                                                        hashtagUses = hashtagUses;
+	                                            }
+                                                    guac60 = guac59 / (if + x);
+						    skyfire = nightmare;
+	                                        }
+                                                guac61 = guac60 / (then + x);
+						projektred = skyfire;
+	                                    }
+                                            guac62 = guac61 / (else + x);
+					    manticore = projektred;
+	                                }
+                                        guac63 = guac62 / (procedure + x);
+					cliffheart = manticore;
+	                            }
+				    feater = cliffheart;
+                                    guac64 = guac63 / (program + x);
+	                        }
+				provence = feater;
+                                guac65 = guac64 / (Uses + x);
+	                    }
+			    bluepoison = provence;
+                            guac66 = guac65 / (Follows + x);
+	                } else {
+			    firewatch = bluepoison;
+                            guac67 = guac66 / (y * print * x) + z;
+	                    while (aa33 + print > read) {
+			        meteorite = firewatch;
+                                guac68 = guac67 / (y * read * x) + z;
+	                    }
+			    platinum = meteorite;
+                            guac69 = guac68 / (y * call * x) + z;
+	                }
+			pramanix = platinum;
+                        guac70 = guac69 / (y * while * x) + z;
+	            }
+		    istina = pramanix;
+                    guac71 = guac70 / (y * if * x) + z;
+	        } else {
+		    mayer = istina;
+                    guac72 = guac71 / (y * then * x) + z;
+	            while (aa34 + print > read) {
+		        sora = mayer;
+                        guac73 = guac72 / (y * else * x) + z;
+	            }
+		    franka = sora;
+                    guac74 = guac73 / (y * procedure * x) + z;
+	        }
+		specter = franka;
+                guac75 = guac74 / (y * program * x) + z;
+            }
+	    indra = specter;
+            guac76 = guac75 / (y * Uses * x) + z;
+	    if (procedure != aa35 + program) then {
+                guac77 = guac76 / (y * Follows * x) + z;
+	        lappland = indra;
+	        while (Uses == follows + aa36) {
+                    guac78 = guac77 / (y * (xx / zz) * x) + z % (yy + print);
+		    nearl = lappland;
+	        }
+		liskarm = nearl;
+                guac79 = guac78 / (y * (xx / zz) * x) + z % (yy + read);
+	    } else {
+	        vulcan = liskarm;
+                guac80 = guac79 / (y * (xx / zz) * x) + z % (yy + call);
+	        while (print > read + aa37) {
+		    croissant = vulcan;
+                   guac81 = guac80 / (y * (xx / zz) * x) + z % (yy + while);
+	        }
+		grani = croissant;
+                guac82 = guac81 / (y * (xx / zz) * x) + z % (yy + if);
+	    }
+	    glaucus = grani;
+            guac83 = guac82 / (y * (xx / zz) * x) + z % (yy + then);
+        }
+	swire = glaucus;
+        guac84 = guac83 / (y * (xx / zz) * x) + z % (yy + else);
+	if (procedure != aa38 + program) then {
+	    ceylon = swire;
+            guac85 = guac84 / (y * (xx / zz) * x) + z % (yy + procedure);
+	    while (Uses == follows + aa39) {
+	        astesia = ceylon;
+                guac86 = guac85 / (y * (xx / zz) * x) + z % (yy + program);
+	    }
+            guac87 = guac86 / (y * (xx / zz) * x) + z % (yy + Uses);
+	    flamebringer = astesia;
+	} else {
+            guac88 = guac87 / (y * (xx / zz) * x) + z % (yy + Follows);
+	    executor = framebringer;
+	    while (print > aa40 + read) {
+	        breeze = executor;
+                guac89 = guac88 / (y * (xx / zz) * x) + z % (yy + yy) - print;
+	    }
+	    waaifu = breeze;
+            guac90 = guac89 / (y * (xx / zz) * x) + z % (yy + yy) - read;
+	}
+	bison = waaifu;
+        guac91 = guac90 / (y * (xx / zz) * x) + z % (yy + yy) - call;
+    }
+    reed = bison;
+    guac92 = guac91 / (y * (xx / zz) * x) + z % (yy + yy) - while;
 }
