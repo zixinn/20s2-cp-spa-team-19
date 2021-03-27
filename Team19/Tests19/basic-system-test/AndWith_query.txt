@@ -1,81 +1,251 @@
-1 - with stmt#
+1 - with stmt# (print)
 print pn;
 Select pn with pn.stmt# = 10
 10
 5000
-2 - call.procName
+2 - with stmt# (print)
+print pn;
+Select pn with 10 = pn.stmt#
+10
+5000
+3 - with stmt# (call)
+call c;
+Select c with c.stmt# = 20
+20
+5000
+4 - with stmt# (call)
+call c;
+Select c with 20 = c.stmt#
+20
+5000
+5 - with stmt# (read)
+read r;
+Select r with r.stmt# = 13
+13
+5000
+6 - with stmt# (read)
+read r;
+Select r with 13 = r.stmt#
+13
+5000
+7 - with stmt# (assign)
+assign a;
+Select a with a.stmt# = 2
+2
+5000
+8 - with stmt# (assign)
+assign a;
+Select a with 2 = a.stmt#
+2
+5000
+9 - with stmt# (if)
+if ifs;
+Select ifs with ifs.stmt# = 6
+6
+5000
+10 - with stmt# (if)
+if ifs;
+Select ifs with 6 = ifs.stmt#
+6
+5000
+11 - with stmt# (while)
+while w;
+Select w with w.stmt# = 3 
+3
+5000
+12 - with stmt# (while)
+while w;
+Select w with 3 = w.stmt#
+3
+5000
+13 - call.procName
 call c;
 Select c with c.procName = "shikashi"
 12, 20
 5000
-3 - call.procName
+14 - call.procName
+call c;
+Select c with "shikashi" = c.procName
+12, 20
+5000
+15 - call.procName
 call c;
 Select c with c.procName = "something"
 11
 5000
-4 - call.procName - invalid
+16 - call.procName
+call c;
+Select c with "something" = c.procName
+11
+5000
+17 - call.procName - invalid
 call c;
 Select c with c.procName = "shik"
 none
 5000
-5 - call.procName - wrong casing
+18 - call.procName - invalid
+call c;
+Select c with "shik" = c.procName
+none
+5000
+19 - call.procName - wrong casing
 call c;
 Select c with c.procName = "shiKAshi"
 none
 5000
-6 - invalid procName
-print pn;
-Select pn with pn.procName = "HoneySuckle"
+20 - call.procName - wrong casing
+call c;
+Select c with "shiKAshi" = c.procName
 none
 5000
-7 - invalid print.procName
+21 - invalid procName (print)
 print pn;
 Select pn with pn.procName = "something"
 none
 5000
-8 - proc.procName
-procedure proc;
-Select proc with proc.procName = "HoneySuckle"
+22 - invalid procName (print)
+print pn;
+Select pn with "something" = pn.procName 
 none
 5000
-9 - print.varName
+23 - invalid procName (read)
+read r
+Select r with r.procName = "teacup0"
+none
+5000
+24 - invalid procName (read)
+read r
+Select r with "teacup0" = r.procName 
+none
+5000
+25 - invalid procName (assign)
+assign a
+Select a with a.procName = "x"
+none
+5000
+26 - invalid procName (assign)
+assign a
+Select a with "x" = a.procName
+none
+5000
+27 - invalid procName (print)
+print pn;
+Select pn with pn.procName = "HoneySuckle"
+none
+5000
+28 - invalid procName (print)
+print pn;
+Select pn with "HoneySuckle" = pn.procName 
+none
+5000
+29 - invalid procName (read)
+read r
+Select r with r.procName = "HoneySuckle"
+none
+5000
+30 - invalid procName (read)
+read r
+Select r with "HoneySuckle" = r.procName 
+none
+5000
+31 - invalid procName (assign)
+assign a
+Select a with a.procName = "HoneySuckle"
+none
+5000
+32 - invalid procName (assign)
+assign a
+Select a with "HoneySuckle" = a.procName
+none
+5000
+33 - print.varName
 print pn;
 Select pn with pn.varName = "something"
 14
 5000
-10 - print.varName
+34 - print.varName
+print pn;
+Select pn with "something" = pn.varName 
+14
+5000
+35 - print.varName
 print pn;
 Select pn with pn.varName = "lesion"
 10, 19
 5000
-11 - print.varName
+36 - print.varName
+print pn;
+Select pn with "lesion" = pn.varName 
+10, 19
+5000
+37 - print.varName
 print pn;
 Select pn with pn.varName = "x"
 9
-5000v
-12 - print.varName
+5000
+38 - print.varName
+print pn;
+Select pn with "x" = pn.varName 
+9
+5000
+39 - print.varName
 print pn;
 Select pn with pn.varName = "teacup0"
 1
 5000
-13 - print.varName
+40 - print.varName
+print pn;
+Select pn with "teacup0" = pn.varName 
+1
+5000
+41 - print.varName
 print pn1, pn2, pn3, pn4;
 Select <pn1, pn2, pn3, pn4> with pn1.varName = "teacup0" and pn2.varName = "x" and pn3.varName = "lesion"  and pn4.varName = "something"
 1 9 10 14, 1 9 19 14
 5000
-14 - variable.varName
+42 - print.varName
+print pn1, pn2, pn3, pn4;
+Select <pn1, pn2, pn3, pn4> with "teacup0" = pn1.varName and pn2.varName = "x" and pn3.varName = "lesion"  and pn4.varName = "something"
+1 9 10 14, 1 9 19 14
+5000
+43 - print.varName
+print pn1, pn2, pn3, pn4;
+Select <pn1, pn2, pn3, pn4> with pn4.varName = "something" and "teacup0" = pn1.varName and "lesion" = pn3.varName and pn2.varName = "x" 
+1 9 10 14, 1 9 19 14
+5000
+44 - print.varName
+print pn1, pn2, pn3, pn4;
+Select <pn1, pn2, pn3, pn4> with "x" = pn2.varName and pn4.varName = "something" and pn3.varName = "lesion" and "teacup0" = pn1.varName and "something" = pn4.varName and "lesion" = pn3.varName and pn2.varName = "x" and "teacup0" = pn1.varName
+1 9 10 14, 1 9 19 14
+5000
+45 - variable.varName
 variable var;
 Select var with var.varName = "teacup0"
 teacup0
 5000
-15 - variable.varName
+46 - variable.varName
+variable var;
+Select var with "teacup0" = var.varName 
+teacup0
+5000
+47 - variable.varName
 variable var;
 Select var with var.varName = "lesion"
 lesion
 5000
-16 - variable.varName
+48 - variable.varName
+variable var;
+Select var with "lesion" = var.varName 
+lesion
+5000
+49 - variable.varName
 variable var;
 Select var with var.varName = "bluebell"
+bluebell
+5000
+50 - variable.varName
+variable var;
+Select var with "bluebell" = var.varName
 bluebell
 5000
 17 - variable.varName
@@ -163,101 +333,296 @@ variable var;
 Select var with var.varName = "goss"
 none
 5000
-34 - read.varName
+34 - variable.varName
+variable var;
+Select var with "melody" = var.varName
+melody
+5000
+35 - variable.varName
+variable var;
+Select var with "maison" = var.varName
+maison
+5000
+36 - variable.varName, line 14
+variable var;
+Select var with "something" = var.varName
+something
+5000
+37 - variable.varName
+variable var;
+Select var with "x" = var.varName
+x
+5000
+38 - variable.varName
+variable var;
+Select var with "y" = var.varName
+y
+5000
+39 - variable.varName
+variable var;
+Select var with "z" = var.varName
+z
+5000
+40 - variable.varName
+variable var;
+Select var with "boro" = var.varName
+boro
+5000
+41 - variable.varName
+variable var;
+Select var with "ardent" = var.varName
+ardent
+5000
+42 - variable.varName
+variable var;
+Select var with "guru" = var.varName
+guru
+5000
+43 - variable.varName
+variable var;
+Select var with "pardon" = var.varName
+pardon
+5000
+44 - variable.varName
+variable var;
+Select var with "melody" = var.varName
+melody
+5000
+45 - variable.varName
+variable var;
+Select var with "coeur" = var.varName
+coeur
+5000
+46 - variable.varName
+variable var;
+Select var with "cerveau" = var.varName
+cerveau
+5000
+47 - variable.varName
+variable var;
+Select var with "something" = var.varName
+something
+5000
+48 - variable.varName
+variable var;
+Select var with "shikashi" = var.varName
+none
+5000
+49 - variable.varName
+variable var;
+Select var with "Honeysuckle" = var.varName
+none
+5000
+50 - variable.varName
+variable var;
+Select var with "goss" = var.varName
+none
+5000
+51 - read.varName
 read r;
 Select r with r.varName = "teacup0"
 13
 5000
-35 - read.varName
+52 - read.varName
+read r;
+Select r with "teacup0" = r.varName
+13
+5000
+53 - read.varName
+read r;
+Select r with "tea" = r.varName
+none
+5000
+54 - read.varName
 read r;
 Select r with r.varName = "tea"
 none
 5000
-36 - read.varName
+55 - read.varName
 read r;
 Select r with r.varName = "teacup0"
 13
 5000
-37 - read.varName
+56 - read.varName
+read r;
+Select r with "teacup0" = r.varName
+13
+5000
+57 - read.varName
 read r;
 Select r with r.varName = "ardent"
 24
 5000
-38 - read.varName
+58 - read.varName
+read r;
+Select r with "ardent" = r.varName
+24
+5000
+59 - read.varName
 read r;
 Select r with r.varName = "pardon"
 27
 5000
-39 - read.varName invalid substring
+60 - read.varName
+read r;
+Select r with "pardon" = r.varName
+27
+5000
+61 - read.varName invalid substring
 read r;
 Select r with r.varName = "tea"
 none
 5000
-40 - read.varName invalid nonexistent
+62 - read.varName invalid substring
+read r;
+Select r with "tea" = r.varName
+none
+5000
+63 - read.varName invalid nonexistent
 read r;
 Select r with r.varName = "something"
 none
 5000
-41 - read.procName
+64 - read.varName invalid nonexistent
+read r;
+Select r with "something" = r.varName
+none
+5000
+65 - read.procName
 read r;
 Select r with r.procName = "teacup0"
 none
 5000
-42 
+66 - read.procName
+read r;
+Select r with "teacup0" = r.procName
+none
+5000
+67 
 constant const; stmt s;
 Select s with const.value = 1 such that Uses(s,const)
 none
 5000
-43
+68
+constant const; stmt s;
+Select s such that Uses(s,const) with const.value = 1
+none
+5000
+69
 constant const;
 Select const with const.value = 1
 1
 5000
-44
+70
+constant const;
+Select const with 1 = const.value
+1
+5000
+71
 assign a;
 Select BOOLEAN with 42 = 42
 TRUE
 5000
-45
+72
 assign a;
 Select BOOLEAN with 42 = 43
 FALSE
 5000
-46
+73
+assign a, a1;
+Select a1 with a.stmt# = 7
+2,4,5,7,8,16,17,18,21,22,25,26
+5000
+74
 assign a, a1;
 Select a1 with 7 = a.stmt#
 2,4,5,7,8,16,17,18,21,22,25,26
 5000
-47
+75
 procedure p1, p2, p3;
 Select p1 such that Calls*(p1,p2) and Calls*(p2,p3)
 Honeysuckle
 5000
-48 stmt cannot be used like this only prog_line
+76
+procedure p1, p2, p3;
+Select p1 such that Calls*(p2,p3) and Calls*(p1,p2)
+Honeysuckle
+5000
+77 stmt cannot be used like this only prog_line
 stmt s1, s2;
 Select s1 such that Next*(s1,s2) with s2 = 18
 none
 5000
-49
+78 stmt cannot be used like this only prog_line
+stmt s1, s2;
+Select s1 with s2 = 18 such that Next*(s1,s2)
+none
+5000
+79 stmt cannot be used like this only prog_line
+stmt s1, s2;
+Select s1 such that Next*(s1,s2) with 18 = s2
+none
+5000
+80 stmt cannot be used like this only prog_line
+stmt s1, s2;
+Select s1 with 18 = s2 such that Next*(s1,s2)
+none
+5000
+81
 stmt s1; prog_line n;
 Select s1 such that Next*(s1,n) with n = 18
 13,14,15,16,17,18,19,20
 5000
-50 - Q28, stmt doesnt have procName or varName
+82
+stmt s1; prog_line n;
+Select s1 with n = 18 such that Next*(s1,n) 
+13,14,15,16,17,18,19,20
+5000
+83
+stmt s1; prog_line n;
+Select s1 such that Next*(s1,n) with 18 = n
+13,14,15,16,17,18,19,20
+5000
+84
+stmt s1; prog_line n;
+Select s1 with 18 = n such that Next*(s1,n) 
+13,14,15,16,17,18,19,20
+5000
+85 - Q28, stmt doesnt have procName or varName
 stmt s1, s2;
 Select <s1, s2> with s1.procName = s2.varName
 none
 5000
-51 - Q28
+86 - Q28, stmt doesnt have procName or varName
+stmt s1, s2;
+Select <s1, s2> with s2.varName = s1.procName
+none
+5000
+87 - Q28
 stmt s; procedure p; variable v;
 Select p with p.procName = v.varName
 something
 5000
-52 - Q28
+88 - Q28
+stmt s; procedure p; variable v;
+Select p with v.varName = p.procName
+something
+5000
+89 - Q28
 call c; print pn;
 Select <c, pn> with c.procName = pn.varName
 11 14
 5000
+90 - Q28
+call c; print pn;
+Select <c, pn> with pn.varName = c.procName
+11 14
+5000
+
+// does progline have procName?
+// all variations of tuples
+// more and and with
+
 53 - Q29
 prog_line n; stmt s;
 Select s.stmt# such that Follows* (s, n) with n=10
