@@ -618,38 +618,148 @@ call c; print pn;
 Select <c, pn> with pn.varName = c.procName
 11 14
 5000
-
-// does progline have procName?
-// all variations of tuples
-// more and and with
-
-53 - Q29
+91
+print pn; read r;
+Select <pn, r> with pn.varName = r.varName
+1 13
+5000
+92
+print pn; read r;
+Select <pn, r> with r.varName = pn.varName
+1 13
+5000
+93 - Q29
 prog_line n; stmt s;
 Select s.stmt# such that Follows* (s, n) with n=10
 1,2,3,6
 5000
-54 - Q27
+94 - Q29
+prog_line n; stmt s;
+Select s.stmt# with n = 10 such that Follows* (s, n)
+1,2,3,6
+5000
+95 - Q29
+prog_line n; stmt s;
+Select s.stmt# such that Follows* (s, n) with 10 = n
+1,2,3,6
+5000
+96 - Q29
+prog_line n; stmt s;
+Select s.stmt# with 10 = n such that Follows* (s, n)
+1,2,3,6
+5000
+97 - Q27
 stmt s; constant c;
 Select s with s.stmt# = c.value
 1,2,5,8,23
 5000
-55 Modifies
+98 - Q27
+stmt s; constant c;
+Select s with c.value = s.stmt#
+1,2,5,8,23
+5000
+99 Modifies
 stmt s1, s2; 
 Select s1 such that Modifies(s1,"guru")
 11, 12, 15, 20, 23, 26
 5000
-56 Modifies
+100 Modifies
 procedure proc;
 Select proc such that Modifies(proc,"guru")
 Honeysuckle, something, shikashi
 5000
-57 Modifies* doesnt exist
+101 Modifies* doesnt exist
 stmt s1, s2; 
 Select s1 such that Modifies*(s1,"guru")
 none
 5000
-58 - Q31
+102 - Q31
 assign a; while w; prog_line n;
 Select a such that Parent*(w, a) and Next*(2, n) pattern a("x", _) with a.stmt# = n
 4
+5000
+103 - Q31
+assign a; while w; prog_line n;
+Select a such that Parent*(w, a) and Next*(2, n) pattern a("x", _) with n = a.stmt#
+4
+5000
+104 - Q31
+assign a; while w; prog_line n;
+Select a such that Next*(2, n) and Parent*(w, a) with a.stmt# = n pattern a("x", _)
+4
+5000
+105 - Q31
+assign a; while w; prog_line n;
+Select a pattern a("x", _) such that Next*(2, n) and Parent*(w, a) with a.stmt# = n 
+4
+5000
+106 - Q31
+assign a; while w; prog_line n;
+Select a such that Next*(2, n) and Parent*(w, a) with n = a.stmt# pattern a("x", _)
+4
+5000
+107 - Q31
+assign a; while w; prog_line n;
+Select a pattern a("x", _) such that Next*(2, n) and Parent*(w, a) with n = a.stmt# 
+4
+5000
+108 - Q31
+assign a; while w; prog_line n;
+Select a pattern a("x", _) such that Next*(2, n) with n = a.stmt# such that Parent*(w, a)
+4
+5000
+109 - Q31
+assign a; while w; prog_line n;
+Select a such that Next*(2, n) and Parent*(w, a) with a.stmt# = n pattern a("x", _) and w("melody",_)
+4
+5000
+110 - Q31
+assign a; while w; prog_line n;
+Select a such that Next*(2, n) and Parent*(w, a) with a.stmt# = n pattern a("x", _) and w("melody",_) and w("maison", _) with 3 = w.stmt#
+4
+5000
+111 - Q31
+assign a; while w; prog_line n;
+Select a such that Next*(2, n) such that Parent*(w, a) with a.stmt# = n pattern a("x", _) pattern w("melody",_) pattern w("maison", _) with 3 = w.stmt# and w.stmt# = 3
+4
+5000
+112
+variable v1, v2;
+Select <v1, v2> with v1.varName = v2.varName
+ardent ardent,bluebell bluebell,boro boro,cerveau cerveau,coeur coeur,gossamer gossamer,guru guru,lesion lesion,maison maison,melody melody,pardon pardon,something something,teacup0 teacup0,x x,y y,z z
+5000
+113
+while w; variable v1;
+Select <w, v1> such that Uses(w, v1) pattern w(v1,_)
+3 maison, 3 melody
+5000
+114
+procedure proc; assign a, a2; variable v1, v2, v3, v4; while w;
+Select <proc, a, w, v1, v2> such that Modifies(proc, v1) and Modifies(a, v1) and Uses(w, v1) pattern w(v1,_) such that Modifies(w, v2) and Modifies(a2, v2) and Uses(a2, v3) with v3.varName = "teacup0"
+Honeysuckle 21 3 melody lesion, something 21 3 melody lesion
+5000
+115
+procedure proc; assign a, a2; variable v1, v2, v3, v4; while w;
+Select <proc, a, w, v1, v2> such that Modifies(proc, v1) and Modifies(a, v1) with "teacup0" = v3.varName such that Uses(w, v1) and Uses(a2, v3) pattern w(v1,_) such that Modifies(w, v2) and Modifies(a2, v2)
+Honeysuckle 21 3 melody lesion, something 21 3 melody lesion
+5000
+116
+procedure proc; assign a, a2; variable v1, v2, v3, v4; while w;
+Select <proc, a, w, v1, v2> such that Modifies(a, v1) and Modifies(proc, v1) with "teacup0" = v3.varName such that Uses(w, v1) and Uses(a2, v3) pattern w(v1,_) such that Modifies(w, v2) and Modifies(a2, v2)
+Honeysuckle 21 3 melody lesion, something 21 3 melody lesion
+5000
+117
+procedure proc; assign a, a2; variable v1, v2, v3, v4; while w;
+Select <proc, a, w, v1, v2> such that Modifies(a, v1) and Modifies(proc, v1) with "teacup0" = v3.varName such that Uses(w, v1) and Uses(a2, v3) pattern w(v1,_) such that Modifies(a2, v2) and Modifies(w, v2)
+Honeysuckle 21 3 melody lesion, something 21 3 melody lesion
+5000
+118
+procedure proc; assign a, a2; variable v1, v2, v3, v4; while w;
+Select <proc, a, w, v1, v2> with "teacup0" = v3.varName such that Uses(w, v1) and Uses(a2, v3) pattern w(v1,_) such that Modifies(a2, v2) and Modifies(w, v2) and Modifies(a, v1) and Modifies(proc, v1) 
+Honeysuckle 21 3 melody lesion, something 21 3 melody lesion
+5000
+119
+procedure proc; assign a, a2; variable v1, v2, v3, v4; while w;
+Select <proc, a, w, v1, v2> with "teacup0" = v3.varName such that Uses(w, v1) and Uses(a2, v3) and Modifies(a2, v2) and Modifies(w, v2) and Modifies(a, v1) and Modifies(proc, v1) pattern w(v1,_) 
+Honeysuckle 21 3 melody lesion, something 21 3 melody lesion
 5000
