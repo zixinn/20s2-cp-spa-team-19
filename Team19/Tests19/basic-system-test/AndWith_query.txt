@@ -763,3 +763,24 @@ procedure proc; assign a, a2; variable v1, v2, v3, v4; while w;
 Select <proc, a, w, v1, v2> with "teacup0" = v3.varName such that Uses(w, v1) and Uses(a2, v3) and Modifies(a2, v2) and Modifies(w, v2) and Modifies(a, v1) and Modifies(proc, v1) pattern w(v1,_) 
 Honeysuckle 21 3 melody lesion, something 21 3 melody lesion
 5000
+120
+stmt s1, s2, s3, s5, s7, s11, s13, s17, s19, s23, s27;
+Select <s1, s2, s3, s5, s7, s11, s13, s17, s19, s23, s27> with s1.stmt# = 1 and s2.stmt# = 2 and s3.stmt# = 3 and s5.stmt# = 5 and s7.stmt# = 7 and s11.stmt# = 11 and s13.stmt# = 13 and s17.stmt# = 17 and s19.stmt# = 19 and s23.stmt# = 23 and s27.stmt# = 27
+1 2 3 5 7 11 13 17 19 23 27
+5000
+121
+print p1; assign a2, a21; while w3, w15; if i6; call c11; read r13, r27;
+Select <p1, a2, w3, i6, c11, r13, w15, a21, r27> with "teacup0" = p1.varName and a2.stmt# = 2 and 3 = w3.stmt# and 6 = i6.stmt# and "something" = c11.procName and r13.varName = "teacup0" and w15.stmt# = 15 and 21 = a21.stmt# and r27.stmt# = 27
+1 2 3 6 11 13 15 21 27
+5000
+122 - assign.varName is invalid
+assign a;
+Select a with a.varName = "lesion"
+none
+5000
+123 - assign.varName is invalid
+assign a;
+Select a with "lesion" = a.varName 
+none
+5000
+
