@@ -20,7 +20,8 @@ if [ -f "$FILE" ]; then
 	../../Code19/cmake-build-debug/src/autotester/autotester complexFullSimple_source.txt SelectAttribute_query.txt SelectAttribute_out.xml
 	../../Code19/cmake-build-debug/src/autotester/autotester complexFullSimple_source.txt Follows_query.txt Follows_out.xml
 	../../Code19/cmake-build-debug/src/autotester/autotester complexFullSimple_source.txt FollowsStar_query.txt FollowsStar_out.xml
-else 
+	../../Code19/cmake-build-debug/src/autotester/autotester complexFullSimple_source.txt Parent_query.txt Parent_out.xml
+else
 	echo "Enter path to autotester: "
 	read id
 	$id complexFullSimple_source.txt Boolean_query.txt Boolean_out.xml
@@ -39,5 +40,6 @@ else
 	$id complexFullSimple_source.txt SelectAttribute_query.txt SelectAttribute_out.xml
 	$id complexFullSimple_source.txt Follows_query.txt Follows_out.xml
 	$id complexFullSimple_source.txt FollowsStar_query.txt FollowsStar_out.xml
+	$id complexFullSimple_source.txt Parent_query.txt Parent_out.xml
 fi
 read -p "Press any key to resume ..."
