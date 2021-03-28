@@ -94,6 +94,63 @@ TEST_CASE("getNextBip Test") {
     REQUIRE(nextBip->getNextBip(12) == unordered_set<ProgLine>{3, 5});
 }
 
+TEST_CASE("isNextBip Test") {
+    NextBip* nextBip = setUpNextBipTest();
+    REQUIRE(nextBip->isNextBip(1,2));
+    REQUIRE(nextBip->isNextBip(2,6));
+    REQUIRE(nextBip->isNextBip(3,4));
+    REQUIRE(nextBip->isNextBip(4,8));
+    REQUIRE_FALSE(nextBip->isNextBip(5,6));
+    REQUIRE(nextBip->isNextBip(6,7));
+    REQUIRE(nextBip->isNextBip(7,8));
+    REQUIRE(nextBip->isNextBip(8,9));
+    REQUIRE(nextBip->isNextBip(8,10));
+    REQUIRE(nextBip->isNextBip(9,3));
+    REQUIRE(nextBip->isNextBip(9,5));
+    REQUIRE(nextBip->isNextBip(10,11));
+    REQUIRE(nextBip->isNextBip(10,12));
+    REQUIRE(nextBip->isNextBip(11,3));
+    REQUIRE(nextBip->isNextBip(11,5));
+    REQUIRE(nextBip->isNextBip(12,3));
+    REQUIRE(nextBip->isNextBip(12,5));
+}
+
+TEST_CASE("getPreviousBip Test") {
+    NextBip* nextBip = setUpNextBipTest();
+    REQUIRE(nextBip->getPreviousBip(1) == unordered_set<ProgLine>({ }));
+    REQUIRE(nextBip->getPreviousBip(2) == unordered_set<ProgLine>{1});
+    REQUIRE(nextBip->getPreviousBip(3) == unordered_set<ProgLine>{9,11,12});
+    REQUIRE(nextBip->getPreviousBip(4) == unordered_set<ProgLine>{3});
+    REQUIRE(nextBip->getPreviousBip(5) == unordered_set<ProgLine>{9,11,12});
+    REQUIRE(nextBip->getPreviousBip(6) == unordered_set<ProgLine>{2});
+    REQUIRE(nextBip->getPreviousBip(7) == unordered_set<ProgLine>{6});
+    REQUIRE(nextBip->getPreviousBip(8) == unordered_set<ProgLine>{4,7});
+    REQUIRE(nextBip->getPreviousBip(9) == unordered_set<ProgLine>{8});
+    REQUIRE(nextBip->getPreviousBip(10) == unordered_set<ProgLine>{8});
+    REQUIRE(nextBip->getPreviousBip(11) == unordered_set<ProgLine>{10});
+    REQUIRE(nextBip->getPreviousBip(12) == unordered_set<ProgLine>{10});
+}
+
+TEST_CASE("getNextBipSize Test") {
+    NextBip* nextBip = setUpNextBipTest();
+    REQUIRE(nextBip->getNextBipSize() == 16);
+}
+
+TEST_CASE("getAllNextBip Test") {
+    NextBip* nextBip = setUpNextBipTest();
+    pair<vector<ID>, vector<ID> > result = nextBip->getAllNextBip();
+    vector<ID> n1s = result.first;
+    vector<ID> n2s = result.second;
+    int num_pairs = n1s.size();
+    // Check that it has correct number of pairs
+    REQUIRE(num_pairs == nextBip->getNextBipSize());
+    REQUIRE(n2s.size() == num_pairs);
+    // check that each pair at the same index has Calls relationship
+    for (int i = 0; i < num_pairs; i++) {
+        REQUIRE(nextBip->isNextBip(n1s.at(i), n2s.at(i)));
+    }
+}
+
 //    procedure first {
 //    01    a=1;
 //    02    call second;

@@ -22,6 +22,15 @@ unordered_set<ProgLine> const & NextBip::getNextBip(ProgLine n1) const {
     return it->second;
 }
 
+unordered_set<ProgLine> const & NextBip::getPreviousBip(ProgLine n2) const {
+    auto it = reverseNextBipMap.find(n2);
+    if (it == reverseNextBipMap.end()) {
+        static unordered_set<ProgLine> empty = unordered_set<ProgLine>({});
+        return empty;
+    }
+    return it->second;
+}
+
 unordered_set<ProgLine> const & NextBip::getNextBipStar(ProgLine n1) const {
     auto it = nextBipStarMap.find(n1);
     if (it == nextBipStarMap.end()) {
@@ -29,6 +38,37 @@ unordered_set<ProgLine> const & NextBip::getNextBipStar(ProgLine n1) const {
         return empty;
     }
     return it->second;
+}
+
+unordered_set<ProgLine> const & NextBip::getPreviousBipStar(ProgLine n2) const {
+    auto it = reverseNextBipMap.find(n2);
+    if (it == reverseNextBipMap.end()) {
+        static unordered_set<ProgLine> empty = unordered_set<ProgLine>({});
+        return empty;
+    }
+    return it->second;
+}
+
+pair<vector<ProgLine>, vector<ProgLine> > NextBip::getAllNextBip() {
+    vector<ProgLine> n1s, n2s;
+    for (auto &it : nextBipMap) {
+        for (ProgLine n2 : it.second) {
+            n1s.push_back(it.first);
+            n2s.push_back(n2);
+        }
+    }
+    return make_pair(n1s, n2s);
+}
+
+pair<vector<ProgLine>, vector<ProgLine> > NextBip::getAllNextBipStar() {
+    vector<ProgLine> n1s, n2s;
+    for (auto &it : nextBipStarMap) {
+        for (ProgLine n2 : it.second) {
+            n1s.push_back(it.first);
+            n2s.push_back(n2);
+        }
+    }
+    return make_pair(n1s, n2s);
 }
 
 void NextBip::storeNextBip(ProgLine n1, ProgLine n2) {
@@ -39,9 +79,28 @@ void NextBip::storeNextBip(ProgLine n1, ProgLine n2) {
     }
 }
 
+
+int NextBip::getNextBipSize() {
+    int cnt = 0;
+    for (auto &it : nextBipMap) {
+        cnt += it.second.size();
+    }
+    return cnt;
+}
+
+int NextBip::getNextBipStarSize() {
+    int cnt = 0;
+    for (auto &it : nextBipStarMap) {
+        cnt += it.second.size();
+    }
+    return cnt;
+}
+
+
 void NextBip::populateNextBipAndNextBipStar() {
     populateNextWithDummy();
     populateNextBip();
+    populateReverseNextBip();
     populateNextBipStar();
 }
 
@@ -142,6 +201,20 @@ void NextBip::populateNextBip() {
 
     for (int i = dummyNum; i < 0; i++) {
         nextBipMap.erase(i);
+    }
+}
+
+void NextBip::populateReverseNextBip() {
+    ProgLine n1;
+    for (auto &it : nextBipMap) {
+        n1 = it.first;
+        for (auto n2 : it.second) {
+            if (reverseNextBipMap.find(n2) == reverseNextBipMap.end()) {
+                reverseNextBipMap[n2] = unordered_set<ProgLine>{n1};
+            } else {
+                reverseNextBipMap.find(n2)->second.insert(n1);
+            }
+        }
     }
 }
 
