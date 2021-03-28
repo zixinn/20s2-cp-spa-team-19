@@ -47,8 +47,8 @@ void NextBip::populateNextBipAndNextBipStar() {
 
 void NextBip::populateNextWithDummy() {
     nextWithDummyMap = PKB::next->getNextMap();
-    vector<ProgLine> allCallStmts = PKB::stmtTable->getAllCallStmtNums();
-    for (ProgLine n : allCallStmts) {
+    vector<ProgLine> allProgLines = PKB::stmtTable->getAllStmtNums();
+    for (ProgLine n : allProgLines) {
         if (PKB::next->getNext(n).empty()) {
             dummyNum--;
             nextWithDummyMap.insert({n, unordered_set<ProgLine>({dummyNum})});
@@ -77,16 +77,18 @@ void NextBip::populateNextBip() {
                 pair<ProgLine, set<ProgLine>> ifStmtRange = PKB::stmtTable->getIfStmtRange(p.second);
                 pair<ProgLine, set<ProgLine>> elseStmtRange = PKB::stmtTable->getElseStmtRange(p.second);
                 for (ProgLine n : ifStmtRange.second) {
-                    storeNextBip(n, n2);
-                    cfgBipMap[make_pair(n, n2)] = -n1;
+                    ProgLine dummy = *nextWithDummyMap.find(n)->second.begin();
+                    storeNextBip(dummy, n2);
+                    cfgBipMap[make_pair(dummy, n2)] = -n1;
                 }
                 for (ProgLine n : elseStmtRange.second) {
-                    storeNextBip(n, n2);
-                    cfgBipMap[make_pair(n, n2)] = -n1;
+                    ProgLine dummy = *nextWithDummyMap.find(n)->second.begin();
+                    storeNextBip(dummy, n2);
+                    cfgBipMap[make_pair(dummy, n2)] = -n1;
                 }
 
             } else if (find(allCallStmts.begin(), allCallStmts.end(), p.second) != allCallStmts.end()) { // last stmt is call stmt
-                int dummy = *nextWithDummyMap.find(p.second)->second.begin();
+                ProgLine dummy = *nextWithDummyMap.find(p.second)->second.begin();
                 storeNextBip(dummy, n2);
                 cfgBipMap[make_pair(dummy, n2)] = -n1;
 
