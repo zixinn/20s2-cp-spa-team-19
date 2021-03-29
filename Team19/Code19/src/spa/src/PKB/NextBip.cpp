@@ -22,6 +22,15 @@ unordered_set<ProgLine> const & NextBip::getNextBip(ProgLine n1) const {
     return it->second;
 }
 
+unordered_set<ProgLine> const & NextBip::getNextBipWithDummy(ProgLine n1) const {
+    auto it = nextBipWithDummyMap.find(n1);
+    if (it == nextBipWithDummyMap.end()) {
+        static unordered_set<ProgLine> empty = unordered_set<ProgLine>({});
+        return empty;
+    }
+    return it->second;
+}
+
 unordered_set<ProgLine> const & NextBip::getPreviousBip(ProgLine n2) const {
     auto it = reverseNextBipMap.find(n2);
     if (it == reverseNextBipMap.end()) {
@@ -77,6 +86,24 @@ void NextBip::storeNextBip(ProgLine n1, ProgLine n2) {
     } else {
         nextBipMap.find(n1)->second.insert(n2);
     }
+}
+
+bool NextBip::storeNextBipStar(ProgLine n1, ProgLine n2) {
+    if (isNextBipStar(n1, n2)) {
+        return false;
+    }
+    if (nextBipStarMap.find(n1) == nextBipStarMap.end()) {
+        nextBipStarMap[n1] = unordered_set<ProgLine>{n2};
+    } else {
+        nextBipStarMap.find(n1)->second.insert(n2);
+    }
+
+    if (reverseNextBipStarMap.find(n2) == reverseNextBipStarMap.end()) {
+        reverseNextBipStarMap[n2] = unordered_set<ProgLine>{n1};
+    } else {
+        reverseNextBipStarMap.find(n2)->second.insert(n1);
+    }
+    return true;
 }
 
 
@@ -167,7 +194,7 @@ void NextBip::populateNextBip() {
         }
     }
 
-    nextWithDummyMap = nextBipMap;
+    nextBipWithDummyMap = nextBipMap;
 
     // populate nextBip for progline whose nextBip is dummy
     for (auto it : nextBipMap) {
@@ -219,5 +246,120 @@ void NextBip::populateReverseNextBip() {
 }
 
 void NextBip::populateNextBipStar() {
+    ProgLine curr, n1;
+    unordered_set<ProgLine> n2s;
+    int branch;
+
+    vector<ProgLine> allIfStmts = PKB::stmtTable->getAllIfStmtNums();
+    vector<ProgLine> allWhileStmts = PKB::stmtTable->getAllWhileStmtNums();
+
+    for (auto &it : nextBipWithDummyMap) {
+        list<ProgLine> stack;
+        list<int> branch_stack;
+
+        unordered_set<ProgLine> processed;
+        curr = it.first;
+//        cout << endl << "curr: " << curr << endl;
+
+        if (curr < 0) { // ignore dummy nodes, to be removed later
+            continue;
+        }
+
+        stack.push_back(curr);
+
+        while (!stack.empty()) {
+//            cout << "in stack now: ";
+//            for (ProgLine progLine : stack) {
+//                cout << progLine << " " ;
+//            }
+//            cout << endl;
+
+            n1 = stack.back();
+            stack.pop_back();
+            n2s = getNextBipWithDummy(n1);
+            processed.insert(n1);
+
+            for (ProgLine n2 : n2s) {
+                branch = cfgBipMap.find(make_pair(n1,n2))->second;
+//                cout << "n1: " << n1 <<" n2: " << n2 << " branch " << branch << endl;
+                if (branch == 0) {
+                    // Not branching
+//                    cout << "No branching" << endl;
+
+                    if (find(allIfStmts.begin(), allIfStmts.end(), n2) != allIfStmts.end()) {
+                        if (!branch_stack.empty()) {
+                            branch_stack.push_back(branch_stack.back()); // will need an additional branch-back
+                        }
+                    }
+
+                    storeNextBipStar(curr, n2);
+                    if (find(processed.begin(), processed.end(), n2) == processed.end()) {
+                        stack.push_back(n2);
+                        processed.insert(n2);
+                    }
+                } else if (branch > 0) {
+                    // Branching in
+//                    cout << "Branching in" << endl;
+
+                    branch_stack.push_back(branch);
+
+                    if (find(allIfStmts.begin(), allIfStmts.end(), n2) != allIfStmts.end()) {
+                        branch_stack.push_back(branch); // Need additional branch-back
+                    }
+
+                    storeNextBipStar(curr, n2);
+                    if (find(processed.begin(), processed.end(), n2) == processed.end()) {
+                        stack.push_back(n2);
+                        processed.insert(n2);
+                    }
+                } else {
+                    // branch < 0 --> branch out
+                    if (branch_stack.empty()) {
+                        // possible branch. just branch out
+//                        cout << "Branching out" << endl;
+                        storeNextBipStar(curr, n2);
+
+                        if (find(processed.begin(), processed.end(), n2) == processed.end()) {
+                            stack.push_back(n2);
+                            processed.insert(n2);
+                        }
+
+                    } else if (branch_stack.back() == -branch) {
+                        // Correct branch out
+//                        cout << "Branching out" << endl;
+                        storeNextBipStar(curr, n2);
+//                        cout << "Back of stack: " << branch_stack.back() << endl;
+
+                        branch_stack.pop_back();
+
+                        if (find(processed.begin(), processed.end(), n2) == processed.end()) {
+                            stack.push_back(n2);
+                            processed.insert(n2);
+                        }
+                        break; // already taken the branch back. move on to the next n1.
+                    }
+//                    else {
+//                        cout << "Back of stack: " << branch_stack.back();
+//                        cout << "Not branching out" << endl;
+//                    }
+                }
+            }
+            if (find(allWhileStmts.begin(), allWhileStmts.end(), n1) == allWhileStmts.end()) { // if it's not a while statement, we can process it again.
+                processed.erase(n1);
+            }
+        }
+    }
+
+    // Delete dummy nodes
+    for (auto &it : nextBipStarMap) {
+        ProgLine n1 = it.first;
+        unordered_set<ProgLine> n2s = it.second;
+        for (ProgLine n2 : it.second) {
+            if (n2 < 0) {
+                n2s.erase(n2);
+            }
+        }
+        nextBipStarMap[n1] = n2s;
+    }
 
 }

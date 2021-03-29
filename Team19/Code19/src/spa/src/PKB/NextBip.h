@@ -81,6 +81,14 @@ private:
     // Stores <n1, n2> in the nextBipMap.
     void storeNextBip(ProgLine n1, ProgLine n2);
 
+    // Returns n2's such that NextBip(n1, n2). n1 and n2 can be dummy (negative)
+    unordered_set<ProgLine> const &getNextBipWithDummy(ProgLine n1) const;
+
+    // Stores <n1, n2> in the nextBipStarMap.
+    // Stores <n2, n1> in reverseNextBipStarMap
+    // Returns true if info is successfully added.
+    bool storeNextBipStar(ProgLine n1, ProgLine n2);
+
     // populate nextWithDummyMap by adding dummy nodes to nextMap
     void populateNextWithDummy();
 
