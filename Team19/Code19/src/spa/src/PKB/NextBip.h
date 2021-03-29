@@ -2,6 +2,8 @@
 
 #include "../AbstractAPI.h"
 
+#include <stack>
+
 class NextBip {
 public:
     NextBip();
@@ -66,6 +68,9 @@ private:
     // where val is 0 if not branch, +prog_line if branch in and -prog_line if branch back
     unordered_map<pair<ProgLine, ProgLine>, ProgLine, hash_pair> cfgBipMap;
 
+    // Similar to reverse cfgBipMap but only with non-zero values
+    unordered_map<ProgLine, pair<ProgLine, ProgLine>> branchMap;
+
     // Stores n1 as key, set of n2's as value for NextBip relationship
     unordered_map<ProgLine, unordered_set<ProgLine>> nextBipMap;
 
@@ -81,6 +86,15 @@ private:
     // Stores <n1, n2> in the nextBipMap.
     void storeNextBip(ProgLine n1, ProgLine n2);
 
+    // Stores <n1, n2> in the nextBipStarMap.
+    void storeNextBipStar(ProgLine n1, ProgLine n2);
+
+    // Checks isNextBipStar(n1, n2), stores <n1, n2> in the nextBipStarMap and calls dfs.
+    void storeNextBipStarWithCheck(ProgLine n1, ProgLine n2, stack<int> branchStack);
+
+    // Returns n2's such that NextBipWithDummy(n1, n2)
+    unordered_set<ProgLine> const &getNextBipWithDummy(ProgLine n1) const;
+
     // populate nextWithDummyMap by adding dummy nodes to nextMap
     void populateNextWithDummy();
 
@@ -88,5 +102,8 @@ private:
 
     // Stores <n2, n1> in the reverseNextBipMap.
     void populateReverseNextBip();
+
     void populateNextBipStar();
+
+    void dfs(ProgLine source, ProgLine n1, stack<int> branchStack);
 };
