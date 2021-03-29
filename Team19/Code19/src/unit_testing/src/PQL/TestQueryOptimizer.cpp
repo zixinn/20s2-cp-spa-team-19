@@ -803,20 +803,4 @@ TEST_CASE("QueryOptimizer optimize rewriteClauses - rewrite stmt#, value and pro
     REQUIRE(actual2.getToSelect() == expected2.getToSelect());
     REQUIRE(actual2.getIsSyntacticallyValid() == expected2.getIsSyntacticallyValid());
     REQUIRE(actual2.getIsSemanticallyValid() == expected2.getIsSemanticallyValid());
-
-
-    // procedure p; print pn;
-    // Select pn with pn.varName = "boo" and p.procName = pn.varName and p.stmt# = 4
-    /*Clause c31 = Clause("", { "pn.varName", "\"boo\"" }, { "pn" }, 1);
-    Clause c32 = Clause("", { "p.procName", "pn.varName" }, { "p", "pn" }, 0);
-    Clause c33 = Clause("", { "p.stmt#", "4" }, { "p" }, 1);
-    Query q3 = Query({ {"pn", PRINT_}, {"p", PROCEDURE_} }, { "pn" }, { {c31, c32, c33 } }, true, true);
-    Query actual3 = qo.optimize(q3);
-    Clause c34 = Clause("", { "p.procName", "\"boo\"" }, { "p" }, 1);
-    Query expected3 = Query({ {"pn", PRINT_}, {"p", PROCEDURE_} }, { "pn" }, { {c31, c34, c33} }, true, true);
-    REQUIRE_THAT(actual3.getClauses(), Catch::Matchers::UnorderedEquals(expected3.getClauses()));
-    REQUIRE(actual3.getDeclarations() == expected3.getDeclarations());
-    REQUIRE(actual3.getToSelect() == expected3.getToSelect());
-    REQUIRE(actual3.getIsSyntacticallyValid() == expected3.getIsSyntacticallyValid());
-    REQUIRE(actual3.getIsSemanticallyValid() == expected3.getIsSemanticallyValid());*/
 }
