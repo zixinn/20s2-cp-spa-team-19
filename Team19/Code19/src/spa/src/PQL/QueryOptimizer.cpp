@@ -16,7 +16,14 @@ void QueryOptimizer::setIsOrderGroups(bool isOrderGroups) {
     this->isOrderGroups = isOrderGroups;
 }
 
+void QueryOptimizer::setIsRewriteClauses(bool isRewriteClauses) {
+    this->isRewriteClauses = isRewriteClauses;
+}
+
 Query QueryOptimizer::optimize(Query query) {
+    if (isRewriteClauses) {
+        rewriteClauses(query);
+    }
     if (isGroup) {
         groupClauses(query);
     }
@@ -188,6 +195,51 @@ void QueryOptimizer::orderGroups(Query& query) {
     }
     orderedGroups.insert(orderedGroups.end(), groupsWithSynSelect.begin(), groupsWithSynSelect.end());    
     query.setClauses(orderedGroups);
+}
+
+void QueryOptimizer::rewriteClauses(Query& query) {
+    vector<Clause> clauses = query.getClauses().at(0);
+    unordered_map<string, string> replacementMap;
+
+    for (Clause clause : clauses) {
+        if (clause.getRel() != "" || clause.getNumOfKnown() != 1) {
+            continue;
+        }
+        // With clause with one known
+        string arg = *clause.getSynonyms().begin(); 
+        string attrName;
+        string knownValue;
+        int posOfDot = arg.find('.');
+        if (posOfDot != string::npos) { // dot found
+            arg = arg.substr(0, posOfDot);
+            attrName = arg.substr(posOfDot + 1, arg.length());
+        }
+        string argType = getArgType(arg, query.getDeclarations());
+        if ((attrName == "varName" || attrName == "procName") 
+            && (argType == CALL_ || argType == PRINT_ || argType == READ_)) {
+            continue;
+        }
+        // get known value
+        for (string s : clause.getArgs()) {
+            if (checkInteger(s) || checkName(s)) {
+                knownValue = s;
+                break;
+            }
+        }
+        replacementMap.insert({ arg, knownValue });
+    }
+    for (Clause clause : clauses) {
+        if (clause.getRel() == "" && clause.getNumOfKnown() == 1) {
+            continue;
+        }
+        unordered_set<string> synonyms = clause.getSynonyms();
+        for (string syn : synonyms) {
+            if (replacementMap.find(syn) != replacementMap.end()) {
+                clause.replaceSynonym(syn, replacementMap.at(syn));
+            }
+        }
+    }
+    query.setClauses({ clauses });
 }
 
 QueryOptimizer::~QueryOptimizer() {

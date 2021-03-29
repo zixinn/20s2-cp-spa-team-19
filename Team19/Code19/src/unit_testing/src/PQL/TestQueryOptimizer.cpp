@@ -117,6 +117,7 @@ TEST_CASE("QueryOptimizer optimize groupClauses - 1 group, no synonym") {
     qo.setIsGroup(true);
     qo.setIsOrderClauses(false);
     qo.setIsOrderGroups(false);
+    qo.setIsRewriteClauses(false);
 
     // variable v;
     // Select v such that Parent(_, _)
@@ -149,6 +150,7 @@ TEST_CASE("QueryOptimizer optimize groupClauses - 1 group, with synonym") {
     qo.setIsGroup(true);
     qo.setIsOrderClauses(false);
     qo.setIsOrderGroups(false);
+    qo.setIsRewriteClauses(false);
 
     // stmt s;
     // Select s such that Follows*(6, s) and Affects(6, s)
@@ -183,6 +185,7 @@ TEST_CASE("QueryOptimizer optimize groupClauses - 2 groups, with and without syn
     qo.setIsGroup(true);
     qo.setIsOrderClauses(false);
     qo.setIsOrderGroups(false);
+    qo.setIsRewriteClauses(false);
 
     // if ifs; prog_line n; variable v;
     // Select n such that Affects(_, _) and Next*(n, 11) with 99 = 99 and ifs.stmt# = n pattern ifs(v, _, _)
@@ -208,6 +211,7 @@ TEST_CASE("QueryOptimizer optimize groupClauses - 2 groups, both with synonym") 
     qo.setIsGroup(true);
     qo.setIsOrderClauses(false);
     qo.setIsOrderGroups(false);
+    qo.setIsRewriteClauses(false);
 
     // assign a; variable v; stmt s; read r; while w;
     // Select <a, r> such that Parent(w, r) with a.stmt# = s.stmt# pattern a(v, _"red"_) such that Next*(r, r) and Modifies(s, v)
@@ -233,6 +237,7 @@ TEST_CASE("QueryOptimizer optimize groupClauses - multiple groups, 1 group with 
     qo.setIsGroup(true);
     qo.setIsOrderClauses(false);
     qo.setIsOrderGroups(false);
+    qo.setIsRewriteClauses(false);
 
     // assign a; if ifs; variable v, v1, v2; constant cc; read r; print pn; call c;
     // Select <ifs, cc, v2>
@@ -265,6 +270,7 @@ TEST_CASE("QueryOptimizer optimize groupClauses - multiple groups, all groups wi
     qo.setIsGroup(true);
     qo.setIsOrderClauses(false);
     qo.setIsOrderGroups(false);
+    qo.setIsRewriteClauses(false);
 
     // stmt s; assign a; while w, w1, w2; if ifs, ifs1; variable v, v1; constant cc; print pn; call c;
     // Select <w, p, v1, c>
@@ -297,6 +303,7 @@ TEST_CASE("QueryOptimizer optimize orderClauses - 1 group, no synonym") {
     qo.setIsGroup(false);
     qo.setIsOrderClauses(true);
     qo.setIsOrderGroups(false);
+    qo.setIsRewriteClauses(false);
     setUpQo();
 
     // variable v;
@@ -322,6 +329,7 @@ TEST_CASE("QueryOptimizer optimize orderClauses - 1 group, with synonym") {
     qo.setIsGroup(false);
     qo.setIsOrderClauses(true);
     qo.setIsOrderGroups(false);
+    qo.setIsRewriteClauses(false);
     setUpQo();
 
     // stmt s;
@@ -349,6 +357,7 @@ TEST_CASE("QueryOptimizer optimize orderClauses - 2 groups, with and without syn
     qo.setIsGroup(false);
     qo.setIsOrderClauses(true);
     qo.setIsOrderGroups(false);
+    qo.setIsRewriteClauses(false);
     setUpQo();
 
     // if ifs; prog_line n; variable v;
@@ -371,6 +380,7 @@ TEST_CASE("QueryOptimizer optimize orderClauses - 2 groups, both with synonym") 
     qo.setIsGroup(false);
     qo.setIsOrderClauses(true);
     qo.setIsOrderGroups(false);
+    qo.setIsRewriteClauses(false);
     setUpQo();
 
     // assign a; variable v; stmt s; read r; while w;
@@ -393,6 +403,7 @@ TEST_CASE("QueryOptimizer optimize orderClauses - multiple groups, 1 group with 
     qo.setIsGroup(false);
     qo.setIsOrderClauses(true);
     qo.setIsOrderGroups(false);
+    qo.setIsRewriteClauses(false);
     setUpQo();
 
     // assign a; if ifs; variable v, v1, v2; constant cc; read r; print pn; call c;
@@ -422,6 +433,7 @@ TEST_CASE("QueryOptimizer optimize orderClauses - multiple groups, all groups wi
     qo.setIsGroup(false);
     qo.setIsOrderClauses(true);
     qo.setIsOrderGroups(false);
+    qo.setIsRewriteClauses(false);
     setUpQo();
 
     // stmt s; assign a; while w, w1, w2; if ifs, ifs1; variable v, v1; constant cc; print pn; call c;
@@ -451,6 +463,7 @@ TEST_CASE("QueryOptimizer optimize orderGroups - 1 group no synonym, 1 group no 
     qo.setIsGroup(true);
     qo.setIsOrderClauses(false);
     qo.setIsOrderGroups(true);
+    qo.setIsRewriteClauses(false);
 
     // if ifs; variable v1, v2; constant cc; print pn; call c;
     // Select <ifs, cc, v2>
@@ -480,6 +493,7 @@ TEST_CASE("QueryOptimizer optimize orderGroups - 2 groups no synonym in select, 
     qo.setIsGroup(true);
     qo.setIsOrderClauses(false);
     qo.setIsOrderGroups(true);
+    qo.setIsRewriteClauses(false);
 
     // variable v1, v2; constant cc; print pn; call c; stmt s;
     // Select s.stmt#
@@ -517,6 +531,7 @@ TEST_CASE("QueryOptimizer optimize orderGroups - multiple groups no synonym in s
     qo.setIsGroup(true);
     qo.setIsOrderClauses(false);
     qo.setIsOrderGroups(true);
+    qo.setIsRewriteClauses(false);
 
     // stmt s; assign a; while w, w1, w2; if ifs, ifs1; variable v, v1; constant cc; print pn; call c;
     // Select <w, p, v1, c>
@@ -568,6 +583,7 @@ TEST_CASE("QueryOptimizer optimize orderGroups - 1 gorup no synonym, multiple gr
     qo.setIsGroup(true);
     qo.setIsOrderClauses(false);
     qo.setIsOrderGroups(true);
+    qo.setIsRewriteClauses(false);
 
     // stmt s; assign a; while w, w1, w2; if ifs, ifs1; variable v, v1; constant cc; print pn; call c;
     // Select <w, p, v1, c>
@@ -621,6 +637,7 @@ TEST_CASE("QueryOptimizer optimize orderGroups - select BOOLEAN (i.e. all groups
     qo.setIsGroup(true);
     qo.setIsOrderClauses(false);
     qo.setIsOrderGroups(true);
+    qo.setIsRewriteClauses(false);
 
     // variable v1, v2; constant cc; print pn; call c; stmt s;
     // Select BOOLEAN
@@ -641,4 +658,165 @@ TEST_CASE("QueryOptimizer optimize orderGroups - select BOOLEAN (i.e. all groups
     REQUIRE(actual1.getToSelect() == expected1.getToSelect());
     REQUIRE(actual1.getIsSyntacticallyValid() == expected1.getIsSyntacticallyValid());
     REQUIRE(actual1.getIsSemanticallyValid() == expected1.getIsSemanticallyValid());
+}
+
+TEST_CASE("QueryOptimizer optimize rewriteClauses - no clauses to rewrite") {
+    QueryOptimizer qo = QueryOptimizer();
+    qo.setIsGroup(false);
+    qo.setIsOrderClauses(false);
+    qo.setIsOrderGroups(false);
+    qo.setIsRewriteClauses(true);
+
+    // variable v1; print pn; call c;
+    // Select pn such that Uses(c, v1) and Modifies(c, "x") with pn.varName = "boo"
+    Clause c11 = Clause("Uses", { "c", "v1" }, { "c", "v1" }, 0);
+    Clause c12 = Clause("Modifies", { "c", "\"x\"" }, { "c" }, 1);
+    Clause c13 = Clause("", { "pn.varName", "\"boo\"" }, { "pn" }, 1);
+    Query q1 = Query({ {"v1", VARIABLE_}, {"pn", PRINT_}, {"c", CALL_} }, { "pn" }, { {c11, c12, c13} }, true, true);
+    Query actual1 = qo.optimize(q1);
+    REQUIRE_THAT(actual1.getClauses(), Catch::Matchers::UnorderedEquals(q1.getClauses()));
+    REQUIRE(actual1.getDeclarations() == q1.getDeclarations());
+    REQUIRE(actual1.getToSelect() == q1.getToSelect());
+    REQUIRE(actual1.getIsSyntacticallyValid() == q1.getIsSyntacticallyValid());
+    REQUIRE(actual1.getIsSemanticallyValid() == q1.getIsSemanticallyValid());
+
+    // variable v1; print pn; call c;
+    // Select v1
+    Query q2 = Query({ {"v1", VARIABLE_}, {"pn", PRINT_}, {"c", CALL_} }, { "v1" }, { {} }, true, true);
+    Query actual2 = qo.optimize(q2);
+    REQUIRE_THAT(actual2.getClauses(), Catch::Matchers::UnorderedEquals(q2.getClauses()));
+    REQUIRE(actual2.getDeclarations() == q2.getDeclarations());
+    REQUIRE(actual2.getToSelect() == q2.getToSelect());
+    REQUIRE(actual2.getIsSyntacticallyValid() == q2.getIsSyntacticallyValid());
+    REQUIRE(actual2.getIsSemanticallyValid() == q2.getIsSemanticallyValid());
+
+    // print pn; while w; call c;
+    // Select pn such that Parent(w, pn) and Modifies(c, "x") with c.procName = "boo" and "bloop" = pn.varName 
+    Clause c31 = Clause("Parent", { "w", "pn" }, { "w", "pn" }, 0);
+    Clause c32 = Clause("Modifies", { "c", "\"x\"" }, { "c" }, 1);
+    Clause c33 = Clause("", { "c.procName", "\"boo\"" }, { "c" }, 1);
+    Clause c35 = Clause("", { "\"bloop\"", "pn.varName" }, { "pn" }, 1);
+    Query q3 = Query({ {"pn", PRINT_}, {"c", CALL_}, {"w", WHILE_} }, { "pn" }, { {c31, c32, c33, c35} }, true, true);
+    Query actual3 = qo.optimize(q3);
+    REQUIRE_THAT(actual3.getClauses(), Catch::Matchers::UnorderedEquals(q3.getClauses()));
+    REQUIRE(actual3.getDeclarations() == q3.getDeclarations());
+    REQUIRE(actual3.getToSelect() == q3.getToSelect());
+    REQUIRE(actual3.getIsSyntacticallyValid() == q3.getIsSyntacticallyValid());
+    REQUIRE(actual3.getIsSemanticallyValid() == q3.getIsSemanticallyValid());
+
+}
+
+TEST_CASE("QueryOptimizer optimize rewriteClauses - rewrite procName and varName") {
+    QueryOptimizer qo = QueryOptimizer();
+    qo.setIsGroup(false);
+    qo.setIsOrderClauses(false);
+    qo.setIsOrderGroups(false);
+    qo.setIsRewriteClauses(true);
+
+    // variable v; proc p;
+    // Select v such that Uses(p, v) and Modifies(p, "x") with v.varName = "boo" and p.procName = "burger"
+    Clause c11 = Clause("Uses", { "p", "v" }, { "p", "v" }, 0);
+    Clause c12 = Clause("Modifies", { "p", "\"x\"" }, { "p" }, 1);
+    Clause c13 = Clause("", { "v.varName", "\"boo\"" }, { "v" }, 1);
+    Clause c14 = Clause("", { "p.procName", "\"burger\"" }, { "p" }, 1);
+    Query q1 = Query({ {"v", VARIABLE_}, {"p", PROCEDURE_} }, { "v" }, { {c11, c12, c13, c14} }, true, true);
+    Query actual1 = qo.optimize(q1);
+    Clause c15 = Clause("Uses", { "\"burger\"", "\"boo\"" }, { }, 2);
+    Clause c16 = Clause("Modifies", { "\"burger\"", "\"x\"" }, { }, 2);
+    Query expected1 = Query({ {"v", VARIABLE_}, {"p", PROCEDURE_} }, { "v" }, { {c15, c16, c13, c14} }, true, true);
+    REQUIRE_THAT(actual1.getClauses(), Catch::Matchers::UnorderedEquals(expected1.getClauses()));
+    REQUIRE(actual1.getDeclarations() == expected1.getDeclarations());
+    REQUIRE(actual1.getToSelect() == expected1.getToSelect());
+    REQUIRE(actual1.getIsSyntacticallyValid() == expected1.getIsSyntacticallyValid());
+    REQUIRE(actual1.getIsSemanticallyValid() == expected1.getIsSemanticallyValid());
+
+    // assign a; if ifs; variable x;
+    // Select a pattern a(x, "x") and ifs(x, _, _) with "blah" = x.varName and a.stmt# = 3 
+    Clause c21 = Clause("a", { "x", "\"x\"" }, { "a", "x" }, 1);
+    Clause c22 = Clause("ifs", { "x", "_", "_" }, { "ifs", "x" }, 0);
+    Clause c23 = Clause("", { "\"blah\"" , "x.varName"}, { "x" }, 1);
+    Clause c25 = Clause("", { "a.stmt#", "3" }, { "a" }, 1);
+    Query q2 = Query({ {"a", ASSIGN_}, {"if", IF_}, {"x", VARIABLE_} }, { "a" }, { {c21, c22, c23, c25} }, true, true);
+    Query actual2 = qo.optimize(q2);
+    Clause c26 = Clause("a", { "\"blah\"", "\"x\"" }, { "a" }, 2);
+    Clause c27 = Clause("ifs", { "\"blah\"", "_", "_" }, { "ifs" }, 1);
+    Query expected2 = Query({ {"a", ASSIGN_}, {"if", IF_}, {"x", VARIABLE_} }, { "a" }, { {c26, c27, c23, c25} }, true, true);
+    REQUIRE_THAT(actual2.getClauses(), Catch::Matchers::UnorderedEquals(expected2.getClauses()));
+    REQUIRE(actual2.getDeclarations() == expected2.getDeclarations());
+    REQUIRE(actual2.getToSelect() == expected2.getToSelect());
+    REQUIRE(actual2.getIsSyntacticallyValid() == expected2.getIsSyntacticallyValid());
+    REQUIRE(actual2.getIsSemanticallyValid() == expected2.getIsSemanticallyValid());
+
+
+    // procedure p; print pn;
+    // Select pn with pn.varName = "boo" and p.procName = pn.varName and p.stmt# = 4
+    Clause c31 = Clause("", { "pn.varName", "\"boo\"" }, { "pn" }, 1);
+    Clause c32 = Clause("", { "p.procName", "pn.varName" }, { "p", "pn" }, 0);
+    Clause c33 = Clause("", { "p.stmt#", "4" }, { "p" }, 1);
+    Query q3 = Query({ {"pn", PRINT_}, {"p", PROCEDURE_} }, { "pn" }, { {c31, c32, c33 } }, true, true);
+    Query actual3 = qo.optimize(q3);
+    Clause c34 = Clause("", { "p.procName", "\"boo\"" }, { "p" }, 1);
+    Query expected3 = Query({ {"pn", PRINT_}, {"p", PROCEDURE_} }, { "pn" }, { {c31, c34, c33} }, true, true);
+    REQUIRE_THAT(actual3.getClauses(), Catch::Matchers::UnorderedEquals(expected3.getClauses()));
+    REQUIRE(actual3.getDeclarations() == expected3.getDeclarations());
+    REQUIRE(actual3.getToSelect() == expected3.getToSelect());
+    REQUIRE(actual3.getIsSyntacticallyValid() == expected3.getIsSyntacticallyValid());
+    REQUIRE(actual3.getIsSemanticallyValid() == expected3.getIsSemanticallyValid());
+}
+
+TEST_CASE("QueryOptimizer optimize rewriteClauses - rewrite stmt#, value and prog_line") {
+    QueryOptimizer qo = QueryOptimizer();
+    qo.setIsGroup(false);
+    qo.setIsOrderClauses(false);
+    qo.setIsOrderGroups(false);
+    qo.setIsRewriteClauses(true);
+
+    // variable v; prog_line n; read r;
+    // Select v such that Next*(n, n) and Modifies(r, v) with r.stmt# = 4 and 5 = n
+    Clause c11 = Clause("Next*", { "n", "n" }, { "n" }, 0);
+    Clause c12 = Clause("Modifies", { "r", "v" }, { "r", "v" }, 0);
+    Clause c13 = Clause("", { "r.stmt#", "4" }, { "r" }, 1);
+    Clause c14 = Clause("", { "5", "n" }, { "n" }, 1);
+    Query q1 = Query({ {"v", VARIABLE_}, {"n", PROGLINE_}, {"r", READ_} }, { "v" }, { {c11, c12, c13, c14} }, true, true);
+    Query actual1 = qo.optimize(q1);
+    Clause c15 = Clause("Next*", { "5", "5" }, { }, 2);
+    Clause c16 = Clause("Modifies", { "4", "v" }, { "v" }, 1);
+    Query expected1 = Query({ {"v", VARIABLE_}, {"n", PROGLINE_}, {"r", READ_} }, { "v" }, { {c15, c16, c13, c14} }, true, true);
+    REQUIRE_THAT(actual1.getClauses(), Catch::Matchers::UnorderedEquals(expected1.getClauses()));
+    REQUIRE(actual1.getDeclarations() == expected1.getDeclarations());
+    REQUIRE(actual1.getToSelect() == expected1.getToSelect());
+    REQUIRE(actual1.getIsSyntacticallyValid() == expected1.getIsSyntacticallyValid());
+    REQUIRE(actual1.getIsSemanticallyValid() == expected1.getIsSemanticallyValid());
+
+    // variable v; call c; read r, r1;
+    // Select v with r.stmt# = 4 and r.varName = v.varName and c.value = r1.stmt# and c.value = r.stmt#
+    Clause c21 = Clause("", { "r.stmt#", "4" }, { "r" }, 1);
+    Clause c22 = Clause("", { "r.varName", "v.varName" }, { "r", "v" }, 0);
+    Clause c23 = Clause("", { "c.value" , "r1.stmt#" }, { "c", "r1" }, 0);
+    Clause c24 = Clause("", { "c.value" , "r.stmt#" }, { "c", "r" }, 0);
+    Query q2 = Query({ {"c", CALL_}, {"r", READ_}, {"v", VARIABLE_} }, { "v" }, { {c21, c22, c23, c24} }, true, true);
+    Query actual2 = qo.optimize(q2);
+    Clause c25 = Clause("", { "c.value", "4" }, {"c"}, 1);
+    Query expected2 = Query({ {"c", CALL_}, {"r", READ_}, {"v", VARIABLE_} }, { "v" }, { {c21, c22, c23, c25} }, true, true);
+    REQUIRE_THAT(actual2.getClauses(), Catch::Matchers::UnorderedEquals(expected2.getClauses()));
+    REQUIRE(actual2.getDeclarations() == expected2.getDeclarations());
+    REQUIRE(actual2.getToSelect() == expected2.getToSelect());
+    REQUIRE(actual2.getIsSyntacticallyValid() == expected2.getIsSyntacticallyValid());
+    REQUIRE(actual2.getIsSemanticallyValid() == expected2.getIsSemanticallyValid());
+
+
+    // procedure p; print pn;
+    // Select pn with pn.varName = "boo" and p.procName = pn.varName and p.stmt# = 4
+    /*Clause c31 = Clause("", { "pn.varName", "\"boo\"" }, { "pn" }, 1);
+    Clause c32 = Clause("", { "p.procName", "pn.varName" }, { "p", "pn" }, 0);
+    Clause c33 = Clause("", { "p.stmt#", "4" }, { "p" }, 1);
+    Query q3 = Query({ {"pn", PRINT_}, {"p", PROCEDURE_} }, { "pn" }, { {c31, c32, c33 } }, true, true);
+    Query actual3 = qo.optimize(q3);
+    Clause c34 = Clause("", { "p.procName", "\"boo\"" }, { "p" }, 1);
+    Query expected3 = Query({ {"pn", PRINT_}, {"p", PROCEDURE_} }, { "pn" }, { {c31, c34, c33} }, true, true);
+    REQUIRE_THAT(actual3.getClauses(), Catch::Matchers::UnorderedEquals(expected3.getClauses()));
+    REQUIRE(actual3.getDeclarations() == expected3.getDeclarations());
+    REQUIRE(actual3.getToSelect() == expected3.getToSelect());
+    REQUIRE(actual3.getIsSyntacticallyValid() == expected3.getIsSyntacticallyValid());
+    REQUIRE(actual3.getIsSemanticallyValid() == expected3.getIsSemanticallyValid());*/
 }
