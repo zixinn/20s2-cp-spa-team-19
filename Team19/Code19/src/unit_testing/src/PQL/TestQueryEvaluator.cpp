@@ -379,7 +379,7 @@ TEST_CASE("QueryEvaluator evaluate query with multiple such that clauses BOOLEAN
     REQUIRE(expected1.size() == list1.size());
     REQUIRE(expected1 == list1);
 
-    // variable v; while w; ifs if; Select BOOLEAN such that Follows* (w, ifs) and Uses (ifs, v) and Uses (2, v)
+    // variable v; while w; if ifs; Select BOOLEAN such that Follows* (w, ifs) and Uses (ifs, v) and Uses (2, v)
     Clause c21 = Clause("Follows*", vector<string>{"w", "ifs"}, {"w", "ifs"}, 0);
     Clause c22 = Clause("Uses", vector<string>{"ifs", "v"}, {"ifs", "v"}, 0);
     Clause c23 = Clause("Uses", vector<string>{"2", "v"}, {"v"}, 1);
@@ -553,7 +553,7 @@ TEST_CASE("QueryEvaluator evaluate query with one such that clause-semantically 
     REQUIRE(actual1.size() == list1.size());
     REQUIRE(actual1 == expected1);
 
-    // Select v such that Modifies (_, v)
+    // variable v; Select v such that Modifies (_, v)
     Clause c21 = Clause("Modifies", vector<string>{"_", "v"}, {"v"}, 0);
     Query q2 = Query({ {"v", VARIABLE_} }, { "v" }, { {c21} }, true, true);
     list<string> list2 = qe.evaluate(q2);
@@ -624,6 +624,31 @@ TEST_CASE("QueryEvaluator evaluate query with two such that uses clauses") {
     REQUIRE(actual4.size() == list4.size());
 }
 
+TEST_CASE("QueryEvaluator evaluate query with Calls/Calls* clause") {
+    setupQe();
+    QueryEvaluator qe = QueryEvaluator();
+
+    // procedure p1, p2; Select p2 such that Calls("computeCentroid", p1) and Calls*(p1, p2)
+    Clause c11 = Clause("Calls", vector<string>{"\"computeCentroid\"", "p1"}, {"p1"}, 1);
+    Clause c12 = Clause("Calls*", vector<string>{"p1", "p2"}, {"p1", "p2"}, 0);
+    Query q1 = Query({ {"p1", PROCEDURE_}, {"p2", PROCEDURE_} }, { "p2" }, { {c11, c12} }, true, true);
+    list<string> list1 = qe.evaluate(q1);
+    unordered_set<string> actual1(begin(list1), end(list1));
+    unordered_set<string> expected1 = { "randomProcName" };
+    REQUIRE(actual1.size() == list1.size());
+    REQUIRE(actual1 == expected1);
+
+    // procedure p1, p2; Select p1 Calls(p1, p2) with p2.procName = "computeCentriod"
+    Clause c21 = Clause("Calls", vector<string>{"p1", "p2"}, {"p1", "p2"}, 0);
+    Clause c22 = Clause("", vector<string>{"p2.procName", "\"computeCentroid\""}, {"p2"}, 1);
+    Query q2 = Query({ {"p1", PROCEDURE_}, {"p2", PROCEDURE_} }, { "p1" }, { {c21, c22} }, true, true);
+    list<string> list2 = qe.evaluate(q2);
+    unordered_set<string> actual2(begin(list2), end(list2));
+    unordered_set<string> expected2 = { };
+    REQUIRE(actual2.size() == list2.size());
+    REQUIRE(actual2 == expected2);
+}
+
 TEST_CASE("QueryEvaluator evaluate query with Next/Next* clause") {
     setupQe();
     QueryEvaluator qe = QueryEvaluator();
@@ -647,6 +672,30 @@ TEST_CASE("QueryEvaluator evaluate query with Next/Next* clause") {
     unordered_set<string> expected2 = { "6 count", "7 cenX", "7 x", "8 cenY", "8 y"};
     REQUIRE(actual2 == expected2);
     REQUIRE(actual2.size() == list2.size());
+}
+
+TEST_CASE("QueryEvaluator evaluate query with Affects/Affects* clause") {
+    setupQe();
+    QueryEvaluator qe = QueryEvaluator();
+
+    // assign a1, a2; Select <a1, a2> such that Affects(a1, a2)
+    Clause c11 = Clause("Affects", vector<string>{"a1", "a2"}, {"a1", "a2"}, 0);
+    Query q1 = Query({ {"a1", ASSIGN_}, {"a2", ASSIGN_} }, { "a1", "a2" }, { {c11} }, true, true);
+    list<string> list1 = qe.evaluate(q1);
+    unordered_set<string> actual1(begin(list1), end(list1));
+    unordered_set<string> expected1 = { "1 6", "1 12", "1 13", "2 7", "2 12", "2 14", "3 8", "3 13", "3 14", "6 6",
+                                        "6 12", "6 13", "7 7", "7 12", "7 14", "8 8", "8 13", "8 14", "12 14", "13 14" };
+    REQUIRE(actual1.size() == list1.size());
+    REQUIRE(actual1 == expected1);
+
+    // assign a; Select a such that Affects*(a, 8)
+    Clause c21 = Clause("Affects*", vector<string>{"a", "8"}, {"a"}, 1);
+    Query q2 = Query({ {"a", ASSIGN_} }, { "a" }, { {c21} }, true, true);
+    list<string> list2 = qe.evaluate(q2);
+    unordered_set<string> actual2(begin(list2), end(list2));
+    unordered_set<string> expected2 = { "3", "8" };
+    REQUIRE(actual2.size() == list2.size());
+    REQUIRE(actual2 == expected2);
 }
 
 TEST_CASE("QueryEvaluator evaluate query with if/while pattern matching clause") {
@@ -684,33 +733,10 @@ TEST_CASE("QueryEvaluator evaluate query with if/while pattern matching clause")
     REQUIRE(actual3 == expected3);
 }
 
-TEST_CASE("QueryEvaluator evaluate query with Calls clause") {
+TEST_CASE("QueryEvaluator evaluate query with 'with' clause") {
     setupQe();
     QueryEvaluator qe = QueryEvaluator();
 
-    // procedure p1, p2; Select p2 Calls("computeCentroid", p1) and Calls*(p1, p2)
-    Clause c11 = Clause("Calls", vector<string>{"\"computeCentroid\"", "p1"}, {"p1"}, 1);
-    Clause c12 = Clause("Calls*", vector<string>{"p1", "p2"}, {"p1", "p2"}, 0);
-    Query q1 = Query({ {"p1", PROCEDURE_}, {"p2", PROCEDURE_} }, { "p2" }, { {c11, c12} }, true, true);
-    list<string> list1 = qe.evaluate(q1);
-    unordered_set<string> actual1(begin(list1), end(list1));
-    unordered_set<string> expected1 = { "randomProcName" };
-    REQUIRE(actual1.size() == list1.size());
-    REQUIRE(actual1 == expected1);
-
-    // procedure p1, p2; Select p1 Calls(p1, p2) with p2.procName = "computeCentriod"
-    Clause c21 = Clause("Calls", vector<string>{"p1", "p2"}, {"p1", "p2"}, 0);
-    Clause c22 = Clause("", vector<string>{"p2.procName", "\"computeCentroid\""}, {"p2"}, 1);
-    Query q2 = Query({ {"p1", PROCEDURE_}, {"p2", PROCEDURE_} }, { "p1" }, { {c21, c22} }, true, true);
-    list<string> list2 = qe.evaluate(q2);
-    unordered_set<string> actual2(begin(list2), end(list2));
-    unordered_set<string> expected2 = { };
-    REQUIRE(actual2.size() == list2.size());
-    REQUIRE(actual2 == expected2);
-}
-
-TEST_CASE("QueryEvaluator evaluate query with 'with' clause (meaningless queries)") {
-    QueryEvaluator qe = QueryEvaluator();
     //Select BOOLEAN with 12 = 12
     Clause c11 = Clause("", vector<string>{"12", "12"}, {}, 2);
     Query q1 = Query({ }, { "BOOLEAN" }, { {c11} }, true, true);
@@ -755,6 +781,24 @@ TEST_CASE("QueryEvaluator evaluate query with 'with' clause (meaningless queries
     unordered_set<string> expected5 = { };
     REQUIRE(actual5.size() == list5.size());
     REQUIRE(actual5 == expected5);
+
+    // call c; Select c with "readPoint" = c.procName
+    Clause c61 = Clause("", vector<string>{"\"readPoint\"", "c.procName"}, {"c"}, 1);
+    Query q6 = Query({ {"c", CALL_} }, { "c" }, { {c61} }, true, true);
+    list<string> list6 = qe.evaluate(q6);
+    unordered_set<string> actual6(begin(list6), end(list6));
+    unordered_set<string> expected6 = { "4" };
+    REQUIRE(actual6.size() == list6.size());
+    REQUIRE(actual6 == expected6);
+
+    // prog_line n; constant c; Select n with c.value = n
+    Clause c71 = Clause("", vector<string>{"c.value", "n"}, {"c", "n"}, 0);
+    Query q7 = Query({ {"n", PROGLINE_} }, { "n" }, { {c71} }, true, true);
+    list<string> list7 = qe.evaluate(q7);
+    unordered_set<string> actual7(begin(list7), end(list7));
+    unordered_set<string> expected7 = { "1" };
+    REQUIRE(actual7.size() == list7.size());
+    REQUIRE(actual7 == expected7);
 }
 
 TEST_CASE("QueryEvaluator evaluate query with attribute in select") {
