@@ -233,7 +233,6 @@ void QueryOptimizer::rewriteClauses(Query& query) {
         for (string syn : synonyms) {
             if (replacementMap.find(syn) != replacementMap.end()) {
                 clause.replaceSynonym(syn, replacementMap.at(syn));
-
             }
         }
         newClauses.push_back(clause);

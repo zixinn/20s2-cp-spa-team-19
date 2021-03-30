@@ -746,7 +746,7 @@ TEST_CASE("QueryOptimizer optimize rewriteClauses - rewrite procName and varName
     // Select a pattern a(x, "x") and ifs(x, _, _) with "blah" = x.varName and a.stmt# = 3 
     Clause c21 = Clause("a", { "x", "\"x\"" }, { "a", "x" }, 1);
     Clause c22 = Clause("ifs", { "x", "_", "_" }, { "ifs", "x" }, 0);
-    Clause c23 = Clause("", { "\"blah\"" , "x.varName"}, { "x" }, 1);
+    Clause c23 = Clause("", { "x.varName" , "\"blah\"" }, { "x" }, 1);
     Clause c25 = Clause("", { "a.stmt#", "3" }, { "a" }, 1);
     Query q2 = Query({ {"a", ASSIGN_}, {"if", IF_}, {"x", VARIABLE_} }, { "a" }, { {c21, c22, c23, c25} }, true, true);
     Query actual2 = qo.optimize(q2);
