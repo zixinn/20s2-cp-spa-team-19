@@ -560,6 +560,10 @@ TEST_CASE("[SIMPLE, no nested if/while] storeNewIf and storeNewElse and endIfEls
     REQUIRE(PKB::next->getNext(2) == unordered_set<ProgLine>{ 3, 4 });
     REQUIRE(PKB::next->getNext(3) == unordered_set<ProgLine>{ });
     REQUIRE(PKB::next->getNext(4) == unordered_set<ProgLine>{ });
+
+    // Check if/else storage
+    REQUIRE(PKB::stmtTable->getIfStmtRange(2) == make_pair(3, set<int>{3}));
+    REQUIRE(PKB::stmtTable->getElseStmtRange(2) == make_pair(4, set<int>{4}));
 }
 
 TEST_CASE("[ONE NESTED IF] storeNewIf and storeNewElse and endIfElse Test") {
@@ -737,6 +741,11 @@ TEST_CASE("[ONE NESTED IF] storeNewIf and storeNewElse and endIfElse Test") {
     REQUIRE(PKB::next->getNext(6) == unordered_set<ProgLine>{ 7 });
     REQUIRE(PKB::next->getNext(7) == unordered_set<ProgLine>{ 8 });
 
+    // Check if/else storage
+    REQUIRE(PKB::stmtTable->getIfStmtRange(2) == make_pair(3, set<int>{3}));
+    REQUIRE(PKB::stmtTable->getElseStmtRange(2) == make_pair(4, set<int>{5, 7}));
+    REQUIRE(PKB::stmtTable->getIfStmtRange(4) == make_pair(5, set<int>{5}));
+    REQUIRE(PKB::stmtTable->getElseStmtRange(4) == make_pair(6, set<int>{7}));
 }
 
 TEST_CASE("[ONE NESTED IF] Next Variants for If-Else Statements") {
@@ -852,6 +861,12 @@ TEST_CASE("[ONE NESTED IF] Next Variants for If-Else Statements") {
     REQUIRE(PKB::next->getNext(6) == unordered_set<ProgLine>{ 7 });
     REQUIRE(PKB::next->getNext(7) == unordered_set<ProgLine>{ 8 });
     REQUIRE(PKB::next->getNext(8) == unordered_set<ProgLine>{ });
+
+    // Check if/else storage
+    REQUIRE(PKB::stmtTable->getIfStmtRange(2) == make_pair(3, set<int>{3}));
+    REQUIRE(PKB::stmtTable->getElseStmtRange(2) == make_pair(4, set<int>{8}));
+    REQUIRE(PKB::stmtTable->getIfStmtRange(4) == make_pair(5, set<int>{5}));
+    REQUIRE(PKB::stmtTable->getElseStmtRange(4) == make_pair(6, set<int>{7}));
 }
 
 TEST_CASE("[WHILE-IF NESTING] storeNewWhile & storeNewIf Interaction Test") {
@@ -1025,6 +1040,10 @@ TEST_CASE("[WHILE-IF NESTING] storeNewWhile & storeNewIf Interaction Test") {
     REQUIRE(PKB::next->getNext(5) == unordered_set<ProgLine>{ 6 });
     REQUIRE(PKB::next->getNext(6) == unordered_set<ProgLine>{ 7 });
     REQUIRE(PKB::next->getNext(7) == unordered_set<ProgLine>{ 4 });
+
+    // Check if/else storage
+    REQUIRE(PKB::stmtTable->getIfStmtRange(2) == make_pair(3, set<int>{3}));
+    REQUIRE(PKB::stmtTable->getElseStmtRange(2) == make_pair(4, set<int>{4}));
 }
 
 TEST_CASE("Multi-procedure test") {
@@ -1081,14 +1100,15 @@ TEST_CASE("Multi-procedure test") {
     DesignExtractor::storeNewIf(2,condVarNames, condConsts, ifStmt);    // If-then
     DesignExtractor::storeNewAssignment(3, "slalom", assignment2);
     DesignExtractor::storeNewElse();
+    DesignExtractor::storeNewAssignment(4, "slalom", assignment2);
     DesignExtractor::endIfElse();
     DesignExtractor::exitProcedure();
 
     DesignExtractor::storeNewProcedure("deux");
-    DesignExtractor::storeNewWhile(4,whileCondVarNames, whileCondConsts, nestedWhileStmt);
-    DesignExtractor::storeNewAssignment(5, "quartz", assignment3);
-    DesignExtractor::storeNewAssignment(6, "sapphire", assignment4);
-    DesignExtractor::storeNewRead(7, "droning", readStmt);
+    DesignExtractor::storeNewWhile(5, whileCondVarNames, whileCondConsts, nestedWhileStmt);
+    DesignExtractor::storeNewAssignment(6, "quartz", assignment3);
+    DesignExtractor::storeNewAssignment(7, "sapphire", assignment4);
+    DesignExtractor::storeNewRead(8, "droning", readStmt);
     DesignExtractor::exitWhile();
     DesignExtractor::exitProcedure();
 
@@ -1104,10 +1124,11 @@ TEST_CASE("Multi-procedure test") {
     REQUIRE(PKB::stmtLstTable->hasStmtLst(1) == true);  // Procedure's stmtLst
     REQUIRE(PKB::stmtLstTable->hasStmtLst(2) == false); // If stmt itself
     REQUIRE(PKB::stmtLstTable->hasStmtLst(3) == true); // If stmt's stmtLst
-    REQUIRE(PKB::stmtLstTable->hasStmtLst(4) == true); // First Else's stmtLst
-    REQUIRE(PKB::stmtLstTable->hasStmtLst(5) == true); // Nested While's's stmtLst
-    REQUIRE(PKB::stmtLstTable->hasStmtLst(6) == false);
+    REQUIRE(PKB::stmtLstTable->hasStmtLst(4) == true); // Else's stmtLst
+    REQUIRE(PKB::stmtLstTable->hasStmtLst(5) == true); // Procedure's stmtLst
+    REQUIRE(PKB::stmtLstTable->hasStmtLst(6) == true); // Nested While's stmtLst
     REQUIRE(PKB::stmtLstTable->hasStmtLst(7) == false);
+    REQUIRE(PKB::stmtLstTable->hasStmtLst(8) == false);
 
     // Check varNames
     ID varID = PKB::varTable->getVarID("axel2");
@@ -1152,8 +1173,8 @@ TEST_CASE("Multi-procedure test") {
     // Check pattern storage
     REQUIRE(PKB::stmtTable->getIfStmtsWithControlVar(condVarId) == unordered_set<StmtNum>{ 2 });
     REQUIRE(PKB::stmtTable->getIfStmtsWithControlVar(condVarId2) == unordered_set<StmtNum>{ 2 });
-    REQUIRE(PKB::stmtTable->getWhileStmtsWithControlVar(condVarId3) == unordered_set<StmtNum>{ 4 });
-    REQUIRE(PKB::stmtTable->getWhileStmtsWithControlVar(condVarId4) == unordered_set<StmtNum>{ 4 });
+    REQUIRE(PKB::stmtTable->getWhileStmtsWithControlVar(condVarId3) == unordered_set<StmtNum>{ 5 });
+    REQUIRE(PKB::stmtTable->getWhileStmtsWithControlVar(condVarId4) == unordered_set<StmtNum>{ 5 });
 
     // Check consts used in conditional
     REQUIRE(PKB::constTable->hasConst("5") == true);
@@ -1172,45 +1193,55 @@ TEST_CASE("Multi-procedure test") {
     REQUIRE(PKB::follows->getFollower(1) == 2);
     REQUIRE(PKB::follows->getFollower(2) != 3); // 3 is nested in 2
     REQUIRE(PKB::follows->getFollower(2) != 4); // 4 nested in 2
-    REQUIRE(PKB::follows->getFollower(3) != 4); // 4 in another procedure
-    REQUIRE(PKB::follows->getFollower(4) != 5); // 5 is nested in 4
-    REQUIRE(PKB::follows->getFollower(4) != 6); // 6 is nested in 4
-    REQUIRE(PKB::follows->getFollower(5) == 6); // nested in while loop
-    REQUIRE(PKB::follows->getFollower(6) == 7);
-    REQUIRE(PKB::follows->getFollower(6) != 6); // stmt cannot follow itself
+    REQUIRE(PKB::follows->getFollower(3) != 4); // 4 in else
+    REQUIRE(PKB::follows->getFollower(4) != 5); // 5 in another procedure
+    REQUIRE(PKB::follows->getFollower(5) != 6); // 6 is nested in 5
+    REQUIRE(PKB::follows->getFollower(5) != 7); // 7 is nested in 5
+    REQUIRE(PKB::follows->getFollower(5) != 8); // 8 is nested in 5
+    REQUIRE(PKB::follows->getFollower(6) == 7); // nested in while loop
+    REQUIRE(PKB::follows->getFollower(7) == 8); // nested in while loop
+    REQUIRE(PKB::follows->getFollower(7) != 7); // stmt cannot follow itself
 
     // Check Parent
-    REQUIRE(PKB::parent->getChildren(2) == unordered_set<StmtNum>{ 3 }); // Only testing for Parent, not Parent*
-    REQUIRE(PKB::parent->getChildren(4) == unordered_set<StmtNum>{ 5, 6, 7 });
+    REQUIRE(PKB::parent->getChildren(2) == unordered_set<StmtNum>{ 3, 4 }); // Only testing for Parent, not Parent*
+    REQUIRE(PKB::parent->getChildren(5) == unordered_set<StmtNum>{ 6, 7, 8 });
     REQUIRE(PKB::parent->getParent(3) == 2);
-    REQUIRE(PKB::parent->getParent(7) == 4);
+    REQUIRE(PKB::parent->getParent(4) == 2);
+    REQUIRE(PKB::parent->getParent(6) == 5);
+    REQUIRE(PKB::parent->getParent(7) == 5);
+    REQUIRE(PKB::parent->getParent(8) == 5);
     REQUIRE(PKB::parent->getParent(1) == -1);
 
     // Check Uses
     REQUIRE(PKB::uses->getStmtsUses(condVarId) == unordered_set<StmtNum>{ 2 });
     REQUIRE(PKB::uses->getStmtsUses(condVarId2) == unordered_set<StmtNum>{ 2 });
-    REQUIRE(PKB::uses->getStmtsUses(condVarId3) == unordered_set<StmtNum>{ 4 }); // Nested if
-    REQUIRE(PKB::uses->getStmtsUses(condVarId4) == unordered_set<StmtNum>{ 4 });
-    REQUIRE(PKB::uses->getStmtsUses(varID2) == unordered_set<StmtNum>{ 1, 2, 3 }); // as 2 is a container stmt
-    REQUIRE(PKB::uses->getStmtsUses(varID5) == unordered_set<StmtNum>{ 4, 5 }); // as 2 is a container stmt
+    REQUIRE(PKB::uses->getStmtsUses(condVarId3) == unordered_set<StmtNum>{ 5 });
+    REQUIRE(PKB::uses->getStmtsUses(condVarId4) == unordered_set<StmtNum>{ 5 });
+    REQUIRE(PKB::uses->getStmtsUses(varID2) == unordered_set<StmtNum>{ 1, 2, 3, 4 }); // as 2 is a container stmt
+    REQUIRE(PKB::uses->getStmtsUses(varID5) == unordered_set<StmtNum>{ 5, 6 }); // as 2 is a container stmt
     REQUIRE(PKB::uses->getVarsUsedByProc(0) == unordered_set<StmtNum>{ condVarId, condVarId2, varID2 });
     REQUIRE(PKB::uses->getVarsUsedByProc(1) == unordered_set<StmtNum>{ condVarId3, condVarId4, varID5 });
 
     // Check Modifies
     REQUIRE(PKB::modifies->getStmtsModifies(varID) == unordered_set<ID>{ 1 });
-    REQUIRE(PKB::modifies->getStmtsModifies(varID3) == unordered_set<ID>{ 2, 3 }); // as 2 is a container stmt
-    REQUIRE(PKB::modifies->getStmtsModifies(varID4) == unordered_set<ID>{ 4, 5 }); // 2, 4 is container stmt
-    REQUIRE(PKB::modifies->getStmtsModifies(varID6) == unordered_set<ID>{ 4, 6 });
-    REQUIRE(PKB::modifies->getStmtsModifies(varID7) == unordered_set<ID>{ 4, 7 });
+    REQUIRE(PKB::modifies->getStmtsModifies(varID3) == unordered_set<ID>{ 2, 3, 4 }); // as 2 is a container stmt
+    REQUIRE(PKB::modifies->getStmtsModifies(varID4) == unordered_set<ID>{ 5, 6 }); // as 4 is container stmt
+    REQUIRE(PKB::modifies->getStmtsModifies(varID6) == unordered_set<ID>{ 5, 7 });
+    REQUIRE(PKB::modifies->getStmtsModifies(varID7) == unordered_set<ID>{ 5, 8 });
 
     // Check Next
     REQUIRE(PKB::next->getNext(1) == unordered_set<ProgLine>{ 2 });
-    REQUIRE(PKB::next->getNext(2) == unordered_set<ProgLine>{ 3 });
+    REQUIRE(PKB::next->getNext(2) == unordered_set<ProgLine>{ 3, 4 });
     REQUIRE(PKB::next->getNext(3) == unordered_set<ProgLine>{ });   // Next only holds for stmts in the same procedure
-    REQUIRE(PKB::next->getNext(4) == unordered_set<ProgLine>{ 5 });
+    REQUIRE(PKB::next->getNext(4) == unordered_set<ProgLine>{ });   // Next only holds for stmts in the same procedure
     REQUIRE(PKB::next->getNext(5) == unordered_set<ProgLine>{ 6 });
     REQUIRE(PKB::next->getNext(6) == unordered_set<ProgLine>{ 7 });
-    REQUIRE(PKB::next->getNext(7) == unordered_set<ProgLine>{ 4 });
+    REQUIRE(PKB::next->getNext(7) == unordered_set<ProgLine>{ 8 });
+    REQUIRE(PKB::next->getNext(8) == unordered_set<ProgLine>{ 5 });
+
+    // Check if/else storage
+    REQUIRE(PKB::stmtTable->getIfStmtRange(2) == make_pair(3, set<int>{3}));
+    REQUIRE(PKB::stmtTable->getElseStmtRange(2) == make_pair(4, set<int>{4}));
 }
 
 // Test cases for stacks and related methods

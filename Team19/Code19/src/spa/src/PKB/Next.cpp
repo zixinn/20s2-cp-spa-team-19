@@ -104,6 +104,10 @@ int Next::getNextStarSize() {
     return cnt;
 }
 
+unordered_map<ProgLine, unordered_set<ProgLine> > Next::getNextMap() {
+    return nextMap;
+}
+
 void Next::populateNextStar() {
     unordered_set<ProgLine> n2s;
     ID curr;
