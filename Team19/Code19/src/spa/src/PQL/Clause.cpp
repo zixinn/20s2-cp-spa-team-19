@@ -31,22 +31,23 @@ void Clause::replaceSynonym(string synonym, string replacement) {
     vector<string> newArgs;
     bool replace = false;
     for (string arg : args) {
-        int posOfDot = arg.find('.');
+        string syn = arg;
+        int posOfDot = syn.find('.');
         string attrName;
         if (posOfDot != string::npos) { // dot found
-            attrName = arg.substr(posOfDot + 1, arg.length());
-            arg = arg.substr(0, posOfDot);
-            replace = checkReplacement(arg, attrName, synonym, replacement);
+            attrName = syn.substr(posOfDot + 1, syn.length());
+            syn = syn.substr(0, posOfDot);
+            replace = checkReplacement(syn, attrName, synonym, replacement);
         }
         if (arg == synonym || replace) {
             newArgs.push_back(replacement);
-            this->synonyms.erase(arg);
+            this->synonyms.erase(syn);
+            this->numOfKnown++;
         } else {
             newArgs.push_back(arg);
         }
     }
     this->args = newArgs;
-    this->numOfKnown++;
 }
 
 // to check if synonym.attrName can be replaced 
@@ -54,8 +55,13 @@ bool Clause::checkReplacement(string syn, string attrName, string synToReplace, 
     if (syn != synToReplace) {
         return false;
     }
-    if ((attrName == "varName" && checkName(replacement))
-        || (attrName == "procName" && checkName(replacement))
+    if (replacement[0] == '\"' && replacement[replacement.length() - 1] == '\"') {
+        cout << "trimmed\n";
+        replacement = trim(replacement.substr(1, replacement.length() - 2));
+        cout << replacement;
+    }
+    if ((attrName == "varName" && !checkInteger(replacement))
+        || (attrName == "procName" && !checkInteger(replacement))
         || (attrName == "stmt#" && checkInteger(replacement))
         || (attrName == "value" && checkInteger(replacement))) {
         return true;
@@ -64,6 +70,10 @@ bool Clause::checkReplacement(string syn, string attrName, string synToReplace, 
 
 bool operator==(const Clause& c1, const Clause& c2) {
     return c1.rel == c2.rel && c1.args == c2.args && c1.synonyms == c2.synonyms && c1.numOfKnown == c2.numOfKnown;
+}
+
+bool operator!=(const Clause& c1, const Clause& c2) {
+    return !(c1 == c2);
 }
 
 Clause::~Clause() {

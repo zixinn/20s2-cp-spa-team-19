@@ -4,7 +4,7 @@
 #include <unordered_set>
 #include <vector>
 
-#include "Utility.h"
+#include "../Utility.h"
 
 using namespace std;
 
@@ -20,6 +20,7 @@ public:
     void replaceSynonym(string synonym, string replacement);
 
     friend bool operator==(const Clause& c1, const Clause& c2);
+    friend bool operator!=(const Clause& c1, const Clause& c2);
 
     ~Clause();
 
