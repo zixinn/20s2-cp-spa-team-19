@@ -509,3 +509,115 @@ TEST_CASE("getNextBipStar Test4") {
     REQUIRE(nextBip->getNextBipStar(10) == unordered_set<ProgLine>{8,3,4,9,10,11,5});
     REQUIRE(nextBip->getNextBipStar(11) == unordered_set<ProgLine>{8,3,4,9,10,11,5});
 }
+
+//    procedure a {
+//    01    while (x == 1) {
+//    02        while (y == 2) {
+//    03            if (z == 3) then {
+//    04                call b;
+//                  } else {
+//    05                call c;
+//    06                x = x + 1; } } } }
+//
+//    procedure b {
+//    07    y = y + 1;
+//    08    while (y < 5) {
+//    09        if (y == 1) then {
+//    10            z = z + 1;
+//    11            call c;
+//              } else {
+//    12            z = z + 2; } } }
+//
+//    procedure c {
+//    13    read cs3203;
+//    }
+
+NextBip* setUpNextBipTest5() {
+    PKB::resetPKB();
+
+    PKB::procTable->storeProcName("a"); // 0
+    PKB::procTable->storeProcName("b"); // 1
+    PKB::procTable->storeProcName("c"); // 2
+    PKB::procTable->storeProcStmt(0, 1, 1);
+    PKB::procTable->storeProcStmt(1, 7, 8);
+    PKB::procTable->storeProcStmt(2, 13, 13);
+
+    ast::Stmt* stmtNodeStub = new StmtNodeStub(0);
+    PKB::stmtTable->storeStmt(1, stmtNodeStub, WHILE_);
+    PKB::stmtTable->storeStmt(2, stmtNodeStub, WHILE_);
+    PKB::stmtTable->storeStmt(3, stmtNodeStub, IF_);
+    PKB::stmtTable->storeStmt(4, stmtNodeStub, CALL_);
+    PKB::stmtTable->storeStmt(5, stmtNodeStub, CALL_);
+    PKB::stmtTable->storeStmt(6, stmtNodeStub, ASSIGN_);
+    PKB::stmtTable->storeStmt(7, stmtNodeStub, ASSIGN_);
+    PKB::stmtTable->storeStmt(8, stmtNodeStub, WHILE_);
+    PKB::stmtTable->storeStmt(9, stmtNodeStub, IF_);
+    PKB::stmtTable->storeStmt(10, stmtNodeStub, ASSIGN_);
+    PKB::stmtTable->storeStmt(11, stmtNodeStub, CALL_);
+    PKB::stmtTable->storeStmt(12, stmtNodeStub, ASSIGN_);
+    PKB::stmtTable->storeStmt(13, stmtNodeStub, READ_);
+    PKB::stmtTable->storeIfStmt(3, 4, set<StmtNum>{4});
+    PKB::stmtTable->storeElseStmt(3, 5, set<StmtNum>{6});
+    PKB::stmtTable->storeIfStmt(9, 10, set<StmtNum>{11});
+    PKB::stmtTable->storeElseStmt(9, 12, set<StmtNum>{12});
+
+    PKB::calls->storeCalls(4, 0, 1);
+    PKB::calls->storeCalls(5, 0, 2);
+    PKB::calls->storeCalls(11, 1, 2);
+
+    PKB::next->storeNext(1, 2);
+    PKB::next->storeNext(2, 3);
+    PKB::next->storeNext(3, 4);
+    PKB::next->storeNext(3, 5);
+    PKB::next->storeNext(5, 6);
+    PKB::next->storeNext(4, 2);
+    PKB::next->storeNext(6, 2);
+    PKB::next->storeNext(2, 1);
+    PKB::next->storeNext(7, 8);
+    PKB::next->storeNext(8, 9);
+    PKB::next->storeNext(9, 10);
+    PKB::next->storeNext(10, 11);
+    PKB::next->storeNext(9, 12);
+    PKB::next->storeNext(11, 8);
+    PKB::next->storeNext(12, 8);
+
+    PKB::next->populateNextStar();
+    PKB::calls->processCalls();
+    NextBip* nextBip = new NextBip();
+    nextBip->populateNextBipAndNextBipStar();
+    return nextBip;
+}
+
+TEST_CASE("getNextBip Test5") {
+    NextBip* nextBip = setUpNextBipTest5();
+    REQUIRE(nextBip->getNextBip(1) == unordered_set<ProgLine>{2});
+    REQUIRE(nextBip->getNextBip(2) == unordered_set<ProgLine>{1,3});
+    REQUIRE(nextBip->getNextBip(3) == unordered_set<ProgLine>{4,5});
+    REQUIRE(nextBip->getNextBip(4) == unordered_set<ProgLine>{7});
+    REQUIRE(nextBip->getNextBip(5) == unordered_set<ProgLine>{13});
+    REQUIRE(nextBip->getNextBip(6) == unordered_set<ProgLine>{2});
+    REQUIRE(nextBip->getNextBip(7) == unordered_set<ProgLine>{8});
+    REQUIRE(nextBip->getNextBip(8) == unordered_set<ProgLine>{9,2});
+    REQUIRE(nextBip->getNextBip(9) == unordered_set<ProgLine>{10,12});
+    REQUIRE(nextBip->getNextBip(10) == unordered_set<ProgLine>{11});
+    REQUIRE(nextBip->getNextBip(11) == unordered_set<ProgLine>{13});
+    REQUIRE(nextBip->getNextBip(12) == unordered_set<ProgLine>{8});
+    REQUIRE(nextBip->getNextBip(13) == unordered_set<ProgLine>{8,6});
+}
+
+TEST_CASE("getNextBipStar Test5") {
+    NextBip* nextBip = setUpNextBipTest5();
+    REQUIRE(nextBip->getNextBipStar(1) == unordered_set<ProgLine>{1,2,3,4,5,6,7,8,9,10,11,12,13});
+    REQUIRE(nextBip->getNextBipStar(2) == unordered_set<ProgLine>{1,2,3,4,5,6,7,8,9,10,11,12,13});
+    REQUIRE(nextBip->getNextBipStar(3) == unordered_set<ProgLine>{1,2,3,4,5,6,7,8,9,10,11,12,13});
+    REQUIRE(nextBip->getNextBipStar(4) == unordered_set<ProgLine>{1,2,3,4,5,6,7,8,9,10,11,12,13});
+    REQUIRE(nextBip->getNextBipStar(5) == unordered_set<ProgLine>{1,2,3,4,5,6,7,8,9,10,11,12,13});
+    REQUIRE(nextBip->getNextBipStar(6) == unordered_set<ProgLine>{1,2,3,4,5,6,7,8,9,10,11,12,13});
+    REQUIRE(nextBip->getNextBipStar(7) == unordered_set<ProgLine>{1,2,3,4,5,6,7,8,9,10,11,12,13});
+    REQUIRE(nextBip->getNextBipStar(8) == unordered_set<ProgLine>{1,2,3,4,5,6,7,8,9,10,11,12,13});
+    REQUIRE(nextBip->getNextBipStar(9) == unordered_set<ProgLine>{1,2,3,4,5,6,7,8,9,10,11,12,13});
+    REQUIRE(nextBip->getNextBipStar(10) == unordered_set<ProgLine>{1,2,3,4,5,6,7,8,9,10,11,12,13});
+    REQUIRE(nextBip->getNextBipStar(11) == unordered_set<ProgLine>{1,2,3,4,5,6,7,8,9,10,11,12,13});
+    REQUIRE(nextBip->getNextBipStar(12) == unordered_set<ProgLine>{1,2,3,4,5,6,7,8,9,10,11,12,13});
+    REQUIRE(nextBip->getNextBipStar(13) == unordered_set<ProgLine>{1,2,3,4,5,6,7,8,9,10,11,12,13});
+}
