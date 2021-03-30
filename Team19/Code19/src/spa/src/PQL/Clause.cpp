@@ -55,15 +55,13 @@ bool Clause::checkReplacement(string syn, string attrName, string synToReplace, 
     if (syn != synToReplace) {
         return false;
     }
-    if (replacement[0] == '\"' && replacement[replacement.length() - 1] == '\"') {
-        replacement = trim(replacement.substr(1, replacement.length() - 2));
-    }
     if ((attrName == "varName" && !checkInteger(replacement))
         || (attrName == "procName" && !checkInteger(replacement))
         || (attrName == "stmt#" && checkInteger(replacement))
         || (attrName == "value" && checkInteger(replacement))) {
         return true;
     }
+    return false;
 }
 
 bool operator==(const Clause& c1, const Clause& c2) {

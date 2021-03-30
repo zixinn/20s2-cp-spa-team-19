@@ -207,28 +207,23 @@ void QueryOptimizer::rewriteClauses(Query& query) {
             continue;
         }
         // With clause with one known
-        string arg = *clause.getSynonyms().begin(); 
-        string knownValue;
+        string arg = clause.getArgs().at(0);
         string attrName;
-        // get known value
-        for (string s : clause.getArgs()) {
-            if (checkInteger(s) || checkNameWithQuotes(s)) {
-                knownValue = s;
-                continue;
-            }
-            int posOfDot = arg.find('.');
-            if (posOfDot != string::npos) { // dot found
-                arg = arg.substr(0, posOfDot);
-                attrName = arg.substr(posOfDot + 1, arg.length());
-            }
-            string argType = getArgType(arg, query.getDeclarations());
-            if ((attrName == "varName" || attrName == "procName")
-                && (argType == CALL_ || argType == PRINT_ || argType == READ_)) {
-                continue;
-            }
+        int posOfDot = arg.find('.');
+        if (posOfDot != string::npos) { // dot found
+            attrName = arg.substr(posOfDot + 1, arg.length());
+            arg = arg.substr(0, posOfDot);
         }
+        string argType = getArgType(arg, query.getDeclarations());
+        if ((attrName == "varName" || attrName == "procName")
+            && (argType == CALL_ || argType == PRINT_ || argType == READ_)) {
+            continue;
+        }
+        // get known value
+        string knownValue = clause.getArgs().at(1);
         replacementMap.insert({ arg, knownValue });
     }
+
     for (Clause clause : clauses) {
         if (clause.getRel() == "" && clause.getNumOfKnown() == 1) {
             newClauses.push_back(clause);

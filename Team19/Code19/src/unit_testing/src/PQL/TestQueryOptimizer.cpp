@@ -669,7 +669,7 @@ TEST_CASE("QueryOptimizer optimize rewriteClauses - no clauses to rewrite") {
 
     // variable v1; print pn; call c;
     // Select pn such that Uses(c, v1) and Modifies(c, "x") with pn.varName = "boo"
-    /*Clause c11 = Clause("Uses", { "c", "v1" }, { "c", "v1" }, 0);
+    Clause c11 = Clause("Uses", { "c", "v1" }, { "c", "v1" }, 0);
     Clause c12 = Clause("Modifies", { "c", "\"x\"" }, { "c" }, 1);
     Clause c13 = Clause("", { "pn.varName", "\"boo\"" }, { "pn" }, 1);
     Query q1 = Query({ {"v1", VARIABLE_}, {"pn", PRINT_}, {"c", CALL_} }, { "pn" }, { {c11, c12, c13} }, true, true);
@@ -702,8 +702,20 @@ TEST_CASE("QueryOptimizer optimize rewriteClauses - no clauses to rewrite") {
     REQUIRE(actual3.getDeclarations() == q3.getDeclarations());
     REQUIRE(actual3.getToSelect() == q3.getToSelect());
     REQUIRE(actual3.getIsSyntacticallyValid() == q3.getIsSyntacticallyValid());
-    REQUIRE(actual3.getIsSemanticallyValid() == q3.getIsSemanticallyValid());*/
+    REQUIRE(actual3.getIsSemanticallyValid() == q3.getIsSemanticallyValid());
 
+    // procedure p; print pn;
+    // Select pn with pn.varName = "boo" and p.procName = pn.varName and pn.stmt# = 4
+    Clause c41 = Clause("", { "pn.varName", "\"boo\"" }, { "pn" }, 1);
+    Clause c42 = Clause("", { "p.procName", "pn.varName" }, { "p", "pn" }, 0);
+    Clause c43 = Clause("", { "pn.stmt#", "4" }, { "pn" }, 1);
+    Query q4 = Query({ {"pn", PRINT_}, {"p", PROCEDURE_} }, { "pn" }, { {c41, c42, c43 } }, true, true);
+    Query actual4 = qo.optimize(q4);
+    REQUIRE_THAT(actual4.getClauses().at(0), Catch::Matchers::UnorderedEquals(q4.getClauses().at(0)));
+    REQUIRE(actual4.getDeclarations() == q4.getDeclarations());
+    REQUIRE(actual4.getToSelect() == q4.getToSelect());
+    REQUIRE(actual4.getIsSyntacticallyValid() == q4.getIsSyntacticallyValid());
+    REQUIRE(actual4.getIsSemanticallyValid() == q4.getIsSemanticallyValid());
 }
 
 TEST_CASE("QueryOptimizer optimize rewriteClauses - rewrite procName and varName") {
@@ -746,22 +758,6 @@ TEST_CASE("QueryOptimizer optimize rewriteClauses - rewrite procName and varName
     REQUIRE(actual2.getToSelect() == expected2.getToSelect());
     REQUIRE(actual2.getIsSyntacticallyValid() == expected2.getIsSyntacticallyValid());
     REQUIRE(actual2.getIsSemanticallyValid() == expected2.getIsSemanticallyValid());
-
-
-    // procedure p; print pn;
-    // Select pn with pn.varName = "boo" and p.procName = pn.varName and pn.stmt# = 4
-    Clause c31 = Clause("", { "pn.varName", "\"boo\"" }, { "pn" }, 1);
-    Clause c32 = Clause("", { "p.procName", "pn.varName" }, { "p", "pn" }, 0);
-    Clause c33 = Clause("", { "pn.stmt#", "4" }, { "pn" }, 1);
-    Query q3 = Query({ {"pn", PRINT_}, {"p", PROCEDURE_} }, { "pn" }, { {c31, c32, c33 } }, true, true);
-    Query actual3 = qo.optimize(q3);
-    Clause c34 = Clause("", { "p.procName", "\"boo\"" }, { "p" }, 1);
-    Query expected3 = Query({ {"pn", PRINT_}, {"p", PROCEDURE_} }, { "pn" }, { {c31, c34, c33} }, true, true);
-    REQUIRE_THAT(actual3.getClauses().at(0), Catch::Matchers::UnorderedEquals(expected3.getClauses().at(0)));
-    REQUIRE(actual3.getDeclarations() == expected3.getDeclarations());
-    REQUIRE(actual3.getToSelect() == expected3.getToSelect());
-    REQUIRE(actual3.getIsSyntacticallyValid() == expected3.getIsSyntacticallyValid());
-    REQUIRE(actual3.getIsSemanticallyValid() == expected3.getIsSemanticallyValid());
 }
 
 TEST_CASE("QueryOptimizer optimize rewriteClauses - rewrite stmt#, value and prog_line") {
@@ -818,4 +814,19 @@ TEST_CASE("QueryOptimizer optimize rewriteClauses - rewrite stmt#, value and pro
     REQUIRE(actual3.getToSelect() == expected3.getToSelect());
     REQUIRE(actual3.getIsSyntacticallyValid() == expected3.getIsSyntacticallyValid());
     REQUIRE(actual3.getIsSemanticallyValid() == expected3.getIsSemanticallyValid());
+
+    // prog_line n; constant c;
+    // Select n with n = 2 and n = c.value and c.value = 2
+    Clause c41 = Clause("", { "n", "2" }, { "n" }, 1);
+    Clause c42 = Clause("", { "c.value", "n" }, { "c", "n" }, 0);
+    Clause c43 = Clause("", { "c.value", "2" }, { "c" }, 1);
+    Query q4 = Query({ {"n", PROGLINE_}, {"c", CONSTANT_} }, { "n" }, { {c41, c42, c43} }, true, true);
+    Query actual4 = qo.optimize(q4);
+    Clause c44 = Clause("", { "2", "2" }, { }, 2);
+    Query expected4 = Query({ {"n", PROGLINE_}, {"c", CONSTANT_} }, { "n" }, { {c41, c44, c43} }, true, true);
+    REQUIRE_THAT(actual4.getClauses().at(0), Catch::Matchers::UnorderedEquals(expected4.getClauses().at(0)));
+    REQUIRE(actual4.getDeclarations() == expected4.getDeclarations());
+    REQUIRE(actual4.getToSelect() == expected4.getToSelect());
+    REQUIRE(actual4.getIsSyntacticallyValid() == expected4.getIsSyntacticallyValid());
+    REQUIRE(actual4.getIsSemanticallyValid() == expected4.getIsSemanticallyValid());
 }

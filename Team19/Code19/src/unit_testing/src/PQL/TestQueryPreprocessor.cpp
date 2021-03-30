@@ -521,7 +521,7 @@ TEST_CASE("process valid query with with clause") {
     actual = qp.process(query);
     c1 = Clause("Follows*", { "s", "s1" }, {"s", "s1"}, 0);
     c2 = Clause("", { "s1.stmt#", "n" }, {"s1", "n"}, 0);
-    c3 = Clause("", { "10", "n" }, {"n"}, 1);
+    c3 = Clause("", { "n", "10" }, {"n"}, 1);
     unordered_map<string, string> declarations2;
     declarations2["s"] = "stmt";
     declarations2["s1"] = "stmt";
