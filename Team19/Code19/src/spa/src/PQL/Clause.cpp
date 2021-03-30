@@ -56,9 +56,7 @@ bool Clause::checkReplacement(string syn, string attrName, string synToReplace, 
         return false;
     }
     if (replacement[0] == '\"' && replacement[replacement.length() - 1] == '\"') {
-        cout << "trimmed\n";
         replacement = trim(replacement.substr(1, replacement.length() - 2));
-        cout << replacement;
     }
     if ((attrName == "varName" && !checkInteger(replacement))
         || (attrName == "procName" && !checkInteger(replacement))
