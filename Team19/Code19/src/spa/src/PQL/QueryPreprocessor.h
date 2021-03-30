@@ -88,5 +88,5 @@ private:
     void checkWithClause(string left, string right);
     // Checks if the ref in the with clause is valid
     // Returns NAME or INTEGER depending on the type of the ref and empty string if the ref is invalid
-    string checkRef(string& ref, unordered_set<string>& synonyms, int& numOfKnown);
+    string checkRef(string& ref, unordered_set<string>& synonyms, int& numOfKnown, string& argType);
 };

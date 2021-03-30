@@ -12,12 +12,26 @@ void QueryOptimizer::setIsOrderClauses(bool isOrderClauses) {
     this->isOrderClauses = isOrderClauses;
 }
 
+void QueryOptimizer::setIsOrderGroups(bool isOrderGroups) {
+    this->isOrderGroups = isOrderGroups;
+}
+
+void QueryOptimizer::setIsRewriteClauses(bool isRewriteClauses) {
+    this->isRewriteClauses = isRewriteClauses;
+}
+
 Query QueryOptimizer::optimize(Query query) {
+    if (isRewriteClauses) {
+        rewriteClauses(query);
+    }
     if (isGroup) {
         groupClauses(query);
     }
     if (isOrderClauses) {
         orderClauses(query);
+    }
+    if (isOrderGroups) {
+        orderGroups(query);
     }
     return query;
 }
@@ -69,6 +83,7 @@ void QueryOptimizer::groupClauses(Query& query) {
     // first group contains clauses without synonyms
     // some groups may be empty, e.g. unused declarations
     vector<vector<Clause>> groups = vector<vector<Clause>>(groupNum, vector<Clause>{});
+    vector<unordered_set<string>> synGroups = vector<unordered_set<string>>(groupNum, unordered_set<string>{});
     for (Clause clause : clauses) {
         if (clause.getSynonyms().empty()) { // no synonym in clause
             groups.at(0).push_back(clause); // insert at the front
@@ -77,9 +92,12 @@ void QueryOptimizer::groupClauses(Query& query) {
             int idx = synonymToIndex[syn];
             int groupNumber = grouping[idx];
             groups.at(groupNumber).push_back(clause);
+            for (string s : clause.getSynonyms()) {
+                synGroups.at(groupNumber).insert(s);
+            }
         }
     }
-
+    query.setSynonyms(synGroups);
     query.setClauses(groups);
 }
 
@@ -139,6 +157,87 @@ void QueryOptimizer::orderClauses(Query& query) {
         }
         query.setClausesAtIdx(newClauses, i);
     }
+}
+
+void QueryOptimizer::orderGroups(Query& query) {
+    vector<vector<Clause>> clauseGroups = query.getClauses();
+    vector<unordered_set<string>> synonymGroups = query.getSynonyms();
+    vector<vector<Clause>> orderedGroups;
+    vector<vector<Clause>> groupsWithSynSelect; // groups with synonym in select clause
+    vector<string> toSelect = query.getToSelect();
+    int groupNum = -1;
+    for (vector<Clause> group : clauseGroups) {
+        groupNum++;
+        if (group.empty()) {
+            continue;
+        }
+        unordered_set<string> synonyms = synonymGroups.at(groupNum);
+        if (synonyms.empty() || (toSelect.size() == 1 && toSelect.at(0) == "BOOLEAN")) {
+            orderedGroups.push_back(group);
+            continue;
+        }
+        bool flag = true;
+        for (string s : toSelect) {
+            int pos = s.find('.');
+            string synonym = s;
+            if (pos != string::npos) {
+                synonym = s.substr(0, pos);
+            }
+            if (synonyms.find(synonym) != synonyms.end()) { // synonym to select in group
+                groupsWithSynSelect.push_back(group);
+                flag = false;
+                break;
+            }
+        }
+        if (flag) {
+            orderedGroups.push_back(group);
+        }
+    }
+    orderedGroups.insert(orderedGroups.end(), groupsWithSynSelect.begin(), groupsWithSynSelect.end());    
+    query.setClauses(orderedGroups);
+}
+
+void QueryOptimizer::rewriteClauses(Query& query) {
+    vector<Clause> clauses = query.getClauses().at(0);
+    vector<Clause> newClauses;
+    unordered_map<string, string> replacementMap;
+
+    for (Clause clause : clauses) {
+        if (clause.getRel() != "" || clause.getNumOfKnown() != 1) {
+            continue;
+        }
+        // With clause with one known
+        string arg = clause.getArgs().at(0);
+        string attrName;
+        int posOfDot = arg.find('.');
+        if (posOfDot != string::npos) { // dot found
+            attrName = arg.substr(posOfDot + 1, arg.length());
+            arg = arg.substr(0, posOfDot);
+        }
+        string argType = getArgType(arg, query.getDeclarations());
+        if ((attrName == "varName" || attrName == "procName")
+            && (argType == CALL_ || argType == PRINT_ || argType == READ_)) {
+            continue;
+        }
+        // get known value
+        string knownValue = clause.getArgs().at(1);
+        replacementMap.insert({ arg, knownValue });
+    }
+
+    for (Clause clause : clauses) {
+        if (clause.getRel() == "" && clause.getNumOfKnown() == 1) {
+            newClauses.push_back(clause);
+            continue;
+        }
+        unordered_set<string> synonyms = clause.getSynonyms();
+        for (string syn : synonyms) {
+            if (replacementMap.find(syn) != replacementMap.end()) {
+                clause.replaceSynonym(syn, replacementMap.at(syn));
+            }
+        }
+        newClauses.push_back(clause);
+    }
+    query.setClauses({ newClauses });
 }
 
 QueryOptimizer::~QueryOptimizer() {

@@ -389,22 +389,28 @@ void QueryPreprocessor::parseWithClause(string clause) {
 void QueryPreprocessor::checkWithClause(string left, string right) {
     unordered_set<string> synonyms = unordered_set<string>();
     int numOfKnown = 0;
-    string leftType = checkRef(left, synonyms, numOfKnown);
-    string rightType = checkRef(right, synonyms, numOfKnown);
+    string argTypeLeft;
+    string argTypeRight;
+    string leftType = checkRef(left, synonyms, numOfKnown, argTypeLeft);
+    string rightType = checkRef(right, synonyms, numOfKnown, argTypeRight);
     if (this->isSyntacticallyValid && leftType != rightType) {
         this->isSemanticallyValid = false;
     }
 
     if (this->isSyntacticallyValid && this->isSemanticallyValid) {
-        this->clauses.push_back(Clause("", {left, right}, synonyms, numOfKnown));
+        if (argTypeLeft == INTEGER_ || argTypeLeft == NAME_) {
+            this->clauses.push_back(Clause("", {right, left}, synonyms, numOfKnown));
+        } else {
+            this->clauses.push_back(Clause("", {left, right}, synonyms, numOfKnown));
+        }
     }
 }
 
-string QueryPreprocessor::checkRef(string &ref, unordered_set<string>& synonyms, int& numOfKnown) {
+string QueryPreprocessor::checkRef(string &ref, unordered_set<string>& synonyms, int& numOfKnown, string& argType) {
     string type;
     int pos = ref.find('.');
     if (pos == string::npos) { // NAME_ | INTEGER_ | synonym
-        string argType = getArgType(ref, this->declarations);
+        argType = getArgType(ref, this->declarations);
         if (argType == NAME_) {
             type = NAME_;
             numOfKnown++;
