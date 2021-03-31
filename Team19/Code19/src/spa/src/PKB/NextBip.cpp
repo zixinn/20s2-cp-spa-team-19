@@ -163,7 +163,6 @@ void NextBip::populateNextBip() {
             // BranchIn
             storeNextBip(n1, p.first);
             cfgBipMap[make_pair(n1, p.first)] = n1;
-            branchMap[n1] = make_pair(n1, p.first);
 
             // BranchBack
             unordered_set<ProgLine> n2s = nextWithDummyMap.find(n1)->second;
@@ -175,25 +174,21 @@ void NextBip::populateNextBip() {
                     ProgLine dummy = *nextWithDummyMap.find(n)->second.begin();
                     storeNextBip(dummy, n2);
                     cfgBipMap[make_pair(dummy, n2)] = -n1;
-                    branchMap[-n1] = make_pair(dummy, n2);
                 }
                 for (ProgLine n : elseStmtRange.second) {
                     ProgLine dummy = *nextWithDummyMap.find(n)->second.begin();
                     storeNextBip(dummy, n2);
                     cfgBipMap[make_pair(dummy, n2)] = -n1;
-                    branchMap[-n1] = make_pair(dummy, n2);
                 }
 
             } else if (find(allCallStmts.begin(), allCallStmts.end(), p.second) != allCallStmts.end()) { // last stmt is call stmt
                 ProgLine dummy = *nextWithDummyMap.find(p.second)->second.begin();
                 storeNextBip(dummy, n2);
                 cfgBipMap[make_pair(dummy, n2)] = -n1;
-                branchMap[-n1] = make_pair(dummy, n2);
 
             } else {
                 storeNextBip(p.second, n2);
                 cfgBipMap[make_pair(p.second, n2)] = -n1;
-                branchMap[-n1] = make_pair(p.second, n2);
             }
 
         } else { // n1 is not a call stmt, NextBip same as Next
@@ -259,11 +254,23 @@ void NextBip::populateReverseNextBip() {
 }
 
 void NextBip::populateNextBipWithBranchStack() {
-    vector<ProgLine> allProgLines = PKB::stmtTable->getAllStmtNums();
-    for (ProgLine n : allProgLines) {
-        string branchStack;
-        unordered_set<string> visited;
-        dfs(n, branchStack, visited);
+    vector<ProgLine> allCallStmts = PKB::stmtTable->getAllCallStmtNums();
+    vector<ID> procIds = PKB::procTable->getAllProcIDs();
+    for (ID id : procIds) {
+        ProgLine startProgLine = PKB::procTable->getProcRange(id).first;
+        unordered_set<ProgLine> prevBip = getPreviousBip(startProgLine);
+        bool skip = false;
+        for (ProgLine n : prevBip) {
+            if (find(allCallStmts.begin(), allCallStmts.end(), n) != allCallStmts.end()) {
+                skip = true;
+                break;
+            }
+        }
+        if (!skip) { // only dfs if prevBip is empty or if none of the prevBip is a call stmt
+            string branchStack;
+            unordered_set<string> visited;
+            dfs(startProgLine, branchStack, visited);
+        }
     }
 }
 

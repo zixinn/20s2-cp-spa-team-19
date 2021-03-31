@@ -68,9 +68,6 @@ private:
     // where val is 0 if not branch, +prog_line if branch in and -prog_line if branch back
     unordered_map<pair<ProgLine, ProgLine>, ProgLine, hash_pair> cfgBipMap;
 
-    // Similar to reverse cfgBipMap but only with non-zero values
-    unordered_map<ProgLine, pair<ProgLine, ProgLine>> branchMap;
-
     // Maps (n1, branchStack1) to a set of (n2, branchStack2), includes dummy
     // Each string is n followed by branchStack separated by whitespace
     unordered_map<string, unordered_set<string>> nextBipWithBranchStackMap;
@@ -94,7 +91,7 @@ private:
     void storeNextBipStar(ProgLine n1, ProgLine n2);
 
     // Stores <s1, s2> in the nextBipWithBranchStackMap.
-    void storeNextBipWithBranchStack(string p1, string p2);
+    void storeNextBipWithBranchStack(string s1, string s2);
 
     // Returns n2's such that NextBipWithDummy(n1, n2)
     unordered_set<ProgLine> const &getNextBipWithDummy(ProgLine n1) const;
