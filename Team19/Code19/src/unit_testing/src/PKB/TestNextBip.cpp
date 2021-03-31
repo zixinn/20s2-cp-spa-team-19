@@ -167,6 +167,148 @@ TEST_CASE("getNextBipStar Test") {
     REQUIRE(nextBip->getNextBipStar(12) == unordered_set<ProgLine>{3, 4, 5, 8, 9, 10, 11, 12});
 }
 
+TEST_CASE("isNextBipStar Test") {
+    NextBip* nextBip = setUpNextBipTest();
+    REQUIRE(nextBip->isNextBipStar(1, 2));
+    REQUIRE(nextBip->isNextBipStar(1, 3));
+    REQUIRE(nextBip->isNextBipStar(1, 4));
+    REQUIRE(nextBip->isNextBipStar(1, 5));
+    REQUIRE(nextBip->isNextBipStar(1, 6));
+    REQUIRE(nextBip->isNextBipStar(1, 7));
+    REQUIRE(nextBip->isNextBipStar(1, 8));
+    REQUIRE(nextBip->isNextBipStar(1, 9));
+    REQUIRE(nextBip->isNextBipStar(1, 10));
+    REQUIRE(nextBip->isNextBipStar(1, 11));
+    REQUIRE(nextBip->isNextBipStar(1, 12));
+
+    REQUIRE(nextBip->isNextBipStar(2, 3));
+    REQUIRE(nextBip->isNextBipStar(2, 4));
+    REQUIRE(nextBip->isNextBipStar(2, 5));
+    REQUIRE(nextBip->isNextBipStar(2, 6));
+    REQUIRE(nextBip->isNextBipStar(2, 7));
+    REQUIRE(nextBip->isNextBipStar(2, 8));
+    REQUIRE(nextBip->isNextBipStar(2, 9));
+    REQUIRE(nextBip->isNextBipStar(2, 10));
+    REQUIRE(nextBip->isNextBipStar(2, 11));
+    REQUIRE(nextBip->isNextBipStar(2, 12));
+
+    REQUIRE(nextBip->isNextBipStar(3, 4));
+    REQUIRE(nextBip->isNextBipStar(3, 5));
+    REQUIRE(nextBip->isNextBipStar(3, 8));
+    REQUIRE(nextBip->isNextBipStar(3, 9));
+    REQUIRE(nextBip->isNextBipStar(3, 10));
+    REQUIRE(nextBip->isNextBipStar(3, 11));
+    REQUIRE(nextBip->isNextBipStar(3, 12));
+
+    REQUIRE(nextBip->isNextBipStar(4, 5));
+    REQUIRE(nextBip->isNextBipStar(4, 8));
+    REQUIRE(nextBip->isNextBipStar(4, 9));
+    REQUIRE(nextBip->isNextBipStar(4, 10));
+    REQUIRE(nextBip->isNextBipStar(4, 11));
+    REQUIRE(nextBip->isNextBipStar(4, 12));
+
+    REQUIRE(nextBip->isNextBipStar(6, 3));
+    REQUIRE(nextBip->isNextBipStar(6, 4));
+    REQUIRE(nextBip->isNextBipStar(6, 5));
+    REQUIRE(nextBip->isNextBipStar(6, 7));
+    REQUIRE(nextBip->isNextBipStar(6, 8));
+    REQUIRE(nextBip->isNextBipStar(6, 9));
+    REQUIRE(nextBip->isNextBipStar(6, 10));
+    REQUIRE(nextBip->isNextBipStar(6, 11));
+    REQUIRE(nextBip->isNextBipStar(6, 12));
+
+    REQUIRE(nextBip->isNextBipStar(7, 3));
+    REQUIRE(nextBip->isNextBipStar(7, 4));
+    REQUIRE(nextBip->isNextBipStar(7, 5));
+    REQUIRE(nextBip->isNextBipStar(7, 8));
+    REQUIRE(nextBip->isNextBipStar(7, 9));
+    REQUIRE(nextBip->isNextBipStar(7, 10));
+    REQUIRE(nextBip->isNextBipStar(7, 11));
+    REQUIRE(nextBip->isNextBipStar(7, 12));
+
+    REQUIRE(nextBip->isNextBipStar(8, 3));
+    REQUIRE(nextBip->isNextBipStar(8, 4));
+    REQUIRE(nextBip->isNextBipStar(8, 5));
+    REQUIRE(nextBip->isNextBipStar(8, 8));
+    REQUIRE(nextBip->isNextBipStar(8, 9));
+    REQUIRE(nextBip->isNextBipStar(8, 10));
+    REQUIRE(nextBip->isNextBipStar(8, 11));
+    REQUIRE(nextBip->isNextBipStar(8, 12));
+
+    REQUIRE(nextBip->isNextBipStar(9, 3));
+    REQUIRE(nextBip->isNextBipStar(9, 4));
+    REQUIRE(nextBip->isNextBipStar(9, 5));
+    REQUIRE(nextBip->isNextBipStar(9, 8));
+    REQUIRE(nextBip->isNextBipStar(9, 9));
+    REQUIRE(nextBip->isNextBipStar(9, 10));
+    REQUIRE(nextBip->isNextBipStar(9, 11));
+    REQUIRE(nextBip->isNextBipStar(9, 12));
+
+    REQUIRE(nextBip->isNextBipStar(10, 3));
+    REQUIRE(nextBip->isNextBipStar(10, 4));
+    REQUIRE(nextBip->isNextBipStar(10, 5));
+    REQUIRE(nextBip->isNextBipStar(10, 8));
+    REQUIRE(nextBip->isNextBipStar(10, 9));
+    REQUIRE(nextBip->isNextBipStar(10, 10));
+    REQUIRE(nextBip->isNextBipStar(10, 11));
+    REQUIRE(nextBip->isNextBipStar(10, 12));
+
+    REQUIRE(nextBip->isNextBipStar(11, 3));
+    REQUIRE(nextBip->isNextBipStar(11, 4));
+    REQUIRE(nextBip->isNextBipStar(11, 5));
+    REQUIRE(nextBip->isNextBipStar(11, 8));
+    REQUIRE(nextBip->isNextBipStar(11, 9));
+    REQUIRE(nextBip->isNextBipStar(11, 10));
+    REQUIRE(nextBip->isNextBipStar(11, 11));
+    REQUIRE(nextBip->isNextBipStar(11, 12));
+
+    REQUIRE(nextBip->isNextBipStar(12, 3));
+    REQUIRE(nextBip->isNextBipStar(12, 4));
+    REQUIRE(nextBip->isNextBipStar(12, 5));
+    REQUIRE(nextBip->isNextBipStar(12, 8));
+    REQUIRE(nextBip->isNextBipStar(12, 9));
+    REQUIRE(nextBip->isNextBipStar(12, 10));
+    REQUIRE(nextBip->isNextBipStar(12, 11));
+    REQUIRE(nextBip->isNextBipStar(12, 12));
+}
+
+TEST_CASE("getPreviousBipStar Test") {
+    NextBip* nextBip = setUpNextBipTest();
+    REQUIRE(nextBip->getPreviousBipStar(1) == unordered_set<ProgLine>({ }));
+    REQUIRE(nextBip->getPreviousBipStar(2) == unordered_set<ProgLine>{1});
+    REQUIRE(nextBip->getPreviousBipStar(3) == unordered_set<ProgLine>{1,2,6,7,8,9,10,11,12});
+    REQUIRE(nextBip->getPreviousBipStar(4) == unordered_set<ProgLine>{1,2,3,6,7,8,9,10,11,12});
+    REQUIRE(nextBip->getPreviousBipStar(5) == unordered_set<ProgLine>{1,2,3,4,6,7,8,9,10,11,12});
+    REQUIRE(nextBip->getPreviousBipStar(6) == unordered_set<ProgLine>{1,2});
+    REQUIRE(nextBip->getPreviousBipStar(7) == unordered_set<ProgLine>{1,2,6});
+    REQUIRE(nextBip->getPreviousBipStar(8) == unordered_set<ProgLine>{1,2,3,4,6,7,8,9,10,11,12});
+    REQUIRE(nextBip->getPreviousBipStar(9) == unordered_set<ProgLine>{1,2,3,4,6,7,8,9,10,11,12});
+    REQUIRE(nextBip->getPreviousBipStar(10) == unordered_set<ProgLine>{1,2,3,4,6,7,8,9,10,11,12});
+    REQUIRE(nextBip->getPreviousBipStar(11) == unordered_set<ProgLine>{1,2,3,4,6,7,8,9,10,11,12});
+    REQUIRE(nextBip->getPreviousBipStar(12) == unordered_set<ProgLine>{1,2,3,4,6,7,8,9,10,11,12});
+}
+
+TEST_CASE("getNextBipStarSize Test") {
+    NextBip* nextBip = setUpNextBipTest();
+    REQUIRE(nextBip->getNextBipStarSize() == 91);
+}
+
+TEST_CASE("getAllNextBipStar Test") {
+    NextBip* nextBip = setUpNextBipTest();
+    pair<vector<ID>, vector<ID> > result = nextBip->getAllNextBipStar();
+    vector<ID> n1s = result.first;
+    vector<ID> n2s = result.second;
+    int num_pairs = n1s.size();
+    // Check that it has correct number of pairs
+    REQUIRE(num_pairs == nextBip->getNextBipStarSize());
+    REQUIRE(n2s.size() == num_pairs);
+    // check that each pair at the same index has Calls relationship
+    for (int i = 0; i < num_pairs; i++) {
+        REQUIRE(nextBip->isNextBipStar(n1s.at(i), n2s.at(i)));
+    }
+}
+
+
 //    procedure first {
 //    01    a=1;
 //    02    call second;

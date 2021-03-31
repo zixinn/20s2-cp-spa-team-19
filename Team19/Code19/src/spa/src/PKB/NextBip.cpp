@@ -59,8 +59,8 @@ unordered_set<ProgLine> const & NextBip::getNextBipStar(ProgLine n1) const {
 }
 
 unordered_set<ProgLine> const & NextBip::getPreviousBipStar(ProgLine n2) const {
-    auto it = reverseNextBipMap.find(n2);
-    if (it == reverseNextBipMap.end()) {
+    auto it = reverseNextBipStarMap.find(n2);
+    if (it == reverseNextBipStarMap.end()) {
         static unordered_set<ProgLine> empty = unordered_set<ProgLine>({});
         return empty;
     }
@@ -137,6 +137,7 @@ void NextBip::populateNextBipAndNextBipStar() {
 
     populateNextBipWithBranchStack();
     populateNextBipStar();
+    populateReverseNextBipStar();
 }
 
 void NextBip::populateNextWithDummy() {
@@ -320,6 +321,9 @@ void NextBip::populateNextBipStar() {
     for (auto& it : nextBipWithBranchStackMap) {
         string curr = it.first;
         ProgLine n1 = findN(curr);
+        if (n1 < 0) {
+            continue;
+        }
         list<string> queue;
         unordered_set<string> visited;
         visited.insert(curr);
@@ -356,5 +360,19 @@ ProgLine NextBip::findN(string s) {
         return stoi(s);
     } else {
         return stoi(s.substr(0, pos));
+    }
+}
+
+void NextBip::populateReverseNextBipStar() {
+    ProgLine n1;
+    for (auto &it : nextBipStarMap) {
+        n1 = it.first;
+        for (auto n2 : it.second) {
+            if (reverseNextBipStarMap.find(n2) == reverseNextBipStarMap.end()) {
+                reverseNextBipStarMap[n2] = unordered_set<ProgLine>{n1};
+            } else {
+                reverseNextBipStarMap.find(n2)->second.insert(n1);
+            }
+        }
     }
 }

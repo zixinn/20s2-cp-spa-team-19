@@ -112,5 +112,8 @@ private:
 
     void populateNextBipStar();
 
+    // Stores <n2, n1> in the reverseNextBipStarMap.
+    void populateReverseNextBipStar();
+
     ProgLine findN(string s);
 };
