@@ -1584,6 +1584,9 @@ TEST_CASE("storeNewCall - nonexistent procedure") {
     DesignExtractor::storeNewAssignment(3, "scaramouche", assStmt);
     REQUIRE(DesignExtractor::storeNewCall(4, "strobelight", "abyssal", callStmt) == true);
     DesignExtractor::exitProcedure();
+    DesignExtractor::storeNewProcedure("abyssal"); // dummy
+    DesignExtractor::storeNewPrint(5, "x", createPrint("x"));
+    DesignExtractor::exitProcedure();
     REQUIRE(DesignExtractor::signalEnd() == true);
 
     // Check procTable
@@ -1609,6 +1612,9 @@ TEST_CASE("storeNewCall - nonexistent procedure") {
     ID varID4 = PKB::varTable->getVarID("pustota");
     REQUIRE(varID4 == 4);
     REQUIRE(PKB::varTable->getVarName(varID4) == "pustota");
+    ID varID5 = PKB::varTable->getVarID("x");
+    REQUIRE(varID5 == 5);
+    REQUIRE(PKB::varTable->getVarName(varID5) == "x");
 
     // Check Follows
     REQUIRE(PKB::follows->getFollower(1) == 2);
@@ -1634,7 +1640,7 @@ TEST_CASE("storeNewCall - nonexistent procedure") {
     REQUIRE(PKB::uses->getStmtsUses(varID) == unordered_set<StmtNum>{ 1 });
     REQUIRE(PKB::uses->getStmtsUses(varID3) == unordered_set<StmtNum>{ 3 });
     REQUIRE(PKB::uses->getStmtsUses(varID4) == unordered_set<StmtNum>{ 3 });
-    REQUIRE(PKB::uses->getVarsUsedByProc(procID) == unordered_set<StmtNum>{ varID, varID3, varID4 });
+    REQUIRE(PKB::uses->getVarsUsedByProc(procID) == unordered_set<StmtNum>{ varID, varID3, varID4, varID5 });
 }
 
 TEST_CASE("Next/* Variants for If-Else and While Statements") {
@@ -1701,6 +1707,9 @@ TEST_CASE("Next/* Variants for If-Else and While Statements") {
     DesignExtractor::endIfElse();
     DesignExtractor::storeNewRead(9, "droning", readStmt);
     DesignExtractor::storeNewCall(10, "deux", "abyssal", callStmt);
+    DesignExtractor::exitProcedure();
+    DesignExtractor::storeNewProcedure("abyssal"); // dummy
+    DesignExtractor::storeNewRead(11, "x", readStmt);
     DesignExtractor::exitProcedure();
     REQUIRE(DesignExtractor::signalEnd() == true);
 
@@ -1835,6 +1844,11 @@ TEST_CASE("Next/* Variants for If-Else and While Statements") {
     DesignExtractor::endIfElse();
 
     DesignExtractor::exitProcedure();
+
+    DesignExtractor::storeNewProcedure("abyssal"); // dummy
+    DesignExtractor::storeNewRead(10, "x", readStmt);
+    DesignExtractor::exitProcedure();
+
     REQUIRE(DesignExtractor::signalEnd() == true);
 
     // Check Next
