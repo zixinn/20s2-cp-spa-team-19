@@ -96,6 +96,9 @@ private:
     // Stores q as key, p as value for each Calls*(p,q).
     unordered_map<ID, unordered_set<ID>> reverseCallsStarMap;
 
+    // To keep track of the procedures that we have processed in DFS
+    unordered_set<ID> processedProcedures;
+
     // Stores <p, q> in the callsStarMap.
     // Stores <q, p> in reverseCallsStarMap
     // Returns true if info is successfully added.
@@ -110,7 +113,7 @@ private:
     // For each stmtNum, storeUsesModifies(stmtNum, p, q)
     void updateAllUsesAndModifies();
 
-    void updateUsesAndModifiesForProcedure(ID p, unordered_set<ID> processedProcedures);
+    void updateUsesAndModifiesForProcedure(ID p);
 
     // Stores Uses and Modifies relationship for procedure p and statement StmtNum, and container statements within procedure p,
     // according to the Uses and Modifies relationship of q.

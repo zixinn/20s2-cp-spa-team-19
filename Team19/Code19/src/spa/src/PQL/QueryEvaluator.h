@@ -37,10 +37,12 @@ public:
 private:
     // Maps synonyms declared to its type
     unordered_map<string, string> declarations;
-    // A vector of the synonyms to select
+    // A vector of the synonyms/attrRef to select
     vector<string> toSelect;
-    // A vector of the clauses in the query
-    vector<Clause> clauses;
+    // A set of the synonyms to select
+    unordered_set<string> synonymsToSelect;
+    // A vector of the groups of clauses in the query
+    vector<vector<Clause>> clauses;
     // Maps synonym declared to possible values for that synonym
     // Each column in the table is represented as an entry in the map
     unordered_map<string, vector<int>> results;
@@ -50,7 +52,8 @@ private:
     bool evaluateClause(Clause clause, unordered_map<string, vector<int>>& tempResults);
 
     // Joins table and results based on common synonyms (if any) and assigns the newResults to results
-    void join(unordered_map<string, vector<int>> table);
+    // Assumes table is non-empty
+    void join(unordered_map<string, vector<int>> table, unordered_map<string, vector<int>>& results, vector<string> commonSynonyms);
 
     // Evaluates the synonym to select using the results table and returns a list containing the answers
     list<string> evaluateSynonymToSelect(vector<string> toSelect);

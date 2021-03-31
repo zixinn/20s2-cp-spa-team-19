@@ -225,18 +225,18 @@ void Calls::updateAllUsesAndModifies() {
     // For each callee procedure q, process q first (DFS with implicit stack)
     // Find the stmtNums where the Calls(p, q) occurs
     // For each stmtNum, storeUsesModifies(stmtNum, p, q)
-    unordered_set<ID> processedProcedures;
+
     for (ID p : getAllCalls().first) {
-        updateUsesAndModifiesForProcedure(p, processedProcedures);
+        updateUsesAndModifiesForProcedure(p);
     }
 }
 
-void Calls::updateUsesAndModifiesForProcedure(ID p, unordered_set<ID> processedProcedures) {
+void Calls::updateUsesAndModifiesForProcedure(ID p) {
     processedProcedures.insert(p);
     for (ID q : getCallees(p)) {
         if (processedProcedures.find(q) == processedProcedures.end()) {
             processedProcedures.insert(q);
-            updateUsesAndModifiesForProcedure(q, processedProcedures);
+            updateUsesAndModifiesForProcedure(q);
             for (StmtNum stmtNum : getStmtsOfCalls(p, q)) {
                 storeUsesAndModifies(stmtNum, p, q);
             }

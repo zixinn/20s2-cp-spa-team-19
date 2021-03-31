@@ -69,25 +69,25 @@ TEST_CASE("NextTEvaluator evaluate known known") {
     setupNextT();
 
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = NextTEvaluator::evaluate({}, Clause("Next*", vector<string>{"3", "4"}), tempResults1);
+    bool b1 = NextTEvaluator::evaluate({}, Clause("Next*", vector<string>{"3", "4"}, {}, 2), tempResults1);
     unordered_map<string, vector<int>> expected1 = {};
     REQUIRE(b1);
     REQUIRE(tempResults1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = NextTEvaluator::evaluate({}, Clause("Next*", vector<string>{"10", "11"}), tempResults2);
+    bool b2 = NextTEvaluator::evaluate({}, Clause("Next*", vector<string>{"10", "11"}, {}, 2), tempResults2);
     unordered_map<string, vector<int>> expected2 = {};
     REQUIRE(b2);
     REQUIRE(tempResults2 == expected2);
 
     unordered_map<string, vector<int>> tempResults3;
-    bool b3 = NextTEvaluator::evaluate({}, Clause("Next*", vector<string>{"7", "8"}), tempResults3);
+    bool b3 = NextTEvaluator::evaluate({}, Clause("Next*", vector<string>{"7", "8"}, {}, 2), tempResults3);
     unordered_map<string, vector<int>> expected3 = {};
     REQUIRE(b3);
     REQUIRE(tempResults3 == expected3);
 
     unordered_map<string, vector<int>> tempResults4;
-    bool b4 = NextTEvaluator::evaluate({}, Clause("Next*", vector<string>{"11", "12"}), tempResults4);
+    bool b4 = NextTEvaluator::evaluate({}, Clause("Next*", vector<string>{"11", "12"}, {}, 2), tempResults4);
     unordered_map<string, vector<int>> expected4 = {};
     REQUIRE_FALSE(b4);
     REQUIRE(tempResults4 == expected4);
@@ -97,7 +97,7 @@ TEST_CASE("NextTEvaluator evaluate known synonym") {
     setupNextT();
 
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = NextTEvaluator::evaluate({ {"w", WHILE_} }, Clause("Next*", vector<string>{"1", "w"}), tempResults1);
+    bool b1 = NextTEvaluator::evaluate({ {"w", WHILE_} }, Clause("Next*", vector<string>{"1", "w"}, {"w"}, 1), tempResults1);
 //    unordered_map<string, vector<int>> expected1 = { {"w", vector<int>{2, 5}} };
     unordered_set<int> actual1(tempResults1["w"].begin(), tempResults1["w"].end());
     unordered_set<int> expected1 {2, 5};
@@ -105,7 +105,7 @@ TEST_CASE("NextTEvaluator evaluate known synonym") {
     REQUIRE(actual1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = NextTEvaluator::evaluate({ {"a", ASSIGN_} }, Clause("Next*", vector<string>{"6", "a"}), tempResults2);
+    bool b2 = NextTEvaluator::evaluate({ {"a", ASSIGN_} }, Clause("Next*", vector<string>{"6", "a"}, {"a"}, 1), tempResults2);
 //    unordered_map<string, vector<int>> expected2 = { {"a", vector<int>{7, 8, 11}} };
     unordered_set<int> actual2(tempResults2["a"].begin(), tempResults2["a"].end());
     unordered_set<int> expected2 {7, 8, 11};
@@ -113,7 +113,7 @@ TEST_CASE("NextTEvaluator evaluate known synonym") {
     REQUIRE(actual2 == expected2);
 
     unordered_map<string, vector<int>> tempResults3;
-    bool b3 = NextTEvaluator::evaluate({ {"s", STMT_} }, Clause("Next*", vector<string>{"9", "s"}), tempResults3);
+    bool b3 = NextTEvaluator::evaluate({ {"s", STMT_} }, Clause("Next*", vector<string>{"9", "s"}, {"s"}, 1), tempResults3);
 //    unordered_map<string, vector<int>> expected3 = { {"s", vector<int>{5, 6, 10, 7, 8, 11, 12, 9, 13, 14}} };
     unordered_set<int> actual3(tempResults3["s"].begin(), tempResults3["s"].end());
     unordered_set<int> expected3 {5, 6, 10, 7, 8, 11, 12, 9, 13, 14};
@@ -121,7 +121,7 @@ TEST_CASE("NextTEvaluator evaluate known synonym") {
     REQUIRE(actual3 == expected3);
 
     unordered_map<string, vector<int>> tempResults4;
-    bool b4 = NextTEvaluator::evaluate({ {"a", ASSIGN_} }, Clause("Next*", vector<string>{"13", "a"}), tempResults4);
+    bool b4 = NextTEvaluator::evaluate({ {"a", ASSIGN_} }, Clause("Next*", vector<string>{"13", "a"}, {"a"}, 1), tempResults4);
     unordered_map<string, vector<int>> expected4 = {};
     REQUIRE_FALSE(b4);
     REQUIRE(tempResults4 == expected4);
@@ -131,13 +131,13 @@ TEST_CASE("NextTEvaluator evaluate known underscore") {
     setupNextT();
 
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = NextTEvaluator::evaluate({}, Clause("Next*", vector<string>{"4", "_"}), tempResults1);
+    bool b1 = NextTEvaluator::evaluate({}, Clause("Next*", vector<string>{"4", "_"}, {}, 1), tempResults1);
     unordered_map<string, vector<int>> expected1 = {};
     REQUIRE(b1);
     REQUIRE(tempResults1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = NextTEvaluator::evaluate({}, Clause("Next*", vector<string>{"14", "_"}), tempResults2);
+    bool b2 = NextTEvaluator::evaluate({}, Clause("Next*", vector<string>{"14", "_"}, {}, 1), tempResults2);
     unordered_map<string, vector<int>> expected2 = {};
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
@@ -147,19 +147,19 @@ TEST_CASE("NextTEvaluator evaluate synonym known") {
     setupNextT();
 
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = NextTEvaluator::evaluate({ {"ifs", IF_} }, Clause("Next*", vector<string>{"ifs", "12"}), tempResults1);
+    bool b1 = NextTEvaluator::evaluate({ {"ifs", IF_} }, Clause("Next*", vector<string>{"ifs", "12"}, {"ifs"}, 1), tempResults1);
     unordered_map<string, vector<int>> expected1 = { {"ifs", vector<int>{6, 10}} };
     REQUIRE(b1);
     REQUIRE(tempResults1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = NextTEvaluator::evaluate({ {"r", READ_} }, Clause("Next*", vector<string>{"r", "14"}), tempResults2);
+    bool b2 = NextTEvaluator::evaluate({ {"r", READ_} }, Clause("Next*", vector<string>{"r", "14"}, {"r"}, 1), tempResults2);
     unordered_map<string, vector<int>> expected2 = { {"r", vector<int>{12, 13}} };
     REQUIRE(b2);
     REQUIRE(tempResults2 == expected2);
 
     unordered_map<string, vector<int>> tempResults3;
-    bool b3 = NextTEvaluator::evaluate({ {"p", PROGLINE_} }, Clause("Next*", vector<string>{"p", "1"}), tempResults3);
+    bool b3 = NextTEvaluator::evaluate({ {"p", PROGLINE_} }, Clause("Next*", vector<string>{"p", "1"}, {"p"}, 1), tempResults3);
     unordered_map<string, vector<int>> expected3 = {};
     REQUIRE_FALSE(b3);
     REQUIRE(tempResults3 == expected3);
@@ -169,13 +169,13 @@ TEST_CASE("NextTEvaluator evaluate underscore known") {
     setupNextT();
 
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = NextTEvaluator::evaluate({}, Clause("Next*", vector<string>{"_", "8"}), tempResults1);
+    bool b1 = NextTEvaluator::evaluate({}, Clause("Next*", vector<string>{"_", "8"}, {}, 1), tempResults1);
     unordered_map<string, vector<int>> expected1 = {};
     REQUIRE(b1);
     REQUIRE(tempResults1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = NextTEvaluator::evaluate({}, Clause("Next*", vector<string>{"_", "1"}), tempResults2);
+    bool b2 = NextTEvaluator::evaluate({}, Clause("Next*", vector<string>{"_", "1"}, {}, 1), tempResults2);
     unordered_map<string, vector<int>> expected2 = {};
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
@@ -185,7 +185,7 @@ TEST_CASE("NextTEvaluator evaluate synonym synonym") {
     setupNextT();
 
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = NextTEvaluator::evaluate({ {"a", ASSIGN_}, {"c", CALL_} }, Clause("Next*", vector<string>{"a", "c"}), tempResults1);
+    bool b1 = NextTEvaluator::evaluate({ {"a", ASSIGN_}, {"c", CALL_} }, Clause("Next*", vector<string>{"a", "c"}, {"a", "c"}, 0), tempResults1);
     set<pair<int, int>> actual1;
     for (int i = 0; i < tempResults1.begin()->second.size(); i++) {
         pair<int, int> p = make_pair(tempResults1["a"].at(i), tempResults1["c"].at(i));
@@ -197,13 +197,13 @@ TEST_CASE("NextTEvaluator evaluate synonym synonym") {
     REQUIRE(actual1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = NextTEvaluator::evaluate({ {"pn", PRINT_}, {"r", READ_} }, Clause("Next*", vector<string>{"pn", "r"}), tempResults2);
+    bool b2 = NextTEvaluator::evaluate({ {"pn", PRINT_}, {"r", READ_} }, Clause("Next*", vector<string>{"pn", "r"}, {"pn", "r"}, 0), tempResults2);
     unordered_map<string, vector<int>> expected2 = {};
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
 
     unordered_map<string, vector<int>> tempResults3;
-    bool b3 = NextTEvaluator::evaluate({ {"n", PROGLINE_} }, Clause("Next*", vector<string>{"n", "n"}), tempResults3);
+    bool b3 = NextTEvaluator::evaluate({ {"n", PROGLINE_} }, Clause("Next*", vector<string>{"n", "n"}, {"n", "n"}, 0), tempResults3);
     unordered_set<int> actual3(tempResults3["n"].begin(), tempResults3["n"].end());
     unordered_set<int> expected3 {2, 3, 4, 5, 6, 7, 8, 9};
     REQUIRE(b3);
@@ -214,14 +214,14 @@ TEST_CASE("NextTEvaluator evaluate synonym underscore") {
     setupNextT();
 
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = NextTEvaluator::evaluate({ {"w", WHILE_} }, Clause("Next*", vector<string>{"w", "_"}), tempResults1);
+    bool b1 = NextTEvaluator::evaluate({ {"w", WHILE_} }, Clause("Next*", vector<string>{"w", "_"}, {"w"}, 0), tempResults1);
     unordered_set<int> actual1(tempResults1["w"].begin(), tempResults1["w"].end());
     unordered_set<int> expected1{ 2, 5 };
     REQUIRE(b1);
     REQUIRE(actual1 == expected1);
 
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = NextTEvaluator::evaluate({ {"pn", PRINT_} }, Clause("Next*", vector<string>{"pn", "_"}), tempResults2);
+    bool b2 = NextTEvaluator::evaluate({ {"pn", PRINT_} }, Clause("Next*", vector<string>{"pn", "_"}, {"pn"}, 0), tempResults2);
     unordered_map<string, vector<int>> expected2 = {};
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
@@ -231,7 +231,7 @@ TEST_CASE("NextTEvaluator evaluate underscore synonym") {
     setupNextT();
 
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = NextTEvaluator::evaluate({ {"a", ASSIGN_} }, Clause("Next*", vector<string>{"_", "a"}), tempResults1);
+    bool b1 = NextTEvaluator::evaluate({ {"a", ASSIGN_} }, Clause("Next*", vector<string>{"_", "a"}, {"a"}, 0), tempResults1);
     unordered_set<int> actual1(tempResults1["a"].begin(), tempResults1["a"].end());
     unordered_set<int> expected1{ 3, 7, 8, 11 };
     REQUIRE(b1);
@@ -239,7 +239,7 @@ TEST_CASE("NextTEvaluator evaluate underscore synonym") {
 
     setupNextT1();
     unordered_map<string, vector<int>> tempResults2;
-    bool b2 = NextTEvaluator::evaluate({ {"p", PRINT_} }, Clause("Next*", vector<string>{"_", "p"}), tempResults2);
+    bool b2 = NextTEvaluator::evaluate({ {"p", PRINT_} }, Clause("Next*", vector<string>{"_", "p"}, {"p"}, 0), tempResults2);
     unordered_map<string, vector<int>> expected2 = {};
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
@@ -248,7 +248,7 @@ TEST_CASE("NextTEvaluator evaluate underscore synonym") {
 TEST_CASE("NextTEvaluator evaluate underscore underscore") {
     setupNextT();
     unordered_map<string, vector<int>> tempResults1;
-    bool b1 = NextTEvaluator::evaluate({}, Clause("Next*", vector<string>{"_", "_"}), tempResults1);
+    bool b1 = NextTEvaluator::evaluate({}, Clause("Next*", vector<string>{"_", "_"}, {}, 0), tempResults1);
     unordered_map<string, vector<int>> expected1 = {};
     REQUIRE(b1);
     REQUIRE(tempResults1 == expected1);
