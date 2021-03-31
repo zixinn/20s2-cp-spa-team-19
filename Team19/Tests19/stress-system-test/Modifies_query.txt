@@ -1,235 +1,1055 @@
-1 - wildcard, synonym
-stmt s; variable v;
-Select s such that Modifies(_, v)
+1 - wildcard, wildcard
+stmt s;
+Select s such that Modifies(_, _)
 none
 5000
-2 - wildcard, unknown synonym
-prog_line pl;
-Select pl such that Modifies(_, s)
+2 - wildcard, stmt
+stmt s;
+Select s such that Modifies(_, s)
 none
 5000
-3 - synonym, wildcard
+3 - wildcard, read
+read r;
+Select BOOLEAN such that Modifies(_, r)
+FALSE
+5000
+4 - wildcard, print
+print p;
+Select BOOLEAN such that Modifies(_, p)
+FALSE
+5000
+5 - wildcard, call
+call v;
+Select BOOLEAN such that Modifies(_, v)
+FALSE
+5000
+6 - wildcard, while
+while v;
+Select BOOLEAN such that Modifies(_, v)
+FALSE
+5000
+7 - wildcard, if
+if v;
+Select BOOLEAN such that Modifies(_, v)
+FALSE
+5000
+8 - wildcard, assign
+assign v;
+Select BOOLEAN such that Modifies(_, v)
+FALSE
+5000
+9 - wildcard, variable
+variable v;
+Select BOOLEAN such that Modifies(_, v)
+FALSE
+5000
+10 - wildcard, constant
+constant v;
+Select v such that Modifies(_, v)
+none
+5000
+11 - wildcard, prog_line
+prog_line v;
+Select v such that Modifies(_, v)
+none
+5000
+12 - wildcard, procedure
+procedure v;
+Select v such that Modifies(_, v)
+none
+5000
+13 - wildcard, unknown synonym
+constant v;
+Select v such that Modifies(_, v1)
+none
+5000
+14 - wildcard, exact
+constant v;
+Select v such that Modifies(_, "blue")
+none
+5000
+15 - stmt, wildcard
 stmt s;
 Select s such that Modifies(s, _)
-1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 68, 69, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 93, 94, 95, 96, 97, 99, 100, 101, 102, 104, 105, 106, 108, 109, 110, 111, 112, 113, 114, 115, 116, 118, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 146, 148, 149, 150, 152, 153, 154, 155, 156, 157, 158, 161, 162, 163, 165, 166, 167, 168, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 188, 189, 191, 192, 193, 194, 195, 196, 197, 198, 199, 200, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 213, 214, 215, 216, 217, 218, 221, 222, 223, 224, 225, 226, 227, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 242, 244, 245, 246, 247, 248, 249, 251, 253, 255, 257, 258, 259, 261, 262, 263, 264, 265, 266, 267, 269, 270, 271, 272, 273, 274, 275, 276, 277, 278, 280, 281, 282, 284, 285, 286, 287, 288, 289, 291, 292, 293, 294, 296, 297, 298, 299, 300, 301, 302, 303, 304, 305, 306, 307, 308, 309, 310, 311, 312, 314, 315, 316, 317, 318, 319, 320, 321, 322, 323, 324, 325, 326, 327, 328, 329, 330, 332, 333, 335, 336, 337, 338, 339, 340, 341, 342, 343, 344, 345, 346, 347, 348, 349, 350, 351, 352, 353, 354, 355, 356, 357, 358, 359, 360, 361, 362, 363, 364, 365, 366, 367, 368, 369, 371, 372, 374, 375, 376, 378, 379, 380, 381, 383, 385, 386, 388, 389, 390, 392, 394, 395, 396, 397, 398, 399, 400, 402, 403, 405, 407, 408, 409, 410, 411, 413, 414, 415, 416, 417, 419, 420, 421, 422, 423, 424, 425, 426, 427, 428, 431, 432, 434, 435, 436, 437, 438, 439, 440, 441, 444, 445, 446, 447, 448, 449, 450, 451, 452, 453, 454, 455, 456, 457, 458, 459, 460, 461, 462, 463, 465, 466, 467, 468, 470, 472, 473, 474, 475, 476, 477, 478, 480, 481, 482, 483, 484, 485, 486, 487, 488, 489, 490, 492, 493, 495, 497, 498, 499, 500, 501, 502, 503, 506, 507, 509, 510, 511, 512, 513, 514, 516, 517, 518, 519, 520, 521
+1,10,100,101,102,104,105,106,108,109,11,110,111,112,113,114,115,116,118,12,123,124,125,126,127,128,129,13,130,131,132,134,135,136,137,138,139,14,140,141,142,143,146,148,149,15,150,152,153,154,155,156,157,158,16,161,162,163,165,166,167,168,17,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,188,189,19,191,192,193,194,195,196,197,198,199,2,20,200,202,203,204,205,206,207,208,209,21,210,211,213,214,215,216,217,218,22,221,222,223,224,225,226,227,229,230,231,232,233,234,235,236,237,238,239,24,240,242,244,245,246,247,248,249,25,251,253,255,257,258,259,26,261,262,263,264,265,266,267,269,27,270,271,272,273,274,275,276,277,278,28,280,281,282,284,285,286,287,288,289,29,291,292,293,294,296,297,298,299,3,30,300,301,302,303,304,305,306,307,308,309,31,310,311,312,314,315,316,317,318,319,32,320,321,322,323,324,325,326,327,328,329,33,330,332,333,335,336,337,338,339,34,340,341,342,343,344,345,346,347,348,349,35,350,351,352,353,354,355,356,357,358,359,36,360,361,362,363,364,365,366,367,368,369,37,371,372,374,375,376,378,379,38,380,381,383,385,386,388,389,39,390,392,394,395,396,397,398,399,4,40,400,402,403,405,407,408,409,41,410,411,413,414,415,416,417,419,42,420,421,422,423,424,425,426,427,428,43,431,432,434,435,436,437,438,439,44,440,441,444,445,446,447,448,449,45,450,451,452,453,454,455,456,457,458,459,46,460,461,462,463,465,466,467,468,47,470,472,473,474,475,476,477,478,48,480,481,482,483,484,485,486,487,488,489,490,492,493,495,497,498,499,5,50,500,501,502,503,506,507,509,51,510,511,512,513,514,516,517,518,519,52,520,521,53,54,55,56,57,58,59,60,61,62,63,64,65,66,68,69,7,71,72,73,74,75,76,77,78,79,8,80,82,83,84,85,86,87,88,89,9,90,91,93,94,95,96,97,99
 5000
-4 - synonym, wildcard
-prog_line pl;
-Select pl such that Modifies(pl, _)
-1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 68, 69, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 93, 94, 95, 96, 97, 99, 100, 101, 102, 104, 105, 106, 108, 109, 110, 111, 112, 113, 114, 115, 116, 118, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 146, 148, 149, 150, 152, 153, 154, 155, 156, 157, 158, 161, 162, 163, 165, 166, 167, 168, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 188, 189, 191, 192, 193, 194, 195, 196, 197, 198, 199, 200, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 213, 214, 215, 216, 217, 218, 221, 222, 223, 224, 225, 226, 227, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 242, 244, 245, 246, 247, 248, 249, 251, 253, 255, 257, 258, 259, 261, 262, 263, 264, 265, 266, 267, 269, 270, 271, 272, 273, 274, 275, 276, 277, 278, 280, 281, 282, 284, 285, 286, 287, 288, 289, 291, 292, 293, 294, 296, 297, 298, 299, 300, 301, 302, 303, 304, 305, 306, 307, 308, 309, 310, 311, 312, 314, 315, 316, 317, 318, 319, 320, 321, 322, 323, 324, 325, 326, 327, 328, 329, 330, 332, 333, 335, 336, 337, 338, 339, 340, 341, 342, 343, 344, 345, 346, 347, 348, 349, 350, 351, 352, 353, 354, 355, 356, 357, 358, 359, 360, 361, 362, 363, 364, 365, 366, 367, 368, 369, 371, 372, 374, 375, 376, 378, 379, 380, 381, 383, 385, 386, 388, 389, 390, 392, 394, 395, 396, 397, 398, 399, 400, 402, 403, 405, 407, 408, 409, 410, 411, 413, 414, 415, 416, 417, 419, 420, 421, 422, 423, 424, 425, 426, 427, 428, 431, 432, 434, 435, 436, 437, 438, 439, 440, 441, 444, 445, 446, 447, 448, 449, 450, 451, 452, 453, 454, 455, 456, 457, 458, 459, 460, 461, 462, 463, 465, 466, 467, 468, 470, 472, 473, 474, 475, 476, 477, 478, 480, 481, 482, 483, 484, 485, 486, 487, 488, 489, 490, 492, 493, 495, 497, 498, 499, 500, 501, 502, 503, 506, 507, 509, 510, 511, 512, 513, 514, 516, 517, 518, 519, 520, 521
-5000
-5 - synonym, wildcard
-procedure p;
-Select p such that Modifies(p, _)
-Animal,Honeysuckle,animal,assign,purple,call,colors,colors2,cube,f00d,lAst,month,obj3ct,p1,p10,p11,p17,p18,p2,p21,p22,fox,p24,p25,p26,p27,p28,p3,black,p5,p6,p7,while,p9,pain,shikashi,simple,something,t0pUp,yellow
-5000
-6 - synonym, wildcard
-call c;
-Select c such that Modifies(c, _)
-3, 12, 20, 24, 56, 72, 88, 89, 102, 113, 161, 162, 170, 189, 202, 233, 298, 299, 300, 302, 303, 304, 305, 307, 320, 336, 340, 342, 343, 347, 348, 349, 350, 351, 352, 355, 360, 364, 365, 366, 368, 371, 372, 374, 375, 381, 383, 386, 388, 389, 390, 392, 394, 395, 402, 403, 405, 407, 422, 423, 434, 441, 445, 462, 472, 483, 487, 492, 498, 499, 506, 518
-5000
-7 - synonym, wildcard
-if ifs;
-Select ifs such that Modifies(ifs, _)
-7, 17, 29, 32, 45, 46, 57, 63, 76, 86, 96, 109, 114, 115, 131, 146, 156, 173, 179, 197, 199, 204, 218, 227, 234, 247, 277, 284, 309, 310, 321, 327, 396, 416, 425, 426, 431, 438, 495, 512
-5000
-8 - synonym, wildcard
-while w;
-Select w such that Modifies(w, _)
-10, 31, 37, 44, 47, 52, 59, 60, 62, 66, 91, 116, 124, 126, 129, 130, 134, 137, 153, 165, 178, 181, 188, 191, 198, 203, 205, 209, 238, 244, 255, 263, 266, 270, 282, 293, 308, 311, 316, 323, 324, 326, 330, 362, 379, 399, 417, 424, 427, 435, 436, 437, 454, 460, 461, 465, 467, 473, 476, 478, 482, 484, 486, 501, 513, 516
-5000
-9 - unknown synonym, wildcard
-stmt s;
-Select s such that Modifies(p, _)
+16 - stmt, stmt
+stmt s, s1;
+Select s such that Modifies(s, s1)
 none
 5000
-10 - proc, exact
-procedure p;
-Select p such that Modifies(p, "rice")
-f00d, colors, obj3ct, Animal,animal,assign,purple,lAst,p1,p10,p17,p18,p21,p22,p24,p26,p27,black,p9,pain,yellow
+17 - stmt, read
+stmt s; read r;
+Select BOOLEAN such that Modifies(s, r)
+FALSE
 5000
-11 - call, exact
-call c;
-Select c such that Modifies(c, "Kn17e")
-102,12,189,20,202,233,24,298,299,3,300,302,305,307,320,336,340,347,372,375,381,386,388,389,392,395,402,405,407,445,462,472,483,487,492,506,518,56,72,88,89
+18 - stmt, print
+stmt s; print p;
+Select BOOLEAN such that Modifies(s, p)
+FALSE
 5000
-12 - while, exact
-while w;
-Select w such that Modifies(w, "green")
-10,178,188,191,198,308,323,324,326,379,424,44,454,460,461,465,467,473,476,478,482,484,486,516,59,60,62
+19 - stmt, call
+stmt s; call v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
 5000
-13 - if, exact
-if ifs;
-Select ifs such that Modifies(ifs, "read")
-17,197,199,218,309,310,416,425,45,46,512,7,76,86
+20 - stmt, while
+stmt s;while v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
 5000
-14 - assign, exact
-assign a, a1;
-Select a such that Modifies(a, "purple")
-105,141,142,25,315,356,36,40,450,51
+21 - stmt, if
+stmt s; if v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
 5000
-15 - stmt, exact
-stmt s;
+22 - stmt, assign
+stmt s; assign v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+23 - stmt, variable
+stmt s; variable v;
+Select BOOLEAN such that Modifies(s, v)
+TRUE
+5000
+24 - stmt, constant
+stmt s; constant v;
+Select v such that Modifies(s, v)
+none
+5000
+25 - stmt, prog_line
+stmt s; prog_line v;
+Select v such that Modifies(s, v)
+none
+5000
+26 - stmt, procedure
+stmt s; procedure v;
+Select v such that Modifies(s, v)
+none
+5000
+27 - stmt, unknown synonym
+stmt s; 
+Select s such that Modifies(s, v)
+none
+5000
+28 - stmt, exact
+stmt s; constant v;
 Select s such that Modifies(s, "blue2")
-10,12,17,178,188,189,191,197,198,199,20,202,233,298,3,300,305,307,308,309,310,311,312,340,347,372,375,379,381,386,388,389,392,395,402,405,407,416,424,425,44,445,45,46,460,461,462,465,467,47,472,473,476,478,48,482,483,484,486,487,492,506,512,516,518,7,86,88
+3, 7, 10, 12, 17, 20, 44, 45, 46, 47, 48, 178,188,189,191,197,198,199,202,233,298,300,305,307,308,309,310,311,312,340,347,372,375,379,381,386,388,389,392,395,402,405,407,416,424,425,445,460,461,462,465,467,472,473,476,478,482,483,484,486,487,492,506,512,516,518,86,88
 5000
-16 - progline, exact
-prog_line pl;
-Select pl such that Modifies(pl, "blue2")
-10,12,17,178,188,189,191,197,198,199,20,202,233,298,3,300,305,307,308,309,310,311,312,340,347,372,375,379,381,386,388,389,392,395,402,405,407,416,424,425,44,445,45,46,460,461,462,465,467,47,472,473,476,478,48,482,483,484,486,487,492,506,512,516,518,7,86,88
-5000
-17 - stmt, non exist variable
+29 - stmt, non exist variable
 stmt ssssssss;
 Select ssssssss such that Modifies(ssssssss, "curry")
 none
-5000 
-18 - synonym, synonym
-procedure p; variable v;
-Select <p, v> such that Modifies(p, v)
-Animal Kn17e,Animal animal,Animal ardent,Animal assign,Animal beAr,Animal black,Animal blue,Animal blue2,Animal call,Animal cat,Animal dog,Animal duck,Animal fox,Animal frog,Animal green,Animal green1,Animal green3,Animal grey,Animal guru,Animal if,Animal jessie,Animal lesion,Animal lizArd,Animal melody,Animal mouse,Animal orange,Animal pardon,Animal print,Animal procedure,Animal progline,Animal purple,Animal raBBit,Animal read,Animal red,Animal red1,Animal red2,Animal rice,Animal spring,Animal teacup0,Animal then,Animal white,Animal x,Animal y,Animal yellow,Animal z,Honeysuckle ardent,Honeysuckle guru,Honeysuckle lesion,Honeysuckle melody,Honeysuckle pardon,Honeysuckle teacup0,Honeysuckle x,Honeysuckle z,animal Kn17e,animal animal,animal ardent,animal assign,animal beAr,animal black,animal blue,animal blue2,animal call,animal cat,animal chicken,animal dog,animal duck,animal fox,animal frog,animal green,animal green1,animal green3,animal grey,animal guru,animal horse,animal if,animal jessie,animal lesion,animal lizArd,animal melody,animal mouse,animal nita,animal orange,animal pardon,animal print,animal procedure,animal progline,animal purple,animal raBBit,animal racc00n,animal read,animal red,animal red1,animal red2,animal rice,animal spring,animal teacup0,animal then,animal white,animal x,animal y,animal yellow,animal z,assign Kn17e,assign ardent,assign assign,assign black,assign blue,assign blue2,assign call,assign green,assign green1,assign grey,assign guru,assign if,assign jessie,assign lesion,assign melody,assign orange,assign pardon,assign print,assign procedure,assign progline,assign purple,assign raBBit,assign read,assign red,assign red1,assign red2,assign rice,assign spring,assign teacup0,assign then,assign white,assign x,assign y,assign yellow,assign z,black Kn17e,black ardent,black assign,black black,black blue,black blue2,black call,black chi11i,black chickenRice,black green,black green1,black grey,black guru,black if,black jessie,black lesion,black orange,black pardon,black print,black progline,black purple,black read,black red,black red1,black red2,black rice,black spring,black statement,black then,black white,black x,black yellow,black z,call call,call procedure,colors Kn17e,colors assign,colors black,colors blue,colors blue2,colors call,colors green,colors green1,colors grey,colors if,colors lesion,colors print,colors progline,colors purple,colors read,colors red,colors red1,colors red2,colors rice,colors spring,colors then,colors white,colors x,colors yellow,colors z,colors2 Kn17e,colors2 ardent,colors2 assign,colors2 blue,colors2 call,colors2 chi11i,colors2 else,colors2 gold,colors2 green2,colors2 guru,colors2 onion,colors2 pardon,colors2 procedure,colors2 progline,colors2 purple,colors2 ramen,colors2 red1,colors2 statement,colors2 while,colors2 white,colors2 x,colors2 y,colors2 z,cube Kn17e,cube ardent,cube call,cube guru,cube if,cube lesion,cube melody,cube pardon,cube raBBit,cube read,cube teacup0,cube x,cube yellow,cube z,f00d Kn17e,f00d assign,f00d black,f00d blue,f00d blue2,f00d call,f00d chickenRice,f00d duck,f00d green,f00d green1,f00d grey,f00d if,f00d lesion,f00d money,f00d noodle,f00d onion,f00d print,f00d progline,f00d purple,f00d ramen,f00d read,f00d red,f00d red1,f00d red2,f00d rice,f00d sci333ors,f00d sprING000Ni0n,f00d spring,f00d then,f00d white,f00d x,f00d yellow,f00d z,fox brown,fox elprimo,fox lesion,lAst Kn17e,lAst assign,lAst black,lAst blue,lAst blue2,lAst call,lAst green,lAst green1,lAst grey,lAst if,lAst lesion,lAst orange,lAst print,lAst procedure,lAst progline,lAst purple,lAst read,lAst red,lAst red1,lAst red2,lAst rice,lAst spring,lAst then,lAst white,lAst x,lAst y,lAst yellow,lAst z,month orange,month print,month procedure,month progline,month purple,month yellow,obj3ct Kn17e,obj3ct assign,obj3ct black,obj3ct blue,obj3ct blue2,obj3ct call,obj3ct green,obj3ct green1,obj3ct grey,obj3ct if,obj3ct lesion,obj3ct money,obj3ct print,obj3ct progline,obj3ct purple,obj3ct read,obj3ct red,obj3ct red1,obj3ct red2,obj3ct rice,obj3ct sci333ors,obj3ct spring,obj3ct then,obj3ct white,obj3ct x,obj3ct yellow,obj3ct z,p1 Kn17e,p1 assign,p1 black,p1 blue,p1 blue2,p1 call,p1 green,p1 green1,p1 grey,p1 if,p1 lesion,p1 print,p1 progline,p1 purple,p1 read,p1 red,p1 red1,p1 red2,p1 rice,p1 spring,p1 then,p1 white,p1 x,p1 yellow,p1 z,p10 Kn17e,p10 assign,p10 black,p10 blue,p10 blue2,p10 call,p10 chickenRice,p10 gold,p10 green,p10 green1,p10 grey,p10 if,p10 lesion,p10 orange,p10 print,p10 progline,p10 purple,p10 read,p10 red,p10 red1,p10 red2,p10 rice,p10 spring,p10 then,p10 while,p10 white,p10 x,p10 yellow,p10 z,p11 gold,p17 Kn17e,p17 assign,p17 black,p17 blue,p17 blue2,p17 call,p17 chickenRice,p17 green,p17 green1,p17 grey,p17 if,p17 lesion,p17 print,p17 progline,p17 purple,p17 read,p17 red,p17 red1,p17 red2,p17 rice,p17 spring,p17 then,p17 while,p17 white,p17 x,p17 yellow,p17 z,p18 Kn17e,p18 animal,p18 ardent,p18 assign,p18 black,p18 blue,p18 blue2,p18 brown,p18 call,p18 chi11i,p18 chickenRice,p18 dog,p18 elprimo,p18 frog,p18 green,p18 green1,p18 grey,p18 guru,p18 if,p18 jessie,p18 lesion,p18 lizArd,p18 money,p18 orange,p18 pardon,p18 print,p18 progline,p18 purple,p18 raBBit,p18 ramen,p18 read,p18 red,p18 red1,p18 red2,p18 rice,p18 sci333ors,p18 spring,p18 statement,p18 then,p18 while,p18 white,p18 x,p18 y,p18 yellow,p18 z,p2 print,p2 procedure,p2 progline,p2 purple,p21 Kn17e,p21 animal,p21 ardent,p21 assign,p21 black,p21 blue,p21 blue2,p21 brown,p21 call,p21 chi11i,p21 chickenRice,p21 dog,p21 frog,p21 green,p21 green1,p21 grey,p21 guru,p21 if,p21 jessie,p21 lesion,p21 lizArd,p21 money,p21 orange,p21 pardon,p21 print,p21 progline,p21 purple,p21 raBBit,p21 ramen,p21 read,p21 red,p21 red1,p21 red2,p21 rice,p21 sci333ors,p21 spring,p21 statement,p21 then,p21 while,p21 white,p21 x,p21 y,p21 yellow,p21 z,p22 Kn17e,p22 animal,p22 ardent,p22 assign,p22 black,p22 blue,p22 blue2,p22 brown,p22 call,p22 chi11i,p22 chickenRice,p22 dog,p22 frog,p22 green,p22 green1,p22 grey,p22 guru,p22 if,p22 jessie,p22 lesion,p22 lizArd,p22 money,p22 orange,p22 pardon,p22 print,p22 progline,p22 purple,p22 raBBit,p22 ramen,p22 read,p22 red,p22 red1,p22 red2,p22 rice,p22 sci333ors,p22 spring,p22 statement,p22 then,p22 while,p22 white,p22 x,p22 y,p22 yellow,p22 z,p24 Kn17e,p24 animal,p24 ardent,p24 assign,p24 black,p24 blue,p24 blue2,p24 brown,p24 call,p24 chi11i,p24 chickenRice,p24 dog,p24 frog,p24 green,p24 green1,p24 grey,p24 guru,p24 if,p24 jessie,p24 lesion,p24 lizArd,p24 money,p24 orange,p24 pardon,p24 print,p24 progline,p24 purple,p24 raBBit,p24 ramen,p24 read,p24 red,p24 red1,p24 red2,p24 rice,p24 sci333ors,p24 spring,p24 statement,p24 then,p24 while,p24 white,p24 x,p24 y,p24 yellow,p24 z,p25 chi11i,p25 progline,p26 Kn17e,p26 animal,p26 ardent,p26 assign,p26 black,p26 blue,p26 blue2,p26 brown,p26 call,p26 chi11i,p26 chickenRice,p26 dog,p26 frog,p26 green,p26 green1,p26 grey,p26 guru,p26 if,p26 jessie,p26 lesion,p26 lizArd,p26 money,p26 orange,p26 pardon,p26 print,p26 progline,p26 purple,p26 raBBit,p26 ramen,p26 read,p26 red,p26 red1,p26 red2,p26 rice,p26 sci333ors,p26 spring,p26 statement,p26 then,p26 while,p26 white,p26 x,p26 y,p26 yellow,p26 z,p27 Kn17e,p27 animal,p27 ardent,p27 assign,p27 black,p27 blue,p27 blue2,p27 brown,p27 call,p27 chi11i,p27 chickenRice,p27 dog,p27 frog,p27 green,p27 green1,p27 grey,p27 guru,p27 if,p27 jessie,p27 lesion,p27 lizArd,p27 money,p27 orange,p27 pardon,p27 print,p27 progline,p27 purple,p27 raBBit,p27 ramen,p27 read,p27 red,p27 red1,p27 red2,p27 rice,p27 sci333ors,p27 spring,p27 statement,p27 then,p27 while,p27 white,p27 x,p27 y,p27 yellow,p27 z,p28 green1,p28 x,p28 y,p28 z,p3 orange,p5 orange,p5 yellow,p6 orange,p7 orange,p9 Kn17e,p9 assign,p9 black,p9 blue,p9 blue2,p9 call,p9 chickenRice,p9 gold,p9 green,p9 green1,p9 grey,p9 if,p9 lesion,p9 print,p9 progline,p9 purple,p9 read,p9 red,p9 red1,p9 red2,p9 rice,p9 spring,p9 then,p9 while,p9 white,p9 x,p9 yellow,p9 z,pain Kn17e,pain assign,pain black,pain blue,pain blue2,pain call,pain green,pain green1,pain grey,pain if,pain jessie,pain lesion,pain orange,pain print,pain procedure,pain progline,pain purple,pain read,pain red,pain red1,pain red2,pain rice,pain spring,pain then,pain white,pain x,pain y,pain yellow,pain z,purple Kn17e,purple assign,purple black,purple blue,purple blue2,purple call,purple green,purple green1,purple grey,purple if,purple lesion,purple orange,purple print,purple procedure,purple progline,purple purple,purple read,purple red,purple red1,purple red2,purple rice,purple spring,purple then,purple white,purple x,purple y,purple yellow,purple z,shikashi ardent,shikashi guru,shikashi pardon,shikashi z,simple Kn17e,simple call,simple if,simple read,simple yellow,something ardent,something guru,something lesion,something melody,something pardon,something teacup0,something x,something z,t0pUp Kn17e,t0pUp call,t0pUp if,t0pUp money,t0pUp read,t0pUp yellow,while orange,yellow Kn17e,yellow animal,yellow ardent,yellow assign,yellow beAr,yellow black,yellow blue,yellow blue2,yellow brown,yellow byron,yellow call,yellow cat,yellow chi11i,yellow chicken,yellow chickenRice,yellow darryl,yellow dog,yellow duck,yellow elprimo,yellow fox,yellow frog,yellow gold,yellow green,yellow green1,yellow green3,yellow grey,yellow guru,yellow horse,yellow if,yellow jessie,yellow lesion,yellow lizArd,yellow melody,yellow money,yellow mouse,yellow nita,yellow orange,yellow p0c0,yellow pardon,yellow print,yellow procedure,yellow progline,yellow purple,yellow raBBit,yellow racc00n,yellow ramen,yellow read,yellow red,yellow red1,yellow red2,yellow rice,yellow sci333ors,yellow spring,yellow statement,yellow teacup0,yellow then,yellow while,yellow white,yellow x,yellow y,yellow yellow,yellow z
 5000
-19 - synonym, synonym
-read r; variable v; assign a; stmt s, s1;
-Select r such that Modifies(r, v)
-1,101,108,112,123,125,13,136,149,163,174,177,183,185,186,196,211,215,225,230,231,232,235,253,258,272,274,276,280,281,285,291,296,329,335,34,359,376,378,398,413,419,432,439,440,449,451,452,453,459,466,480,485,489,490,510,65,71,80,93
+30 - stmt, procname
+stmt s;
+Select s such that Modifies(s, "colors")
+none
 5000
-20 - exact stmt, synonym
+31 - read, wildcard
+read s;
+Select s such that Modifies(s, _)
+1, 13, 34, 101,108,112,123,125,136,149,163,174,177,183,185,186,196,211,215,225,230,231,232,235,253,258,272,274,276,280,281,285,291,296,329,335,359,376,378,398,413,419,432,439,440,449,451,452,453,459,466,480,485,489,490,510,65,71,80,93
+5000
+32 - read, stmt
+read s; stmt s1;
+Select s such that Modifies(s, s1)
+none
+5000
+33 - read, read
+read s; read r;
+Select BOOLEAN such that Modifies(s, r)
+FALSE
+5000
+34 - read, print
+read s; print p;
+Select BOOLEAN such that Modifies(s, p)
+FALSE
+5000
+35 - read, call
+read s; call v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+36 - read, while
+read s;while v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+37 - read, if
+read s; if v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+38 - read, assign
+read s; assign v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+39 - read, variable
+read s; variable v;
+Select <s, v.varName> such that Modifies(s, v)
+1 rice, 13 sprING000Ni0n, 34 purple, 101 Kn17e,108 green2,112 Kn17e,123 ramen,125 white,136 x,149 call,163 teacup0,174 ardent,177 pardon,183 melody,185 rice,186 cat,196 guru,211 cat,215 animal,225 animal,230 animal,231 mouse,232 beAr,235 cat,253 dog,258 horse,272 lizArd,274 duck,276 raBBit,280 raBBit,281 green3,285 lizArd,291 dog,296 fox,329 green1,335 white,359 progline,376 gold,378 while,398 brown,413 chi11i,419 black,432 purple,439 chickenRice,440 purple,449 purple,451 progline,452 statement,453 read,459 while,466 orange,480 statement,485 brown,489 statement,490 statement,510 ramen,65 green1,71 white,80 read,93 read
+5000
+40 - read, constant
+read s; constant v;
+Select v such that Modifies(s, v)
+none
+5000
+41 - read, prog_line
+read s; prog_line v;
+Select v such that Modifies(s, v)
+none
+5000
+42 - read, procedure
+read s; procedure v;
+Select v such that Modifies(s, v)
+none
+5000
+43 - read, unknown synonym
+read s; 
+Select s such that Modifies(s, v)
+none
+5000
+44 - read, exact
+read s; constant v;
+Select s such that Modifies(s, "green1")
+65, 329
+5000
+45 - read, variable not read but exist
+read ssssssss;
+Select ssssssss such that Modifies(ssssssss, "jessie")
+none
+5000
+46 - print, wildcard
+print s;
+Select s such that Modifies(s, _)
+none
+5000
+47 - print, stmt
+print s; stmt s1;
+Select s such that Modifies(s, s1)
+none
+5000
+48 - print, read
+print s; read r;
+Select BOOLEAN such that Modifies(s, r)
+FALSE
+5000
+49 - print, print
+print s; print p;
+Select BOOLEAN such that Modifies(s, p)
+FALSE
+5000
+50 - print, call
+print s; call v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+51 - print, while
+print s;while v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+52 - print, if
+print s; if v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+53 - print, assign
+print s; assign v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+54 - print, variable
+print s; variable v;
+Select <s, v> such that Modifies(s, v)
+none
+5000
+55 - print, constant
+print s; constant v;
+Select v such that Modifies(s, v)
+none
+5000
+56 - print, progsline
+print s; prog_line v;
+Select v such that Modifies(s, v)
+none
+5000
+57 - print, procedure
+print s; procedure v;
+Select v such that Modifies(s, v)
+none
+5000
+58 - print, exact
+print s; constant v;
+Select s such that Modifies(s, "chi11i")
+none
+5000
+59 - call, wildcard
+call s;
+Select s such that Modifies(s, _)
+3, 12, 20, 24, 102,113,161,162,170,189,202,233,298,299,300,302,303,304,305,307,320,336,340,342,343,347,348,349,350,351,352,355,360,364,365,366,368,371,372,374,375,381,383,386,388,389,390,392,394,395,402,403,405,407,422,423,434,441,445,462,472,483,487,492,498,499,506,518,56,72,88,89
+5000
+60 - call, stmt
+call s; stmt s1;
+Select s such that Modifies(s, s1)
+none
+5000
+61 - call, read
+call s; read r;
+Select BOOLEAN such that Modifies(s, r)
+FALSE
+5000
+62 - call, print
+call s; print p;
+Select BOOLEAN such that Modifies(s, p)
+FALSE
+5000
+63 - call, call
+call s; call v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+64 - call, while
+call s;while v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+65 - call, if
+call s; if v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+66 - call, assign
+call s; assign v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+67 - call, variable
+call s; variable v;
+Select v such that Modifies(s, v)
+Kn17e,assign,black,blue,blue2,call,green,green1,grey,if,money,print,progline,purple,read,red,red1,red2,rice,sci333ors,spring,then,white,yellow,animal,ardent,beAr,brown,cat,chi11i,chicken,chickenRice,dog,duck,elprimo,fox,frog,gold,green3,guru,horse,jessie,lesion,lizArd,melody,mouse,nita,orange,pardon,procedure,raBBit,racc00n,ramen,statement,teacup0,while,x,y,z
+5000
+68 - call, constant
+call s; constant v;
+Select v such that Modifies(s, v)
+none
+5000
+69 - call, prog_line
+call s; prog_line v;
+Select v such that Modifies(s, v)
+none
+5000
+70 - call, procedure
+call s; procedure v;
+Select v such that Modifies(s, v)
+none
+5000
+71 - call, unknown synonym
+call s; 
+Select s such that Modifies(s, v)
+none
+5000
+72 - call, exact
+call s; constant v;
+Select s such that Modifies(s, "read")
+3, 12, 20, 24, 102,189,202,233,298,299,300,302,305,307,320,336,340,347,372,375,381,386,388,389,392,395,402,405,407,445,462,472,483,487,492,506,518,56,72,88,89
+5000
+73 - call, variable not modified by call but exist
+call s;
+Select s such that Modifies(s, "else")
+none
+5000
+74 - while, wildcard
+while s;
+Select s such that Modifies(s, _)
+10,31,37,44,47,62,116,124,126,129,130,134,137,153,165,178,181,188,191,198,203,205,209,238,244,255,263,266,270,282,293,308,311,316,323,324,326,330,362,379,399,417,424,427,435,436,437,454,460,461,465,467,473,476,478,482,484,486,501,513,516,52,59,60,66,91
+5000
+75 - while, stmt
+while s; stmt s1;
+Select s such that Modifies(s, s1)
+none
+5000
+76 - while, read
+while s; read r;
+Select BOOLEAN such that Modifies(s, r)
+FALSE
+5000
+77 - while, print
+while s; print p;
+Select BOOLEAN such that Modifies(s, p)
+FALSE
+5000
+78 - while, call
+while s; call v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+79 - while, while
+while s;while v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+80 - while, if
+while s; if v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+81 - while, assign
+while s; assign v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+82 - while, variable
+while s; variable v;
+Select v such that Modifies(s, v)
+Kn17e,assign,black,blue,blue2,call,green,green1,grey,if,noodle,print,progline,purple,read,red,red1,red2,rice,sprING000Ni0n,spring,then,white,yellow,animal,ardent,beAr,brown,byron,cat,chi11i,chicken,chickenRice,darryl,dog,duck,elprimo,else,fox,frog,green3,guru,horse,jessie,lesion,lizArd,melody,money,mouse,nita,onion,orange,p0c0,pardon,procedure,raBBit,racc00n,ramen,sci333ors,statement,teacup0,while,x,y,z
+5000
+83 - while, constant
+while s; constant v;
+Select v such that Modifies(s, v)
+none
+5000
+84 - while, prog_line
+while s; prog_line v;
+Select v such that Modifies(s, v)
+none
+5000
+85 - while, procedure
+while s; procedure v;
+Select v such that Modifies(s, v)
+none
+5000
+86 - while, unknown synonym
+while s; 
+Select s such that Modifies(s, v)
+none
+5000
+87 - while, exact
+while s; constant v;
+Select s such that Modifies(s, "green")
+10,44,178,188,191,198,308,323,324,326,379,424,454,460,461,465,467,473,476,478,482,484,486,516,59,60,62
+5000
+88 - if, wildcard
+if s;
+Select s such that Modifies(s, _)
+17,29,32,45,46,7,109,114,115,131,146,156,173,179,197,199,204,218,227,234,247,277,284,309,310,321,327,396,416,425,426,431,438,495,512,57,63,76,86,96
+5000
+89 - if, stmt
+if s; stmt s1;
+Select s such that Modifies(s, s1)
+none
+5000
+90 - if, read
+if s; read r;
+Select BOOLEAN such that Modifies(s, r)
+FALSE
+5000
+91 - if, print
+if s; print p;
+Select BOOLEAN such that Modifies(s, p)
+FALSE
+5000
+92 - if, call
+if s; call v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+93 - if, while
+if s;while v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+94 - if, if
+if s; if v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+95 - if, assign
+if s; assign v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+96 - if, variable
+if s; variable v;
+Select v such that Modifies(s, v)
+Kn17e,assign,black,blue,blue2,call,duck,green,green1,grey,if,money,noodle,onion,print,progline,purple,ramen,read,red,red1,red2,rice,sci333ors,sprING000Ni0n,spring,then,white,yellow,animal,ardent,brown,byron,cat,chi11i,chicken,chickenRice,darryl,dog,elprimo,else,fox,frog,gold,green3,guru,horse,jessie,lesion,lizArd,melody,mouse,nita,orange,p0c0,pardon,procedure,raBBit,racc00n,statement,while,x,y,z
+5000
+97 - if, constant
+if s; constant v;
+Select v such that Modifies(s, v)
+none
+5000
+98 - if, prog_line
+if s; prog_line v;
+Select v such that Modifies(s, v)
+none
+5000
+99 - if, procedure
+if s; procedure v;
+Select v such that Modifies(s, v)
+none
+5000
+100 - if, unknown synonym
+if s; 
+Select s such that Modifies(s, v)
+none
+5000
+101 - if, exact
+if s; constant v;
+Select s such that Modifies(s, "Kn17e")
+7,17,45,46,109,197,199,309,310,416,425,512,86,96
+5000
+102 - assign, wildcard
+assign s;
+Select s such that Modifies(s, _)
+100,104,105,106,11,110,111,118,127,128,132,135,138,139,14,140,141,142,143,148,15,150,152,154,155,157,158,16,166,167,168,171,172,175,176,180,182,184,19,192,193,194,195,2,200,206,207,208,21,210,213,214,216,217,22,221,222,223,224,226,229,236,237,239,240,242,245,246,248,249,25,251,257,259,26,261,262,264,265,267,269,27,271,273,275,278,28,286,287,288,289,292,294,297,30,301,306,312,314,315,317,318,319,322,325,328,33,332,333,337,338,339,341,344,345,346,35,353,354,356,357,358,36,361,363,367,369,38,380,385,39,397,4,40,400,408,409,41,410,411,414,415,42,420,421,428,43,444,446,447,448,450,455,456,457,458,463,468,470,474,475,477,48,481,488,493,497,5,50,500,502,503,507,509,51,511,514,517,519,520,521,53,54,55,58,61,64,68,69,73,74,75,77,78,79,8,82,83,84,85,87,9,90,94,95,97,99
+5000
+103 - assign, stmt
+assign s; stmt s1;
+Select s such that Modifies(s, s1)
+none
+5000
+104 - assign, read
+assign s; read r;
+Select BOOLEAN such that Modifies(s, r)
+FALSE
+5000
+105 - assign, print
+assign s; print p;
+Select BOOLEAN such that Modifies(s, p)
+FALSE
+5000
+106 - assign, call
+assign s; call v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+107 - assign, while
+assign s;while v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+108 - assign, if
+assign s; if v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+109 - assign, assign
+assign s; assign v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+110 - assign, variable
+assign s; variable v;
+Select s such that Modifies(s, v)
+100,104,105,106,11,110,111,118,127,128,132,135,138,139,14,140,141,142,143,148,15,150,152,154,155,157,158,16,166,167,168,171,172,175,176,180,182,184,19,192,193,194,195,2,200,206,207,208,21,210,213,214,216,217,22,221,222,223,224,226,229,236,237,239,240,242,245,246,248,249,25,251,257,259,26,261,262,264,265,267,269,27,271,273,275,278,28,286,287,288,289,292,294,297,30,301,306,312,314,315,317,318,319,322,325,328,33,332,333,337,338,339,341,344,345,346,35,353,354,356,357,358,36,361,363,367,369,38,380,385,39,397,4,40,400,408,409,41,410,411,414,415,42,420,421,428,43,444,446,447,448,450,455,456,457,458,463,468,470,474,475,477,48,481,488,493,497,5,50,500,502,503,507,509,51,511,514,517,519,520,521,53,54,55,58,61,64,68,69,73,74,75,77,78,79,8,82,83,84,85,87,9,90,94,95,97,99
+5000
+111 - assign, constant
+assign s; constant v;
+Select v such that Modifies(s, v)
+none
+5000
+112 - assign, prog_line
+assign s; prog_line v;
+Select v such that Modifies(s, v)
+none
+5000
+113 - assign, procedure
+assign s; procedure v;
+Select v such that Modifies(s, v)
+none
+5000
+114 - assign, unknown synonym
+assign s; 
+Select s such that Modifies(s, v)
+none
+5000
+115 - assign, exact
+assign s; constant v;
+Select s such that Modifies(s, "purple")
+25,36,40,51,105,141,142,315,356,450
+5000
+116 - variable, wildcard
+variable s;
+Select s such that Modifies(s, _)
+none
+5000
+117 - variable, stmt
+variable s; stmt s1;
+Select s such that Modifies(s, s1)
+none
+5000
+118 - variable, read
+variable s; read r;
+Select BOOLEAN such that Modifies(s, r)
+FALSE
+5000
+119 - variable, print
+variable s; print p;
+Select BOOLEAN such that Modifies(s, p)
+FALSE
+5000
+120 - variable, call
+variable s; call v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+121 - variable, while
+variable s;while v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+122 - variable, if
+variable s; if v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+123 - variable, assign
+variable s; assign v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+124 - variable, variable
+variable s; variable v;
+Select v such that Modifies(s, v)
+none
+5000
+125 - variable, constant
+variable s; constant v;
+Select v such that Modifies(s, v)
+none
+5000
+126 - variable, prog_line
+variable s; prog_line v;
+Select v such that Modifies(s, v)
+none
+5000
+127 - variable, procedure
+variable s; procedure v;
+Select v such that Modifies(s, v)
+none
+5000
+128 - variable, unknown synonym
+variable s; 
+Select s such that Modifies(s, v)
+none
+5000
+129 - variable, exact
+variable s; constant v;
+Select s such that Modifies(s, "duck")
+none
+500
+130 - constant, wildcard
+constant s;
+Select s such that Modifies(s, _)
+none
+5000
+131 - constant, stmt
+constant s; stmt s1;
+Select s such that Modifies(s, s1)
+none
+5000
+132 - constant, read
+constant s; read r;
+Select BOOLEAN such that Modifies(s, r)
+FALSE
+5000
+133 - constant, print
+constant s; print p;
+Select BOOLEAN such that Modifies(s, p)
+FALSE
+5000
+134 - constant, call
+constant s; call v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+135 - constant, while
+constant s;while v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+136 - constant, if
+constant s; if v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+137 - constant, assign
+constant s; assign v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+138 - constant, variable
+constant s; variable v;
+Select v such that Modifies(s, v)
+none
+5000
+139 - constant, constant
+constant s; constant v;
+Select v such that Modifies(s, v)
+none
+5000
+140 - constant, prog_line
+constant s; prog_line v;
+Select v such that Modifies(s, v)
+none
+5000
+141 - constant, procedure
+constant s; procedure v;
+Select v such that Modifies(s, v)
+none
+5000
+142 - constant, unknown synonym
+constant s; 
+Select s such that Modifies(s, v)
+none
+5000
+143 - constant, exact
+constant s; constant v;
+Select s such that Modifies(s, "duck")
+none
+500
+144 - prog_line, wildcard
+prog_line s;
+Select s such that Modifies(s, _)
+1,2,3,4,5,7,8,9,10,11,12,13,14,15,16,17,19,20,21,22,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,50,51,52,53,54,55,56,57,58,59,60,61,62,64,65,68,69,71,72,73,74,75,76,78,79,80,82,83,84,85,86,87,89,90,91,93,95,96,97,100,101,102,104,105,106,108,109,110,111,112,113,114,115,116,118,123,124,125,126,127,128,129,130,131,132,134,135,136,137,138,139,140,141,142,143,146,148,149,150,152,153,154,155,156,157,158,161,162,163,165,166,167,168,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,188,189,191,192,193,194,195,196,197,198,199,200,202,203,204,205,206,207,208,209,210,211,213,214,215,216,217,218,221,222,223,224,225,226,227,229,230,231,232,233,234,235,236,237,238,239,240,242,244,245,246,247,248,249,251,253,255,257,258,259,261,262,263,264,265,266,267,269,270,271,272,273,274,275,276,277,278,280,281,282,284,285,286,287,288,289,291,292,293,294,296,297,298,299,300,301,302,303,304,305,306,307,308,309,310,311,312,314,315,316,317,318,319,320,321,322,323,324,325,326,327,328,329,330,332,333,335,336,337,338,339,340,341,342,343,344,345,346,347,348,349,350,351,352,353,354,355,356,357,358,359,360,361,362,363,364,365,366,367,368,369,371,372,374,375,376,378,379,380,381,383,385,386,388,389,390,392,394,395,396,397,398,399,400,402,403,405,407,408,409,410,411,413,414,415,416,417,419,420,421,422,423,424,425,426,427,428,431,432,434,435,436,437,438,439,440,441,444,445,446,447,448,449,450,451,452,453,454,455,456,457,458,459,460,461,462,463,465,466,467,468,470,472,473,474,475,476,477,478,480,481,482,483,484,485,486,487,488,489,490,492,493,495,497,498,499,500,501,502,503,506,507,509,510,511,512,513,514,516,517,518,519,520,521,63,66,77,88,94,99
+5000
+145 - prog_line, stmt
+prog_line s; stmt s1;
+Select s such that Modifies(s, s1)
+none
+5000
+146 - prog_line, read
+prog_line s; read r;
+Select BOOLEAN such that Modifies(s, r)
+FALSE
+5000
+147 - prog_line, print
+prog_line s; print p;
+Select BOOLEAN such that Modifies(s, p)
+FALSE
+5000
+148 - prog_line, call
+prog_line s; call v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+150 - prog_line, while
+prog_line s;while v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+151 - prog_line, if
+prog_line s; if v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+152 - prog_line, assign
+prog_line s; assign v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+153 - prog_line, variable
+prog_line s; variable v;
+Select BOOLEAN such that Modifies(s, v)
+TRUE
+5000
+154 - prog_line, constant
+prog_line s; constant v;
+Select v such that Modifies(s, v)
+none
+5000
+155 - prog_line, prog_line
+prog_line s; prog_line v;
+Select v such that Modifies(s, v)
+none
+5000
+156 - prog_line, procedure
+prog_line s; procedure v;
+Select v such that Modifies(s, v)
+none
+5000
+157 - prog_line, unknown synonym
+prog_line s; 
+Select s such that Modifies(s, v)
+none
+5000
+158 - prog_line, exact
+prog_line s; constant v;
+Select s such that Modifies(s, "blue2")
+3, 7, 10, 12, 17, 20, 44, 45, 46, 47, 48, 178,188,189,191,197,198,199,202,233,298,300,305,307,308,309,310,311,312,340,347,372,375,379,381,386,388,389,392,395,402,405,407,416,424,425,445,460,461,462,465,467,472,473,476,478,482,483,484,486,487,492,506,512,516,518,86,88
+5000
+159 - prog_line, non exist variable
+prog_line ssssssss;
+Select ssssssss such that Modifies(ssssssss, "curry")
+none
+5000
+160 - prog_line, procname
+prog_line s;
+Select s such that Modifies(s, "colors")
+none
+5000
+161 - procedure, wildcard
+procedure s;
+Select s such that Modifies(s, _)
+f00d, colors, obj3ct, simple, t0pUp, Animal,Honeysuckle,animal,assign,black,call,colors2,cube,fox,lAst,month,p1,p10,p11,p17,p18,p2,p21,p22,p24,p25,p26,p27,p28,p3,p5,p6,p7,p9,pain,purple,shikashi,something,while,yellow
+5000
+162 - procedure, stmt
+procedure s; stmt s1;
+Select s such that Modifies(s, s1)
+none
+5000
+163 - procedure, read
+procedure s; read r;
+Select BOOLEAN such that Modifies(s, r)
+FALSE
+5000
+164 - procedure, print
+procedure s; print p;
+Select BOOLEAN such that Modifies(s, p)
+FALSE
+5000
+165 - procedure, call
+procedure s; call v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+166 - procedure, while
+procedure s;while v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+167 - procedure, if
+procedure s; if v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+168 - procedure, assign
+procedure s; assign v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+169 - procedure, variable
+procedure s; variable v;
+Select v such that Modifies(s, v)
+Kn17e,assign,black,blue,blue2,call,chickenRice,duck,green,green1,grey,if,money,noodle,onion,print,progline,purple,ramen,read,red,red1,red2,rice,sci333ors,sprING000Ni0n,spring,then,white,yellow,animal,ardent,beAr,brown,byron,cat,chi11i,chicken,darryl,dog,elprimo,else,fox,frog,gold,green2,green3,guru,horse,jessie,lesion,lizArd,melody,mouse,nita,orange,p0c0,pardon,procedure,raBBit,racc00n,statement,teacup0,while,x,y,z
+5000
+170 - procedure, constant
+procedure s; constant v;
+Select v such that Modifies(s, v)
+none
+5000
+171 - procedure, prog_line
+procedure s; prog_line v;
+Select v such that Modifies(s, v)
+none
+5000
+172 - procedure, procedure
+procedure s; procedure v;
+Select v such that Modifies(s, v)
+none
+5000
+173 - procedure, unknown synonym
+procedure s; 
+Select s such that Modifies(s, v)
+none
+5000
+174 - procedure, exact
+procedure s; constant v;
+Select s such that Modifies(s, "then")
+f00d, colors, obj3ct,Animal,animal,assign,black,lAst,p1,p10,p17,p18,p21,p22,p24,p26,p27,p9,pain,purple,yellow
+5000
+175 - exact, wildcard
+procedure p;
+Select p such that Modifies(257, _)
+f00d, colors, obj3ct, simple, t0pUp, procedure, Animal,Honeysuckle,animal,assign,black,call,colors2,cube,fox,lAst,month,p1,p10,p11,p17,p18,p2,p20,p21,p22,p24,p25,p26,p27,p28,p3,p5,p6,p7,p9,pain,purple,shikashi,something,while,yellow
+5000
+176 - exact, stmt
+stmt s1;
+Select s such that Modifies(16, s1)
+none
+5000
+177 - exact, read
+read r;
+Select BOOLEAN such that Modifies(16, r)
+FALSE
+5000
+178 - exact, print
+print p;
+Select BOOLEAN such that Modifies(22, p)
+FALSE
+5000
+179 - exact, call
+call v;
+Select BOOLEAN such that Modifies(40, v)
+FALSE
+5000
+180 - exact, while
+while v;
+Select BOOLEAN such that Modifies(50, v)
+FALSE
+5000
+181 - exact, if
+if v;
+Select BOOLEAN such that Modifies(60, v)
+FALSE
+5000
+182 - exact, assign
+assign v;
+Select BOOLEAN such that Modifies("colors", v)
+FALSE
+5000
+183 - exact, variable
 variable v;
-Select v such that Modifies(29, v)
-spring, red, purple, blue 
+Select v such that Modifies(132, v)
+else
 5000
-21 - exact stmt, synonym
-variable v;
-Select v such that Modifies(10, v)
-sprING000Ni0n, noodle, purple, red1, red2, red, spring, blue, yellow, black, white, blue2, grey, green, green1, rice, progline, then, print, read, assign, call, if, Kn17e, lesion, x, z
+184 - exact, constant
+constant v;
+Select v such that Modifies(80, v)
+none
 5000
-22 - exact stmt, synonym
-variable v;
-Select v such that Modifies(461, v)
-Kn17e,ardent,assign,black,blue,blue2,brown,call,chi11i,chickenRice,dog,frog,green,green1,grey,guru,if,jessie,lesion,lizArd,money,orange,pardon,print,progline,purple,raBBit,ramen,read,red,red1,red2,rice,sci333ors,spring,statement,then,white,x,y,yellow,z
+185 - exact, prog_line
+prog_line v;
+Select v such that Modifies(85, v)
+none
 5000
-23 - exact procedure, synonym
-variable v;
-Select v such that Modifies("simple", v)
-read, call, yellow, if, Kn17e
+186 - exact, procedure
+procedure v;
+Select v such that Modifies(86, v)
+none
 5000
-24 - exact procedure, synonym
-variable v;
-Select v such that Modifies("animal", v)
-Kn17e, read, call, yellow, if, animal,ardent,assign,beAr,black,blue,blue2,cat,chicken,dog,duck,fox,frog,green,green1,green3,grey,guru,horse,jessie,lesion,lizArd,melody,mouse,nita,orange,pardon,print,procedure,progline,purple,raBBit,racc00n,red,red1,red2,rice,spring,teacup0,then,white,x,y,z
+187 - exact, unknown synonym
+ 
+Select s such that Modifies(96, v)
+none
 5000
-25 - exact procedure, synonym
+188 - exact(assign), exact
+
+Select BOOLEAN such that Modifies(5, "duck")
+TRUE
+5000
+189 - exact(assign), exact (no result)
+
+Select BOOLEAN such that Modifies(90, "assign")
+FALSE
+5000
+190 - exact(proc), exact
+
+Select BOOLEAN such that Modifies("t0pUp", "yellow")
+TRUE
+5000
+191 - exact(proc), exact (no result)
+stmt s;
+Select s such that Modifies("obj3ct", "duck")
+none
+5000
+192 - exact(proc), variable (no result)
 variable v;
 Select v such that Modifies("procedure", v)
 none
 5000
-26 - non exist stmt, synonym
+193 - exact(proc), variable
+variable v;
+Select v such that Modifies("animal", v)
+Kn17e,animal,ardent,assign,beAr,black,blue,blue2,call,cat,chicken,dog,duck,fox,frog,green,green1,green3,grey,guru,horse,if,jessie,lesion,lizArd,melody,mouse,nita,orange,pardon,print,procedure,progline,purple,raBBit,racc00n,read,red,red1,red2,rice,spring,teacup0,then,white,x,y,yellow,z
+5000
+194 - exact(read), exact
+
+Select BOOLEAN such that Modifies(163, "teacup0")
+TRUE
+5000
+195 - exact(read), exact (no result)
+stmt s;
+Select s such that Modifies(163, "duck")
+none
+5000
+196 - exact(read), variable
+variable v;
+Select v such that Modifies(211, v)
+cat
+5000
+197 - exact(print), exact
+
+Select BOOLEAN such that Modifies(212, "mouse")
+FALSE
+5000
+198 - exact(print), variable
+variable v;
+Select v such that Modifies(373, v)
+none
+5000
+199 - exact(call), exact
+
+Select BOOLEAN such that Modifies(374, "orange")
+TRUE
+5000
+200 - exact(call), exact (no result)
+stmt s;
+Select s such that Modifies(3, "duck")
+none
+5000
+201 - exact(call), variable (no result)
+variable v;
+Select v such that Modifies(515, v)
+none
+5000
+202 - exact(call), variable
+variable v;
+Select v such that Modifies(405, v)
+Kn17e,animal,ardent,assign,black,blue,blue2,brown,call,chi11i,chickenRice,dog,frog,green,green1,grey,guru,if,jessie,lesion,lizArd,money,orange,pardon,print,progline,purple,raBBit,ramen,read,red,red1,red2,rice,sci333ors,spring,statement,then,while,white,x,y,yellow,z
+5000
+203 - exact(while), exact
+
+Select BOOLEAN such that Modifies(323, "green1")
+TRUE
+5000
+204 - exact(while), exact (no result)
+
+Select BOOLEAN such that Modifies(10, "chi11i")
+FALSE
+5000
+205 - exact(while), variable
+variable v;
+Select v such that Modifies(460, v)
+call, orange, statement, raBBit, frog, dog,brown, progline, y, jessie, lizArd, ramen, assign,Kn17e,ardent,black,blue,blue2,chi11i,chickenRice,green,green1,grey,guru,if,lesion,money,pardon,print,purple,read,red,red1,red2,rice,sci333ors,spring,then,white,x,yellow,z
+5000
+206 - exact(if), exact
+
+Select BOOLEAN such that Modifies(310, "Kn17e")
+TRUE
+5000
+207 - exact(if), exact (no result)
+
+Select BOOLEAN such that Modifies(277, "else")
+FALSE
+5000
+208 - exact(if), variable
+variable v;
+Select v such that Modifies(425, v)
+Kn17e,ardent,assign,black,blue,blue2,call,chi11i,chickenRice,green,green1,grey,guru,if,jessie,lesion,orange,pardon,print,progline,purple,read,red,red1,red2,rice,spring,then,white,x,yellow,z
+5000
+209 - exact(variable), exact
+
+Select BOOLEAN such that Modifies("progline", "progline")
+FALSE
+5000
+210 - exact(variable), variable
+variable v;
+Select v such that Modifies("progline", v)
+none
+5000
+211 - exact(stmt), integer
+
+Select BOOLEAN such that Modifies(80, 290918238)
+none
+5000
+212 - exact(out of bound), v
 variable v;
 Select v such that Modifies(600, v)
 none
-5000
-27 - non exist procedure, synonym
-variable v;
-Select v such that Modifies("Na4ut0", v)
-none
-5000
-28 - exist bt does not modify
-
-Select BOOLEAN such that Modifies("t0pUp", "duck")
-FALSE
-5000
-29 - exist bt does not modify
-constant c;
-Select c such that Modifies(45, "noodle")
-none
-5000
-30 - synonym, synonym no exist
-assign a;
-Select a such that Modifies(a, v)
-none
-5000
-31 - print, wildcard
-print p;
-Select p such that Modifies(p, _)
-none
-5000
-31 - variable, wildcard
-variable v;
-Select v such that Modifies(v, _)
-none
-5000
-32 - constant, wildcard
-constant c;
-Select c such that Modifies(c,_)
-none
-5000
-33 - stmt, var
-stmt s; variable v;
-Select s such that Modifies(s, v)
-1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 68, 69, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 93, 94, 95, 96, 97, 99, 100, 101, 102, 104, 105, 106, 108, 109, 110, 111, 112, 113, 114, 115, 116, 118, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 146, 148, 149, 150, 152, 153, 154, 155, 156, 157, 158, 161, 162, 163, 165, 166, 167, 168, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 188, 189, 191, 192, 193, 194, 195, 196, 197, 198, 199, 200, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 213, 214, 215, 216, 217, 218, 221, 222, 223, 224, 225, 226, 227, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 242, 244, 245, 246, 247, 248, 249, 251, 253, 255, 257, 258, 259, 261, 262, 263, 264, 265, 266, 267, 269, 270, 271, 272, 273, 274, 275, 276, 277, 278, 280, 281, 282, 284, 285, 286, 287, 288, 289, 291, 292, 293, 294, 296, 297, 298, 299, 300, 301, 302, 303, 304, 305, 306, 307, 308, 309, 310, 311, 312, 314, 315, 316, 317, 318, 319, 320, 321, 322, 323, 324, 325, 326, 327, 328, 329, 330, 332, 333, 335, 336, 337, 338, 339, 340, 341, 342, 343, 344, 345, 346, 347, 348, 349, 350, 351, 352, 353, 354, 355, 356, 357, 358, 359, 360, 361, 362, 363, 364, 365, 366, 367, 368, 369, 371, 372, 374, 375, 376, 378, 379, 380, 381, 383, 385, 386, 388, 389, 390, 392, 394, 395, 396, 397, 398, 399, 400, 402, 403, 405, 407, 408, 409, 410, 411, 413, 414, 415, 416, 417, 419, 420, 421, 422, 423, 424, 425, 426, 427, 428, 431, 432, 434, 435, 436, 437, 438, 439, 440, 441, 444, 445, 446, 447, 448, 449, 450, 451, 452, 453, 454, 455, 456, 457, 458, 459, 460, 461, 462, 463, 465, 466, 467, 468, 470, 472, 473, 474, 475, 476, 477, 478, 480, 481, 482, 483, 484, 485, 486, 487, 488, 489, 490, 492, 493, 495, 497, 498, 499, 500, 501, 502, 503, 506, 507, 509, 510, 511, 512, 513, 514, 516, 517, 518, 519, 520, 521
-5000
-34 - prog_line, var
-prog_line pl; variable v;
-Select pl such that Modifies(pl, v)
-1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 68, 69, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 93, 94, 95, 96, 97, 99, 100, 101, 102, 104, 105, 106, 108, 109, 110, 111, 112, 113, 114, 115, 116, 118, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 146, 148, 149, 150, 152, 153, 154, 155, 156, 157, 158, 161, 162, 163, 165, 166, 167, 168, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 188, 189, 191, 192, 193, 194, 195, 196, 197, 198, 199, 200, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 213, 214, 215, 216, 217, 218, 221, 222, 223, 224, 225, 226, 227, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 242, 244, 245, 246, 247, 248, 249, 251, 253, 255, 257, 258, 259, 261, 262, 263, 264, 265, 266, 267, 269, 270, 271, 272, 273, 274, 275, 276, 277, 278, 280, 281, 282, 284, 285, 286, 287, 288, 289, 291, 292, 293, 294, 296, 297, 298, 299, 300, 301, 302, 303, 304, 305, 306, 307, 308, 309, 310, 311, 312, 314, 315, 316, 317, 318, 319, 320, 321, 322, 323, 324, 325, 326, 327, 328, 329, 330, 332, 333, 335, 336, 337, 338, 339, 340, 341, 342, 343, 344, 345, 346, 347, 348, 349, 350, 351, 352, 353, 354, 355, 356, 357, 358, 359, 360, 361, 362, 363, 364, 365, 366, 367, 368, 369, 371, 372, 374, 375, 376, 378, 379, 380, 381, 383, 385, 386, 388, 389, 390, 392, 394, 395, 396, 397, 398, 399, 400, 402, 403, 405, 407, 408, 409, 410, 411, 413, 414, 415, 416, 417, 419, 420, 421, 422, 423, 424, 425, 426, 427, 428, 431, 432, 434, 435, 436, 437, 438, 439, 440, 441, 444, 445, 446, 447, 448, 449, 450, 451, 452, 453, 454, 455, 456, 457, 458, 459, 460, 461, 462, 463, 465, 466, 467, 468, 470, 472, 473, 474, 475, 476, 477, 478, 480, 481, 482, 483, 484, 485, 486, 487, 488, 489, 490, 492, 493, 495, 497, 498, 499, 500, 501, 502, 503, 506, 507, 509, 510, 511, 512, 513, 514, 516, 517, 518, 519, 520, 521
-5000
-35 - proc, var
-assign p; variable v;
-Select p such that Modifies(p, v)
-100,104,105,106,11,110,111,118,127,128,132,135,138,139,14,140,141,142,143,148,15,150,152,154,155,157,158,16,166,167,168,171,172,175,176,180,182,184,19,192,193,194,195,2,200,206,207,208,21,210,213,214,216,217,22,221,222,223,224,226,229,236,237,239,240,242,245,246,248,249,25,251,257,259,26,261,262,264,265,267,269,27,271,273,275,278,28,286,287,288,289,292,294,297,30,301,306,312,314,315,317,318,319,322,325,328,33,332,333,337,338,339,341,344,345,346,35,353,354,356,357,358,36,361,363,367,369,38,380,385,39,397,4,40,400,408,409,41,410,411,414,415,42,420,421,428,43,444,446,447,448,450,455,456,457,458,463,468,470,474,475,477,48,481,488,493,497,5,50,500,502,503,507,509,51,511,514,517,519,520,521,53,54,55,58,61,64,68,69,73,74,75,77,78,79,8,82,83,84,85,87,9,90,94,95,97,99
-5000
-36 - call, var
-call c; variable v;
-Select <c.procName, v.varName> such that Modifies(c, v)
-Animal Kn17e,Animal animal,Animal ardent,Animal assign,Animal beAr,Animal black,Animal blue,Animal blue2,Animal call,Animal cat,Animal dog,Animal duck,Animal fox,Animal frog,Animal green,Animal green1,Animal green3,Animal grey,Animal guru,Animal if,Animal jessie,Animal lesion,Animal lizArd,Animal melody,Animal mouse,Animal orange,Animal pardon,Animal print,Animal procedure,Animal progline,Animal purple,Animal raBBit,Animal read,Animal red,Animal red1,Animal red2,Animal rice,Animal spring,Animal teacup0,Animal then,Animal white,Animal x,Animal y,Animal yellow,Animal z,animal Kn17e,animal animal,animal ardent,animal assign,animal beAr,animal black,animal blue,animal blue2,animal call,animal cat,animal chicken,animal dog,animal duck,animal fox,animal frog,animal green,animal green1,animal green3,animal grey,animal guru,animal horse,animal if,animal jessie,animal lesion,animal lizArd,animal melody,animal mouse,animal nita,animal orange,animal pardon,animal print,animal procedure,animal progline,animal purple,animal raBBit,animal racc00n,animal read,animal red,animal red1,animal red2,animal rice,animal spring,animal teacup0,animal then,animal white,animal x,animal y,animal yellow,animal z,assign Kn17e,assign ardent,assign assign,assign black,assign blue,assign blue2,assign call,assign green,assign green1,assign grey,assign guru,assign if,assign jessie,assign lesion,assign melody,assign orange,assign pardon,assign print,assign procedure,assign progline,assign purple,assign raBBit,assign read,assign red,assign red1,assign red2,assign rice,assign spring,assign teacup0,assign then,assign white,assign x,assign y,assign yellow,assign z,black Kn17e,black ardent,black assign,black black,black blue,black blue2,black call,black chi11i,black chickenRice,black green,black green1,black grey,black guru,black if,black jessie,black lesion,black orange,black pardon,black print,black progline,black purple,black read,black red,black red1,black red2,black rice,black spring,black statement,black then,black white,black x,black yellow,black z,call call,call procedure,colors Kn17e,colors assign,colors black,colors blue,colors blue2,colors call,colors green,colors green1,colors grey,colors if,colors lesion,colors print,colors progline,colors purple,colors read,colors red,colors red1,colors red2,colors rice,colors spring,colors then,colors white,colors x,colors yellow,colors z,cube Kn17e,cube ardent,cube call,cube guru,cube if,cube lesion,cube melody,cube pardon,cube raBBit,cube read,cube teacup0,cube x,cube yellow,cube z,fox brown,fox elprimo,fox lesion,lAst Kn17e,lAst assign,lAst black,lAst blue,lAst blue2,lAst call,lAst green,lAst green1,lAst grey,lAst if,lAst lesion,lAst orange,lAst print,lAst procedure,lAst progline,lAst purple,lAst read,lAst red,lAst red1,lAst red2,lAst rice,lAst spring,lAst then,lAst white,lAst x,lAst y,lAst yellow,lAst z,month orange,month print,month procedure,month progline,month purple,month yellow,obj3ct Kn17e,obj3ct assign,obj3ct black,obj3ct blue,obj3ct blue2,obj3ct call,obj3ct green,obj3ct green1,obj3ct grey,obj3ct if,obj3ct lesion,obj3ct money,obj3ct print,obj3ct progline,obj3ct purple,obj3ct read,obj3ct red,obj3ct red1,obj3ct red2,obj3ct rice,obj3ct sci333ors,obj3ct spring,obj3ct then,obj3ct white,obj3ct x,obj3ct yellow,obj3ct z,p1 Kn17e,p1 assign,p1 black,p1 blue,p1 blue2,p1 call,p1 green,p1 green1,p1 grey,p1 if,p1 lesion,p1 print,p1 progline,p1 purple,p1 read,p1 red,p1 red1,p1 red2,p1 rice,p1 spring,p1 then,p1 white,p1 x,p1 yellow,p1 z,p11 gold,p17 Kn17e,p17 assign,p17 black,p17 blue,p17 blue2,p17 call,p17 chickenRice,p17 green,p17 green1,p17 grey,p17 if,p17 lesion,p17 print,p17 progline,p17 purple,p17 read,p17 red,p17 red1,p17 red2,p17 rice,p17 spring,p17 then,p17 while,p17 white,p17 x,p17 yellow,p17 z,p18 Kn17e,p18 animal,p18 ardent,p18 assign,p18 black,p18 blue,p18 blue2,p18 brown,p18 call,p18 chi11i,p18 chickenRice,p18 dog,p18 elprimo,p18 frog,p18 green,p18 green1,p18 grey,p18 guru,p18 if,p18 jessie,p18 lesion,p18 lizArd,p18 money,p18 orange,p18 pardon,p18 print,p18 progline,p18 purple,p18 raBBit,p18 ramen,p18 read,p18 red,p18 red1,p18 red2,p18 rice,p18 sci333ors,p18 spring,p18 statement,p18 then,p18 while,p18 white,p18 x,p18 y,p18 yellow,p18 z,p2 print,p2 procedure,p2 progline,p2 purple,p21 Kn17e,p21 animal,p21 ardent,p21 assign,p21 black,p21 blue,p21 blue2,p21 brown,p21 call,p21 chi11i,p21 chickenRice,p21 dog,p21 frog,p21 green,p21 green1,p21 grey,p21 guru,p21 if,p21 jessie,p21 lesion,p21 lizArd,p21 money,p21 orange,p21 pardon,p21 print,p21 progline,p21 purple,p21 raBBit,p21 ramen,p21 read,p21 red,p21 red1,p21 red2,p21 rice,p21 sci333ors,p21 spring,p21 statement,p21 then,p21 while,p21 white,p21 x,p21 y,p21 yellow,p21 z,p22 Kn17e,p22 animal,p22 ardent,p22 assign,p22 black,p22 blue,p22 blue2,p22 brown,p22 call,p22 chi11i,p22 chickenRice,p22 dog,p22 frog,p22 green,p22 green1,p22 grey,p22 guru,p22 if,p22 jessie,p22 lesion,p22 lizArd,p22 money,p22 orange,p22 pardon,p22 print,p22 progline,p22 purple,p22 raBBit,p22 ramen,p22 read,p22 red,p22 red1,p22 red2,p22 rice,p22 sci333ors,p22 spring,p22 statement,p22 then,p22 while,p22 white,p22 x,p22 y,p22 yellow,p22 z,p24 Kn17e,p24 animal,p24 ardent,p24 assign,p24 black,p24 blue,p24 blue2,p24 brown,p24 call,p24 chi11i,p24 chickenRice,p24 dog,p24 frog,p24 green,p24 green1,p24 grey,p24 guru,p24 if,p24 jessie,p24 lesion,p24 lizArd,p24 money,p24 orange,p24 pardon,p24 print,p24 progline,p24 purple,p24 raBBit,p24 ramen,p24 read,p24 red,p24 red1,p24 red2,p24 rice,p24 sci333ors,p24 spring,p24 statement,p24 then,p24 while,p24 white,p24 x,p24 y,p24 yellow,p24 z,p25 chi11i,p25 progline,p26 Kn17e,p26 animal,p26 ardent,p26 assign,p26 black,p26 blue,p26 blue2,p26 brown,p26 call,p26 chi11i,p26 chickenRice,p26 dog,p26 frog,p26 green,p26 green1,p26 grey,p26 guru,p26 if,p26 jessie,p26 lesion,p26 lizArd,p26 money,p26 orange,p26 pardon,p26 print,p26 progline,p26 purple,p26 raBBit,p26 ramen,p26 read,p26 red,p26 red1,p26 red2,p26 rice,p26 sci333ors,p26 spring,p26 statement,p26 then,p26 while,p26 white,p26 x,p26 y,p26 yellow,p26 z,p27 Kn17e,p27 animal,p27 ardent,p27 assign,p27 black,p27 blue,p27 blue2,p27 brown,p27 call,p27 chi11i,p27 chickenRice,p27 dog,p27 frog,p27 green,p27 green1,p27 grey,p27 guru,p27 if,p27 jessie,p27 lesion,p27 lizArd,p27 money,p27 orange,p27 pardon,p27 print,p27 progline,p27 purple,p27 raBBit,p27 ramen,p27 read,p27 red,p27 red1,p27 red2,p27 rice,p27 sci333ors,p27 spring,p27 statement,p27 then,p27 while,p27 white,p27 x,p27 y,p27 yellow,p27 z,p28 green1,p28 x,p28 y,p28 z,p3 orange,p5 orange,p5 yellow,p6 orange,p7 orange,p9 Kn17e,p9 assign,p9 black,p9 blue,p9 blue2,p9 call,p9 chickenRice,p9 gold,p9 green,p9 green1,p9 grey,p9 if,p9 lesion,p9 print,p9 progline,p9 purple,p9 read,p9 red,p9 red1,p9 red2,p9 rice,p9 spring,p9 then,p9 while,p9 white,p9 x,p9 yellow,p9 z,pain Kn17e,pain assign,pain black,pain blue,pain blue2,pain call,pain green,pain green1,pain grey,pain if,pain jessie,pain lesion,pain orange,pain print,pain procedure,pain progline,pain purple,pain read,pain red,pain red1,pain red2,pain rice,pain spring,pain then,pain white,pain x,pain y,pain yellow,pain z,purple Kn17e,purple assign,purple black,purple blue,purple blue2,purple call,purple green,purple green1,purple grey,purple if,purple lesion,purple orange,purple print,purple procedure,purple progline,purple purple,purple read,purple red,purple red1,purple red2,purple rice,purple spring,purple then,purple white,purple x,purple y,purple yellow,purple z,shikashi ardent,shikashi guru,shikashi pardon,shikashi z,simple Kn17e,simple call,simple if,simple read,simple yellow,something ardent,something guru,something lesion,something melody,something pardon,something teacup0,something x,something z,t0pUp Kn17e,t0pUp call,t0pUp if,t0pUp money,t0pUp read,t0pUp yellow,while orange
-5000
-37 - if, var
-if ifs; variable v;
-Select ifs such that Modifies(ifs, v)
-7, 17, 29, 32, 45, 46, 57, 63, 76, 86, 96, 109, 114, 115, 131, 146, 156, 173, 179, 197, 199, 204, 218, 227, 234, 247, 277, 284, 309, 310, 321, 327, 396, 416, 425, 426, 431, 438, 495, 512
-5000
-38 - while, v
-while w; variable variable;
-Select w such that Modifies(w, variable)
-10, 31, 37, 44, 47, 52, 59, 60, 62, 66, 91, 116, 124, 126, 129, 130, 134, 137, 153, 165, 178, 181, 188, 191, 198, 203, 205, 209, 238, 244, 255, 263, 266, 270, 282, 293, 308, 311, 316, 323, 324, 326, 330, 362, 379, 399, 417, 424, 427, 435, 436, 437, 454, 460, 461, 465, 467, 473, 476, 478, 482, 484, 486, 501, 513, 516
-5000
-39 - print, var
-print p; variable v;
-Select p such that Modifies(p, v)
-none
-5000
-40 - variable, var
-variable v; variable v1;
-Select v such that Modifies(v1, v)
-none
-5000
-41 - constant, var
-constant c; variable v;
-Select c such that Modifies(c,v)
-none
-5000
-42 - assign, read
-procedure pr; assign a; read r; if ifs; while w; variable v; constant c; print p; stmt s; prog_line pl;
-Select BOOLEAN such that Modifies(a, r)
-FALSE
-5000
-43 - if, while
-procedure pr; assign a; read r; if ifs; while w; variable v; constant c; print p; stmt s; prog_line pl;
-Select BOOLEAN such that Modifies(ifs, w)
-FALSE
-5000
-44 - variable, constant
-procedure pr; assign a; read r; if ifs; while w; variable v; constant c; print p; stmt s; prog_line pl;
-Select BOOLEAN such that Modifies(v, c)
-FALSE
-5000
-45 - call, print
-procedure pr; call call; assign a; read r; if ifs; while w; variable v; constant c; print p; stmt s; prog_line pl;
-Select call such that Modifies(call, p)
-none
-5000
-46 - stmt, prog_line
-procedure pr; assign a; read r; if ifs; while w; variable v; constant c; print p; stmt s; prog_line pl;
-Select BOOLEAN such that Modifies(s, pl)
-FALSE
 5000
