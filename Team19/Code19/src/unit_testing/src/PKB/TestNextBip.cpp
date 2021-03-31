@@ -622,7 +622,6 @@ TEST_CASE("getNextBipStar Test5") {
     REQUIRE(nextBip->getNextBipStar(13) == unordered_set<ProgLine>{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13});
 }
 
-
 //  procedure a {
 //  1    while (a > 1) {
 //  2        call b;
@@ -672,8 +671,6 @@ NextBip* setUpNextBipTest6() {
     PKB::procTable->storeProcStmt(2, 11, 15);
     PKB::procTable->storeProcStmt(3, 16, 16);
     PKB::procTable->storeProcStmt(4, 19, 19);
-
-
 
     ast::Stmt* stmtNodeStub = new StmtNodeStub(0);
     PKB::stmtTable->storeStmt(1, stmtNodeStub, WHILE_);
@@ -728,15 +725,12 @@ NextBip* setUpNextBipTest6() {
     PKB::next->storeNext(17, 18);
     PKB::next->storeNext(18, 16);
 
-
-
     PKB::next->populateNextStar();
     PKB::calls->processCalls();
     NextBip* nextBip = new NextBip();
     nextBip->populateNextBipAndNextBipStar();
     return nextBip;
 }
-
 
 TEST_CASE("getNextBip Test6") {
     NextBip* nextBip = setUpNextBipTest6();
