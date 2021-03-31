@@ -118,7 +118,11 @@ void setupAffectsT() {
     PKB::next->storeNext(9,11);
     PKB::next->storeNext(10,11);
 
-    PKB::populatePKB();
+    PKB::follows->populateFollowsStar();
+    PKB::parent->populateParentStar();
+    PKB::next->populateNextStar();
+    PKB::calls->processCalls();
+    PKB::affects->populateAffectsAndAffectsStar();
 }
 
 //    procedure r {
@@ -144,7 +148,11 @@ void setupAffectsT2() {
 
     PKB::next->storeNext(1,2);
 
-    PKB::populatePKB();
+    PKB::follows->populateFollowsStar();
+    PKB::parent->populateParentStar();
+    PKB::next->populateNextStar();
+    PKB::calls->processCalls();
+    PKB::affects->populateAffectsAndAffectsStar();
 }
 
 //    procedure s {
@@ -214,7 +222,11 @@ void setupAffectsT3() {
     PKB::next->storeNext(4,5);
     PKB::next->storeNext(5,2);
 
-    PKB::populatePKB();
+    PKB::follows->populateFollowsStar();
+    PKB::parent->populateParentStar();
+    PKB::next->populateNextStar();
+    PKB::calls->processCalls();
+    PKB::affects->populateAffectsAndAffectsStar();
 }
 
 TEST_CASE("AffectsTEvaluator evaluate known known") {

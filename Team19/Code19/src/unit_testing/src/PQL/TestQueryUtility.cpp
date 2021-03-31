@@ -280,6 +280,7 @@ void setupPKB2() {
     ast::Stmt* stmtNodeStub = new StmtNodeStub(0);
 
     PKB::procTable->storeProcName("sumDigits"); // 0
+    PKB::procTable->storeProcStmt(0, 1, 7);
 
     PKB::varTable->storeVarName("number"); // 0
     PKB::varTable->storeVarName("sum"); // 1
