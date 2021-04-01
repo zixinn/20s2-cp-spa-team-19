@@ -542,3 +542,26 @@ TEST_CASE("process valid query with with clause") {
     expected = Query(declarations3, {"a"}, { {c1, c2, c3, c4} }, true, true);
     REQUIRE(actual == expected);
 }
+
+TEST_CASE("process query with bip clause") {
+    QueryPreprocessor qp = QueryPreprocessor();
+    PKB::nextBip->setRunNextBip(true);
+    // PKB::affectsBip->setRunAffectsBip(true);
+
+    string query = "prog_line n;\nSelect n such that NextBip(2, n)";
+    Query actual = qp.process(query);
+    Clause c1 = Clause("NextBip", { "2", "n" }, {"n"}, 1);
+    unordered_map<string, string> declarations;
+    declarations["n"] = "prog_line";
+    Query expected = Query(declarations, {"n"}, { {c1} }, true, true);
+    REQUIRE(actual == expected);
+
+    /*query = "assign a1, a2;\nSelect <a1, a2> such that AffectsBip*(a1, a2)";
+    actual = qp.process(query);
+    c1 = Clause("AffectsBip*", { "a1", "a2" }, {"a1", "a2"}, 0);
+    unordered_map<string, string> declarations1;
+    declarations1["a1"] = "assign";
+    declarations1["a2"] = "assign";
+    expected = Query(declarations1, {"a1", "a2"}, { {c1} }, true, true);
+    REQUIRE(actual == expected);*/
+}
