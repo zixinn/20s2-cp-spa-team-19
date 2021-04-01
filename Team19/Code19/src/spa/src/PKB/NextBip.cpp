@@ -131,13 +131,15 @@ int NextBip::getNextBipStarSize() {
 
 
 void NextBip::populateNextBipAndNextBipStar() {
-    populateNextWithDummy();
-    populateNextBip();
-    populateReverseNextBip();
+    if (runNextBip) {
+        populateNextWithDummy();
+        populateNextBip();
+        populateReverseNextBip();
 
-    populateNextBipWithBranchStack();
-    populateNextBipStar();
-    populateReverseNextBipStar();
+        populateNextBipWithBranchStack();
+        populateNextBipStar();
+        populateReverseNextBipStar();
+    }
 }
 
 void NextBip::populateNextWithDummy() {
@@ -375,4 +377,8 @@ void NextBip::populateReverseNextBipStar() {
             }
         }
     }
+}
+
+void NextBip::setRunNextBip(bool runNextBip) {
+    this->runNextBip = runNextBip;
 }

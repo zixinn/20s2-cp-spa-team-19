@@ -139,11 +139,8 @@ void setUpAffectsTest() {
     PKB::modifies->storeProcModifies(2,4);
     PKB::modifies->storeProcModifies(2,5);
 
-    PKB::follows->populateFollowsStar();
-    PKB::parent->populateParentStar();
-    PKB::next->populateNextStar();
-    PKB::calls->processCalls();
-    PKB::affects->populateAffectsAndAffectsStar();
+    PKB::nextBip->setRunNextBip(false);
+    PKB::populatePKB();
 }
 
 TEST_CASE("isAffects Test") {
@@ -418,11 +415,8 @@ void setUpAffectsTest2() {
     PKB::modifies->storeProcModifies(2,2);
     PKB::modifies->storeProcModifies(2,4);
 
-    PKB::follows->populateFollowsStar();
-    PKB::parent->populateParentStar();
-    PKB::next->populateNextStar();
-    PKB::calls->processCalls();
-    PKB::affects->populateAffectsAndAffectsStar();
+    PKB::nextBip->setRunNextBip(false);
+    PKB::populatePKB();
 }
 
 TEST_CASE("isAffects Test2") {
@@ -655,11 +649,8 @@ void setUpAffectsTest3() {
     PKB::modifies->storeProcModifies(2,2);
     PKB::modifies->storeProcModifies(3,3);
 
-    PKB::follows->populateFollowsStar();
-    PKB::parent->populateParentStar();
-    PKB::next->populateNextStar();
-    PKB::calls->processCalls();
-    PKB::affects->populateAffectsAndAffectsStar();
+    PKB::nextBip->setRunNextBip(false);
+    PKB::populatePKB();
 }
 
 TEST_CASE("isAffects Test3") {
@@ -942,11 +933,8 @@ void setUpAffectsTest4() {
     PKB::modifies->storeProcModifies(2,2);
     PKB::modifies->storeProcModifies(3,3);
 
-    PKB::follows->populateFollowsStar();
-    PKB::parent->populateParentStar();
-    PKB::next->populateNextStar();
-    PKB::calls->processCalls();
-    PKB::affects->populateAffectsAndAffectsStar();
+    PKB::nextBip->setRunNextBip(false);
+    PKB::populatePKB();
 }
 
 TEST_CASE("isAffects Test4") {
@@ -1086,11 +1074,8 @@ void setUpAffectsTest5() {
     PKB::modifies->storeStmtModifies(0,1);
     PKB::modifies->storeStmtModifies(0,2);
 
-    PKB::follows->populateFollowsStar();
-    PKB::parent->populateParentStar();
-    PKB::next->populateNextStar();
-    PKB::calls->processCalls();
-    PKB::affects->populateAffectsAndAffectsStar();
+    PKB::nextBip->setRunNextBip(false);
+    PKB::populatePKB();
 }
 
 TEST_CASE("getAffects Test5") {

@@ -46,6 +46,9 @@ public:
 
     void populateNextBipAndNextBipStar();
 
+    // to switch on/off population of NextBip and NextBip* relationship
+    void setRunNextBip(bool runNextBip);
+
 private:
     struct hash_pair {
         template <class T1, class T2>
@@ -116,4 +119,7 @@ private:
     void populateReverseNextBipStar();
 
     ProgLine findN(string s);
+
+    // switch to populate NextBip and NextBip*
+    bool runNextBip = true;
 };
