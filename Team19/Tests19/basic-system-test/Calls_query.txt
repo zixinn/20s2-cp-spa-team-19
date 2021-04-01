@@ -365,17 +365,17 @@ Honeysuckle, something
 5000
 74 - Calls(IDENT, p-syn)
 procedure p;
-Select p such that Calls("Honeysuckle", p);
+Select p such that Calls("Honeysuckle", p)
 something, shikashi
 5000
 75 - Calls(IDENT, p-syn)
 procedure p;
-Select p such that Calls("something", p);
+Select p such that Calls("something", p)
 shikashi
 5000
 76 - Calls(IDENT, p-syn)
 procedure p;
-Select p such that Calls("shikashi", p);
+Select p such that Calls("shikashi", p)
 none
 5000
 77 - Calls(IDENT, _)
@@ -453,30 +453,230 @@ procedure p;
 Select BOOLEAN such that Calls("shikashi", "shikashi")
 FALSE
 5000
-
-
-
-
-7 - Calls
-procedure p;
-Select p such that Calls("Honeysuckle", p)
-something, shikashi
+92 - Calls*(p-syn, p-syn)
+procedure p1, p2;
+Select <p1, p2> such that Calls*(p1, p2)
+Honeysuckle something, Honeysuckle shikashi, something shikashi
 5000
-8 - Calls
+93 - Calls*(p-syn, _)
 procedure p;
-Select p such that Calls("shikashi", p)
+Select p such that Calls*(p, _)
+Honeysuckle, something
+5000
+94 - Calls*(p-syn, IDENT)
+procedure p;
+Select p such that Calls*(p, "Honeysuckle")
 none
 5000
-9 - Calls *
+95 - Calls*(p-syn, IDENT)
+procedure p;
+Select p such that Calls*(p, "something")
+Honeysuckle
+5000
+96 - Calls*(p-syn, IDENT)
+procedure p;
+Select p such that Calls*(p, "shikashi")
+Honeysuckle, something
+5000
+97 - Calls*(IDENT, p-syn)
 procedure p;
 Select p such that Calls*("Honeysuckle", p)
 something, shikashi
 5000
-10 - Calls *
+98 - Calls*(IDENT, p-syn)
+procedure p;
+Select p such that Calls*("something", p)
+shikashi
+5000
+99 - Calls*(IDENT, p-syn)
 procedure p;
 Select p such that Calls*("shikashi", p)
 none
 5000
+100 - Calls*(IDENT, _)
+procedure p;
+Select p such that Calls*("Honeysuckle", _)
+Honeysuckle, something, shikashi
+5000
+101 - Calls*(IDENT, _)
+procedure p;
+Select BOOLEAN such that Calls*("Honeysuckle", _)
+TRUE
+5000
+102 - Calls*(IDENT, _)
+procedure p;
+Select p such that Calls*("something", _)
+Honeysuckle, something, shikashi
+5000
+103 - Calls*(IDENT, _)
+procedure p;
+Select BOOLEAN such that Calls*("Honeysuckle", _)
+TRUE
+5000
+104 - Calls*(IDENT, _)
+procedure p;
+Select p such that Calls*("shikashi", _)
+none
+5000
+105 - Calls*(IDENT, _) - FALSE
+procedure p;
+Select BOOLEAN such that Calls*("shikashi", _)
+FALSE
+5000
+106 - Calls*(IDENT, IDENT)
+procedure p;
+Select BOOLEAN such that Calls*("Honeysuckle", "Honeysuckle")
+FALSE
+5000
+107 - Calls*(IDENT, IDENT)
+procedure p;
+Select BOOLEAN such that Calls*("Honeysuckle", "something")
+TRUE
+5000
+108 - Calls*(IDENT, IDENT)
+procedure p;
+Select BOOLEAN such that Calls*("Honeysuckle", "shikashi")
+TRUE
+5000
+109 - Calls*(IDENT, IDENT)
+procedure p;
+Select BOOLEAN such that Calls*("something", "Honeysuckle")
+FALSE
+5000
+110 - Calls*(IDENT, IDENT)
+procedure p;
+Select BOOLEAN such that Calls*("something", "something")
+FALSE
+5000
+111 - Calls*(IDENT, IDENT)
+procedure p;
+Select BOOLEAN such that Calls*("something", "shikashi")
+TRUE
+5000
+112 - Calls*(IDENT, IDENT)
+procedure p;
+Select BOOLEAN such that Calls*("shikashi", "Honeysuckle")
+FALSE
+5000
+113 - Calls*(IDENT, IDENT)
+procedure p;
+Select BOOLEAN such that Calls*("shikashi", "something")
+FALSE
+5000
+114 - Calls*(IDENT, IDENT)
+procedure p;
+Select BOOLEAN such that Calls*("shikashi", "shikashi")
+FALSE
+5000
+115 - Calls(IDENT, p-syn) and Calls(IDENT, p-syn)
+procedure p;
+Select p such that Calls("Honeysuckle", p) and Calls("something", p)
+shikashi
+5000
+116 - Calls(IDENT, p-syn) and Calls(p-syn, IDENT)
+procedure p;
+Select p such that Calls("Honeysuckle", p) and Calls(p, "shikashi")
+something
+5000
+117 - Calls(p-syn, IDENT) and Calls(p-syn, IDENT)
+procedure p;
+Select p such that Calls(p, "shikashi") and Calls(p, "something")
+Honeysuckle
+5000
+118 - Calls(p-syn, IDENT) and Calls(IDENT, p-syn)
+procedure p;
+Select p such that Calls(p, "shikashi") and Calls("Honeysuckle", p)
+something
+5000
+119 - Calls(IDENT, p-syn) and Calls(p-syn, p-syn)
+procedure p1, p2;
+Select <p1, p2> such that Calls("Honeysuckle", p1) and Calls(p1, p2)
+something shikashi
+5000
+120 - Calls(p-syn, IDENT) and Calls(p-syn, p-syn)
+procedure p1, p2;
+Select <p1, p2> such that Calls(p1, "shikashi") and Calls(p1, p2)
+Honeysuckle something, Honeysuckle shikashi, something shikashi
+5000
+121 - Calls(p-syn, p-syn) and Calls(IDENT, p-syn)
+procedure p1, p2;
+Select <p1, p2> such that Calls(p1, p2) and Calls("Honeysuckle", p1)
+something shikashi
+5000
+122 - Calls(p-syn, p-syn) and Calls(p-syn, IDENT)
+procedure p1, p2;
+Select <p1, p2> such that Calls(p1, p2) and Calls(p1, "shikashi") 
+Honeysuckle something, Honeysuckle shikashi, something shikashi
+5000
+123 - Calls(p-syn, p-syn) and Calls(p-syn, p-syn)
+procedure p, q, r;
+Select q such that Calls(p, q) and Calls(q, r)
+something
+5000
+124 - Calls(p-syn, p-syn) with p.procName
+procedure p, q;
+Select p such that Calls(p, q) with p.procName = "Honeysuckle"
+Honeysuckle
+5000
+125 - Calls(p-syn, p-syn) with p.procName
+procedure p, q;
+Select p such that Calls(p, q) with "Honeysuckle" = p.procName
+Honeysuckle
+5000
+126 - Call with select procName
+procedure p, q;
+Select p.procName such that Calls(p, q)
+Honeysuckle, something
+5000
+127 - Call with stmt# with clause
+call c;
+Select c with c.stmt# = 11
+11
+5000
+128 - Call with stmt# with clause, no such call
+call c;
+Select c with c.stmt# = 17
+none
+5000
+129 - Call with stmt# with clause, and
+stmt s; call c;
+Select s with s.stmt# = 11 and c.procName = "something"
+11
+5000
+130 - Call with stmt# with clause, and
+stmt s; call c;
+Select s with s.stmt# = 18 and c.procName = "something"
+18
+5000
+131 - Call with stmt# with clause, such that, and
+procedure p, q, r;
+Select q such that Calls(p, q) and Calls(q, r) with q.procName = "shikashi"
+none
+5000
+132 - Call with stmt# with clause, such that, and
+procedure p, q, r;
+Select q such that Calls(p, q) and Calls(q, r) with q.procName = "something"
+something
+5000
+133 - Select tuple for Call with such that, and
+procedure p, q, r;
+Select <p,r> such that Calls(p, q) and Calls(q, r)
+Honeysuckle shikashi
+5000
+134 - Select tuple for Call with procName with clause, such that, and
+procedure p, q, r;
+Select <p,q,r> such that Calls(p, q) and Calls(q, r) with q.procName = "something"
+Honeysuckle something shikashi
+5000
+135 - While statement that contains a call statement
+while w; call c;
+Select w pattern w(_, _) such that Parent(w, c)
+none
+5000
+
+
+// Modifies(stmt#, v-syn)
+// Uses(stmt#, v-syn)
 11 - Call Statement (Modifies)
 variable v;
 Select v such that Modifies(11, v)
@@ -523,80 +723,14 @@ Select v such that Modifies(p, v)
 teacup0, x, lesion, melody, z, ardent, guru, pardon
 5000
 20 - All procedures (Uses)
-variable v; procedure p;
+variable v; procedure p; 
 Select v such that Uses(p, v)
 something, y, teacup0, bluebell, lesion, coeur, cerveau, boro, guru, melody, maison, gossamer, x
 5000
-21 - Call And clauses
-procedure p;
-Select p such that Calls("Honeysuckle", p) and Calls(p, "shikashi")
-something
-5000
-22 - Call* And clauses
-procedure p;
-Select p such that Calls*("Honeysuckle", p) and Calls*(p, "shikashi")
-something
-5000
-23 - Call, And, all synonyms
-procedure p, q, r;
-Select q such that Calls(p, q) and Calls(q, r)
-something
-5000
-24 - Call with procName with clause
-procedure p, q;
-Select p such that Calls(p, q) with p.procName = "Honeysuckle"
-Honeysuckle
-5000
-25 - Call with select procName
-procedure p, q;
-Select p.procName such that Calls(p, q)
-Honeysuckle, something
-5000
-26 - Call with stmt# with clause
-call c;
-Select c with c.stmt# = 11
-11
-5000
-27 - Call with stmt# with clause, no such call
-call c;
-Select c with c.stmt# = 17
-none
-5000
-28 - Call with stmt# with clause, and
-stmt s; call c;
-Select s with s.stmt# = 11 and c.procName = "something"
-11
-5000
-28 - Call with stmt# with clause, and
-stmt s; call c;
-Select s with s.stmt# = 18 and c.procName = "something"
-18
-5000
-29 - Call with stmt# with clause, such that, and
-procedure p, q, r;
-Select q such that Calls(p, q) and Calls(q, r) with q.procName = "shikashi"
-none
-5000
-30 - Call with stmt# with clause, such that, and
-procedure p, q, r;
-Select q such that Calls(p, q) and Calls(q, r) with q.procName = "something"
-something
-5000
-31 - Select tuple for Call with such that, and
-procedure p, q, r;
-Select <p,r> such that Calls(p, q) and Calls(q, r)
-Honeysuckle shikashi
-5000
-32 - Select tuple for Call with procName with clause, such that, and
-procedure p, q, r;
-Select <p,q,r> such that Calls(p, q) and Calls(q, r) with q.procName = "something"
-Honeysuckle something shikashi
-5000
-33 - While statement that contains a call statement
-while w; call c;
-Select w pattern w(_, _) such that Parent(w, c)
-none
-5000
+
+
+
+
 
 
 
