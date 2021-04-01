@@ -49,6 +49,9 @@ public:
     // to switch on/off population of NextBip and NextBip* relationship
     void setRunNextBip(bool runNextBip);
 
+    // returns whether we are populating NextBip and NextBip* relationship
+    bool getRunNextBip();
+
 private:
     struct hash_pair {
         template <class T1, class T2>

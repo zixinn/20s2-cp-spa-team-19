@@ -382,3 +382,7 @@ void NextBip::populateReverseNextBipStar() {
 void NextBip::setRunNextBip(bool runNextBip) {
     this->runNextBip = runNextBip;
 }
+
+bool NextBip::getRunNextBip() {
+    return runNextBip;
+}
