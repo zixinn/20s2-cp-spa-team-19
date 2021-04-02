@@ -14,7 +14,7 @@ TEST_CASE("Simple - Parser-DE Test") {
      1   x = 1 + 2 * a;
       }
      */
-    STRING input = "procedure star {x = 1 + 2 * a;} ";
+    string input = "procedure star {x = 1 + 2 * a;} ";
     std::vector<sp::Token> actual_tok;
     std::vector<sp::Token*> tok_ptrs;
     ParserUtils::StringToTokenPtrs(input, actual_tok, tok_ptrs);
@@ -58,7 +58,7 @@ TEST_CASE("Complicated Expression - Parser-DE Test") {
       1   x = (1) + (2 * ((5 * 0 * 2 + 5 / 1) * a) / 20 * (1097 - pollution));
      }
      */
-    STRING input = "procedure star {x = (1) + (2 * ((5 * 0 * 2 + 5 / 1) * a) / 20 * (1097 - pollution));} ";
+    string input = "procedure star {x = (1) + (2 * ((5 * 0 * 2 + 5 / 1) * a) / 20 * (1097 - pollution));} ";
     std::vector<sp::Token> actual_tok;
     std::vector<sp::Token*> tok_ptrs;
     ParserUtils::StringToTokenPtrs(input, actual_tok, tok_ptrs);
@@ -120,7 +120,7 @@ TEST_CASE("Nested while-if test - Parser-DE Test") {
      8   read s;
       }
      */
-    STRING input = "procedure star {x = 1 + 2 * a; while (v > 1) {x = 2; if (v==1)then{c = a;}else{b = 2;}} print p; read s;} ";
+    string input = "procedure star {x = 1 + 2 * a; while (v > 1) {x = 2; if (v==1)then{c = a;}else{b = 2;}} print p; read s;} ";
     std::vector<sp::Token> actual_tok;
     std::vector<sp::Token*> tok_ptrs;
     ParserUtils::StringToTokenPtrs(input, actual_tok, tok_ptrs);
@@ -254,7 +254,7 @@ TEST_CASE("Triple-nested while test - Parser-DE Test") {
      9   read s;
       }
      */
-    STRING input = "procedure ToTheMoon {x = 1 + 2 * a; while (v > 1) {x = 2; while (v==1) {c = a; while (t != 5000) {b = 2;}}} print p; read s;} ";
+    string input = "procedure ToTheMoon {x = 1 + 2 * a; while (v > 1) {x = 2; while (v==1) {c = a; while (t != 5000) {b = 2;}}} print p; read s;} ";
     std::vector<sp::Token> actual_tok;
     std::vector<sp::Token*> tok_ptrs;
     ParserUtils::StringToTokenPtrs(input, actual_tok, tok_ptrs);
@@ -405,7 +405,7 @@ TEST_CASE("Triple-nested if test - Parser-DE Test") {
     10   read s;
       }
      */
-    STRING input = "procedure ToTheMoon {x = 1 + 2 * a; if (v > 1) then {x = 2;} else { "
+    string input = "procedure ToTheMoon {x = 1 + 2 * a; if (v > 1) then {x = 2;} else { "
                    "if (v==1) then {c = a;} else {"
                    "if (t != 5000) then {b = 2;} else {xor = (5 * 2) + 7;}}} print p; read s;} ";
     std::vector<sp::Token> actual_tok;
@@ -556,7 +556,7 @@ TEST_CASE("Triple-nested if test - Parser-DE Test") {
 }
 
 TEST_CASE("Syntactic Errors 1 - Parser-DE Test") {
-    vector<STRING> inputs{
+    vector<string> inputs{
             // Syntax Error
             "procedure star { x = 1 + 2 * a; while (v > 1) { x = 2 if(v==1)then{c = a;}else{ b = 2;}} print p; read s; } ",
             // Invalid SIMPLE
@@ -574,7 +574,7 @@ TEST_CASE("Syntactic Errors 1 - Parser-DE Test") {
     };
 
     for (int i = 0; i < inputs.size(); i++) {
-        STRING input = inputs[i];
+        string input = inputs[i];
         std::vector<sp::Token> actual_tok;
         std::vector<sp::Token*> tok_ptrs;
         ParserUtils::StringToTokenPtrs(input, actual_tok, tok_ptrs);
@@ -585,7 +585,7 @@ TEST_CASE("Syntactic Errors 1 - Parser-DE Test") {
 }
 
 TEST_CASE("Syntactic Errors 2 [Naming] - Parser-DE Test") {
-    vector<STRING> inputs{
+    vector<string> inputs{
             // Invalid VarName - digit
             "procedure while { 4head = (1+2) * 3; }",
             // Invalid ProcName - comma
@@ -593,7 +593,7 @@ TEST_CASE("Syntactic Errors 2 [Naming] - Parser-DE Test") {
     };
 
     for (int i = 0; i < inputs.size(); i++) {
-        STRING input = inputs[i];
+        string input = inputs[i];
         std::vector<sp::Token> actual_tok;
         std::vector<sp::Token*> tok_ptrs;
         REQUIRE_THROWS(ParserUtils::StringToTokenPtrs(input, actual_tok, tok_ptrs)); // Lexer complains first
@@ -609,7 +609,7 @@ TEST_CASE("Simple Call - Parser-DE Test") {
      2   x = a + 1;
     }
      */
-    STRING input = "procedure star { call call; } procedure call { x = a + 1; }";
+    string input = "procedure star { call call; } procedure call { x = a + 1; }";
     std::vector<sp::Token> actual_tok;
     std::vector<sp::Token*> tok_ptrs;
     ParserUtils::StringToTokenPtrs(input, actual_tok, tok_ptrs);
@@ -697,7 +697,7 @@ TEST_CASE("Medium Call - Parser-DE Test") {
     11    m = d + 4;
     }
      */
-    STRING input = "procedure procA { call procB; } procedure procB { x = a + 1; if(v > 1) then { call procC; } else { while (w > 1) { call procD; } } } procedure procC { y = b + 2; } procedure procD { z = c + 3; while (t != 5) { call procE; } } procedure procE { m = d + 4; }";
+    string input = "procedure procA { call procB; } procedure procB { x = a + 1; if(v > 1) then { call procC; } else { while (w > 1) { call procD; } } } procedure procC { y = b + 2; } procedure procD { z = c + 3; while (t != 5) { call procE; } } procedure procE { m = d + 4; }";
     std::vector<sp::Token> actual_tok;
     std::vector<sp::Token*> tok_ptrs;
     ParserUtils::StringToTokenPtrs(input, actual_tok, tok_ptrs);
