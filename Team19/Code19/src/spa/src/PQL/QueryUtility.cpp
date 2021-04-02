@@ -215,6 +215,20 @@ void project(unordered_set<string> toProject, unordered_map<string, vector<int>>
 
 int getSize(Clause clause, unordered_map<string, string>& declarations) {
     string rel = clause.getRel();
+    if (PKB::nextBip->getRunNextBip()) {
+        if (rel == "NextBip") {
+            return PKB::nextBip->getNextBipSize();
+        } else if (rel == "NextBip*") {
+            return PKB::nextBip->getNextBipStarSize();
+        }
+    }
+    /*if (PKB::affectsBip->getRunNextBip()) {
+        if (rel == "AffectsBip") {
+            return PKB::affectsBip->getAffectsBipSize();
+        } else if (rel == "AffectsBip*") {
+            return PKB::affectsBip->getAffectsBipStarSize();
+        }
+    }*/
     if (rel == "Follows") {
         return PKB::follows->getFollowsSize();
     } else if (rel == "Follows*") {
