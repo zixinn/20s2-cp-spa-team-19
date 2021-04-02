@@ -1,5 +1,4 @@
 #include "SP/DesignExtractor.h"
-#include "SP/Token.h"
 
 #include "PKB/PKB.h"
 #include "AST/Index.h"
