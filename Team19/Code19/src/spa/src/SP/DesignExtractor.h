@@ -34,9 +34,6 @@ public:
     static void storeNewRead(StmtNum stmtNum, STRING variableName, ReadStmt* AST);
     // Stores a new Print into the PKB.
     static void storeNewPrint(StmtNum stmtNum, STRING variableName, PrintStmt* AST);
-    // Finds or adds the entry of the callerName in the NestedCallsMap and append procedureName to the calledProceduresList of the entry.
-    // Returns true (success) if successful; otherwise, returns false if this is a recursive call.
-    static bool storeNewCall(StmtNum stmtNum, STRING callerName, STRING procedureName, CallStmt* AST);
 
     // Informs DE that end of file (EOF) has been reached.
     // DE will call PKB functions for the calculation of Follows*, Parent*,
@@ -52,6 +49,11 @@ public:
         static T stackPop(vector<T> &stack);
         static void stackPush(vector<T> &stack, T entry);
     };
+
+    // It2/3 [Move upwards after everything is done]
+    // Finds or adds the entry of the callerName in the NestedCallsMap and append procedureName to the calledProceduresList of the entry.
+    // Returns true (success) if successful; otherwise, returns false if this is a recursive call.
+    static bool storeNewCall(StmtNum stmtNum, STRING callerName, STRING procedureName, CallStmt* AST);
 
 private:
     // For bookkeeping

@@ -4,7 +4,7 @@
 
 // AST representing a Program
 namespace ast {
-    class Program
+    class Program //: public Node
     {
         Proc* main;
         std::vector<Proc*> procedures; // default initialization is called when not mentioned in constructor

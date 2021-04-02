@@ -10,77 +10,78 @@
 
 using namespace std;
 
-class LexerStub {
-    const std::vector<sp::Token*> tokens;
-    int index = 0;
+//class Lexer {};
+
+//class LexerStub : public Lexer {
+
+class LexerStub { //: public Lexer {
+	const std::vector<sp::Token*> tokens;
+	int index = 0;
 public:
-    LexerStub(std::vector<sp::Token*> tokens) :tokens{ tokens } {};
-    sp::Token* nextToken();
+	LexerStub(std::vector<sp::Token*> tokens) :tokens{ tokens } {};
+	//static void LexerStubAdapt(std::vector<sp::Token>& tokens, std::vector<sp::Token*>& out);
+	sp::Token* nextToken();
 };
 
-// Parses SIMPLE source code into an AST
-// This includes validating the SIMPLE source, checking for recursive/cyclic procedural calls
 class Parser {
-    LexerStub* l_ptr;
-    sp::Token* currToken = nullptr; // "curr_peek"
-    sp::Token* peekToken = nullptr; //"init_peek";
-    int pc = 1;
+	LexerStub* l_ptr;
+	sp::Token* currToken = nullptr; // "curr_peek"
+	sp::Token* peekToken = nullptr; //"init_peek";
+	int pc = 1;
 public:
-    Parser(LexerStub* l_ptr);
-    void nextToken();
-    // Functions to parse statements and program design entities
-    ast::VarName* parseVarName();
-    ast::ProcName* parseProcName();
-    ast::ConstVal* parseConstVal();
-    ast::StmtLst* parseStmtLst();
-    ast::Stmt* parseStmt();
-    ast::AssignStmt* parseAssignStmt();
-    ast::CallStmt* parseCallStmt();
-    ast::ReadStmt* parseReadStmt();
-    ast::PrintStmt* parsePrintStmt();
-    ast::Proc* parseProc();
-    ast::Program* parseProgram();
-    ast::Expr* parseExpr(int precedence);
-    ast::CondExpr* parseCondExpr(int precedence);
-    ast::WhileStmt* parseWhileStmt();
-    ast::IfStmt* parseIfStmt();
+	Parser(LexerStub* l_ptr); 
+	void nextToken();
+	ast::VarName* parseVarName();
+	ast::ProcName* parseProcName();
+	ast::ConstVal* parseConstVal();
+	ast::StmtLst* parseStmtLst();
+	ast::Stmt* parseStmt();
+	ast::AssignStmt* parseAssignStmt();
+	ast::CallStmt* parseCallStmt();
+	ast::ReadStmt* parseReadStmt();
+	ast::PrintStmt* parsePrintStmt();
+	ast::Proc* parseProc();
+	ast::Program* parseProgram();
+	ast::Expr* parseExpr(int precedence);
+	ast::CondExpr* parseCondExpr(int precedence);
+	ast::WhileStmt* parseWhileStmt();
+	ast::IfStmt* parseIfStmt();
 
-    //parse the whole thing including calls to DE
-    //Return true if no error encountered, else false
-    bool parse();
+	//parse the whole thing including calls to DE
+	//Return true if no error encountered, else false
+	bool parse();
 
-    inline sp::Token* getCurrToken() { return currToken; };
-    static bool isKeyword(sp::Token* tok);
+	inline sp::Token* getCurrToken() { return currToken; };
+	static bool isKeyword(sp::Token* tok);
 
 private:
-    // Utility functions for Parsing
-    bool currTokenIs(sp::Token::TokenType tok_type);
-    bool expectPeek(sp::Token::TokenType tok_type);
-    bool peekTokenIs(sp::Token::TokenType tok_type);
+	bool currTokenIs(sp::Token::TokenType tok_type);
+	bool expectPeek(sp::Token::TokenType tok_type);
+	bool peekTokenIs(sp::Token::TokenType tok_type);
 
-    bool currTokenIsNameOrKeyword();
-    bool expectPeekIsNameOrKeyword();
-    bool peekTokenIsNameOrKeyword();
+	bool currTokenIsNameOrKeyword();
+	bool expectPeekIsNameOrKeyword();
+	bool peekTokenIsNameOrKeyword();
 
-    int getPlusPC();
+	int getPlusPC();
+	//std::string genError(std::string str);
+	sp::ParserException genError(std::string str);
+	sp::ParserException genExprError(std::string str);
+	sp::ParserException genCondExprError(std::string str);
+	std::string currLiteral();
+	std::string peekLiteral();
+	bool parseTest();
 
-    // Generates custom Parser exceptions
-    sp::ParserException genError(STRING str);
-    sp::ParserException genExprError(STRING str);
-    sp::ParserException genCondExprError(STRING str);
+	// expr
+	ast::Expr* parsePrefixExpr(sp::Token* tok);
+	ast::Expr* parseInfixExpr(ast::Expr*);
+	ast::Expr* parseLParenPrefixExpr();
 
-    STRING currLiteral();
-    STRING peekLiteral();
-    bool parseTest();
+	int peekPrecedence();
+	int currPrecedence();
 
-    // Parses various expressions
-    ast::Expr* parsePrefixExpr(sp::Token* tok);
-    ast::Expr* parseInfixExpr(ast::Expr*);
-    ast::Expr* parseLParenPrefixExpr();
+	//calls to DE
+	//void addStmtLstToDE(vector<ast::Stmt*> stmts);
+	void addStmtLstToDE(vector<ast::Stmt*> stmts, ast::Proc* proc);
 
-    int peekPrecedence();
-    int currPrecedence();
-
-    // calls to DE
-    void addStmtLstToDE(vector<ast::Stmt*> stmts, ast::Proc* proc);
 };
