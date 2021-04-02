@@ -6,6 +6,7 @@
 #include "Query.h"
 #include "QueryUtility.h"
 
+// Optimises queries by grouping and sorting queries
 class QueryOptimizer {
 public:
     QueryOptimizer();

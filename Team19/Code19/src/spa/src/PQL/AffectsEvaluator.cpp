@@ -7,7 +7,7 @@ AffectsEvaluator::AffectsEvaluator() {
 }
 
 bool AffectsEvaluator::evaluate(unordered_map<STRING, STRING> declarations,
-                                Clause clause, unordered_map<STRING, vector<StmtNum>>& tempResults) {
+                                Clause clause, unordered_map<STRING, vector<int>>& tempResults) {
     STRING firstArg = clause.getArgs().at(0);
     STRING secondArg = clause.getArgs().at(1);
     STRING firstType = getArgType(firstArg, declarations);
@@ -26,7 +26,7 @@ bool AffectsEvaluator::evaluate(unordered_map<STRING, STRING> declarations,
             return false;
         }
         if (secondType != UNDERSCORE_) { // known, s
-            vector<StmtNum> res;
+            vector<int> res;
             res.assign(affected.begin(), affected.end());
             tempResults[secondArg] = res;
         }
@@ -38,7 +38,7 @@ bool AffectsEvaluator::evaluate(unordered_map<STRING, STRING> declarations,
             return false;
         }
         if (firstType != UNDERSCORE_) {
-            vector<StmtNum> res;
+            vector<int> res;
             res.assign(affected.begin(), affected.end());
             tempResults[firstArg] = res;
         }
@@ -46,7 +46,7 @@ bool AffectsEvaluator::evaluate(unordered_map<STRING, STRING> declarations,
 
     } else { // s1, s2 or s, _ or _, s
         if (firstArg == secondArg) { // s, s
-            vector<StmtNum> res;
+            vector<int> res;
             vector<StmtNum> allAssign = selectAll(ASSIGN_);
             for (StmtNum s : allAssign) {
                 if (PKB::affects->isAffects(s, s)) {

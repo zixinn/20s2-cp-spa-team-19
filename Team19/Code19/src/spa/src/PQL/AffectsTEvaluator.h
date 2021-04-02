@@ -4,13 +4,13 @@
 #include "QueryUtility.h"
 #include "../PKB/PKB.h"
 
-// Helper function to evaluate Affects*
+// Helper class to evaluate Affects*
 class AffectsTEvaluator {
 public:
     AffectsTEvaluator();
 
     static bool evaluate(unordered_map<STRING, STRING> declarations, Clause clause,
-                         unordered_map<STRING, vector<StmtNum>>& tempResults);
+                         unordered_map<STRING, vector<int>>& tempResults);
 
     ~AffectsTEvaluator();
 };

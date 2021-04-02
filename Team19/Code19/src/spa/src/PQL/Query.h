@@ -1,6 +1,6 @@
 #pragma once
 
-#include <string>
+#include <STRING>
 #include <unordered_map>
 #include <vector>
 
@@ -8,32 +8,33 @@
 
 using namespace std;
 
+// Represents a PQL query
 class Query {
 public:
     Query();
-    Query(unordered_map<string, string> declarations, vector<string> toSelect, vector<vector<Clause>> clauses,
-            bool isSyntacticallyValid, bool isSemanticallyValid);
+    Query(unordered_map<STRING, STRING> declarations, vector<STRING> toSelect, vector<vector<Clause>> clauses,
+          bool isSyntacticallyValid, bool isSemanticallyValid);
 
-    unordered_map<string, string> getDeclarations();
-    vector<string> getToSelect();
+    unordered_map<STRING, STRING> getDeclarations();
+    vector<STRING> getToSelect();
     vector<vector<Clause>> getClauses();
-    vector<unordered_set<string>> getSynonyms();
+    vector<unordered_set<STRING>> getSynonyms();
     bool getIsSyntacticallyValid();
     bool getIsSemanticallyValid();
 
     void setClauses(vector<vector<Clause>> clauses);
     void setClausesAtIdx(vector<Clause> clauses, int idx);
-    void setSynonyms(vector<unordered_set<string>> synonyms);
+    void setSynonyms(vector<unordered_set<STRING>> synonyms);
 
     friend bool operator==(const Query& q1, const Query& q2);
 
     ~Query();
 
 private:
-    unordered_map<string, string> declarations;
-    vector<string> toSelect;
+    unordered_map<STRING, STRING> declarations;
+    vector<STRING> toSelect;
     vector<vector<Clause>> clauses;
-    vector<unordered_set<string>> synonyms;
+    vector<unordered_set<STRING>> synonyms;
     bool isSyntacticallyValid;
     bool isSemanticallyValid;
 };

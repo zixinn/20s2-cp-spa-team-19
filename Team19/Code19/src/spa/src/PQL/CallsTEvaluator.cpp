@@ -6,7 +6,8 @@ CallsTEvaluator::CallsTEvaluator() {
 
 }
 
-bool CallsTEvaluator::evaluate(unordered_map<STRING, STRING> declarations, Clause clause, unordered_map<STRING, vector<StmtNum>>& tempResults) {
+bool CallsTEvaluator::evaluate(unordered_map<STRING, STRING> declarations, Clause clause, unordered_map<STRING,
+                               vector<int>>& tempResults) {
     STRING firstArg = clause.getArgs().at(0);
     STRING secondArg = clause.getArgs().at(1);
     STRING firstType = getArgType(firstArg, declarations);
@@ -32,7 +33,7 @@ bool CallsTEvaluator::evaluate(unordered_map<STRING, STRING> declarations, Claus
             return false;
         }
         if (secondType != UNDERSCORE_) { //secondType == PROCEDURE
-            vector<StmtNum> res;
+            vector<int> res;
             res.assign(callees.begin(), callees.end());
             tempResults[secondArg] = res;
         }
@@ -45,7 +46,7 @@ bool CallsTEvaluator::evaluate(unordered_map<STRING, STRING> declarations, Claus
             return false;
         }
         if (firstType != UNDERSCORE_) { //firstType == PROCEDURE
-            vector<StmtNum> res;
+            vector<int> res;
             res.assign(callers.begin(), callers.end());
             tempResults[firstArg] = res;
         }
