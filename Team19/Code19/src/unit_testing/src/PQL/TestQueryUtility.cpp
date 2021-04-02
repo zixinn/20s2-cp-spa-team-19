@@ -340,6 +340,8 @@ void setupPKB2() {
     PKB::next->storeNext(6, 7);
     PKB::next->storeNext(6, 3);
 
+    PKB::nextBip->setRunNextBip(true);
+    // PKB::affectsBip->setRunAffectsBip(true);
     PKB::populatePKB();
 }
 
@@ -359,6 +361,10 @@ TEST_CASE("getSize") {
     REQUIRE(PKB::next->getNextStarSize() == 31);
     REQUIRE(PKB::affects->getAffectsSize() == 5);
     REQUIRE(PKB::affects->getAffectsStarSize() == 6);
+    REQUIRE(PKB::nextBip->getNextBipSize() == 8);
+    REQUIRE(PKB::nextBip->getNextBipStarSize() == 31);
+    /*REQUIRE(PKB::affectsBip->getAffectsBipSize() == 5);
+    REQUIRE(PKB::affectsBip->getAffectsBipStarSize() == 6);*/
     REQUIRE(PKB::procTable->getSize() == 1);
     REQUIRE(PKB::varTable->getSize() == 3);
     REQUIRE(PKB::constTable->getSize() == 2);
@@ -369,7 +375,7 @@ TEST_CASE("getSize") {
 
     unordered_map<string, string> declarations = {{"s", STMT_}, {"r", READ_}, {"pn", PRINT_}, {"a", ASSIGN_},
                                                   {"c", CALL_}, {"w", WHILE_}, {"ifs", IF_}, {"v", VARIABLE_},
-                                                  {"cc", CONSTANT_}, {"p", PROCEDURE_}, {"n1", PROGLINE_}};
+                                                  {"cc", CONSTANT_}, {"p", PROCEDURE_}, {"n", PROGLINE_}};
 
     Clause c1 = Clause("Follows", {"6", "s"}, {"s"}, 1);
     REQUIRE(getSize(c1, declarations) == 5);
@@ -394,4 +400,10 @@ TEST_CASE("getSize") {
 
     Clause c8 = Clause("ifs", {"v", "_", "_"}, {"ifs", "v"}, 0);
     REQUIRE(getSize(c8, declarations) == 0);
+
+    Clause c9 = Clause("NextBip*", {"3", "n"}, {"n"}, 1);
+    REQUIRE(getSize(c9, declarations) == 31);
+
+    /*Clause c10 = Clause("AffectsBip", {"5", "5"}, {}, 2);
+    REQUIRE(getSize(c10, declarations) == 5);*/
 }

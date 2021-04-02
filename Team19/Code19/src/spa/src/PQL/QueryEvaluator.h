@@ -22,6 +22,10 @@
 #include "AffectsTEvaluator.h"
 #include "PatternEvaluator.h"
 #include "WithEvaluator.h"
+#include "NextBipEvaluator.h"
+#include "NextBipTEvaluator.h"
+/*#include "AffectsBipEvaluator.h"
+#include "AffectsBipTEvaluator.h"*/
 
 class QueryEvaluator {
 public:

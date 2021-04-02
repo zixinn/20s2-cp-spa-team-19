@@ -78,6 +78,20 @@ list<string> QueryEvaluator::evaluate(Query query) {
 
 bool QueryEvaluator::evaluateClause(Clause clause, unordered_map<string, vector<int>>& tempResults) {
     string rel = clause.getRel();
+    if (PKB::nextBip->getRunNextBip()) {
+        if (rel == "NextBip") {
+            return NextBipEvaluator::evaluate(this->declarations, clause, tempResults);
+        } else if (rel == "NextBip*") {
+            return NextBipTEvaluator::evaluate(this->declarations, clause, tempResults);
+        }
+    }
+    /*if (PKB::affectsBip->getRunAffectsBip()) {
+        if (rel == "AffectsBip") {
+            return AffectsBipEvaluator::evaluate(this->declarations, clause, tempResults);
+        } else if (rel == "AffectsBip*") {
+            return AffectsBipTEvaluator::evaluate(this->declarations, clause, tempResults);
+        }
+    }*/
     if (rel == "Follows") {
         return FollowsEvaluator::evaluate(this->declarations, clause, tempResults);
     } else if (rel == "Follows*") {

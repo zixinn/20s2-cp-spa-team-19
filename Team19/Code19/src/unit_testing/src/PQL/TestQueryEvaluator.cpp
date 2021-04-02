@@ -862,3 +862,106 @@ TEST_CASE("QueryEvaluator evaluate query with attribute in select") {
     REQUIRE(actual6.size() == list6.size());
     REQUIRE(actual6 == expected6);
 }
+
+//    procedure B {
+//    01      call C;
+//    02      call C;
+//    03      call C; }
+//
+//    procedure C {
+//    04      d = a;
+//    05      a = b;
+//    06      b = c;
+//    07      c = d; }
+
+void setupQe2() {
+    PKB::resetPKB();
+
+    PKB::varTable->storeVarName("d"); // 0
+    PKB::varTable->storeVarName("a"); // 1
+    PKB::varTable->storeVarName("b"); // 2
+    PKB::varTable->storeVarName("c"); // 3
+
+    PKB::procTable->storeProcName("B"); // 0
+    PKB::procTable->storeProcName("C"); // 1
+    PKB::procTable->storeProcStmt(0, 1, 3);
+    PKB::procTable->storeProcStmt(1, 4, 7);
+
+    ast::Stmt* stmtNodeStub = new StmtNodeStub(0);
+    PKB::stmtTable->storeStmt(1, stmtNodeStub, CALL_);
+    PKB::stmtTable->storeStmt(2, stmtNodeStub, CALL_);
+    PKB::stmtTable->storeStmt(3, stmtNodeStub, CALL_);
+    PKB::stmtTable->storeStmt(4, stmtNodeStub, ASSIGN_);
+    PKB::stmtTable->storeStmt(5, stmtNodeStub, ASSIGN_);
+    PKB::stmtTable->storeStmt(6, stmtNodeStub, ASSIGN_);
+    PKB::stmtTable->storeStmt(7, stmtNodeStub, ASSIGN_);
+
+    PKB::uses->storeStmtUses(4, 1);
+    PKB::uses->storeStmtUses(5, 2);
+    PKB::uses->storeStmtUses(6, 3);
+    PKB::uses->storeStmtUses(7, 0);
+    PKB::uses->storeProcUses(1, 1);
+    PKB::uses->storeProcUses(1, 2);
+    PKB::uses->storeProcUses(1, 3);
+    PKB::uses->storeProcUses(1, 0);
+
+    PKB::modifies->storeStmtModifies(4, 0);
+    PKB::modifies->storeStmtModifies(5, 1);
+    PKB::modifies->storeStmtModifies(6, 2);
+    PKB::modifies->storeStmtModifies(7, 3);
+    PKB::modifies->storeProcModifies(1, 0);
+    PKB::modifies->storeProcModifies(1, 1);
+    PKB::modifies->storeProcModifies(1, 2);
+    PKB::modifies->storeProcModifies(1, 3);
+
+    PKB::next->storeNext(1, 2);
+    PKB::next->storeNext(2, 3);
+    PKB::next->storeNext(4, 5);
+    PKB::next->storeNext(5, 6);
+    PKB::next->storeNext(6, 7);
+
+    PKB::calls->storeCalls(1, 0, 1);
+    PKB::calls->storeCalls(2, 0, 1);
+    PKB::calls->storeCalls(3, 0, 1);
+
+    PKB::nextBip->setRunNextBip(true);
+    // PKB::affectsBip->setRunAffectsBip(true);
+    PKB::populatePKB();
+}
+
+TEST_CASE("QueryEvaluator evaluate query with bip") {
+    setupQe2();
+    QueryEvaluator qe = QueryEvaluator();
+
+    // stmt s; Select s such that NextBip(1, s)
+    Clause c1 = Clause("NextBip", vector<string>{"1", "s"}, {"s"}, 1);
+    Query q1 = Query({ {"s", STMT_} }, { "s" }, { {c1} }, true, true);
+    list<string> list1 = qe.evaluate(q1);
+    unordered_set<string> actual1(begin(list1), end(list1));
+    unordered_set<string> expected1 = { "4" };
+    REQUIRE(actual1 == expected1);
+
+    // prog_line n; Select n such that NextBip*(n, n)
+    Clause c2 = Clause("NextBip*", vector<string>{"n", "n"}, {"n"}, 0);
+    Query q2 = Query({ {"n", PROGLINE_} }, { "n" }, { {c2} }, true, true);
+    list<string> list2 = qe.evaluate(q2);
+    unordered_set<string> actual2(begin(list2), end(list2));
+    unordered_set<string> expected2 = { "4", "5", "6", "7" };
+    REQUIRE(actual2 == expected2);
+
+    /*// assign a; Select a such that AffectsBip(a, 5)
+    Clause c3 = Clause("a", vector<string>{"a", "5"}, {"a"}, 1);
+    Query q3 = Query({ {"a", ASSIGN_} }, { "a" }, { {c3} }, true, true);
+    list<string> list3 = qe.evaluate(q3);
+    unordered_set<string> actual3(begin(list3), end(list3));
+    unordered_set<string> expected3 = { "6" };
+    REQUIRE(actual3 == expected3);
+
+    // Select BOOLEAN such that AffectsBip*(7, 4)
+    Clause c4 = Clause("AffectsBip*", vector<string>{"7", "4"}, {}, 2);
+    Query q4 = Query({}, { "BOOLEAN" }, { {c4} }, true, true);
+    list<string> list4 = qe.evaluate(q4);
+    unordered_set<string> actual4(begin(list4), end(list4));
+    unordered_set<string> expected4 = { "FALSE" };
+    REQUIRE(actual4 == expected4);*/
+}
