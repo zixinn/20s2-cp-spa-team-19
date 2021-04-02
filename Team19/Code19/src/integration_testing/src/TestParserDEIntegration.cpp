@@ -406,8 +406,8 @@ TEST_CASE("Triple-nested if test - Parser-DE Test") {
       }
      */
     string input = "procedure ToTheMoon {x = 1 + 2 * a; if (v > 1) then {x = 2;} else { "
-                        "if (v==1) then {c = a;} else {"
-                            "if (t != 5000) then {b = 2;} else {xor = (5 * 2) + 7;}}} print p; read s;} ";
+                   "if (v==1) then {c = a;} else {"
+                   "if (t != 5000) then {b = 2;} else {xor = (5 * 2) + 7;}}} print p; read s;} ";
     std::vector<sp::Token> actual_tok;
     std::vector<sp::Token*> tok_ptrs;
     ParserUtils::StringToTokenPtrs(input, actual_tok, tok_ptrs);
@@ -814,7 +814,7 @@ TEST_CASE("Medium Call - Parser-DE Test") {
     REQUIRE(PKB::calls->isCalls(3,1) == false);
     REQUIRE(PKB::calls->isCalls(3,2) == false);
     REQUIRE(PKB::calls->isCalls(3,3) == false);
-    
+
     REQUIRE(PKB::calls->isCalls(4,0) == false);
     REQUIRE(PKB::calls->isCalls(4,1) == false);
     REQUIRE(PKB::calls->isCalls(4,2) == false);

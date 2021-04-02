@@ -3,23 +3,23 @@
 #include "AST/ProcName.h"
 #include "AST/Stmt.h"
 
-// Call
+// AST representing a Call Statement
 namespace ast {
-	class CallStmt : public Stmt {
-		ProcName* proc_name;
-	public:
-		CallStmt(int stmtNum, sp::Token* token, ProcName* proc_name)
-			:Stmt( token, stmtNum ), proc_name{ proc_name } {}
-		ProcName* getName() { return proc_name; }
+    class CallStmt : public Stmt {
+        ProcName* proc_name;
+    public:
+        CallStmt(StmtNum stmtNum, sp::Token* token, ProcName* proc_name)
+                :Stmt( token, stmtNum ), proc_name{ proc_name } {}
+        ProcName* getName() { return proc_name; }
 
-		std::string toString() override {
-			std::string proc_str = proc_name ? proc_name->toString() : "[NULL_PTR]";
-			return "call " + proc_str + ";";
-		}
+        STRING toString() override {
+            STRING proc_str = proc_name ? proc_name->toString() : "[NULL_PTR]";
+            return "call " + proc_str + ";";
+        }
 
-		~CallStmt() {
-			delete proc_name;
-		}
+        ~CallStmt() {
+            delete proc_name;
+        }
 
-	};
+    };
 }
