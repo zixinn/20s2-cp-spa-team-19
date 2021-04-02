@@ -28,11 +28,11 @@ TEST_CASE("getProcRange Test") {
     // Storing existing key
     procTable->storeProcStmt(0, 2, 3);
 
-    pair<int, int> range = procTable->getProcRange(0);
+    pair<StmtNum, StmtNum> range = procTable->getProcRange(0);
     REQUIRE(range.first == 1);
     REQUIRE(range.second == 5);
 
-    pair<int, int> range2 = procTable->getProcRange(1);
+    pair<StmtNum, StmtNum> range2 = procTable->getProcRange(1);
     REQUIRE(range2.first == 6);
     REQUIRE(range2.second == 10);
 
@@ -79,8 +79,8 @@ TEST_CASE("getAllProcNames Test") {
     ProcTable* procTable = new ProcTable();
     procTable->storeProcName("a");
     procTable->storeProcName("b");
-    vector<string> const &procNames = procTable->getAllProcNames();
-    REQUIRE_THAT(procNames, Catch::Matchers::UnorderedEquals(vector<string>{ "a", "b"}));
+    vector<STRING> const &procNames = procTable->getAllProcNames();
+    REQUIRE_THAT(procNames, Catch::Matchers::UnorderedEquals(vector<STRING>{ "a", "b"}));
 }
 
 TEST_CASE("convertProcIDsToNames Test") {
@@ -89,8 +89,8 @@ TEST_CASE("convertProcIDsToNames Test") {
     procTable->storeProcName("b");
     procTable->storeProcName("c");
     procTable->storeProcName("d");
-    vector<string> procNames = procTable->convertProcIDsToNames(vector<int>{1, 2});
-    REQUIRE_THAT(procNames, Catch::Matchers::UnorderedEquals(vector<string>{ "b", "c"}));
+    vector<STRING> procNames = procTable->convertProcIDsToNames(vector<ID>{1, 2});
+    REQUIRE_THAT(procNames, Catch::Matchers::UnorderedEquals(vector<STRING>{ "b", "c"}));
 }
 
 TEST_CASE("getAllProcIDs Test") {
