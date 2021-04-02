@@ -1,5 +1,4 @@
 #include "PKB.h"
-#include "../TNode.h"
 
 // Initialise PKB Design entity storage components
 ConstTable* PKB::constTable = new ConstTable();
