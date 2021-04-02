@@ -117,7 +117,7 @@ bool Follows::storeFollowsStar(StmtNum s1, StmtNum s2) {
 
     auto it = followsStarMap.find(s1);
     if (it == followsStarMap.end()) {
-         followsStarMap.insert({s1, unordered_set<StmtNum>({s2})});
+        followsStarMap.insert({s1, unordered_set<StmtNum>({s2})});
     } else {
         it->second.insert(s2);
     }
