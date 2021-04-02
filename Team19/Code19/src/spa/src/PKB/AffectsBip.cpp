@@ -216,24 +216,27 @@ void AffectsBip::populateAffectsBip() {
 }
 
 void AffectsBip::populateAffectsBipStar() {
-//    unordered_set<StmtNum> a2s;
-//    ID curr;
-//    for (auto &it : affectsBipMap) {
-//        curr = it.first;
-//        list<StmtNum> queue;
-//        unordered_set<StmtNum> processedStmts;
-//        processedStmts.insert(curr);
-//        queue.push_back(curr);
-//        while (!queue.empty()) {
-//            a2s = getAffectsBip(queue.front());
-//            queue.pop_front();
-//            for (StmtNum a2 : a2s) {
-//                storeAffectsBipStar(curr, a2);
-//                if (curr != a2 && processedStmts.find(a2) == processedStmts.end()) {
-//                    processedStmts.insert(a2);
-//                    queue.push_back(a2);
-//                }
-//            }
-//        }
-//    }
+    unordered_map<string, unordered_set<string>> nextBipStarWithBranchStackNoDummyMap = PKB::nextBip->getNextBipStarWithBranchStackNoDummyMap();
+    for (auto& it : affectsBipWithBranchStackMap) {
+        unordered_set<string> visited;
+        dfs(it.first, findN(it.first), it.first, visited, nextBipStarWithBranchStackNoDummyMap);
+    }
+}
+
+void AffectsBip::dfs(string source, StmtNum sourceStmt, string prev, unordered_set<string>& visited, unordered_map<string, unordered_set<string>> nextBipStarWithBranchStackNoDummyMap) {
+    visited.insert(prev);
+    auto itA = affectsBipWithBranchStackMap.find(prev);
+    auto itN = nextBipStarWithBranchStackNoDummyMap.find(prev);
+    if (itA == affectsBipWithBranchStackMap.end() || itN == nextBipStarWithBranchStackNoDummyMap.end()) {
+        return;
+    }
+    for (string s2 : itA->second) {
+        if (itN->second.find(s2) != itN->second.end()) {
+            if (visited.find(s2) == visited.end()) {
+                StmtNum stmt2 = findN(s2);
+                storeAffectsBipStar(sourceStmt, stmt2);
+                dfs(source, sourceStmt, s2, visited, nextBipStarWithBranchStackNoDummyMap);
+            }
+        }
+    }
 }
