@@ -6,6 +6,8 @@
 
 using namespace std;
 
+// Tests the Parser's ability to parse inputs and DE's ability to extract information correctly.
+// Uses the PKB because there is no way to see DE's outputs otherwise.
 TEST_CASE("Simple - Parser-DE Test") {
     /*
     procedure star {
