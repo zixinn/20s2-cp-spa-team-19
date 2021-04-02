@@ -44,8 +44,8 @@ void DesignExtractor::exitProcedure() {
 
     // Update Follows, Modifies, Uses for all statements in this procedure's currentStmtLst
     // Stmts in containers were handled earlier; this includes Parents
-    // Uses/Modifies relationships in containers wont be added during exitProcedure
-    // because the container statements' stmtLsts are not in the Procedure's currentStmtLst
+        // Uses/Modifies relationships in containers wont be added during exitProcedure
+        // because the container statements' stmtLsts are not in the Procedure's currentStmtLst
     addFollowsForCurrentStmtLst();
     // Stores this Procedure's Modifies, Uses relationships for the currentStmtLst
     addAllCurrentStmtLstModifiesForProcedure();
@@ -95,7 +95,7 @@ void DesignExtractor::storeNewIf(StmtNum startStmtNum, vector<STRING> condVarNam
     // Store the conditional variables into PKB and receive the PKB-assigned ID
     for (STRING varName : condVarNames) {
         ID varID = PKB::varTable->storeVarName(varName);
-        PKB::uses->storeStmtUses(startStmtNum, varID);
+         PKB::uses->storeStmtUses(startStmtNum, varID);
         PKB::stmtTable->storeIfPattern(startStmtNum, varID);
         // DE Internal Bookkeeping
         currentUsedVarsLst.insert(varID);   // the conditional variables used
@@ -150,9 +150,14 @@ void DesignExtractor::endIfElse() {
     storeCurrentStmtLstRelationships(); // Store If stmt's stmtLst's relationships
     StmtNum startStmt = currentStmtLst.front();
     set<ProgLine> lastElseStmt = currentNext.back();
+//    cerr << "lastElseStmt is " ;
+//    for (int e: lastElseStmt)
+//        cerr << e;
+
     popSavedState();                    // Reset to previous local state variables
 
     // Add the ProgLine of the branching Else to the ProgLine of the branching Then
+//    currentNext.back().insert(*lastElseStmt.rbegin());
     for (int e: lastElseStmt) {
         currentNext.back().insert(e);   // add to the previous currentNext
     }
@@ -183,7 +188,7 @@ void DesignExtractor::storeNewAssignment(StmtNum stmtNum, STRING variableName, A
     // Store variables into PKB & update Uses table.
     for (STRING var : varNameLst) {
         ID listVarID =  PKB::varTable->storeVarName(var);   // if var already exists, it returns previously assigned ID.
-        PKB::uses->storeStmtUses(stmtNum, listVarID);
+         PKB::uses->storeStmtUses(stmtNum, listVarID);
 
         // DE Internal Bookkeeping
         currentUsedVarsLst.insert(listVarID);
@@ -204,7 +209,7 @@ void DesignExtractor::storeNewRead(StmtNum stmtNum, STRING variableName, ReadStm
     // Store the LHS variable into PKB and receive the PKB-assigned ID
     ID varID = PKB::varTable->storeVarName(variableName);
     // Update Modifies
-    PKB::modifies->storeStmtModifies(stmtNum, varID);
+     PKB::modifies->storeStmtModifies(stmtNum, varID);
 
     // Stores <stmtNum, PAIR<variable ID, *AST>> into Assignment Map.
     if (!PKB::stmtTable->storeStmt(stmtNum, AST, READ_)) {
@@ -226,7 +231,7 @@ void DesignExtractor::storeNewPrint(StmtNum stmtNum, STRING variableName, PrintS
     // Store the LHS variable into PKB and receive the PKB-assigned ID
     ID varID = PKB::varTable->storeVarName(variableName);
     // Update Uses. Note that Print only uses one variable.
-    PKB::uses->storeStmtUses(stmtNum, varID);
+     PKB::uses->storeStmtUses(stmtNum, varID);
     // Stores <stmtNum, PAIR<variable ID, *AST>> into Assignment Map.
     if (!PKB::stmtTable->storeStmt(stmtNum, AST, PRINT_)) {
         std::cerr << "DE encountered an error when attempting to store statement " << stmtNum << " in PKB.\n";
@@ -299,11 +304,11 @@ pair<vector<STRING>, vector<STRING>> DesignExtractor::extractVarsAndConsts(Expr*
         case sp::Token::TokenType::CONST:
             constLst.push_back(expression->getTokenLiteral());
             break;
-            // VarName
+        // VarName
         case sp::Token::TokenType::NAME:
             varNameLst.push_back(dynamic_cast<VarName *>(expression)->getVal());
             break;
-            // InfixExpr. Fallthrough!
+        // InfixExpr. Fallthrough!
         case sp::Token::TokenType::PLUS:
         case sp::Token::TokenType::MINUS:
         case sp::Token::TokenType::TIMES:
@@ -361,7 +366,7 @@ void DesignExtractor::addFollowsForCurrentStmtLst() {
     if (!currentStmtLst.empty()) {
         // size() - 1 because last stmt will have nothing following it
         for (StmtNum i = 0; i < currentStmtLst.size() - 1; i++){
-            PKB::follows->storeFollows(currentStmtLst[i], currentStmtLst[i + 1]);
+             PKB::follows->storeFollows(currentStmtLst[i], currentStmtLst[i + 1]);
         }
     }
 }

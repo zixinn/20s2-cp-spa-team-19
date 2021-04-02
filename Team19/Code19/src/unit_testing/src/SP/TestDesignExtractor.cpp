@@ -3,20 +3,54 @@
 
 #include "PKB/PKB.h"
 #include "AST/Index.h"
-#include "TestDesignExtractor_DummyASTs.h" // Dummy ASTs constructed manually in this file to avoid using Parser methods.
+#include "SP/Parser.h"
 
 #include "catch.hpp"
 using namespace std;
 
 // * relationships and in-depth Calls are tested in the DE-PKB integration test instead
-// PKB is not stubbed
+// AssignStmt and PKB is not stubbed
+// Stubs of Stmt Classes
+VarName *varName = new VarName(new sp::Token(sp::Token::TokenType::NAME, "test"), "test");
+ProcName *procName = new ProcName(new sp::Token(sp::Token::TokenType::NAME, "test"), "test");
+CondExpr *condExpr; // CondExpr is abstract class
+PrintStmt *printStmt = new ast::PrintStmt(1, new sp::Token(sp::Token::TokenType::PRINT, "pr"), varName);
+ReadStmt *readStmt =  new ast::ReadStmt(1, new sp::Token(sp::Token::TokenType::READ, "r"), varName);
+CallStmt *callStmt = new ast::CallStmt(1, new sp::Token(sp::Token::TokenType::CALL, "call"), procName);
+
+std::vector<Stmt*> statements { printStmt, readStmt };
+// no stmtLst token to use
+StmtLst *stmtLst = new StmtLst(new sp::Token(sp::Token::TokenType::NAME, "test"), statements);
+WhileStmt *whileStmt = new ast::WhileStmt(1, new sp::Token(sp::Token::TokenType::WHILE, "w"), condExpr, stmtLst);
+WhileStmt *nestedWhileStmt =  new ast::WhileStmt(1, new sp::Token(sp::Token::TokenType::WHILE, "w"), condExpr, stmtLst);
+IfStmt *ifStmt =  new ast::IfStmt(1, new sp::Token(sp::Token::TokenType::IF, "i"), condExpr, stmtLst, stmtLst);
+IfStmt *nestedIfStmt =  new ast::IfStmt(1, new sp::Token(sp::Token::TokenType::IF, "i"), condExpr, stmtLst, stmtLst);
+
 TEST_CASE("ONE PROCEDURE - storeNewProcedure and exitProcedure Test (no While/Ifs)") {
     DesignExtractor::signalReset();
+
+    std::vector<sp::Token*> stubAssignTokens{
+            // Assignment Stmt
+            new sp::Token(sp::Token::TokenType::NAME, "scaramouche"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::NAME, "tartaglia"),
+            new sp::Token(sp::Token::TokenType::PLUS, "+"),
+            new sp::Token(sp::Token::TokenType::NAME, "pustota"),
+            new sp::Token(sp::Token::TokenType::TIMES, "*"),
+            new sp::Token(sp::Token::TokenType::CONST, "2"),
+            new sp::Token(sp::Token::TokenType::TIMES, "*"),
+            new sp::Token(sp::Token::TokenType::CONST, "0"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+            new sp::Token(sp::Token::TokenType::EOFF, "EOF")
+    };
+    auto lass = new LexerStub(stubAssignTokens);
+    Parser pass = Parser(lass);
+    ast::AssignStmt* assStmt = pass.parseAssignStmt();
 
     DesignExtractor::storeNewProcedure("strobelight");
     DesignExtractor::storeNewPrint(1, "reason", printStmt);
     DesignExtractor::storeNewRead(2, "dyed", readStmt);
-    DesignExtractor::storeNewAssignment(3, "scaramouche", assStmtScaramouche); // scaramouche = tartaglia + pustota * 2 * 0;
+    DesignExtractor::storeNewAssignment(3, "scaramouche", assStmt);
     DesignExtractor::exitProcedure();
 
     // Check procTable
@@ -107,8 +141,18 @@ TEST_CASE("storeNewCall recursive, unsuccessful") {
 
 TEST_CASE("storeNewAssignment Const RHS Test") {
     DesignExtractor::signalReset();
+    // Set up Assignment AST
+    std::vector<sp::Token*> stubTokens{
+            new sp::Token(sp::Token::TokenType::NAME, "axel"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::CONST, "420"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto l = new LexerStub(stubTokens);     //new keyword gets me a ptr to LexerStub
+    Parser p = Parser(l);
+    ast::AssignStmt* assignment = p.parseAssignStmt();
 
-    DesignExtractor::storeNewAssignment(1, "axel", assStmtAxel);     // axel = 420;
+    DesignExtractor::storeNewAssignment(1, "axel", assignment);
     // Check varName
     ID varID = PKB::varTable->getVarID("axel");
     REQUIRE(varID == 0);    // varTable ID starts indexing at 0
@@ -123,8 +167,18 @@ TEST_CASE("storeNewAssignment Const RHS Test") {
 
 TEST_CASE("storeNewAssignment VarName RHS Test") {
     DesignExtractor::signalReset();
+    // Set up Assignment AST
+    std::vector<sp::Token*> stubTokens{
+            new sp::Token(sp::Token::TokenType::NAME, "axel2"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::NAME, "semelparity"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto l = new LexerStub(stubTokens);     //new keyword gets me a ptr to LexerStub
+    Parser p = Parser(l);
+    ast::AssignStmt* assignment = p.parseAssignStmt();
 
-    DesignExtractor::storeNewAssignment(1, "axel2", assStmtAxel2); // axel2 = semelparity;
+    DesignExtractor::storeNewAssignment(1, "axel2", assignment);
     // Check varName, LHS
     ID varID = PKB::varTable->getVarID("axel2");
     REQUIRE(varID == 0);    // varTable ID starts indexing at 0
@@ -143,9 +197,25 @@ TEST_CASE("storeNewAssignment VarName RHS Test") {
 
 TEST_CASE("storeNewAssignment InfixExpr containing VarNames and Consts Test") {
     DesignExtractor::signalReset();
+    // Set up Assignment AST
+    std::vector<sp::Token*> stubTokens{
+            new sp::Token(sp::Token::TokenType::NAME, "eternal"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::NAME, "senescence"),
+            new sp::Token(sp::Token::TokenType::PLUS, "+"),
+            new sp::Token(sp::Token::TokenType::NAME, "sequestration"),
+            new sp::Token(sp::Token::TokenType::TIMES, "*"),
+            new sp::Token(sp::Token::TokenType::CONST, "2"),
+            new sp::Token(sp::Token::TokenType::TIMES, "*"),
+            new sp::Token(sp::Token::TokenType::CONST, "0"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+            new sp::Token(sp::Token::TokenType::EOFF, "EOF"),
+    };
+    auto l = new LexerStub(stubTokens);     //new keyword gets me a ptr to LexerStub
+    Parser p = Parser(l);
+    ast::AssignStmt* assignment = p.parseAssignStmt();
 
-    DesignExtractor::storeNewAssignment(1, "eternal", assStmtEternal);     // eternal = senescence + sequestration * 2 * 0;
-
+    DesignExtractor::storeNewAssignment(1, "eternal", assignment);
     // Check varName, LHS
     ID varID = PKB::varTable->getVarID("eternal");
     REQUIRE(varID == 0);    // varTable ID starts indexing at 0
@@ -211,11 +281,22 @@ TEST_CASE("storeNewPrint Test") {
 TEST_CASE("[SIMPLE, no nested while/if] storeNewWhile and exitWhile Test") {
     DesignExtractor::signalReset();
 
+    // Set up Assignment AST
+    std::vector<sp::Token*> stubTokens{
+            new sp::Token(sp::Token::TokenType::NAME, "axel2"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::NAME, "semelparity"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto l = new LexerStub(stubTokens);     //new keyword gets me a ptr to LexerStub
+    Parser p = Parser(l);
+    ast::AssignStmt* assignment = p.parseAssignStmt();
+
     vector<STRING> condVarNames{ "x", "y" };    // Used in conditional expression of while loop
     vector<STRING> condConsts{ "5", "10" };
     DesignExtractor::storeNewProcedure("hana");
     DesignExtractor::storeNewWhile(1,condVarNames, condConsts, whileStmt);
-    DesignExtractor::storeNewAssignment(2, "axel2", assStmtAxel2); // axel2 = semelparity;
+    DesignExtractor::storeNewAssignment(2, "axel2", assignment);
     DesignExtractor::storeNewRead(3, "shine", readStmt);
     DesignExtractor::exitWhile();
     DesignExtractor::exitProcedure();
@@ -278,13 +359,24 @@ TEST_CASE("[SIMPLE, no nested while/if] storeNewWhile and exitWhile Test") {
 TEST_CASE("[ONE NESTED WHILE] storeNewWhile and exitWhile Test") {
     DesignExtractor::signalReset();
 
+    // Set up Assignment AST
+    std::vector<sp::Token*> stubTokens{
+            new sp::Token(sp::Token::TokenType::NAME, "axel2"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::NAME, "semelparity"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto l = new LexerStub(stubTokens);     //new keyword gets me a ptr to LexerStub
+    Parser p = Parser(l);
+    ast::AssignStmt* assignment = p.parseAssignStmt();
+
     vector<STRING> condVarNames{ "x", "y" };    // Used in conditional expression of while loop
     vector<STRING> condConsts{ "5", "10" };
     vector<STRING> nestedCondVarNames{ "a", "z" };    // Used in conditional expression of nested while loop
     vector<STRING> nestedCondConsts{ "33", "1" };
     DesignExtractor::storeNewProcedure("hana");
     DesignExtractor::storeNewWhile(1,condVarNames, condConsts, whileStmt);
-    DesignExtractor::storeNewAssignment(2, "axel2", assStmtAxel2); // axel2 = semelparity;
+    DesignExtractor::storeNewAssignment(2, "axel2", assignment);
     DesignExtractor::storeNewWhile(3,nestedCondVarNames, nestedCondConsts, nestedWhileStmt);
     DesignExtractor::storeNewRead(4, "shine", readStmt);
     DesignExtractor::exitWhile();
@@ -369,12 +461,33 @@ TEST_CASE("[ONE NESTED WHILE] storeNewWhile and exitWhile Test") {
 TEST_CASE("[SIMPLE, no nested if/while] storeNewIf and storeNewElse and endIfElse Test") {
     DesignExtractor::signalReset();
 
+    // Set up Assignment AST
+    std::vector<sp::Token*> stubTokens{
+            new sp::Token(sp::Token::TokenType::NAME, "axel2"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::NAME, "semelparity"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto l = new LexerStub(stubTokens);     //new keyword gets me a ptr to LexerStub
+    Parser p = Parser(l);
+    ast::AssignStmt* assignment = p.parseAssignStmt();
+
+    std::vector<sp::Token*> stub2Tokens{
+            new sp::Token(sp::Token::TokenType::NAME, "slalom"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::NAME, "semelparity"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto l2 = new LexerStub(stub2Tokens);     //new keyword gets me a ptr to LexerStub
+    Parser p2 = Parser(l2);
+    ast::AssignStmt* assignment2 = p2.parseAssignStmt();
+
     vector<STRING> condVarNames{ "x", "y" };    // Used in conditional expression of if stmt
     vector<STRING> condConsts{ "5", "10" };
     DesignExtractor::storeNewProcedure("kanzashi");
-    DesignExtractor::storeNewAssignment(1, "axel2", assStmtAxel2); // axel2 = semelparity;
+    DesignExtractor::storeNewAssignment(1, "axel2", assignment);
     DesignExtractor::storeNewIf(2,condVarNames, condConsts, ifStmt);    // If-then
-    DesignExtractor::storeNewAssignment(3, "slalom", assStmtSlalom);   // slalom = semelparity;
+    DesignExtractor::storeNewAssignment(3, "slalom", assignment2);
     DesignExtractor::storeNewElse();                                                    // Else
     DesignExtractor::storeNewRead(4, "shine", readStmt);
     DesignExtractor::endIfElse();
@@ -456,19 +569,60 @@ TEST_CASE("[SIMPLE, no nested if/while] storeNewIf and storeNewElse and endIfEls
 TEST_CASE("[ONE NESTED IF] storeNewIf and storeNewElse and endIfElse Test") {
     DesignExtractor::signalReset();
 
+    // Set up Assignment AST
+    std::vector<sp::Token*> stubTokens{
+            new sp::Token(sp::Token::TokenType::NAME, "axel2"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::NAME, "semelparity"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto l = new LexerStub(stubTokens);     //new keyword gets me a ptr to LexerStub
+    Parser p = Parser(l);
+    ast::AssignStmt* assignment = p.parseAssignStmt();
+
+    std::vector<sp::Token*> stub2Tokens{
+            new sp::Token(sp::Token::TokenType::NAME, "slalom"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::NAME, "semelparity"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto l2 = new LexerStub(stub2Tokens);     //new keyword gets me a ptr to LexerStub
+    Parser p2 = Parser(l2);
+    ast::AssignStmt* assignment2 = p2.parseAssignStmt();
+
+    std::vector<sp::Token*> stub3Tokens{
+            new sp::Token(sp::Token::TokenType::NAME, "quartz"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::NAME, "conspiracy"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto l3 = new LexerStub(stub3Tokens);     //new keyword gets me a ptr to LexerStub
+    Parser p3 = Parser(l3);
+    ast::AssignStmt* assignment3 = p3.parseAssignStmt();
+
+    std::vector<sp::Token*> stub4Tokens{
+            new sp::Token(sp::Token::TokenType::NAME, "sapphire"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::CONST, "100"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto l4 = new LexerStub(stub4Tokens);     //new keyword gets me a ptr to LexerStub
+    Parser p4 = Parser(l4);
+    ast::AssignStmt* assignment4 = p4.parseAssignStmt();
+
     vector<STRING> condVarNames{ "x", "y" };    // Used in conditional expression of if stmt
     vector<STRING> condConsts{ "5", "10" };
     vector<STRING> nestedCondVarNames{ "a", "z" };    // Used in conditional expression of nested if stmt
     vector<STRING> nestedCondConsts{ "33", "1" };
     DesignExtractor::storeNewProcedure("mitosis");
-    DesignExtractor::storeNewAssignment(1, "axel2", assStmtAxel2); // axel2 = semelparity;
+    DesignExtractor::storeNewAssignment(1, "axel2", assignment);
     DesignExtractor::storeNewIf(2,condVarNames, condConsts, ifStmt);    // If-then
-    DesignExtractor::storeNewAssignment(3, "slalom", assStmtSlalom); // slalom = semelparity;
+    DesignExtractor::storeNewAssignment(3, "slalom", assignment2);
     DesignExtractor::storeNewElse();                                                    // Else
     DesignExtractor::storeNewIf(4,nestedCondVarNames, nestedCondConsts, nestedIfStmt);    // Nested If-then
-    DesignExtractor::storeNewAssignment(5, "quartz", assStmtQuartz);
+    DesignExtractor::storeNewAssignment(5, "quartz", assignment3);
     DesignExtractor::storeNewElse();                                                    // Nested Else
-    DesignExtractor::storeNewAssignment(6, "sapphire", assStmtSapphire); // sapphire = 100;
+    DesignExtractor::storeNewAssignment(6, "sapphire", assignment4);
     DesignExtractor::storeNewRead(7, "droning", readStmt);
     DesignExtractor::endIfElse();
     DesignExtractor::endIfElse();
@@ -597,20 +751,61 @@ TEST_CASE("[ONE NESTED IF] storeNewIf and storeNewElse and endIfElse Test") {
 TEST_CASE("[ONE NESTED IF] Next Variants for If-Else Statements") {
     DesignExtractor::signalReset();
 
+    // Set up Assignment AST
+    std::vector<sp::Token*> stubTokens{
+            new sp::Token(sp::Token::TokenType::NAME, "axel2"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::NAME, "semelparity"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto l = new LexerStub(stubTokens);     //new keyword gets me a ptr to LexerStub
+    Parser p = Parser(l);
+    ast::AssignStmt* assignment = p.parseAssignStmt();
+
+    std::vector<sp::Token*> stub2Tokens{
+            new sp::Token(sp::Token::TokenType::NAME, "slalom"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::NAME, "semelparity"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto l2 = new LexerStub(stub2Tokens);     //new keyword gets me a ptr to LexerStub
+    Parser p2 = Parser(l2);
+    ast::AssignStmt* assignment2 = p2.parseAssignStmt();
+
+    std::vector<sp::Token*> stub3Tokens{
+            new sp::Token(sp::Token::TokenType::NAME, "quartz"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::NAME, "conspiracy"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto l3 = new LexerStub(stub3Tokens);     //new keyword gets me a ptr to LexerStub
+    Parser p3 = Parser(l3);
+    ast::AssignStmt* assignment3 = p3.parseAssignStmt();
+
+    std::vector<sp::Token*> stub4Tokens{
+            new sp::Token(sp::Token::TokenType::NAME, "sapphire"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::CONST, "100"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto l4 = new LexerStub(stub4Tokens);     //new keyword gets me a ptr to LexerStub
+    Parser p4 = Parser(l4);
+    ast::AssignStmt* assignment4 = p4.parseAssignStmt();
+
     // Tests DE's ability to extract Next for a nested if statement with explicit endpoints in the CFG
     vector<STRING> condVarNames{ "x", "y" };    // Used in conditional expression of if stmt
     vector<STRING> condConsts{ "5", "10" };
     vector<STRING> nestedCondVarNames{ "a", "z" };    // Used in conditional expression of nested if stmt
     vector<STRING> nestedCondConsts{ "33", "1" };
     DesignExtractor::storeNewProcedure("mitosis");
-    DesignExtractor::storeNewAssignment(1, "axel2", assStmtAxel2); // axel2 = semelparity;
+    DesignExtractor::storeNewAssignment(1, "axel2", assignment);
     DesignExtractor::storeNewIf(2,condVarNames, condConsts, ifStmt);    // If-then
-    DesignExtractor::storeNewAssignment(3, "slalom", assStmtSlalom); // slalom = semelparity;
+    DesignExtractor::storeNewAssignment(3, "slalom", assignment2);
     DesignExtractor::storeNewElse();                                                    // Else
     DesignExtractor::storeNewIf(4,nestedCondVarNames, nestedCondConsts, nestedIfStmt);    // Nested If-then
-    DesignExtractor::storeNewAssignment(5, "quartz", assStmtQuartz); // quartz = conspiracy;
+    DesignExtractor::storeNewAssignment(5, "quartz", assignment3);
     DesignExtractor::storeNewElse();                                                    // Nested Else
-    DesignExtractor::storeNewAssignment(6, "sapphire", assStmtSapphire); // sapphire = 100;
+    DesignExtractor::storeNewAssignment(6, "sapphire", assignment4);
     DesignExtractor::storeNewRead(7, "droning", readStmt);
     DesignExtractor::endIfElse();
     DesignExtractor::storeNewRead(8, "droning", readStmt);
@@ -643,14 +838,14 @@ TEST_CASE("[ONE NESTED IF] Next Variants for If-Else Statements") {
     DesignExtractor::signalReset();
     // Tests DE's ability to extract Next for a nested if statement with no explicit endpoint for the outer If
     DesignExtractor::storeNewProcedure("mitosis");
-    DesignExtractor::storeNewAssignment(1, "axel2", assStmtAxel2); // axel2 = semelparity;
+    DesignExtractor::storeNewAssignment(1, "axel2", assignment);
     DesignExtractor::storeNewIf(2,condVarNames, condConsts, ifStmt);    // If-then
-    DesignExtractor::storeNewAssignment(3, "slalom", assStmtSlalom); // slalom = semelparity;
+    DesignExtractor::storeNewAssignment(3, "slalom", assignment2);
     DesignExtractor::storeNewElse();                                                    // Else
     DesignExtractor::storeNewIf(4,nestedCondVarNames, nestedCondConsts, nestedIfStmt);    // Nested If-then
-    DesignExtractor::storeNewAssignment(5, "quartz", assStmtQuartz); // quartz = conspiracy;
+    DesignExtractor::storeNewAssignment(5, "quartz", assignment3);
     DesignExtractor::storeNewElse();                                                    // Nested Else
-    DesignExtractor::storeNewAssignment(6, "sapphire", assStmtSapphire); // sapphire = 100;
+    DesignExtractor::storeNewAssignment(6, "sapphire", assignment4);
     DesignExtractor::storeNewRead(7, "droning", readStmt);
     DesignExtractor::endIfElse();
     DesignExtractor::storeNewRead(8, "droning", readStmt);
@@ -677,18 +872,59 @@ TEST_CASE("[ONE NESTED IF] Next Variants for If-Else Statements") {
 TEST_CASE("[WHILE-IF NESTING] storeNewWhile & storeNewIf Interaction Test") {
     DesignExtractor::signalReset();
 
+    // Set up Assignment AST
+    std::vector<sp::Token*> stubTokens{
+            new sp::Token(sp::Token::TokenType::NAME, "axel2"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::NAME, "semelparity"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto l = new LexerStub(stubTokens);     //new keyword gets me a ptr to LexerStub
+    Parser p = Parser(l);
+    ast::AssignStmt* assignment = p.parseAssignStmt();
+
+    std::vector<sp::Token*> stub2Tokens{
+            new sp::Token(sp::Token::TokenType::NAME, "slalom"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::NAME, "semelparity"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto l2 = new LexerStub(stub2Tokens);     //new keyword gets me a ptr to LexerStub
+    Parser p2 = Parser(l2);
+    ast::AssignStmt* assignment2 = p2.parseAssignStmt();
+
+    std::vector<sp::Token*> stub3Tokens{
+            new sp::Token(sp::Token::TokenType::NAME, "quartz"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::NAME, "conspiracy"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto l3 = new LexerStub(stub3Tokens);     //new keyword gets me a ptr to LexerStub
+    Parser p3 = Parser(l3);
+    ast::AssignStmt* assignment3 = p3.parseAssignStmt();
+
+    std::vector<sp::Token*> stub4Tokens{
+            new sp::Token(sp::Token::TokenType::NAME, "sapphire"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::CONST, "100"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto l4 = new LexerStub(stub4Tokens);     //new keyword gets me a ptr to LexerStub
+    Parser p4 = Parser(l4);
+    ast::AssignStmt* assignment4 = p4.parseAssignStmt();
+
     vector<STRING> condVarNames{ "x", "y" };    // Used in conditional expression of if stmt
     vector<STRING> condConsts{ "5", "10" };
     vector<STRING> nestedCondVarNames{ "a", "z" };    // Used in conditional expression of nested if stmt
     vector<STRING> nestedCondConsts{ "33", "1" };
     DesignExtractor::storeNewProcedure("arabesque");
-    DesignExtractor::storeNewAssignment(1, "axel2", assStmtAxel2); // axel2 = semelparity;
+    DesignExtractor::storeNewAssignment(1, "axel2", assignment);
     DesignExtractor::storeNewIf(2,condVarNames, condConsts, ifStmt);    // If-then
-    DesignExtractor::storeNewAssignment(3, "slalom", assStmtSlalom); // slalom = semelparity;
+    DesignExtractor::storeNewAssignment(3, "slalom", assignment2);
     DesignExtractor::storeNewElse();                                                    // Else
     DesignExtractor::storeNewWhile(4,nestedCondVarNames, nestedCondConsts, nestedWhileStmt);    // Nested While
-    DesignExtractor::storeNewAssignment(5, "quartz", assStmtQuartz); // quartz = conspiracy;
-    DesignExtractor::storeNewAssignment(6, "sapphire", assStmtSapphire); // sapphire = 100;
+    DesignExtractor::storeNewAssignment(5, "quartz", assignment3);
+    DesignExtractor::storeNewAssignment(6, "sapphire", assignment4);
     DesignExtractor::storeNewRead(7, "droning", readStmt);
     DesignExtractor::exitWhile();
     DesignExtractor::endIfElse();
@@ -813,24 +1049,65 @@ TEST_CASE("[WHILE-IF NESTING] storeNewWhile & storeNewIf Interaction Test") {
 TEST_CASE("Multi-procedure test") {
     DesignExtractor::signalReset();
 
+    // Set up Assignment AST
+    std::vector<sp::Token*> stubTokens{
+            new sp::Token(sp::Token::TokenType::NAME, "axel2"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::NAME, "semelparity"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto l = new LexerStub(stubTokens);     //new keyword gets me a ptr to LexerStub
+    Parser p = Parser(l);
+    ast::AssignStmt* assignment = p.parseAssignStmt();
+
+    std::vector<sp::Token*> stub2Tokens{
+            new sp::Token(sp::Token::TokenType::NAME, "slalom"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::NAME, "semelparity"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto l2 = new LexerStub(stub2Tokens);     //new keyword gets me a ptr to LexerStub
+    Parser p2 = Parser(l2);
+    ast::AssignStmt* assignment2 = p2.parseAssignStmt();
+
+    std::vector<sp::Token*> stub3Tokens{
+            new sp::Token(sp::Token::TokenType::NAME, "quartz"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::NAME, "conspiracy"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto l3 = new LexerStub(stub3Tokens);     //new keyword gets me a ptr to LexerStub
+    Parser p3 = Parser(l3);
+    ast::AssignStmt* assignment3 = p3.parseAssignStmt();
+
+    std::vector<sp::Token*> stub4Tokens{
+            new sp::Token(sp::Token::TokenType::NAME, "sapphire"),
+            new sp::Token(sp::Token::TokenType::ASSIGN, "="),
+            new sp::Token(sp::Token::TokenType::CONST, "100"),
+            new sp::Token(sp::Token::TokenType::SEMICOLON, ";"),
+    };
+    auto l4 = new LexerStub(stub4Tokens);     //new keyword gets me a ptr to LexerStub
+    Parser p4 = Parser(l4);
+    ast::AssignStmt* assignment4 = p4.parseAssignStmt();
+
     vector<STRING> condVarNames{ "x", "y" };    // Used in conditional expression of if stmt
     vector<STRING> condConsts{ "5", "10" };
     vector<STRING> whileCondVarNames{ "a", "z" };    // Used in conditional expression of nested if stmt
     vector<STRING> whileCondConsts{ "33", "1" };
 
     DesignExtractor::storeNewProcedure("arabesque");
-    DesignExtractor::storeNewAssignment(1, "axel2", assStmtAxel2); // axel2 = semelparity;
+    DesignExtractor::storeNewAssignment(1, "axel2", assignment);
     DesignExtractor::storeNewIf(2,condVarNames, condConsts, ifStmt);    // If-then
-    DesignExtractor::storeNewAssignment(3, "slalom", assStmtSlalom); // slalom = semelparity;
+    DesignExtractor::storeNewAssignment(3, "slalom", assignment2);
     DesignExtractor::storeNewElse();
-    DesignExtractor::storeNewAssignment(4, "slalom", assStmtSlalom); // slalom = semelparity;
+    DesignExtractor::storeNewAssignment(4, "slalom", assignment2);
     DesignExtractor::endIfElse();
     DesignExtractor::exitProcedure();
 
     DesignExtractor::storeNewProcedure("deux");
     DesignExtractor::storeNewWhile(5, whileCondVarNames, whileCondConsts, nestedWhileStmt);
-    DesignExtractor::storeNewAssignment(6, "quartz", assStmtQuartz); // quartz = conspiracy;
-    DesignExtractor::storeNewAssignment(7, "sapphire", assStmtSapphire); // sapphire = 100;
+    DesignExtractor::storeNewAssignment(6, "quartz", assignment3);
+    DesignExtractor::storeNewAssignment(7, "sapphire", assignment4);
     DesignExtractor::storeNewRead(8, "droning", readStmt);
     DesignExtractor::exitWhile();
     DesignExtractor::exitProcedure();

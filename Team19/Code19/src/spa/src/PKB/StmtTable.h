@@ -7,6 +7,7 @@
 
 class StmtTable {
 public:
+
     // Constructor for StmtTable
     StmtTable();
 
@@ -132,6 +133,7 @@ private:
     vector<StmtNum> callStmtNums;
     vector<StmtNum> whileStmtNums;
     vector<StmtNum> ifStmtNums;
+
 };
 
 

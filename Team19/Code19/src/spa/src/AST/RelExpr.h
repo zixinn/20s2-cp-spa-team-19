@@ -1,27 +1,26 @@
 #pragma once
 #include <string>
 #include "SP/Token.h"
-#include "AST/Expr.h"
+#include "AST/CondExpr.h"
 
-// Assign
 namespace ast {
-	class InfixExpr : public Expr {
+	class RelExpr : public CondExpr {
 		Expr* left;
 		Expr* right;
 	public:
-		InfixExpr(sp::Token* token, Expr* left, Expr* right)
-			:Expr( token ), left{ left }, right{ right } {}
+		RelExpr(sp::Token* token, Expr* left, Expr* right)
+			:CondExpr( token ), left{ left }, right{ right } {}
 		Expr* getLeft() { return left; }
 		Expr* getRight() { return right; }
-		bool compare(Expr* otherExpr) override { throw "NOT READY"; }
 
 		std::string toString() override {
 			std::string left_str = left ? left->toString() : "[NULL_PTR]";
 			std::string right_str = right ? right->toString() : "[NULL_PTR]";
-			return "(" + left_str + " " + this->getTokenLiteral() + " " + right_str + ")";
+			//return "(" + left_str + " " + this->getTokenLiteral() + " " + right_str + ")";
+			return left_str + " " + this->getTokenLiteral() + " " + right_str;
 		}
 
-		~InfixExpr() {
+		~RelExpr() {
 			delete left;
 			delete right;
 		}
