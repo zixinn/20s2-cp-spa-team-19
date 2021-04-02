@@ -1,0 +1,220 @@
+#include "AffectsBip.h"
+#include "PKB.h"
+
+AffectsBip::AffectsBip() = default;
+
+bool AffectsBip::isAffectsBip(StmtNum a1, StmtNum a2) {
+    unordered_map<StmtNum, unordered_set<StmtNum>>::const_iterator result = affectsBipMap.find(a1);
+    return result != affectsBipMap.end() && result->second.find(a2) != result->second.end();
+}
+
+bool AffectsBip::isAffectsBipStar(StmtNum a1, StmtNum a2) {
+    unordered_map<StmtNum, unordered_set<StmtNum>>::const_iterator result = affectsBipStarMap.find(a1);
+    return result != affectsBipStarMap.end() && result->second.find(a2) != result->second.end();
+}
+
+unordered_set<StmtNum> const &AffectsBip::getAffectsBip(StmtNum a1) const {
+    if (affectsBipMap.find(a1) == affectsBipMap.end()) {
+        static unordered_set<StmtNum> empty = unordered_set<StmtNum>({});
+        return empty;
+    }
+    return affectsBipMap.find(a1)->second;
+}
+
+unordered_set<StmtNum> const &AffectsBip::getAffectedBip(StmtNum a2) const {
+    if (reverseAffectsBipMap.find(a2) == reverseAffectsBipMap.end()) {
+        static unordered_set<StmtNum> empty = unordered_set<StmtNum>({});
+        return empty;
+    }
+    return reverseAffectsBipMap.find(a2)->second;
+}
+
+unordered_set<StmtNum> const &AffectsBip::getAffectsBipStar(StmtNum a1) const {
+    if (affectsBipStarMap.find(a1) == affectsBipStarMap.end()) {
+        static unordered_set<StmtNum> empty = unordered_set<StmtNum>({});
+        return empty;
+    }
+    return affectsBipStarMap.find(a1)->second;
+}
+
+unordered_set<StmtNum> const &AffectsBip::getAffectedBipStar(StmtNum a2) const {
+    if (reverseAffectsBipStarMap.find(a2) == reverseAffectsBipStarMap.end()) {
+        static unordered_set<StmtNum> empty = unordered_set<StmtNum>({});
+        return empty;
+    }
+    return reverseAffectsBipStarMap.find(a2)->second;
+}
+
+pair<vector<StmtNum>, vector<StmtNum> > AffectsBip::getAllAffectsBip() {
+    vector<StmtNum> a1s, a2s;
+    for (auto &it : affectsBipMap) {
+        for (ID n2 : it.second) {
+            a1s.push_back(it.first);
+            a2s.push_back(n2);
+        }
+    }
+    return make_pair(a1s, a2s);
+}
+
+pair<vector<StmtNum>, vector<StmtNum> > AffectsBip::getAllAffectsBipStar() {
+    vector<StmtNum> a1s, a2s;
+    for (auto &it : affectsBipStarMap) {
+        for (ID n2 : it.second) {
+            a1s.push_back(it.first);
+            a2s.push_back(n2);
+        }
+    }
+    return make_pair(a1s, a2s);
+}
+
+int AffectsBip::getAffectsBipSize() {
+    int cnt = 0;
+    for (auto &it : affectsBipMap) {
+        cnt += it.second.size();
+    }
+    return cnt;
+}
+
+int AffectsBip::getAffectsBipStarSize() {
+    int cnt = 0;
+    for (auto &it : affectsBipStarMap) {
+        cnt += it.second.size();
+    }
+    return cnt;
+}
+
+bool AffectsBip::storeAffectsBip(StmtNum a1, StmtNum a2) {
+    if (isAffectsBip(a1, a2)) {
+        return false;
+    }
+
+    auto it = affectsBipMap.find(a1);
+    if (it == affectsBipMap.end()) {
+        affectsBipMap.insert({a1, unordered_set<StmtNum>({a2})});
+    } else {
+        it->second.insert(a2);
+    }
+
+    it = reverseAffectsBipMap.find(a2);
+    if (it == reverseAffectsBipMap.end()) {
+        reverseAffectsBipMap.insert({a2, unordered_set<StmtNum>({a1})});
+    } else {
+        it->second.insert(a1);
+    }
+
+    return true;
+}
+
+bool AffectsBip::storeAffectsBipStar(StmtNum a1, StmtNum a2) {
+    if (isAffectsBipStar(a1, a2)) {
+        return false;
+    }
+
+    auto it = affectsBipStarMap.find(a1);
+    if (it == affectsBipStarMap.end()) {
+        affectsBipStarMap.insert({a1, unordered_set<StmtNum>({a2})});
+    } else {
+        it->second.insert(a2);
+    }
+
+    it = reverseAffectsBipStarMap.find(a2);
+    if (it == reverseAffectsBipStarMap.end()) {
+        reverseAffectsBipStarMap.insert({a2, unordered_set<StmtNum>({a1})});
+    } else {
+        it->second.insert(a1);
+    }
+
+    return true;
+}
+
+void AffectsBip::populateAffectsBipAndAffectsBipStar() {
+    if (PKB::nextBip->getRunNextBip() && runAffectsBip) {
+        populateAffectsBip();
+        populateAffectsBipStar();
+    }
+}
+
+void AffectsBip::populateAffectsBip() {
+    // Get all the assignment statements
+    // For every pair of assignment statements a1 and a2 that has a control flow path [isNextBip*(a1, a2)], find the variable v such that Modifies(a1,v) and check that stmtUsesVar(a2, v)
+    // Search for all possible paths to find a path that does not modify v along the way. [in pathDoesNotModify()]
+    // If found a path, storeAffectsBip(a1, a2)
+    ID v;
+    for (StmtNum a1 : PKB::stmtTable->getAllAssignStmtNums()) {
+        for (StmtNum a2 : PKB::stmtTable->getAllAssignStmtNums()) {
+            if (!PKB::nextBip->isNextBipStar(a1, a2)) {
+                // No control flow path between a1 and a2
+                continue;
+            }
+            v = *PKB::modifies->getVarsModifiedByStmt(a1).begin();
+            if (!(PKB::uses->stmtUsesVar(a2, v))) {
+                // a1 does not affect a2 since a2 does not use the variable modified by a1
+                continue;
+            }
+            unordered_set<StmtNum> visited;
+            for (ProgLine nextBip : PKB::nextBip->getNextBip(a1)) {
+                if (pathDoesNotModify(nextBip, a2, v, visited)) {
+                    storeAffectsBip(a1, a2);
+                    break;
+                }
+            }
+        }
+    }
+}
+
+bool AffectsBip::pathDoesNotModify(StmtNum a1, StmtNum a2, ID v, unordered_set<StmtNum> visited) { 
+    
+    visited.insert(a1);
+    
+    if (a1 == a2) {
+        // we found our way to a2 means we found the path that has not modified v
+        return true;
+    }
+
+    if (!PKB::nextBip->isNextBipStar(a1, a2)) {
+        // not a path to a2
+        return false;
+    }
+
+    vector<StmtNum> allAssignStmtNums = PKB::stmtTable->getAllAssignStmtNums();
+    if (find(allAssignStmtNums.begin(), allAssignStmtNums.end(), a1) != allAssignStmtNums.end() && PKB::modifies->stmtModifiesVar(a1, v)) {
+        // a1 is an assignment statement and it modifies v
+        return false;
+    }
+
+    // A possible path, need to continue checking
+    for (ProgLine nextBip : PKB::nextBip->getNextBip(a1)) {
+        if (visited.find(nextBip) == visited.end()) {
+            if (pathDoesNotModify(nextBip, a2, v, visited)) {
+                return true;
+            }
+        }
+    }
+
+    visited.erase(a1);
+
+    return false;
+}
+
+void AffectsBip::populateAffectsBipStar() {
+//    unordered_set<StmtNum> a2s;
+//    ID curr;
+//    for (auto &it : affectsBipMap) {
+//        curr = it.first;
+//        list<StmtNum> queue;
+//        unordered_set<StmtNum> processedStmts;
+//        processedStmts.insert(curr);
+//        queue.push_back(curr);
+//        while (!queue.empty()) {
+//            a2s = getAffectsBip(queue.front());
+//            queue.pop_front();
+//            for (StmtNum a2 : a2s) {
+//                storeAffectsBipStar(curr, a2);
+//                if (curr != a2 && processedStmts.find(a2) == processedStmts.end()) {
+//                    processedStmts.insert(a2);
+//                    queue.push_back(a2);
+//                }
+//            }
+//        }
+//    }
+}
