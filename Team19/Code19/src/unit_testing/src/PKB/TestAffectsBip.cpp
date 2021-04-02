@@ -135,7 +135,7 @@ TEST_CASE("getAffectsBip Test") {
     REQUIRE(PKB::affectsBip->getAffectsBip(3) == unordered_set<ProgLine>{12,5});
     REQUIRE(PKB::affectsBip->getAffectsBip(4) == unordered_set<ProgLine>{ });
     REQUIRE(PKB::affectsBip->getAffectsBip(5) == unordered_set<ProgLine>{ });
-    REQUIRE(PKB::affectsBip->getAffectsBip(6) == unordered_set<ProgLine>{12,5});
+    REQUIRE(PKB::affectsBip->getAffectsBip(6) == unordered_set<ProgLine>{12});
     REQUIRE(PKB::affectsBip->getAffectsBip(7) == unordered_set<ProgLine>{ });
     REQUIRE(PKB::affectsBip->getAffectsBip(8) == unordered_set<ProgLine>{ });
     REQUIRE(PKB::affectsBip->getAffectsBip(9) == unordered_set<ProgLine>{3,5,9,11,12});
@@ -150,7 +150,7 @@ TEST_CASE("getAffectedBip Test") {
     REQUIRE(PKB::affectsBip->getAffectedBip(2) == unordered_set<ProgLine>{ });
     REQUIRE(PKB::affectsBip->getAffectedBip(3) == unordered_set<ProgLine>{1,9,11});
     REQUIRE(PKB::affectsBip->getAffectedBip(4) == unordered_set<ProgLine>{ });
-    REQUIRE(PKB::affectsBip->getAffectedBip(5) == unordered_set<ProgLine>{1,3,6,9,11,12});
+    REQUIRE(PKB::affectsBip->getAffectedBip(5) == unordered_set<ProgLine>{1,3,9,11,12});
     REQUIRE(PKB::affectsBip->getAffectedBip(6) == unordered_set<ProgLine>{1});
     REQUIRE(PKB::affectsBip->getAffectedBip(7) == unordered_set<ProgLine>{ });
     REQUIRE(PKB::affectsBip->getAffectedBip(8) == unordered_set<ProgLine>{ });
@@ -171,7 +171,6 @@ TEST_CASE("isAffectsBip Test") {
     REQUIRE(PKB::affectsBip->isAffectsBip(3,12));
     REQUIRE(PKB::affectsBip->isAffectsBip(3,5));
     REQUIRE(PKB::affectsBip->isAffectsBip(6,12));
-    REQUIRE(PKB::affectsBip->isAffectsBip(6,5));
     REQUIRE(PKB::affectsBip->isAffectsBip(9,3));
     REQUIRE(PKB::affectsBip->isAffectsBip(9,5));
     REQUIRE(PKB::affectsBip->isAffectsBip(9,9));
@@ -187,7 +186,7 @@ TEST_CASE("isAffectsBip Test") {
 
 TEST_CASE("getAffectsBipSize Test") {
     setUpAffectsBipTest();
-    REQUIRE(PKB::affectsBip->getAffectsBipSize() == 21);
+    REQUIRE(PKB::affectsBip->getAffectsBipSize() == 20);
 }
 
 TEST_CASE("getAllAffectsBip Test") {
@@ -317,7 +316,7 @@ TEST_CASE("getAffectsBip Test2") {
     REQUIRE(PKB::affectsBip->getAffectsBip(3) == unordered_set<ProgLine>{11,5});
     REQUIRE(PKB::affectsBip->getAffectsBip(4) == unordered_set<ProgLine>{ });
     REQUIRE(PKB::affectsBip->getAffectsBip(5) == unordered_set<ProgLine>{ });
-    REQUIRE(PKB::affectsBip->getAffectsBip(6) == unordered_set<ProgLine>{11,8,5});
+    REQUIRE(PKB::affectsBip->getAffectsBip(6) == unordered_set<ProgLine>{11,8});
     REQUIRE(PKB::affectsBip->getAffectsBip(7) == unordered_set<ProgLine>{ });
     REQUIRE(PKB::affectsBip->getAffectsBip(8) == unordered_set<ProgLine>{10});
     REQUIRE(PKB::affectsBip->getAffectsBip(9) == unordered_set<ProgLine>{ });
@@ -327,7 +326,7 @@ TEST_CASE("getAffectsBip Test2") {
 
 TEST_CASE("getAffectsBipSize Test2") {
     setUpAffectsBipTest2();
-    REQUIRE(PKB::affectsBip->getAffectsBipSize() == 19);
+    REQUIRE(PKB::affectsBip->getAffectsBipSize() == 18);
 }
 
 //    procedure a {

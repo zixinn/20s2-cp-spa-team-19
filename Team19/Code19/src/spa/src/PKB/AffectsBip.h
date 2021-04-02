@@ -62,6 +62,8 @@ private:
     // Stores a2 as key, set of a1's as value for AffectsBip* relationship
     unordered_map<StmtNum, unordered_set<StmtNum> > reverseAffectsBipStarMap;
 
+    unordered_map<string, unordered_set<string> > affectsBipWithBranchStackMap;
+
     // Stores <a1, a2> in the affectsBipMap
     // Stores <a2, a1> in the reverseAffectsBipMap
     // Returns true if the information is successfully added to the PKB.
@@ -72,8 +74,16 @@ private:
     // Returns true if the information is successfully added to the PKB.
     bool storeAffectsBipStar(StmtNum a1, StmtNum a2);
 
+    void storeAffectsBipWithBranchStack(string s1, string s2);
+
     // Checks that there exists a path from a1 to a2 such that along the path, v is not modified.
-    bool pathDoesNotModify(StmtNum a1, StmtNum a2, ID v, unordered_set<StmtNum> visited);
+    // bool pathDoesNotModify(StmtNum a1, StmtNum a2, ID v, unordered_set<StmtNum> visited);
+
+    void populateAffectsBipWithBranchStack();
+
+    bool pathDoesNotModifyWithBranchStack(string s1, string s2, ID v, unordered_set<string> visited);
+
+    ProgLine findN(string s);
 
     void populateAffectsBip();
 

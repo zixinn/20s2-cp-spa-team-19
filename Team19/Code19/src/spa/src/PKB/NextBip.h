@@ -14,6 +14,8 @@ public:
     // Returns true if NextBip*(n1,n2)
     bool isNextBipStar(ProgLine n1, ProgLine n2);
 
+    bool isNextBipStarWithBranchStack(string s1, string s2);
+
     // Returns n2's such that NextBip(n1, n2)
     unordered_set<ProgLine> const &getNextBip(ProgLine n1) const;
 
@@ -25,6 +27,8 @@ public:
 
     // Returns n1's such that NextBip*(n1, n2)
     unordered_set<ProgLine> const & getPreviousBipStar(ProgLine n2) const;
+
+    unordered_set<string> const &getNextBipWithBranchStack(string s1) const;
 
     // Returns a pair of vectors in the nextBipMap.
     // First vector is vector of n1's. Second is vector of n2's.
@@ -45,6 +49,10 @@ public:
     int getNextBipStarSize();
 
     void populateNextBipAndNextBipStar();
+
+    unordered_map<string, unordered_set<string>> getNextBipStarWithBranchStackMap();
+
+    unordered_map<string, unordered_set<string>> getNextBipStarWithBranchStackNoDummyMap();
 
     // to switch on/off population of NextBip and NextBip* relationship
     void setRunNextBip(bool runNextBip);
@@ -78,6 +86,10 @@ private:
     // Each string is n followed by branchStack separated by whitespace
     unordered_map<string, unordered_set<string>> nextBipWithBranchStackMap;
 
+    unordered_map<string, unordered_set<string>> nextBipStarWithBranchStackMap;
+
+    unordered_map<string, unordered_set<string>> nextBipStarWithBranchStackNoDummyMap;
+
     // Stores n1 as key, set of n2's as value for NextBip relationship
     unordered_map<ProgLine, unordered_set<ProgLine>> nextBipMap;
 
@@ -99,10 +111,10 @@ private:
     // Stores <s1, s2> in the nextBipWithBranchStackMap.
     void storeNextBipWithBranchStack(string s1, string s2);
 
+    void storeNextBipStarWithBranchStack(string s1, string s2);
+
     // Returns n2's such that NextBipWithDummy(n1, n2)
     unordered_set<ProgLine> const &getNextBipWithDummy(ProgLine n1) const;
-
-    unordered_set<string> const &getNextBipWithBranchStack(string s1) const;
 
     // populate nextWithDummyMap by adding dummy nodes to nextMap
     void populateNextWithDummy();

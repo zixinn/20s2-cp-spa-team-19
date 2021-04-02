@@ -127,14 +127,23 @@ bool AffectsBip::storeAffectsBipStar(StmtNum a1, StmtNum a2) {
     return true;
 }
 
+void AffectsBip::storeAffectsBipWithBranchStack(string s1, string s2) {
+    if (affectsBipWithBranchStackMap.find(s1) == affectsBipWithBranchStackMap.end()) {
+        affectsBipWithBranchStackMap[s1] = unordered_set<string>{s2};
+    } else {
+        affectsBipWithBranchStackMap.find(s1)->second.insert(s2);
+    }
+}
+
 void AffectsBip::populateAffectsBipAndAffectsBipStar() {
     if (PKB::nextBip->getRunNextBip() && runAffectsBip) {
+        populateAffectsBipWithBranchStack();
         populateAffectsBip();
         populateAffectsBipStar();
     }
 }
 
-void AffectsBip::populateAffectsBip() {
+/*void AffectsBip::populateAffectsBip() {
     // Get all the assignment statements
     // For every pair of assignment statements a1 and a2 that has a control flow path [isNextBip*(a1, a2)], find the variable v such that Modifies(a1,v) and check that stmtUsesVar(a2, v)
     // Search for all possible paths to find a path that does not modify v along the way. [in pathDoesNotModify()]
@@ -194,6 +203,78 @@ bool AffectsBip::pathDoesNotModify(StmtNum a1, StmtNum a2, ID v, unordered_set<S
     visited.erase(a1);
 
     return false;
+}*/
+
+void AffectsBip::populateAffectsBipWithBranchStack() {
+    vector<StmtNum> allAssignStmtNums = PKB::stmtTable->getAllAssignStmtNums();
+    unordered_map<string, unordered_set<string>> nextBipStarWithBranchStackNoDummyMap = PKB::nextBip->getNextBipStarWithBranchStackNoDummyMap();
+    for (auto& it : nextBipStarWithBranchStackNoDummyMap) {
+        string s1 = it.first;
+        ProgLine n1 = findN(s1);
+        if (find(allAssignStmtNums.begin(), allAssignStmtNums.end(), n1) == allAssignStmtNums.end()) {
+            continue;
+        }
+        for (string s2 : it.second) {
+            ProgLine n2 = findN(s2);
+            if (find(allAssignStmtNums.begin(), allAssignStmtNums.end(), n2) == allAssignStmtNums.end()) {
+                continue;
+            }
+            ID v = *PKB::modifies->getVarsModifiedByStmt(n1).begin();
+            if (!(PKB::uses->stmtUsesVar(n2, v))) {
+                continue;
+            }
+            unordered_set<string> visited;
+            for (string s : PKB::nextBip->getNextBipWithBranchStack(s1)) {
+                if (pathDoesNotModifyWithBranchStack(s, s2, v, visited)) {
+                    storeAffectsBipWithBranchStack(s1, s2);
+                }
+            }
+        }
+    }
+}
+
+bool AffectsBip::pathDoesNotModifyWithBranchStack(string s1, string s2, ID v, unordered_set<string> visited) {
+    visited.insert(s1);
+    if (s1 == s2) {
+        return true;
+    }
+    if (!PKB::nextBip->isNextBipStarWithBranchStack(s1, s2)) {
+        return false;
+    }
+    ProgLine n1 = findN(s1);
+    vector<StmtNum> allAssignStmtNums = PKB::stmtTable->getAllAssignStmtNums();
+    if (find(allAssignStmtNums.begin(), allAssignStmtNums.end(), n1) != allAssignStmtNums.end() && PKB::modifies->stmtModifiesVar(n1, v)) {
+        return false;
+    }
+    for (string s : PKB::nextBip->getNextBipWithBranchStack(s1)) {
+        if (visited.find(s) == visited.end()) {
+            if (pathDoesNotModifyWithBranchStack(s, s2, v, visited)) {
+                return true;
+            }
+        }
+    }
+    visited.erase(s1);
+    return false;
+}
+
+ProgLine AffectsBip::findN(string s) {
+    int pos = s.find(' ');
+    if (pos == string::npos) {
+        return stoi(s);
+    } else {
+        return stoi(s.substr(0, pos));
+    }
+}
+
+void AffectsBip::populateAffectsBip() {
+    for (auto& it : affectsBipWithBranchStackMap) {
+        string s1 = it.first;
+        ProgLine n1 = findN(s1);
+        for (string s2 : it.second) {
+            ProgLine n2 = findN(s2);
+            storeAffectsBip(n1, n2);
+        }
+    }
 }
 
 void AffectsBip::populateAffectsBipStar() {
