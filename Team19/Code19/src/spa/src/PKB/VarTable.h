@@ -4,6 +4,7 @@
 
 class VarTable {
 public:
+
     // Constructor for VarTable
     VarTable();
 

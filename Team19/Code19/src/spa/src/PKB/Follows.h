@@ -4,6 +4,7 @@
 
 class Follows {
 public:
+
     // Constructor for Follows
     Follows();
 
@@ -57,6 +58,7 @@ public:
     void populateFollowsStar();
 
 private:
+
     // Stores <s1, s2> where Follows(s1, s2)
     unordered_map<StmtNum, StmtNum> followsMap;
 

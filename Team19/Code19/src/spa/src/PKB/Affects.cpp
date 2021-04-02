@@ -160,16 +160,16 @@ void Affects::populateAffects() {
     }
 }
 
-bool Affects::pathDoesNotModify(StmtNum a1, StmtNum a2, ID v, unordered_set<StmtNum> visited) {
-
+bool Affects::pathDoesNotModify(StmtNum a1, StmtNum a2, ID v, unordered_set<StmtNum> visited) { 
+    
     visited.insert(a1);
-
+    
     if (a1 == a2) {
         // we found our way to a2 means we found the path that has not modified v
         return true;
     }
 
-    if (!PKB::next->isNextStar(a1, a2)) {
+    if (!PKB::next->isNextStar(a1, a2)) {  
         // not a path to a2
         return false;
     }
@@ -189,7 +189,7 @@ bool Affects::pathDoesNotModify(StmtNum a1, StmtNum a2, ID v, unordered_set<Stmt
                 return true;
             }
         }
-
+        
     }
 
     visited.erase(a1);
