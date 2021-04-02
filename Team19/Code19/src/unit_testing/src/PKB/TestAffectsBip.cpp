@@ -329,6 +329,21 @@ TEST_CASE("getAffectsBipSize Test2") {
     REQUIRE(PKB::affectsBip->getAffectsBipSize() == 18);
 }
 
+TEST_CASE("getAffectsBipStar Test2") {
+    setUpAffectsBipTest2();
+    REQUIRE(PKB::affectsBip->getAffectsBipStar(1) == unordered_set<ProgLine>{6,10,11,8,3,5});
+    REQUIRE(PKB::affectsBip->getAffectsBipStar(2) == unordered_set<ProgLine>{ });
+    REQUIRE(PKB::affectsBip->getAffectsBipStar(3) == unordered_set<ProgLine>{11,5});
+    REQUIRE(PKB::affectsBip->getAffectsBipStar(4) == unordered_set<ProgLine>{ });
+    REQUIRE(PKB::affectsBip->getAffectsBipStar(5) == unordered_set<ProgLine>{ });
+    REQUIRE(PKB::affectsBip->getAffectsBipStar(6) == unordered_set<ProgLine>{11,5,8,10});
+    REQUIRE(PKB::affectsBip->getAffectsBipStar(7) == unordered_set<ProgLine>{ });
+    REQUIRE(PKB::affectsBip->getAffectsBipStar(8) == unordered_set<ProgLine>{10,5});
+    REQUIRE(PKB::affectsBip->getAffectsBipStar(9) == unordered_set<ProgLine>{ });
+    REQUIRE(PKB::affectsBip->getAffectsBipStar(10) == unordered_set<ProgLine>{8,3,5,10,11});
+    REQUIRE(PKB::affectsBip->getAffectsBipStar(11) == unordered_set<ProgLine>{8,5,10});
+}
+
 //    procedure a {
 //    01    while (x == 1) {
 //    02        y = 2;
@@ -474,7 +489,6 @@ void setUpAffectsBipTest3() {
     PKB::populatePKB();
 }
 
-
 TEST_CASE("getAffectsBip Test3") {
     setUpAffectsBipTest3();
     REQUIRE(PKB::affectsBip->getAffectsBip(1) == unordered_set<ProgLine>{ });
@@ -499,4 +513,75 @@ TEST_CASE("getAffectsBip Test3") {
 TEST_CASE("getAffectsBipSize Test3") {
     setUpAffectsBipTest3();
     REQUIRE(PKB::affectsBip->getAffectsBipSize() == 16);
+}
+
+//    procedure B {
+//            01      call C;
+//            02      call C;
+//            03      call C; }
+//
+//    procedure C {
+//            04      d = a;
+//            05      a = b;
+//            06      b = c;
+//            07      c = d; }
+
+void setUpAffectsBipTest4() {
+    PKB::resetPKB();
+
+    PKB::procTable->storeProcName("B"); // 0
+    PKB::procTable->storeProcName("C"); // 1
+    PKB::procTable->storeProcStmt(0, 1, 3);
+    PKB::procTable->storeProcStmt(1, 4, 7);
+
+    ast::Stmt* stmtNodeStub = new StmtNodeStub(0);
+    PKB::stmtTable->storeStmt(1, stmtNodeStub, CALL_);
+    PKB::stmtTable->storeStmt(2, stmtNodeStub, CALL_);
+    PKB::stmtTable->storeStmt(3, stmtNodeStub, CALL_);
+    PKB::stmtTable->storeStmt(4, stmtNodeStub, ASSIGN_);
+    PKB::stmtTable->storeStmt(5, stmtNodeStub, ASSIGN_);
+    PKB::stmtTable->storeStmt(6, stmtNodeStub, ASSIGN_);
+    PKB::stmtTable->storeStmt(7, stmtNodeStub, ASSIGN_);
+
+    PKB::calls->storeCalls(1, 0, 1);
+    PKB::calls->storeCalls(2, 0, 1);
+    PKB::calls->storeCalls(3, 0, 1);
+
+    PKB::next->storeNext(1, 2);
+    PKB::next->storeNext(2, 3);
+    PKB::next->storeNext(4, 5);
+    PKB::next->storeNext(5, 6);
+    PKB::next->storeNext(6, 7);
+
+    // d:0, a:1, b:2, c:3
+    PKB::uses->storeStmtUses(4, 1);
+    PKB::uses->storeStmtUses(5, 2);
+    PKB::uses->storeStmtUses(6, 3);
+    PKB::uses->storeStmtUses(7, 0);
+    PKB::uses->storeProcUses(1, 1);
+    PKB::uses->storeProcUses(1, 2);
+    PKB::uses->storeProcUses(1, 3);
+    PKB::uses->storeProcUses(1, 0);
+
+    PKB::modifies->storeStmtModifies(4, 0);
+    PKB::modifies->storeStmtModifies(5, 1);
+    PKB::modifies->storeStmtModifies(6, 2);
+    PKB::modifies->storeStmtModifies(7, 3);
+    PKB::modifies->storeProcModifies(1, 0);
+    PKB::modifies->storeProcModifies(1, 1);
+    PKB::modifies->storeProcModifies(1, 2);
+    PKB::modifies->storeProcModifies(1, 3);
+
+    PKB::populatePKB();
+}
+
+TEST_CASE("getAffectsBipStar Test4") {
+    setUpAffectsBipTest4();
+    REQUIRE(PKB::affectsBip->getAffectsBipStar(1) == unordered_set<ProgLine>{ });
+    REQUIRE(PKB::affectsBip->getAffectsBipStar(2) == unordered_set<ProgLine>{ });
+    REQUIRE(PKB::affectsBip->getAffectsBipStar(3) == unordered_set<ProgLine>{ });
+    REQUIRE(PKB::affectsBip->getAffectsBipStar(4) == unordered_set<ProgLine>{7,6,5});
+    REQUIRE(PKB::affectsBip->getAffectsBipStar(5) == unordered_set<ProgLine>{4,7,6});
+    REQUIRE(PKB::affectsBip->getAffectsBipStar(6) == unordered_set<ProgLine>{5,4,7});
+    REQUIRE(PKB::affectsBip->getAffectsBipStar(7) == unordered_set<ProgLine>{6,5});
 }

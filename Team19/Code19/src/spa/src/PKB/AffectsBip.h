@@ -89,6 +89,8 @@ private:
 
     void populateAffectsBipStar();
 
+    void dfs(string source, StmtNum sourceStmt, string prev, unordered_set<string>& visited, unordered_map<string, unordered_set<string>> nextBipStarWithBranchStackNoDummyMap);
+
     // switch to populate AffectsBip and AffectsBip*
     bool runAffectsBip = true;
 
