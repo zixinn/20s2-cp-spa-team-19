@@ -412,10 +412,6 @@ void NextBip::populateReverseNextBipStar() {
     }
 }
 
-unordered_map<string, unordered_set<string>> NextBip::getNextBipStarWithBranchStackMap() {
-    return nextBipStarWithBranchStackMap;
-}
-
 unordered_map<string, unordered_set<string>> NextBip::getNextBipStarWithBranchStackNoDummyMap() {
     return nextBipStarWithBranchStackNoDummyMap;
 }

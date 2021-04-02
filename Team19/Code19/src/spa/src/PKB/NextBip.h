@@ -50,8 +50,6 @@ public:
 
     void populateNextBipAndNextBipStar();
 
-    unordered_map<string, unordered_set<string>> getNextBipStarWithBranchStackMap();
-
     unordered_map<string, unordered_set<string>> getNextBipStarWithBranchStackNoDummyMap();
 
     // to switch on/off population of NextBip and NextBip* relationship

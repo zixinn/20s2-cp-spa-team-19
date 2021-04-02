@@ -586,16 +586,16 @@ TEST_CASE("getAffectsBipStar Test3") {
     REQUIRE(PKB::affectsBip->getAffectsBipStar(10) == unordered_set<ProgLine>({4,6,13,16}));
     REQUIRE(PKB::affectsBip->getAffectsBipStar(11) == unordered_set<ProgLine>({ }));
     REQUIRE(PKB::affectsBip->getAffectsBipStar(12) == unordered_set<ProgLine>({ }));
-    //REQUIRE(PKB::affectsBip->getAffectsBipStar(13) == unordered_set<ProgLine>({13,16}));
+    REQUIRE(PKB::affectsBip->getAffectsBipStar(13) == unordered_set<ProgLine>({13,16}));
     REQUIRE(PKB::affectsBip->getAffectsBipStar(14) == unordered_set<ProgLine>({ }));
     REQUIRE(PKB::affectsBip->getAffectsBipStar(15) == unordered_set<ProgLine>({4,6,13,16}));
-    //REQUIRE(PKB::affectsBip->getAffectsBipStar(16) == unordered_set<ProgLine>({13,16}));
+    REQUIRE(PKB::affectsBip->getAffectsBipStar(16) == unordered_set<ProgLine>({13,16}));
     REQUIRE(PKB::affectsBip->getAffectsBipStar(17) == unordered_set<ProgLine>({15,4,6,13,16,9}));
 }
 
 TEST_CASE("getAffectsBipStarSize Test3") {
     setUpAffectsBipTest3();
-    //REQUIRE(PKB::affectsBip->getAffectsBipStarSize() == 33);
+    REQUIRE(PKB::affectsBip->getAffectsBipStarSize() == 33);
 }
 
 //    procedure B {

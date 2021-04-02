@@ -232,9 +232,9 @@ void AffectsBip::dfs(string source, StmtNum sourceStmt, string prev, unordered_s
     }
     for (string s2 : itA->second) {
         if (itN->second.find(s2) != itN->second.end()) {
+            StmtNum stmt2 = findN(s2);
+            storeAffectsBipStar(sourceStmt, stmt2);
             if (visited.find(s2) == visited.end()) {
-                StmtNum stmt2 = findN(s2);
-                storeAffectsBipStar(sourceStmt, stmt2);
                 dfs(source, sourceStmt, s2, visited, nextBipStarWithBranchStackNoDummyMap);
             }
         }
