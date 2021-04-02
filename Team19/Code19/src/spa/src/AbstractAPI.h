@@ -8,6 +8,7 @@
 
 #define PROCEDURE_ "procedure"
 #define PROGLINE_ "prog_line"
+#define STMTLST_ "stmtLst"
 #define STMT_ "stmt"
 #define READ_ "read"
 #define PRINT_ "print"
@@ -30,3 +31,4 @@ typedef int ProgLine;
 typedef int ID;
 typedef int CONST;
 typedef std::string STRING;
+typedef std::vector<StmtNum> StmtNumLst;

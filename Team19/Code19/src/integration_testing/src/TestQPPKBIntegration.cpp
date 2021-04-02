@@ -209,7 +209,7 @@ void setupQp2() {
 
     PKB::stmtTable->storeAssignExpr(5, "count", "0");
     PKB::stmtTable->storeAssignExpr(6, "cenX", "0");
-
+    
     PKB::follows = new Follows();
     PKB::follows->storeFollows(1, 6);
     PKB::follows->populateFollowsStar();
@@ -242,7 +242,7 @@ TEST_CASE("QueryPreprocessor evaluate query with no clauses") {
     unordered_set<string> actual2(begin(results2), end(results2));
     unordered_set<string> expected2 = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" };
     REQUIRE(actual2.size() == results2.size());
-    REQUIRE(actual2 == expected2);
+    REQUIRE(actual2 == expected2);   
 }
 
 TEST_CASE("QueryPrepocessor evaluate query with one such that clause and synonym in clause") {
@@ -250,7 +250,7 @@ TEST_CASE("QueryPrepocessor evaluate query with one such that clause and synonym
 
     QueryPreprocessor qp = QueryPreprocessor();
     QueryEvaluator qe = QueryEvaluator();
-
+    
     string query1 = "stmt s; Select s such that Follows*(6, s)";
     Query q1 = qp.process(query1);
     list<string> list1 = qe.evaluate(q1);
