@@ -5,15 +5,11 @@
 
 using namespace std;
 
-// Tests QP's correctness when processing queries
-// and QE's ability to compute the correct results with the PKB's information
-
 class StmtNodeStub : public ast::Stmt {
 public:
     StmtNodeStub(int index) : ast::Stmt(new sp::Token(), index) {};
 };
 
-// Pre-populate the PKB
 void setupQp() {
     PKB::varTable = new VarTable();
     PKB::varTable->storeVarName("count"); // 0
