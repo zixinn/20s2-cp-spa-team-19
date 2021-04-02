@@ -6,12 +6,12 @@ AffectsTEvaluator::AffectsTEvaluator() {
 
 }
 
-bool AffectsTEvaluator::evaluate(unordered_map<string, string> declarations,
-    Clause clause, unordered_map<string, vector<int>>& tempResults) {
-    string firstArg = clause.getArgs().at(0);
-    string secondArg = clause.getArgs().at(1);
-    string firstType = getArgType(firstArg, declarations);
-    string secondType = getArgType(secondArg, declarations);
+bool AffectsTEvaluator::evaluate(unordered_map<STRING, STRING> declarations,
+    Clause clause, unordered_map<STRING, vector<StmtNum>>& tempResults) {
+    STRING firstArg = clause.getArgs().at(0);
+    STRING secondArg = clause.getArgs().at(1);
+    STRING firstType = getArgType(firstArg, declarations);
+    STRING secondType = getArgType(secondArg, declarations);
 
     if (firstType == UNDERSCORE_ && secondType == UNDERSCORE_) { // _, _
         return PKB::affects->getAffectsStarSize() > 0;
@@ -26,7 +26,7 @@ bool AffectsTEvaluator::evaluate(unordered_map<string, string> declarations,
             return false;
         }
         if (secondType != UNDERSCORE_) { // known, s
-            vector<int> res;
+            vector<StmtNum> res;
             res.assign(affectedStar.begin(), affectedStar.end());
             tempResults[secondArg] = res;
         }
@@ -38,7 +38,7 @@ bool AffectsTEvaluator::evaluate(unordered_map<string, string> declarations,
             return false;
         }
         if (firstType != UNDERSCORE_) {
-            vector<int> res;
+            vector<StmtNum> res;
             res.assign(affectedStar.begin(), affectedStar.end());
             tempResults[firstArg] = res;
         }
@@ -46,7 +46,7 @@ bool AffectsTEvaluator::evaluate(unordered_map<string, string> declarations,
 
     } else { // s1, s2 or s, _ or _, s
         if (firstArg == secondArg) { // s, s
-            vector<int> res;
+            vector<StmtNum> res;
             vector<StmtNum> allAssign = selectAll(ASSIGN_);
             for (StmtNum s : allAssign) {
                 if (PKB::affects->isAffectsStar(s, s)) {
@@ -59,7 +59,7 @@ bool AffectsTEvaluator::evaluate(unordered_map<string, string> declarations,
             return !res.empty();
         }
 
-        pair<vector<int>, vector<int>> allAffectsStar = PKB::affects->getAllAffectsStar();
+        pair<vector<StmtNum>, vector<StmtNum>> allAffectsStar = PKB::affects->getAllAffectsStar();
         if (allAffectsStar.first.empty()) {
             return false;
         }

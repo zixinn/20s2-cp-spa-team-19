@@ -1,6 +1,5 @@
 #pragma once
 
-#include <string>
 #include <unordered_set>
 #include <vector>
 
@@ -8,16 +7,17 @@
 
 using namespace std;
 
+// Represents a PQL Clause
 class Clause {
 public:
     Clause();
-    Clause(string rel, vector<string> args, unordered_set<string> synonyms, int numOfKnown);
+    Clause(STRING rel, vector<STRING> args, unordered_set<STRING> synonyms, int numOfKnown);
 
-    string getRel();
-    vector<string> getArgs();
-    unordered_set<string> getSynonyms();
+    STRING getRel();
+    vector<STRING> getArgs();
+    unordered_set<STRING> getSynonyms();
     int getNumOfKnown();
-    void replaceSynonym(string synonym, string replacement);
+    void replaceSynonym(STRING synonym, STRING replacement);
 
     friend bool operator==(const Clause& c1, const Clause& c2);
     friend bool operator!=(const Clause& c1, const Clause& c2);
@@ -25,10 +25,10 @@ public:
     ~Clause();
 
 private:
-    string rel;
-    vector<string> args;
-    unordered_set<string> synonyms;
+    STRING rel;
+    vector<STRING> args;
+    unordered_set<STRING> synonyms;
     int numOfKnown;
 
-    bool checkReplacement(string syn, string attrName, string synToReplace, string replacement);
+    bool checkReplacement(STRING syn, STRING attrName, STRING synToReplace, STRING replacement);
 };
