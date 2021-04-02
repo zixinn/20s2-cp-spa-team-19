@@ -143,68 +143,6 @@ void AffectsBip::populateAffectsBipAndAffectsBipStar() {
     }
 }
 
-/*void AffectsBip::populateAffectsBip() {
-    // Get all the assignment statements
-    // For every pair of assignment statements a1 and a2 that has a control flow path [isNextBip*(a1, a2)], find the variable v such that Modifies(a1,v) and check that stmtUsesVar(a2, v)
-    // Search for all possible paths to find a path that does not modify v along the way. [in pathDoesNotModify()]
-    // If found a path, storeAffectsBip(a1, a2)
-    ID v;
-    for (StmtNum a1 : PKB::stmtTable->getAllAssignStmtNums()) {
-        for (StmtNum a2 : PKB::stmtTable->getAllAssignStmtNums()) {
-            if (!PKB::nextBip->isNextBipStar(a1, a2)) {
-                // No control flow path between a1 and a2
-                continue;
-            }
-            v = *PKB::modifies->getVarsModifiedByStmt(a1).begin();
-            if (!(PKB::uses->stmtUsesVar(a2, v))) {
-                // a1 does not affect a2 since a2 does not use the variable modified by a1
-                continue;
-            }
-            unordered_set<StmtNum> visited;
-            for (ProgLine nextBip : PKB::nextBip->getNextBip(a1)) {
-                if (pathDoesNotModify(nextBip, a2, v, visited)) {
-                    storeAffectsBip(a1, a2);
-                    break;
-                }
-            }
-        }
-    }
-}
-
-bool AffectsBip::pathDoesNotModify(StmtNum a1, StmtNum a2, ID v, unordered_set<StmtNum> visited) { 
-    
-    visited.insert(a1);
-    
-    if (a1 == a2) {
-        // we found our way to a2 means we found the path that has not modified v
-        return true;
-    }
-
-    if (!PKB::nextBip->isNextBipStar(a1, a2)) {
-        // not a path to a2
-        return false;
-    }
-
-    vector<StmtNum> allAssignStmtNums = PKB::stmtTable->getAllAssignStmtNums();
-    if (find(allAssignStmtNums.begin(), allAssignStmtNums.end(), a1) != allAssignStmtNums.end() && PKB::modifies->stmtModifiesVar(a1, v)) {
-        // a1 is an assignment statement and it modifies v
-        return false;
-    }
-
-    // A possible path, need to continue checking
-    for (ProgLine nextBip : PKB::nextBip->getNextBip(a1)) {
-        if (visited.find(nextBip) == visited.end()) {
-            if (pathDoesNotModify(nextBip, a2, v, visited)) {
-                return true;
-            }
-        }
-    }
-
-    visited.erase(a1);
-
-    return false;
-}*/
-
 void AffectsBip::populateAffectsBipWithBranchStack() {
     vector<StmtNum> allAssignStmtNums = PKB::stmtTable->getAllAssignStmtNums();
     unordered_map<string, unordered_set<string>> nextBipStarWithBranchStackNoDummyMap = PKB::nextBip->getNextBipStarWithBranchStackNoDummyMap();

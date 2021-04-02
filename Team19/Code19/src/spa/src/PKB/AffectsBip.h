@@ -76,11 +76,9 @@ private:
 
     void storeAffectsBipWithBranchStack(string s1, string s2);
 
-    // Checks that there exists a path from a1 to a2 such that along the path, v is not modified.
-    // bool pathDoesNotModify(StmtNum a1, StmtNum a2, ID v, unordered_set<StmtNum> visited);
-
     void populateAffectsBipWithBranchStack();
 
+    // Checks that there exists a path from a1 to a2 such that along the path, v is not modified.
     bool pathDoesNotModifyWithBranchStack(string s1, string s2, ID v, unordered_set<string> visited);
 
     ProgLine findN(string s);
