@@ -473,6 +473,70 @@ variable v; assign a; print pn; call c; while w; if ifs; read r; stmt s1, s2; pr
 Select <s1, s2> such that Next*(s1, s1) and Next(s1, s2)
 3 4, 4 5, 5 3, 3 6, 15 16, 15 21, 16 17, 17 18, 18 19, 19 20, 20 15
 5000
+94 - Next() and Affects()
+variable v; assign a; print pn; call c; while w; if ifs; read r; stmt s1, s2; procedure p1, p2;
+Select <s1, r> such that Next(s1, s2) and Affects(r, s2)
+none
+5000
+95 - Next() and Affects()
+variable v; assign a; print pn; call c; while w; if ifs; read r; stmt s1, s2; procedure p1, p2;
+Select <s1, a> such that Affects(a, s2) and Next(s1, s2)
+6 2, 6 5
+5000
+96 - Next() and Affects*()
+variable v; assign a; print pn; call c; while w; if ifs; read r; stmt s, s1, s2; procedure p1, p2;
+Select <s1, s> such that Next(s1, s2) and Affects*(s, s2)
+6 2, 6 5
+5000
+97 - Next() and Affects*()
+variable v; assign a; print pn; call c; while w; if ifs; read r; stmt s1, s2; procedure p1, p2;
+Select <s1, a> such that Affects*(a, s2) and Next(s1, s2)
+6 2, 6 5
+5000
+98 - Next() and a(_,_)
+variable v; assign a; print pn; call c; while w; if ifs; read r; stmt s1, s2; procedure p1, p2;
+Select <s1, a, v> such that Next(s1, a) pattern a(v,_"bluebell"_) 
+17 18 lesion, 1 2 lesion
+5000
+99 - Next() and a(_,_)
+variable v; assign a; print pn; call c; while w; if ifs; read r; stmt s1, s2; procedure p1, p2;
+Select <r, a, v> pattern a(v,_) such that Next(r, a) 
+24 25 z
+5000
+100 - Next() and w(_,_)
+variable v; assign a; print pn; call c; while w; if ifs; read r; stmt s1, s2; procedure p1, p2;
+Select <s1, w, v> pattern w(v,_) such that Next(s1, w) 
+2 3 melody, 2 3 maison, 5 3 melody, 5 3 maison
+5000
+101 - Next() and w(_,_)
+variable v; assign a; print pn; call c; while w; if ifs; read r; stmt s1, s2; procedure p1, p2;
+Select <s1, w> such that Next(s1, w) pattern w(_,_) 
+2 3, 5 3
+5000
+102 - Next() and ifs(_,_,_)
+variable v; assign a; print pn; call c; while w; if ifs; read r; stmt s, s1, s2;
+Select <s1, ifs, v> such that Next(s1, ifs) pattern ifs(v,_,_) 
+3 6 gossamer, 3 6 lesion, 22 23 boro
+5000
+103 - Next() and ifs(_,_,_)
+variable v; assign a; print pn; call c; while w; if ifs; read r; stmt s, s1, s2;
+Select <s1, ifs> pattern ifs(_,_,_) such that Next(s1, ifs)
+3 6, 22 23
+5000
+104 - Next() and with
+variable v; assign a; print pn; call c; while w; if ifs; read r; stmt s, s1, s2;
+Select <s1, ifs> such that Next(s1, ifs) with ifs.stmt# = 23
+22 23
+5000
+105 - Next() and with
+variable v; assign a; print pn; call c; while w; if ifs; read r; stmt s, s1, s2;
+Select <s1, a> with "lesion" = v.varName such that Next(s1, a) pattern a(v,_)
+1 2, 4 5, 16 17, 17 18
+5000
+
+
+
+
 
 
 
