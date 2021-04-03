@@ -198,7 +198,7 @@ void NextBip::populateNextBip() {
                 }
 
             } else if (find(allCallStmts.begin(), allCallStmts.end(), p.second) != allCallStmts.end()) { // last stmt is call stmt
-                ProgLine dummy = *nextWithDummyMap.find(p.second)->second.begin();
+                ProgLine dummy = *nextWithDummyMap.find(p.second)->second.begin(); // get the return of that call statement
                 storeNextBip(dummy, n2);
                 cfgBipMap[make_pair(dummy, n2)] = -n1;
 
@@ -230,6 +230,7 @@ void NextBip::populateNextBip() {
         unordered_set<ProgLine> newN2s;
         for (ProgLine n2 : it.second) {
             if (n2 < 0) { // branchBack to procedure where call is the last stmt
+                // nextBip is dummy -> traverse through the path until we find a non dummy node.
                 list<ProgLine> queue;
                 queue.push_back(n2);
                 while (!queue.empty()) {
@@ -244,6 +245,7 @@ void NextBip::populateNextBip() {
                     }
                 }
             } else {
+                // nextBip is not dummy, keep it.
                 newN2s.insert(n2);
             }
             nextBipMap[n1] = newN2s;
@@ -282,7 +284,7 @@ void NextBip::populateNextBipWithBranchStack() {
                 break;
             }
         }
-        if (!skip) { // only dfs if prevBip is empty or if none of the prevBip is a call stmt
+        if (!skip) { // only dfs if prevBip is empty or if none of the prevBip is a call stmt (procedure has no callers)
             string branchStack;
             unordered_set<string> visited;
             dfs(startProgLine, branchStack, visited);

@@ -49,6 +49,9 @@ public:
     // to switch on/off population of AffectsBip and AffectsBip* relationship
     void setRunAffectsBip(bool runAffectsBip);
 
+    // returns whether we are populating AffectsBip and AffectsBip* relationship
+    bool getRunAffectsBip();
+
 private:
     // Stores a1 as key, set of a2's as value for AffectsBip relationship
     unordered_map<StmtNum, unordered_set<StmtNum> > affectsBipMap;
@@ -62,7 +65,9 @@ private:
     // Stores a2 as key, set of a1's as value for AffectsBip* relationship
     unordered_map<StmtNum, unordered_set<StmtNum> > reverseAffectsBipStarMap;
 
-    unordered_map<string, unordered_set<string> > affectsBipWithBranchStackMap;
+    // Maps (n1, branchStack1) to a set of (n2, branchStack2)
+    // Each string is n followed by branchStack separated by whitespace
+    unordered_map<STRING, unordered_set<STRING> > affectsBipWithBranchStackMap;
 
     // Stores <a1, a2> in the affectsBipMap
     // Stores <a2, a1> in the reverseAffectsBipMap
@@ -74,20 +79,21 @@ private:
     // Returns true if the information is successfully added to the PKB.
     bool storeAffectsBipStar(StmtNum a1, StmtNum a2);
 
-    void storeAffectsBipWithBranchStack(string s1, string s2);
-
-    void populateAffectsBipWithBranchStack();
+    // Stores <s1, s2> in the affectsBipWithBranchStackMap
+    void storeAffectsBipWithBranchStack(STRING s1, STRING s2);
 
     // Checks that there exists a path from a1 to a2 such that along the path, v is not modified.
-    bool pathDoesNotModifyWithBranchStack(string s1, string s2, ID v, unordered_set<string> visited);
+    bool pathDoesNotModifyWithBranchStack(STRING s1, STRING s2, ID v, unordered_set<STRING> visited);
 
-    ProgLine findN(string s);
+    // extract the ProgLine (the first number before first space) from s
+    ProgLine findN(STRING s);
 
+    // populate affectsBipWithBranchStackMap and affectsBipMap
     void populateAffectsBip();
 
+    // Use dfs to to find the path taken and populate the affectsBipStarMap
     void populateAffectsBipStar();
-
-    void dfs(string source, StmtNum sourceStmt, string prev, unordered_set<string>& visited, unordered_map<string, unordered_set<string>> nextBipStarWithBranchStackNoDummyMap);
+    void dfs(STRING source, StmtNum sourceStmt, STRING prev, unordered_set<STRING>& visited);
 
     // switch to populate AffectsBip and AffectsBip*
     bool runAffectsBip = true;
