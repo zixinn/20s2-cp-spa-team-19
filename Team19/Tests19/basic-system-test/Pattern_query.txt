@@ -338,3 +338,214 @@ assign a, a1, a2; variable v;
 Select a2 pattern a(v, _"23+1"_) and a1(v, _"5") such that Uses(a2, v)
 none
 5000
+69 - a Follows
+assign a; call c; read r; print pn; stmt s, s1, s2; variable v; if ifs; while w;
+Select <a, v> pattern a(v,_) such that Follows(a, _)
+4 x, 8 x, 16 x, 17 lesion, 18 lesion, 25 z, 22 z, 2 lesion
+5000
+70 - ifs Follows
+assign a; call c; read r; print pn; stmt s, s1, s2; variable v; if ifs; while w;
+Select <ifs, v, s> pattern ifs(v,_,_) such that Follows(ifs, s)
+6 gossamer 10, 6 lesion 10
+5000
+71 - w Follows
+assign a; call c; read r; print pn; stmt s, s1, s2; variable v; if ifs; while w;
+Select <w, s> such that Follows(w, s) pattern w(v,_)
+3 6
+5000
+72 - a Follows*
+assign a; call c; read r; print pn; stmt s, s1, s2; variable v; if ifs; while w;
+Select <a, c> pattern a(_,_) such that Follows*(a, c)
+2 11, 2 12, 16 20, 17 20, 18 20
+5000
+73 - ifs Follows*
+assign a; call c; read r; print pn; stmt s, s1, s2; variable v; if ifs; while w;
+Select <ifs, v, pn> pattern ifs(v,_,_) such that Follows*(pn, ifs) 
+6 gossamer 1, 6 lesion 1
+5000
+74 - w Follows*
+assign a; call c; read r; print pn; stmt s, s1, s2; variable v; if ifs; while w;
+Select <w, v, pn> such that Follows*(pn, w) pattern w(v,_)
+3 melody 1, 3 maison 1
+5000
+75 - a Uses
+assign a; call c; read r; print pn; stmt s, s1, s2; variable v; if ifs; while w;
+Select <v> such that Uses(a,v) pattern a(_,_"bluebell"_)
+bluebell
+5000
+76 - ifs Uses
+assign a; call c; read r; print pn; stmt s, s1, s2; variable v; if ifs; while w;
+Select <v> such that Uses(ifs,v) pattern ifs("lesion",_,_)
+lesion, x, gossamer
+5000
+77 - w Uses
+assign a; call c; read r; print pn; stmt s, s1, s2; variable v; if ifs; while w;
+Select <v> pattern w(_,_) such that Uses(w,v)
+y, teacup0, maison, melody
+5000
+78 - a UsesP
+assign a; call c; read r; print pn; stmt s, s1, s2; variable v; if ifs; while w;
+Select <v> such that Uses("something",v) pattern a(v,_)
+guru, lesion
+5000
+79 - ifs UsesP
+assign a; call c; read r; print pn; stmt s, s1, s2; variable v; if ifs; while w;
+Select <ifs, v> such that Uses("Honeysuckle",v) pattern ifs(v,_,_)
+23 boro, 6 gossamer, 6 lesion
+5000
+80 - w UsesP
+assign a; call c; read r; print pn; stmt s, s1, s2; variable v; if ifs; while w;
+Select <w, v> pattern w(v,_) such that Uses("Honeysuckle",v) 
+3 melody, 3 maison
+5000
+81 - a Modifies
+assign a; call c; read r; print pn; stmt s, s1, s2; variable v; if ifs; while w;
+Select <v> pattern a(_,_"lesion"_) such that Modifies(a, v)
+x
+5000
+82 - ifs Modifies
+assign a; call c; read r; print pn; stmt s, s1, s2; variable v; if ifs; while w;
+Select <ifs, v> pattern ifs(v,_,_) such that Modifies(ifs, "x")
+6 gossamer, 6 lesion
+5000
+83 - w Modifies
+assign a; call c; read r; print pn; stmt s, s1, s2; variable v; if ifs; while w;
+Select <v> such that Modifies(w, v) pattern w(_,_)
+x, lesion
+5000
+84 - a Next
+assign a; call c; read r; print pn; stmt s, s1, s2; variable v; if ifs; while w;
+Select <a> such that Next(w,a) pattern a(_,_)
+4, 16, 21
+5000
+85 - ifs Next
+assign a; call c; read r; print pn; stmt s, s1, s2; variable v; if ifs; while w;
+Select <v> such that Next(w,ifs) pattern ifs(v,_,_)
+gossamer, lesion
+5000
+86 - w Next
+assign a; call c; read r; print pn; stmt s, s1, s2; variable v; if ifs; while w;
+Select <v> pattern w(v,_) such that Next(w,ifs) 
+melody, maison
+5000
+87 - a Next*
+assign a; call c; read r; print pn, pn2; stmt s, s1, s2; variable v; if ifs; while w;
+Select <a> such that Next*(a, pn) pattern a(v, _) such that Next*(pn2, a)
+2, 4, 5, 7, 8, 16, 17, 18
+5000
+88 - ifs Next*
+assign a; call c; read r; print pn, pn2; stmt s, s1, s2; variable v; if ifs; while w;
+Select <ifs> such that Next*(ifs, pn) pattern ifs(v,_, _) such that Next*(pn2, ifs)
+6
+5000
+89 - w Next*
+assign a; call c; read r; print pn, pn2; stmt s, s1, s2; variable v; if ifs; while w;
+Select <w> such that Next*(w, pn) pattern w(v, _) such that Next*(pn2, w)
+3
+5000
+90 - a Affects
+assign a; call c; read r; print pn; stmt s, s1, s2; variable v; if ifs; while w;
+Select v pattern a(v,_) such that Affects(a, _)
+lesion
+5000
+91 - ifs Affects
+assign a; call c; read r; print pn; stmt s, s1, s2; variable v; if ifs; while w;
+Select v pattern ifs(v,_,_) such that Affects(a, s) and Parent(ifs,s)
+gossamer, lesion
+5000
+92 - w Affects
+assign a; call c; read r; print pn; stmt s, s1, s2; variable v; if ifs; while w;
+Select v such that Affects(a, s) and Parent(ifs,s) pattern w(v,_) such that Next(w,ifs)
+melody, maison
+5000
+93 - a Affects*
+assign a; call c; read r; print pn; stmt s, s1, s2; variable v; if ifs; while w;
+Select v pattern a(v,_) such that Affects*(a, _)
+lesion
+5000
+94 - ifs Affects*
+assign a; call c; read r; print pn; stmt s, s1, s2; variable v; if ifs; while w;
+Select v pattern ifs(v,_,_) such that Affects*(a, s) and Parent(ifs,s)
+gossamer, lesion
+5000
+95 - w Affects*
+assign a; call c; read r; print pn; stmt s, s1, s2; variable v; if ifs; while w;
+Select v such that Affects*(a, s) and Parent(ifs,s) pattern w(v,_) such that Next(w,ifs)
+melody, maison
+5000
+96 - a a
+assign a; call c; read r; print pn; stmt s, s1, s2; variable v; if ifs; while w;
+Select a pattern a(_, _"2"_) and a(_,_"lesion"_)
+7, 8
+5000
+97 - w a
+assign a; call c; read r; print pn; stmt s, s1, s2; variable v; if ifs; while w;
+Select a pattern w(v,_) and a(v,_)
+21
+5000
+98 - ifs a 
+assign a; call c; read r; print pn; stmt s, s1, s2; variable v; if ifs; while w;
+Select a pattern ifs(v,_,_) and a(v,_)
+2, 5, 17, 18
+5000
+99 - a w
+assign a; call c; read r; print pn; stmt s, s1, s2; variable v; if ifs; while w;
+Select a pattern a(v,_) and w(v,_)
+21
+5000
+100 - w w
+assign a; call c; read r; print pn; stmt s, s1, s2; variable v; if ifs; while w, w2;
+Select v pattern w(v,_) and w2(v,_)
+melody, maison
+5000
+101 - w w
+assign a; call c; read r; print pn; stmt s, s1, s2; variable v; if ifs; while w, w2;
+Select w pattern w("melody",_) and w("maison",_)
+3
+5000
+102 - ifs w
+assign a; call c; read r; print pn; stmt s, s1, s2; variable v; if ifs; while w;
+Select v pattern w(_,_) and ifs(v,_,_) such that Next(w, ifs)
+gossamer, lesion
+5000
+103 - a ifs
+assign a; call c; read r; print pn; stmt s, s1, s2; variable v; if ifs; while w;
+Select a pattern a(v,_) and ifs(v,_,_)
+2, 5, 17, 18
+5000
+104 - w ifs
+assign a; call c; read r; print pn; stmt s, s1, s2; variable v; if ifs; while w;
+Select v such that Next(w, ifs) pattern ifs(v,_,_) and w(_,_)
+gossamer, lesion
+5000
+105 - ifs ifs
+assign a; call c; read r; print pn; stmt s, s1, s2; variable v; if ifs, ifs2; while w;
+Select v pattern ifs(v,_,_) and ifs2(v,_,_)
+boro, gossamer, lesion
+5000
+106 - ifs ifs
+assign a; call c; read r; print pn; stmt s, s1, s2; variable v; if ifs, ifs2; while w;
+Select ifs pattern ifs("gossamer",_,_) and ifs("lesion",_,_)
+6
+5000
+107 - a with
+assign a; call c; read r; print pn; stmt s, s1, s2; variable v; if ifs; while w;
+Select a pattern a(v,_) with "x" = v.varName and 12 = 12
+4, 7, 8, 16
+5000
+108 - ifs with
+assign a; call c; read r; print pn; stmt s, s1, s2; variable v; if ifs; while w;
+Select v with 23 = ifs.stmt# and 12 = 12 pattern ifs(v,_,_)
+boro
+5000
+109 - w with
+assign a; call c; read r; print pn; stmt s, s1, s2; variable v; if ifs; while w;
+Select v with w.stmt# = 3 and 12 = 12 pattern w(v,_)
+melody, maison
+5000
+
+
+
+
+
+
