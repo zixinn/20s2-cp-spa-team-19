@@ -1018,7 +1018,7 @@ procedure p; stmt s;
 Select <p, s> such that Parent*(p,s)
 none
 5000
-1205 - Parent*(p, const) (invalid)
+205 - Parent*(p, const) (invalid)
 procedure p; constant c;
 Select <p, cons> such that Parent*(p, c)
 none
