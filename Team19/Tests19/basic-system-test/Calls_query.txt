@@ -673,142 +673,157 @@ while w; call c;
 Select w pattern w(_, _) such that Parent(w, c)
 none
 5000
-
-
-// Modifies(stmt#, v-syn)
-// Uses(stmt#, v-syn)
-11 - Call Statement (Modifies)
+136 - Call() Modifies()
+call c; procedure p, p1, p2; read r; stmt s, s1, s2; assign a, a1; while w; if ifs; variable v;
+Select <v> such that Calls(p, p1) and Modifies(p1, v)
+lesion, melody, ardent, guru, pardon, z, teacup0, x
+5000
+137 - Call() Modifies()
+call c; procedure p, p1, p2; read r; stmt s, s1, s2; assign a, a1; while w; if ifs; variable v;
+Select <v> such that  Modifies(p, v) and Calls(p, p1) 
+lesion, x, teacup0, melody, ardent, guru, z, pardon
+5000
+138 - Call() UsesP()
+call c; procedure p, p1, p2; read r; stmt s, s1, s2; assign a, a1; while w; if ifs; variable v;
+Select <v> such that  Uses(p1, v) and Calls(p, p1) 
+something, y, teacup0, bluebell, lesion, coeur, cerveau, boro, guru
+5000
+139 - Call() UsesP()
+call c; procedure p, p1, p2; read r; stmt s, s1, s2; assign a, a1; while w; if ifs; variable v;
+Select <v> such that  Calls(p, p1) and Uses(p, v) 
+something, y, teacup0, bluebell, lesion, coeur, cerveau, boro, guru, gossamer, maison, melody, x
+5000
+140 - Calls*() Modifies()
+call c; procedure p, p1, p2; read r; stmt s, s1, s2; assign a, a1; while w; if ifs; variable v;
+Select <v> such that Calls*(p, p1) and Modifies(p1, v)
+lesion, melody, ardent, guru, pardon, z, teacup0, x
+5000
+141 - Calls*() Modifies()
+call c; procedure p, p1, p2; read r; stmt s, s1, s2; assign a, a1; while w; if ifs; variable v;
+Select <v> such that  Modifies(p, v) and Calls*(p, p1) 
+lesion, x, teacup0, melody, ardent, guru, z, pardon
+5000
+142 - Calls*() UsesP()
+call c; procedure p, p1, p2; read r; stmt s, s1, s2; assign a, a1; while w; if ifs; variable v;
+Select <v> such that  Uses(p1, v) and Calls*(p, p1) 
+something, y, teacup0, bluebell, lesion, coeur, cerveau, boro, guru
+5000
+143 - Calls*() UsesP()
+call c; procedure p, p1, p2; read r; stmt s, s1, s2; assign a, a1; while w; if ifs; variable v;
+Select <v> such that  Calls*(p, p1) and Uses(p, v) 
+something, y, teacup0, bluebell, lesion, coeur, cerveau, boro, guru, gossamer, maison, melody, x
+5000
+144 - Call Statement (Modifies) Uses(stmt#, v-syn) Modifies(stmt#, v-syn)
 variable v;
 Select v such that Modifies(11, v)
 teacup0, x, lesion, melody, z, ardent, guru, pardon
 5000
-12 - Call Statement (Uses)
+145 - Call Statement (Uses)
 variable v;
 Select v such that Uses(11, v)
 something, y, teacup0, bluebell, lesion, coeur, cerveau, boro, guru
 5000
-13 - Call Statement (Modifies)
+146 - Call Statement (Modifies)
 variable v;
 Select v such that Modifies(12, v)
 z, ardent, guru, pardon
 5000
-14 - Call Statement (Uses)
+147 - Call Statement (Uses)
 variable v;
 Select v such that Uses(12, v)
 boro, guru
 5000
-15 - Select all call statements
+148 - Select all call statements
 call c;
 Select c
 11, 12, 20
 5000
-16 - All call Statement (Uses)
+149 - All call Statement (Uses)
 variable v; call c;
 Select v such that Uses(c, v)
 something, y, teacup0, bluebell, lesion, coeur, cerveau, boro, guru
 5000
-17 - All call Statement (Modifies)
+150 - All call Statement (Modifies)
 variable v; call c;
 Select v such that Modifies(c, v)
 teacup0, x, lesion, melody, z, ardent, guru, pardon
 5000
-18 - All procedures
+151 - All procedures
 procedure p;
 Select p
 Honeysuckle, something, shikashi
 5000
-19 - All procedures (Modifies)
+152 - All procedures (Modifies)
 variable v; procedure p;
 Select v such that Modifies(p, v)
 teacup0, x, lesion, melody, z, ardent, guru, pardon
 5000
-20 - All procedures (Uses)
+153 - All procedures (Uses)
 variable v; procedure p; 
 Select v such that Uses(p, v)
 something, y, teacup0, bluebell, lesion, coeur, cerveau, boro, guru, melody, maison, gossamer, x
 5000
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-///// PL
-17 - UsesS (pl-syn, v-syn)
+154 - UsesS (pl-syn, v-syn) PL
 prog_line pl; variable v;
 Select <pl, v> such that Uses(pl, v)
 1 teacup0, 2 bluebell, 3 melody, 3 maison, 3 y, 3 teacup0, 4 y, 5 teacup0, 6 gossamer, 6 lesion, 6 x, 7 lesion, 8 lesion, 9 x, 10 lesion, 11 something, 11 teacup0, 11 y, 11 bluebell, 11 lesion, 11 coeur, 11 cerveau, 11 boro, 11 guru, 12 boro, 12 guru, 14 something, 15 y, 15 boro, 15 guru, 15 teacup0, 15 bluebell, 15 lesion, 16 y, 17 teacup0, 18 bluebell, 19 lesion, 20 boro, 20 guru, 21 coeur, 21 cerveau, 23 boro, 23 guru, 26 guru
 5000
-18 - UsesS (pl-syn, _)
+155 - UsesS (pl-syn, _)
 prog_line pl;
 Select pl such that Uses(pl, _)
-1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 25, 26
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20, 21, 23, 26
 5000
-17 - UsesS (pl-syn, IDENT)
+156 - UsesS (pl-syn, IDENT)
 prog_line pl;
 Select pl such that Uses(pl, "maison")
 3
 5000
-18 - UsesS (pl-syn, IDENT) NOTE: other combinatins tested in iter1
+157 - UsesS (pl-syn, IDENT) NOTE: other combinatins tested in iter1
 prog_line pl;
 Select pl such that Uses(pl, "x")
 6, 9
 5000
-19 - UsesS (pl-syn, IDENT)
+158 - UsesS (pl-syn, IDENT)
 prog_line pl;
 Select pl such that Uses(pl, "bluebell")
 2, 11, 15, 18
 5000
-20 - ModifiesS (pl-syn, v-syn)
+159 - ModifiesS (pl-syn, v-syn)
 prog_line pl; variable v;
 Select <pl, v> such that Modifies(pl, v)
-none
+2 lesion, 4 x, 5 lesion, 7 x, 8 x, 16 x, 17 lesion, 18 lesion, 21 melody, 22 z, 25 z, 26 guru, 12 z, 12 guru, 12 pardon, 27 pardon, 24 ardent, 13 teacup0, 11 z, 11 ardent, 20 z, 20 ardent, 20 guru, 20 pardon, 11 guru, 11 pardon, 11 lesion, 11 melody, 11 teacup0, 11 x, 12 ardent, 15 ardent, 15 guru, 15 pardon, 15 lesion, 3 x, 3 lesion, 6 x, 15 x, 15 z, 23 ardent, 23 z, 23 guru, 23 pardon
 5000
-
-
-// ModifiesS(stmt#, v-syn)
-2 - 
+160 - ModifiesS(stmt#, v-syn)
 variable v;
 Select v such that Modifies(12, v)
 z, ardent, guru, pardon
 5000
-3 - 
+161 - 
 variable v;
 Select v such that Modifies(20, v)
 z, ardent, guru, pardon
 5000
-11 - Procedure something (Modifies)
+162 - Procedure something (Modifies)
 variable v;
 Select v such that Modifies(11, v)
 teacup0, x, lesion, melody, z, ardent, guru, pardon
 5000
-
-// UsesS(stmt#, v-syn)
-5 - Procedure shikashi (Uses)
+163 - Procedure shikashi (Uses) UsesS(stmt#, v-syn)
 variable v;
 Select v such that Uses(12, v)
 boro, guru
 5000
-6 - Procedure shikashi (Uses) Container
+164 - Procedure shikashi (Uses) Container
 variable v;
 Select v such that Uses(15, v)
 boro, guru, bluebell, lesion, teacup0, y
 5000
-7 - Procedure shikashi (Uses)
+165 - Procedure shikashi (Uses)
 variable v;
 Select v such that Uses(20, v)
 boro, guru
 5000
-16 - Procedure something (Uses) ??
+166 - Procedure something (Uses) ??
 variable v;
 Select v such that Uses(11, v)
 something, y, teacup0, bluebell, lesion, coeur, cerveau, boro, guru
