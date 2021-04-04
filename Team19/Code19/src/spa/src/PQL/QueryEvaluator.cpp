@@ -7,6 +7,11 @@ QueryEvaluator::QueryEvaluator() {
 list<string> QueryEvaluator::evaluate(Query query) {
     this->declarations = query.getDeclarations();
     this->toSelect = query.getToSelect();
+    this->synonymsToSelect = unordered_set<string>();
+    for (string synonym : toSelect) {
+        string syn = synonym.substr(0, synonym.find('.'));
+        this->synonymsToSelect.insert(syn);
+    }
     this->clauses = query.getClauses();
     this->results.clear();
 
@@ -22,22 +27,49 @@ list<string> QueryEvaluator::evaluate(Query query) {
         return emptyList;
     }
 
-    for (Clause clause : this->clauses) {
-        unordered_map<string, vector<int>> tempResults;
-        if (!evaluateClause(clause, tempResults)) { // clause returns false
-            if (toSelect.size() == 1 && toSelect.at(0) == "BOOLEAN") {
-                return list<string> {"FALSE"};
-            }
-            return emptyList;
-        }
-        if (!tempResults.empty()) {
-            join(tempResults);
-            if (results.empty() || results.begin()->second.empty()) {
+    for (vector<Clause> clauses : this->clauses) {
+        unordered_map<string, vector<int>> groupResults;
+        for (int j = 0; j < clauses.size(); j++) {
+            Clause clause = clauses.at(j);
+            unordered_map<string, vector<int>> tempResults;
+            if (!evaluateClause(clause, tempResults)) { // clause returns false
                 if (toSelect.size() == 1 && toSelect.at(0) == "BOOLEAN") {
                     return list<string> {"FALSE"};
                 }
                 return emptyList;
             }
+            if (!tempResults.empty()) {
+                unordered_set<string> toProject = this->synonymsToSelect; // add synonyms in result-cl
+                for (int k = j + 1; k < clauses.size(); k++) { // add synonyms in remaining clauses
+                    unordered_set<string> synonyms = clauses.at(k).getSynonyms();
+                    toProject.insert(synonyms.begin(), synonyms.end());
+                }
+                vector<string> commonSynonyms;
+                for (pair<string, vector<int>> col : tempResults) {
+                    if (groupResults.find(col.first) != groupResults.end()) {
+                        commonSynonyms.push_back(col.first);
+                    }
+                }
+                unordered_set<string> toProjectWithCommonSynonyms;
+                toProjectWithCommonSynonyms.insert(toProject.begin(), toProject.end());
+                toProjectWithCommonSynonyms.insert(commonSynonyms.begin(), commonSynonyms.end());
+                project(toProjectWithCommonSynonyms, tempResults);
+
+                if (!tempResults.empty()) {
+                    join(tempResults, groupResults, commonSynonyms);
+                    if (groupResults.empty() || groupResults.begin()->second.empty()) {
+                        if (toSelect.size() == 1 && toSelect.at(0) == "BOOLEAN") {
+                            return list<string> {"FALSE"};
+                        }
+                        return emptyList;
+                    }
+                    project(toProject, groupResults);
+                }
+            }
+        }
+        project(this->synonymsToSelect, groupResults);
+        if (!groupResults.empty()) {
+            join(groupResults, results, vector<string>());
         }
     }
 
@@ -46,6 +78,20 @@ list<string> QueryEvaluator::evaluate(Query query) {
 
 bool QueryEvaluator::evaluateClause(Clause clause, unordered_map<string, vector<int>>& tempResults) {
     string rel = clause.getRel();
+    if (PKB::nextBip->getRunNextBip()) {
+        if (rel == "NextBip") {
+            return NextBipEvaluator::evaluate(this->declarations, clause, tempResults);
+        } else if (rel == "NextBip*") {
+            return NextBipTEvaluator::evaluate(this->declarations, clause, tempResults);
+        }
+    }
+    /*if (PKB::affectsBip->getRunAffectsBip()) {
+        if (rel == "AffectsBip") {
+            return AffectsBipEvaluator::evaluate(this->declarations, clause, tempResults);
+        } else if (rel == "AffectsBip*") {
+            return AffectsBipTEvaluator::evaluate(this->declarations, clause, tempResults);
+        }
+    }*/
     if (rel == "Follows") {
         return FollowsEvaluator::evaluate(this->declarations, clause, tempResults);
     } else if (rel == "Follows*") {
@@ -72,12 +118,12 @@ bool QueryEvaluator::evaluateClause(Clause clause, unordered_map<string, vector<
         return AffectsTEvaluator::evaluate(this->declarations, clause, tempResults);
     } else if (rel == "") { // with clause
         return WithEvaluator::evaluate(this->declarations, clause, tempResults);
-    } else { // pattern
+    } else { // pattern clause
         return PatternEvaluator::evaluate(this->declarations, clause, tempResults);
     }
 }
 
-void QueryEvaluator::join(unordered_map<string, vector<int>> table) {
+void QueryEvaluator::join(unordered_map<string, vector<int>> table, unordered_map<string, vector<int>>& results, vector<string> commonSynonyms) {
     if (results.empty()) {
         results = table;
         return;
@@ -96,17 +142,9 @@ void QueryEvaluator::join(unordered_map<string, vector<int>> table) {
         newResults.insert({ synonym, v });
     }
 
-    vector<string> commonSynonyms;
-    for (pair<string, vector<int>> col : table) {
-        if (results.find(col.first) != results.end()) {
-            commonSynonyms.push_back(col.first);
-        }
-    }
-
     int resultsNumRows = results.begin()->second.size();
     int tableNumRows = table.begin()->second.size();
-    // table will have at most 2 cols
-    if (commonSynonyms.empty()) {
+    if (commonSynonyms.empty()) { // cross product
         for (int i = 0; i < resultsNumRows; i++) {
             for (int j = 0; j < tableNumRows; j++) {
                 // insert row i in results into newResults
@@ -120,6 +158,7 @@ void QueryEvaluator::join(unordered_map<string, vector<int>> table) {
             }
         }
 
+    // table will have at most 2 cols
     } else if (commonSynonyms.size() == 1) {
         string commonSynonym = commonSynonyms.at(0);
         if (table.size() == 1) {
@@ -141,13 +180,6 @@ void QueryEvaluator::join(unordered_map<string, vector<int>> table) {
             }
 
         } else if (table.size() == 2) {
-            string otherSynonym;
-            for (pair<string, vector<int>> col : results) {
-                if (col.first != commonSynonym) {
-                    otherSynonym = col.first;
-                    break;
-                }
-            }
             unordered_map<string, vector<int>> map; // map commonSynonym to index in table
             for (int i = 0; i < tableNumRows; i++) {
                 int val = table[commonSynonym].at(i); // value of commonSynonym in table at row i
@@ -212,11 +244,10 @@ list<string> QueryEvaluator::evaluateSynonymToSelect(vector<string> toSelect) {
         return list<string> {"TRUE"};
     }
 
-    for (string synonym : toSelect) {
-        string syn = synonym.substr(0, synonym.find('.'));
-        if (results.find(syn) == results.end()) { // synonym not in results table
-            unordered_map<string, vector<int>> tempResults = { {syn, selectAll(this->declarations[syn])} };
-            join(tempResults);
+    for (string synonym : synonymsToSelect) {
+        if (results.find(synonym) == results.end()) { // synonym not in results table
+            unordered_map<string, vector<int>> tempResults = { {synonym, selectAll(this->declarations[synonym])} };
+            join(tempResults, results, vector<string>());
         }
     }
 

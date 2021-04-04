@@ -172,3 +172,111 @@ bool intersectDoubleSynonym(pair<vector<int>, vector<int>> allResults, pair<vect
     results = res;
     return !res.first.empty();
 }
+
+void project(unordered_set<string> toProject, unordered_map<string, vector<int>>& results) {
+    // find entries to be removed
+    unordered_set<string> toRemove;
+    for (auto it : results) {
+        string synonym = it.first;
+        if (toProject.find(synonym) == toProject.end()) {
+            toRemove.insert(synonym);
+        }
+    }
+
+    // project
+    for (auto it : toRemove) {
+        results.erase(it);
+    }
+    if (results.empty()) {
+        return;
+    }
+
+    // remove duplicates
+    unordered_map<string, vector<int>> newResults;
+    for (auto it : results) {
+        newResults.insert(make_pair(it.first, vector<int>{}));
+    }
+    unordered_set<string> set;
+    int numRows = results.begin()->second.size();
+    for (int i = 0; i < numRows; i++) {
+        string s;
+        for (auto it : results) {
+            s += to_string(it.second.at(i)) + " ";
+        }
+        if (set.find(s) == set.end()) { // row is unique
+            set.insert(s);
+            for (auto it : results) { // insert row into table
+                newResults.find(it.first)->second.push_back(it.second.at(i));
+            }
+        }
+    }
+    results = newResults;
+}
+
+int getSize(Clause clause, unordered_map<string, string>& declarations) {
+    string rel = clause.getRel();
+    if (PKB::nextBip->getRunNextBip()) {
+        if (rel == "NextBip") {
+            return PKB::nextBip->getNextBipSize();
+        } else if (rel == "NextBip*") {
+            return PKB::nextBip->getNextBipStarSize();
+        }
+    }
+    /*if (PKB::affectsBip->getRunNextBip()) {
+        if (rel == "AffectsBip") {
+            return PKB::affectsBip->getAffectsBipSize();
+        } else if (rel == "AffectsBip*") {
+            return PKB::affectsBip->getAffectsBipStarSize();
+        }
+    }*/
+    if (rel == "Follows") {
+        return PKB::follows->getFollowsSize();
+    } else if (rel == "Follows*") {
+        return PKB::follows->getFollowsStarSize();
+    } else if (rel == "Parent") {
+        return PKB::parent->getParentSize();
+    } else if (rel == "Parent*") {
+        return PKB::parent->getParentStarSize();
+    } else if (rel == "Uses") {
+        string argType = getArgType(clause.getArgs().at(0), declarations);
+        if (argType == NAME_ || argType == PROCEDURE_) {
+            return PKB::uses->getProcSize();
+        } else {
+            return PKB::uses->getStmtSize();
+        }
+    } else if (rel == "Modifies") {
+        string argType = getArgType(clause.getArgs().at(0), declarations);
+        if (argType == NAME_ || argType == PROCEDURE_) {
+            return PKB::modifies->getProcSize();
+        } else {
+            return PKB::modifies->getStmtSize();
+        }
+    } else if (rel == "Calls") {
+        return PKB::calls->getCallsSize();
+    } else if (rel == "Calls*") {
+        return PKB::calls->getCallsStarSize();
+    } else if (rel == "Next") {
+        return PKB::next->getNextSize();
+    } else if (rel == "Next*") {
+        return PKB::next->getNextStarSize();
+    } else if (rel == "Affects") {
+        return PKB::affects->getAffectsSize();
+    } else if (rel == "Affects*") {
+        return PKB::affects->getAffectsStarSize();
+    } else if (rel == "") { // with clause
+        if (clause.getNumOfKnown() > 0) {
+            return 0;
+        }
+        return max(max(PKB::procTable->getSize(), PKB::varTable->getSize()),
+                   max(PKB::constTable->getSize(), PKB::stmtTable->getSize()));
+    } else { // pattern clause
+        string argType = getArgType(rel, declarations);
+        if (argType == ASSIGN_) {
+            return PKB::stmtTable->getAllAssignStmtNums().size();
+        } else if (argType == WHILE_) {
+            return PKB::stmtTable->getAllWhileStmtNums().size();
+        } else { // argType == IF_
+            return PKB::stmtTable->getAllIfStmtNums().size();
+        }
+    }
+}

@@ -139,6 +139,7 @@ void setUpAffectsTest() {
     PKB::modifies->storeProcModifies(2,4);
     PKB::modifies->storeProcModifies(2,5);
 
+    PKB::nextBip->setRunNextBip(false);
     PKB::populatePKB();
 }
 
@@ -414,6 +415,7 @@ void setUpAffectsTest2() {
     PKB::modifies->storeProcModifies(2,2);
     PKB::modifies->storeProcModifies(2,4);
 
+    PKB::nextBip->setRunNextBip(false);
     PKB::populatePKB();
 }
 
@@ -647,6 +649,7 @@ void setUpAffectsTest3() {
     PKB::modifies->storeProcModifies(2,2);
     PKB::modifies->storeProcModifies(3,3);
 
+    PKB::nextBip->setRunNextBip(false);
     PKB::populatePKB();
 }
 
@@ -930,6 +933,7 @@ void setUpAffectsTest4() {
     PKB::modifies->storeProcModifies(2,2);
     PKB::modifies->storeProcModifies(3,3);
 
+    PKB::nextBip->setRunNextBip(false);
     PKB::populatePKB();
 }
 
@@ -1019,4 +1023,78 @@ TEST_CASE("getAffectsStar Test4") {
     REQUIRE(PKB::affects->getAffectsStar(16).empty());
     REQUIRE(PKB::affects->getAffectsStar(17).empty());
     REQUIRE(PKB::affects->getAffectsStar(18).empty());
+}
+
+//    procedure xyz {
+//    01    while (x > 0) {
+//    02        a = b;
+//    03        b = c;
+//    04        c = a;
+//          }
+//    }
+
+void setUpAffectsTest5() {
+    PKB::resetPKB();
+
+    ast::Stmt* stmtNodeStub = new StmtNodeStub(1);
+    PKB::stmtTable->storeStmt(1, stmtNodeStub, "while");
+    PKB::stmtTable->storeStmt(2, stmtNodeStub, "assign");
+    PKB::stmtTable->storeStmt(3, stmtNodeStub, "assign");
+    PKB::stmtTable->storeStmt(4, stmtNodeStub, "assign");
+
+    PKB::next->storeNext(1,2);
+    PKB::next->storeNext(2,3);
+    PKB::next->storeNext(3,4);
+    PKB::next->storeNext(4,1);
+
+    PKB::parent->storeParent(1,2);
+    PKB::parent->storeParent(1,3);
+    PKB::parent->storeParent(1,4);
+
+    // Var ID: a = 0, b = 1, c = 2
+    PKB::uses->storeStmtUses(1,0);
+    PKB::uses->storeStmtUses(1,1);
+    PKB::uses->storeStmtUses(1,2);
+    PKB::uses->storeStmtUses(2,1);
+    PKB::uses->storeStmtUses(3,2);
+    PKB::uses->storeStmtUses(4,0);
+
+    PKB::uses->storeProcUses(0, 0);
+    PKB::uses->storeProcUses(0, 1);
+    PKB::uses->storeProcUses(0, 2);
+
+    PKB::modifies->storeStmtModifies(1,0);
+    PKB::modifies->storeStmtModifies(1,1);
+    PKB::modifies->storeStmtModifies(1,2);
+    PKB::modifies->storeStmtModifies(2,0);
+    PKB::modifies->storeStmtModifies(3,1);
+    PKB::modifies->storeStmtModifies(4,2);
+
+    PKB::modifies->storeStmtModifies(0,0);
+    PKB::modifies->storeStmtModifies(0,1);
+    PKB::modifies->storeStmtModifies(0,2);
+
+    PKB::nextBip->setRunNextBip(false);
+    PKB::populatePKB();
+}
+
+TEST_CASE("getAffects Test5") {
+    setUpAffectsTest5();
+    REQUIRE(PKB::affects->getAffects(1) == unordered_set<StmtNum>({ }));
+    REQUIRE(PKB::affects->getAffects(2) == unordered_set<StmtNum>({4}));
+    REQUIRE(PKB::affects->getAffects(3) == unordered_set<StmtNum>({2}));
+    REQUIRE(PKB::affects->getAffects(4) == unordered_set<StmtNum>({3}));
+}
+
+TEST_CASE("getAffectsSize Test5") {
+    setUpAffectsTest5();
+    REQUIRE(PKB::affects->getAffectsSize() == 3);
+}
+
+TEST_CASE("getAffectsStar Test5") {
+    setUpAffectsTest5();
+    REQUIRE(PKB::affects->getAffectsStar(1) == unordered_set<StmtNum>({ }));
+    REQUIRE(PKB::affects->getAffectsStar(2) == unordered_set<StmtNum>({2, 3, 4}));
+    REQUIRE(PKB::affects->getAffectsStar(3) == unordered_set<StmtNum>({2, 3, 4}));
+    REQUIRE(PKB::affects->getAffectsStar(4) == unordered_set<StmtNum>({2, 3, 4}));
 }

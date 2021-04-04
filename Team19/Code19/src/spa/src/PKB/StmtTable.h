@@ -1,5 +1,7 @@
 #pragma once
 
+#include <set>
+
 #include "../AbstractAPI.h"
 #include "../AST/Stmt.h"
 
@@ -63,6 +65,10 @@ public:
     // E.g. if the ifPatternsMap has [1: {2,3}], then the size is 2. Because there are pairs (1,2) and (1,3).
     int getWhilePatternsSize();
 
+    // Returns the if/else stmt's startStmt and endStmt if it exists. Throws exception otherwise.
+    pair<StmtNum, set<StmtNum>> getIfStmtRange(StmtNum stmtNum);
+    pair<StmtNum, set<StmtNum>> getElseStmtRange(StmtNum stmtNum);
+
     // Stores <stmtNum, *AST> into stmtASTMap.
     // Called by DE. Returns TRUE if the information is added successfully, returns FALSE otherwise.
     bool storeStmt(StmtNum stmtNum, ast::Stmt *stmtNode, STRING type);
@@ -84,6 +90,10 @@ public:
     // Stores <stmtNum, controlVar> into whilePatternsMap, <controlVar, stmtNum> into reverseWhilePatternsMap
     // Called by DE. Returns TRUE if the information is added successfully, returns FALSE otherwise.
     bool storeWhilePattern(StmtNum stmtNum, ID controlVarID);
+
+    // Stores the if/else stmt that spans from startStmt to endStmt. Returns true if insertion took place.
+    bool storeIfStmt(StmtNum ifStmtNum, StmtNum startStmt, const set<StmtNum>& endStmt);
+    bool storeElseStmt(StmtNum elseStmtNum, StmtNum startStmt, const set<StmtNum>& endStmt);
 
     // Checks whether stmtASTMap contains stmtNum.
     bool hasStmt(StmtNum stmtNum);
@@ -109,6 +119,10 @@ private:
     // Stores control variable as key, and a set of stmtNum as value
     unordered_map<ID, unordered_set<StmtNum> > reverseIfPatternsMap;
     unordered_map<ID, unordered_set<StmtNum> > reverseWhilePatternsMap;
+
+    // A map that stores if stmt num as key, and a set of <startStmt, endStmt> as value.
+    unordered_map<StmtNum, pair<StmtNum, set<StmtNum>>> ifStmtMap;
+    unordered_map<StmtNum, pair<StmtNum, set<StmtNum>>> elseStmtMap;
 
     // Vectors for each type of statement
     // Stores corresponding statement numbers of statements with that type
