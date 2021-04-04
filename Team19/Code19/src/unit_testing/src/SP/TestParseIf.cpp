@@ -1,7 +1,3 @@
-//#include "Parser.h"
-#include <string>
-#include <vector>
-#include <iostream>
 #include "AST/Index.h"
 #include "SP/Parser.h"
 #include "SP/ParserUtils.h"
@@ -11,30 +7,29 @@ using namespace std;
 
 // test for some bracketings assign expr
 TEST_CASE("ParseLexer If - Test") {
-
-    //std::string input = "if = v + x * y + z * t;";    // if not implemented yet
-    std::vector<std::pair<std::string, std::string>> tests{
-        {
-            "if (flag == 1) then { read r; } else { read r; }",
-            "if (( flag == 1 )) then {\n    read (r);\n}\nelse {\n    read (r);\n}\n",
-        },
-        {
-            "if ((flag) == 1) then { read r; } else {read r;}",
-            "if (( ( flag ) == 1 )) then {\n    read (r);\n}\nelse {\n    read (r);\n}\n",
-        },
-        {
-            "if ((flag == (1 * 5))|| (3 > 2)) then { x = (2 + 1); } else { print call; }\n",
-            "if (( ( flag == ( 1 * 5 ) ) || ( 3 > 2 ) )) then {\n    (x) = ((2) + (1));\n}\nelse {\n    print (call);\n}\n",
-        },
-        {
-            "if (flag == 1) then {while ((a + b) > c) { bb = dd;}} else { read r; }",
-            "if (( flag == 1 )) then {\n    while (( ( a + b ) > c )) {\n    (bb) = (dd);\n}\n\n}\nelse {\n    read (r);\n}\n",
-        },
+    //STRING input = "if = v + x * y + z * t;";    // if not implemented yet
+    std::vector<std::pair<STRING, STRING>> tests{
+            {
+                    "if (flag == 1) then { read r; } else { read r; }",
+                    "if (( flag == 1 )) then {\n    read (r);\n}\nelse {\n    read (r);\n}\n",
+            },
+            {
+                    "if ((flag) == 1) then { read r; } else {read r;}",
+                    "if (( ( flag ) == 1 )) then {\n    read (r);\n}\nelse {\n    read (r);\n}\n",
+            },
+            {
+                    "if ((flag == (1 * 5))|| (3 > 2)) then { x = (2 + 1); } else { print call; }\n",
+                    "if (( ( flag == ( 1 * 5 ) ) || ( 3 > 2 ) )) then {\n    (x) = ((2) + (1));\n}\nelse {\n    print (call);\n}\n",
+            },
+            {
+                    "if (flag == 1) then {while ((a + b) > c) { bb = dd;}} else { read r; }",
+                    "if (( flag == 1 )) then {\n    while (( ( a + b ) > c )) {\n    (bb) = (dd);\n}\n\n}\nelse {\n    read (r);\n}\n",
+            },
     };
 
     for (int i = 0; i < tests.size(); ++i) {
-        std::string input = std::get<0>(tests[i]);
-        std::string expected = std::get<1>(tests[i]);
+        STRING input = std::get<0>(tests[i]);
+        STRING expected = std::get<1>(tests[i]);
 
         /** begin ritual to Summon Parser **/
         std::vector<sp::Token> actual_tok;
@@ -57,29 +52,29 @@ TEST_CASE("ParseLexer If - Test") {
 }
 
 TEST_CASE("ParseLexer If - Exceptions, Test") {
-    //std::string input = "if = v + x * y + z * t;";    // if not implemented yet
-    std::vector<std::pair<std::string, std::string>> tests{
-        {   // failing this, ill fix this after iter1 promise
-            "if (a + 5) then { read r; } else { read r; }",
-            "if (a + 5) then { read r; } else { read r; }",
-        },
-        { // relying on others like IF/WHILE to catch this
-            "if (a == b) && (c < 5)) then { read r; } else { read r;}",
-            "if (a == b) && (c < 5)) then { read r;} else { read r;}",
-        },
-        {
-            "if (a == b) && c < 5) then { read r; } else { read r; }",
-            "if (a == b) && c < 5) then { read r; } else { read r; }",
-        },
-        {
-            "if ((a == b) && c < 5)) then { read r; } else { read r; }",
-            "if ((a == b) && c < 5)) then { read r; } else { read r; }",
-        },
+    //STRING input = "if = v + x * y + z * t;";    // if not implemented yet
+    std::vector<std::pair<STRING, STRING>> tests{
+            {  
+                    "if (a + 5) then { read r; } else { read r; }",
+                    "if (a + 5) then { read r; } else { read r; }",
+            },
+            { // relying on others like IF/WHILE to catch this
+                    "if (a == b) && (c < 5)) then { read r; } else { read r;}",
+                    "if (a == b) && (c < 5)) then { read r;} else { read r;}",
+            },
+            {
+                    "if (a == b) && c < 5) then { read r; } else { read r; }",
+                    "if (a == b) && c < 5) then { read r; } else { read r; }",
+            },
+            {
+                    "if ((a == b) && c < 5)) then { read r; } else { read r; }",
+                    "if ((a == b) && c < 5)) then { read r; } else { read r; }",
+            },
     };
 
     for (int i = 0; i < tests.size(); ++i) {
-        std::string input = std::get<0>(tests[i]);
-        std::string expected = std::get<1>(tests[i]);
+        STRING input = std::get<0>(tests[i]);
+        STRING expected = std::get<1>(tests[i]);
 
         /** begin ritual to Summon Parser **/
         std::vector<sp::Token> actual_tok;
@@ -91,14 +86,11 @@ TEST_CASE("ParseLexer If - Exceptions, Test") {
 
         try {
             ast::Stmt* ce = p.parseStmt();
-            //REQUIRE(ce->toString() == expected);
             INFO("Exception Expected: TestCase: " + input + ", got: " + ce->toString());
             REQUIRE(false);
         }
         catch (sp::ParserException &ex) {
             INFO(ex.what());
-            //INFO("TestCase: " + input + ", Exception Thrown");
-            //REQUIRE(false);
             REQUIRE(true);
         }
     }

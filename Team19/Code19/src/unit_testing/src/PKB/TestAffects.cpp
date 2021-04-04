@@ -45,7 +45,7 @@ using namespace std;
 
 class StmtNodeStub : public ast::Stmt {
 public:
-    StmtNodeStub(int index): ast::Stmt(new sp::Token(), index){};
+    StmtNodeStub(StmtNum index): ast::Stmt(new sp::Token(), index){};
 };
 
 void setUpAffectsTest() {
@@ -670,7 +670,7 @@ TEST_CASE("isAffects Test3") {
     REQUIRE(PKB::affects->isAffects(11,8));
     REQUIRE(PKB::affects->isAffects(11,10));
     REQUIRE(PKB::affects->isAffects(12,16));
-    
+
 }
 
 TEST_CASE("getAffectsSize Test3") {

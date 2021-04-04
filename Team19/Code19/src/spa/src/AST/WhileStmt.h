@@ -4,26 +4,27 @@
 #include "AST/StmtLst.h"
 #include "AST/Stmt.h"
 
+// AST representing a While Statement
 namespace ast {
-	class WhileStmt : public Stmt {
-		CondExpr* cond_expr;
-		StmtLst* stmt_lst;
-	public:
-		WhileStmt(int stmtNum, sp::Token* token, CondExpr* cond_expr, StmtLst* stmt_lst)
-			:Stmt(token, stmtNum), cond_expr{ cond_expr }, stmt_lst{ stmt_lst } {}
-		CondExpr* getCondExpr() { return cond_expr; }
-		StmtLst* getStmtLst() { return stmt_lst; }
+    class WhileStmt : public Stmt {
+        CondExpr* cond_expr;
+        StmtLst* stmt_lst;
+    public:
+        WhileStmt(StmtNum stmtNum, sp::Token* token, CondExpr* cond_expr, StmtLst* stmt_lst)
+                :Stmt(token, stmtNum), cond_expr{ cond_expr }, stmt_lst{ stmt_lst } {}
+        CondExpr* getCondExpr() { return cond_expr; }
+        StmtLst* getStmtLst() { return stmt_lst; }
 
-		std::string toString() override {
-			std::string cond_str = cond_expr ? cond_expr->toString() : "[NULL_PTR]";
-			std::string sl_str = stmt_lst ? stmt_lst->toString() : "[NULL_PTR]";
-			return "while (" + cond_str + ") " + sl_str;
-		}
+        STRING toString() override {
+            STRING cond_str = cond_expr ? cond_expr->toString() : "[NULL_PTR]";
+            STRING sl_str = stmt_lst ? stmt_lst->toString() : "[NULL_PTR]";
+            return "while (" + cond_str + ") " + sl_str;
+        }
 
-		~WhileStmt() {
-			delete cond_expr;
-			delete stmt_lst;
-		}
+        ~WhileStmt() {
+            delete cond_expr;
+            delete stmt_lst;
+        }
 
-	};
+    };
 }

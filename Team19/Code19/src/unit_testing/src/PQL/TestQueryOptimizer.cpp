@@ -5,7 +5,7 @@ using namespace std;
 
 class StmtNodeStub : public ast::Stmt {
 public:
-    StmtNodeStub(int index): ast::Stmt(new sp::Token(), index){};
+    StmtNodeStub(StmtNum index): ast::Stmt(new sp::Token(), index){};
 };
 
 //    procedure sumDigits {
@@ -478,10 +478,10 @@ TEST_CASE("QueryOptimizer optimize orderGroups - 1 group no synonym, 1 group no 
     Clause c18 = Clause("", { "ifs.stmt#", "cc.value" }, { "ifs", "cc" }, 0);
     Clause c19 = Clause("", { "12", "12" }, {}, 2);
     Query q1 = Query({ {"ifs", IF_}, {"v1", VARIABLE_}, {"v2", VARIABLE_}, {"cc", CONSTANT_}, {"pn", PRINT_}, {"c", CALL_} },
-        { "ifs", "cc", "v2" }, { {c19, c12, c14, c17, c13, c18, c11} }, true, true);
+                     { "ifs", "cc", "v2" }, { {c19, c12, c14, c17, c13, c18, c11} }, true, true);
     Query actual1 = qo.optimize(q1);
     Query expected1 = Query({ {"ifs", IF_}, {"v1", VARIABLE_}, {"v2", VARIABLE_}, {"cc", CONSTANT_}, {"pn", PRINT_}, {"c", CALL_} },
-        { "ifs", "cc", "v2" }, { {c19, c12, c14}, {c17, c11}, {c13, c18} }, true, true);
+                            { "ifs", "cc", "v2" }, { {c19, c12, c14}, {c17, c11}, {c13, c18} }, true, true);
     REQUIRE(actual1.getClauses() == expected1.getClauses());
     REQUIRE(actual1.getDeclarations() == expected1.getDeclarations());
     REQUIRE(actual1.getToSelect() == expected1.getToSelect());
@@ -506,10 +506,10 @@ TEST_CASE("QueryOptimizer optimize orderGroups - 2 groups no synonym in select, 
     Clause c18 = Clause("", { "s.stmt#", "cc.value" }, { "s", "cc" }, 0);
     Clause c19 = Clause("", { "v2.stmt#", "12" }, {"v2"}, 2);
     Query q1 = Query({ {"v1", VARIABLE_}, {"v2", VARIABLE_}, {"cc", CONSTANT_}, {"pn", PRINT_}, {"c", CALL_}, {"s", STMT_} },
-        { "s.stmt#" }, { {c19, c14, c17, c18, c11} }, true, true);
+                     { "s.stmt#" }, { {c19, c14, c17, c18, c11} }, true, true);
     Query actual1 = qo.optimize(q1);
     Query expected1 = Query({ {"v1", VARIABLE_}, {"v2", VARIABLE_}, {"cc", CONSTANT_}, {"pn", PRINT_}, {"c", CALL_}, {"s", STMT_} },
-        { "s.stmt#" }, { {c17, c11}, {c19}, {c14, c18} }, true, true);
+                            { "s.stmt#" }, { {c17, c11}, {c19}, {c14, c18} }, true, true);
     REQUIRE(actual1.getClauses().size() == expected1.getClauses().size());
     vector<vector<Clause>> actualNoSynInSelect;
     for (int i = 0; i < 2; i++) {
@@ -550,10 +550,10 @@ TEST_CASE("QueryOptimizer optimize orderGroups - multiple groups no synonym in s
     Clause c19 = Clause("ifs", { "v", "_", "_" }, { "ifs", "v" }, 0);
     Clause c20 = Clause("Uses", { "c", "\"x\"" }, { "c" }, 1);
     Query q1 = Query({ {"s", STMT_}, {"a", ASSIGN_}, {"w", WHILE_}, {"w1", WHILE_}, {"w2", WHILE_}, {"ifs", IF_}, {"ifs1", IF_}, {"v", VARIABLE_}, {"v1", VARIABLE_}, {"cc", CONSTANT_}, {"pn", PRINT_}, {"c", CALL_} },
-        { "w", "v1", "c" }, { {c11, c12, c13, c14, c15, c16, c17, c18, c19, c20 } }, true, true);
+                     { "w", "v1", "c" }, { {c11, c12, c13, c14, c15, c16, c17, c18, c19, c20 } }, true, true);
     Query actual1 = qo.optimize(q1);
     Query expected1 = Query({ {"s", STMT_}, {"a", ASSIGN_}, {"w", WHILE_}, {"w1", WHILE_}, {"w2", WHILE_}, {"ifs", IF_}, {"ifs1", IF_}, {"v", VARIABLE_}, {"v1", VARIABLE_}, {"cc", CONSTANT_}, {"pn", PRINT_}, {"c", CALL_} },
-        { "w", "v1", "c" }, { {c14}, {c12, c15, c18}, {c11}, {c13, c16, c17, c19}, {c20} }, true, true);
+                            { "w", "v1", "c" }, { {c14}, {c12, c15, c18}, {c11}, {c13, c16, c17, c19}, {c20} }, true, true);
     REQUIRE(actual1.getClauses().size() == expected1.getClauses().size());
     vector<vector<Clause>> actualNoSynInSelect;
     for (int i = 0; i < 2; i++) {
@@ -650,10 +650,10 @@ TEST_CASE("QueryOptimizer optimize orderGroups - select BOOLEAN (i.e. all groups
     Clause c18 = Clause("", { "s.stmt#", "cc.value" }, { "s", "cc" }, 0);
     Clause c19 = Clause("", { "v2.stmt#", "12" }, { "v2" }, 1);
     Query q1 = Query({ {"v1", VARIABLE_}, {"v2", VARIABLE_}, {"cc", CONSTANT_}, {"pn", PRINT_}, {"c", CALL_}, {"s", STMT_} },
-        { "BOOLEAN" }, { {c19, c14, c17, c18, c11} }, true, true);
+                     { "BOOLEAN" }, { {c19, c14, c17, c18, c11} }, true, true);
     Query actual1 = qo.optimize(q1);
     Query expected1 = Query({ {"v1", VARIABLE_}, {"v2", VARIABLE_}, {"cc", CONSTANT_}, {"pn", PRINT_}, {"c", CALL_}, {"s", STMT_} },
-        { "BOOLEAN" }, { {c11, c17}, {c19}, {c14, c18} }, true, true);
+                            { "BOOLEAN" }, { {c11, c17}, {c19}, {c14, c18} }, true, true);
     REQUIRE_THAT(actual1.getClauses(), Catch::Matchers::UnorderedEquals(expected1.getClauses()));
     REQUIRE(actual1.getDeclarations() == expected1.getDeclarations());
     REQUIRE(actual1.getToSelect() == expected1.getToSelect());
