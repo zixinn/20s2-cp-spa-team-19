@@ -22,7 +22,7 @@ TEST_CASE("storeParent Test") {
     REQUIRE(parent->storeParent(2,5));// 4.            b = 2; }
     REQUIRE(parent->storeParent(1,6));// 5.        c = 3; }
     REQUIRE(parent->storeParent(1,7));// 6.     d = 5;
-                                      // 7.     e = 6; }
+    // 7.     e = 6; }
     REQUIRE_FALSE(parent->storeParent(1,3)); // 3 is already child of statement 2
     REQUIRE_FALSE(parent->storeParent(2,4)); // 4 is already child of statement 3
     REQUIRE_FALSE(parent->storeParent(1,2)); // already stored

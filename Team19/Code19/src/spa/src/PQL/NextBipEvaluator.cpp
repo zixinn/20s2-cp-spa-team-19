@@ -6,11 +6,11 @@ NextBipEvaluator::NextBipEvaluator() {
 
 }
 
-bool NextBipEvaluator::evaluate(unordered_map<string, string> declarations, Clause clause, unordered_map<string, vector<int>>& tempResults) {
-    string firstArg = clause.getArgs().at(0);
-    string secondArg = clause.getArgs().at(1);
-    string firstType = getArgType(firstArg, declarations);
-    string secondType = getArgType(secondArg, declarations);
+bool NextBipEvaluator::evaluate(unordered_map<STRING, STRING> declarations, Clause clause, unordered_map<STRING, vector<int>>& tempResults) {
+    STRING firstArg = clause.getArgs().at(0);
+    STRING secondArg = clause.getArgs().at(1);
+    STRING firstType = getArgType(firstArg, declarations);
+    STRING secondType = getArgType(secondArg, declarations);
 
     if (firstType == UNDERSCORE_ && secondType == UNDERSCORE_) { // _, _
         return PKB::nextBip->getNextBipSize() > 0;
@@ -20,7 +20,7 @@ bool NextBipEvaluator::evaluate(unordered_map<string, string> declarations, Clau
         return PKB::nextBip->isNextBip(stoi(firstArg), stoi(secondArg));
 
     } else if (firstType == INTEGER_ && secondType != INTEGER_) { // known, s or known, _
-        unordered_set<int> nextBip = PKB::nextBip->getNextBip(stoi(firstArg));
+        unordered_set<ProgLine> nextBip = PKB::nextBip->getNextBip(stoi(firstArg));
         if (nextBip.empty()) {
             return false;
         }
@@ -35,7 +35,7 @@ bool NextBipEvaluator::evaluate(unordered_map<string, string> declarations, Clau
         return true;
 
     } else if (firstType != INTEGER_ && secondType == INTEGER_) { // s, known or _, known
-        unordered_set<int> previousBip = PKB::nextBip->getPreviousBip(stoi(secondArg));
+        unordered_set<ProgLine> previousBip = PKB::nextBip->getPreviousBip(stoi(secondArg));
         if (previousBip.empty()) {
             return false;
         }
@@ -53,7 +53,7 @@ bool NextBipEvaluator::evaluate(unordered_map<string, string> declarations, Clau
         if (firstArg == secondArg) {
             return false;
         }
-        pair<vector<int>, vector<int>> allNextBip = PKB::nextBip->getAllNextBip();
+        pair<vector<ProgLine>, vector<ProgLine>> allNextBip = PKB::nextBip->getAllNextBip();
         if (allNextBip.first.empty()) {
             return false;
         }

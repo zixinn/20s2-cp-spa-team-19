@@ -1,18 +1,18 @@
-﻿#include "Utility.h" 
+﻿#include "Utility.h"
 
 using namespace std;
 
-string trim(string s) {
-    string whitespace = " \t\n\r\f\v";
+STRING trim(STRING s) {
+    STRING whitespace = " \t\n\r\f\v";
     s.erase(s.find_last_not_of(whitespace) + 1);
     s.erase(0, s.find_first_not_of(whitespace));
     return s;
 }
 
-vector<string> split(string s, string delimiter) {
+vector<STRING> split(STRING s, STRING delimiter) {
     size_t pos = 0;
-    string token;
-    vector<string> result;
+    STRING token;
+    vector<STRING> result;
     while ((pos = s.find(delimiter)) < s.length()) {
         token = s.substr(0, pos);
         result.push_back(trim(token));
@@ -25,7 +25,7 @@ vector<string> split(string s, string delimiter) {
     return result;
 }
 
-bool checkName(string s) {
+bool checkName(STRING s) {
     bool isValid = false;
     if (isalpha(s[0])) {
         isValid = true;
@@ -41,7 +41,7 @@ bool checkName(string s) {
     return isValid;
 }
 
-bool checkInteger(string s) {
+bool checkInteger(STRING s) {
     if (s.length() > 1 && s.at(0) == '0') {
         return false;
     }

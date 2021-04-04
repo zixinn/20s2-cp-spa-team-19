@@ -1,5 +1,4 @@
 #include "StmtTable.h"
-// added by SP, for some reason cant run without this, but PKB works fine
 #include <assert.h>
 
 StmtTable::StmtTable() = default;

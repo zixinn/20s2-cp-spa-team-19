@@ -2,6 +2,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <iostream>
+
 #include "SP/Token.h"
 #include "SP/Lexer.h"
 #include "SP/ParserException.h"
@@ -14,7 +15,7 @@
 #include "AST/WhileStmt.h"
 #include "AST/CallStmt.h"
 
-// function pointers for ExprParsing
+// Utility functions used by the Parser
 namespace ParserUtils {
 
 	// BODMAS precedence, higher the more impt

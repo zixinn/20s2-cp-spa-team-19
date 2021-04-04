@@ -51,8 +51,8 @@ TEST_CASE("getAllVarNames Test") {
     VarTable* varTable = new VarTable();
     varTable->storeVarName("a");
     varTable->storeVarName("b");
-    vector<string> const &varNames = varTable->getAllVarNames();
-    REQUIRE_THAT(varNames, Catch::Matchers::UnorderedEquals(vector<string>{ "a", "b"}));
+    vector<STRING> const &varNames = varTable->getAllVarNames();
+    REQUIRE_THAT(varNames, Catch::Matchers::UnorderedEquals(vector<STRING>{ "a", "b"}));
 }
 
 TEST_CASE("convertVarIDsToNames Test") {
@@ -61,8 +61,8 @@ TEST_CASE("convertVarIDsToNames Test") {
     varTable->storeVarName("b");
     varTable->storeVarName("c");
     varTable->storeVarName("d");
-    vector<string> varNames = varTable->convertVarIDsToNames(vector<int>{1, 2});
-    REQUIRE_THAT(varNames, Catch::Matchers::UnorderedEquals(vector<string>{ "b", "c"}));
+    vector<STRING> varNames = varTable->convertVarIDsToNames(vector<ID>{1, 2});
+    REQUIRE_THAT(varNames, Catch::Matchers::UnorderedEquals(vector<STRING>{ "b", "c"}));
 }
 
 TEST_CASE("getAllVarIDs Test") {

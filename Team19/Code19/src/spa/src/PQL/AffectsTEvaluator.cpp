@@ -6,12 +6,12 @@ AffectsTEvaluator::AffectsTEvaluator() {
 
 }
 
-bool AffectsTEvaluator::evaluate(unordered_map<string, string> declarations,
-    Clause clause, unordered_map<string, vector<int>>& tempResults) {
-    string firstArg = clause.getArgs().at(0);
-    string secondArg = clause.getArgs().at(1);
-    string firstType = getArgType(firstArg, declarations);
-    string secondType = getArgType(secondArg, declarations);
+bool AffectsTEvaluator::evaluate(unordered_map<STRING, STRING> declarations,
+    Clause clause, unordered_map<STRING, vector<int>>& tempResults) {
+    STRING firstArg = clause.getArgs().at(0);
+    STRING secondArg = clause.getArgs().at(1);
+    STRING firstType = getArgType(firstArg, declarations);
+    STRING secondType = getArgType(secondArg, declarations);
 
     if (firstType == UNDERSCORE_ && secondType == UNDERSCORE_) { // _, _
         return PKB::affects->getAffectsStarSize() > 0;
@@ -59,7 +59,7 @@ bool AffectsTEvaluator::evaluate(unordered_map<string, string> declarations,
             return !res.empty();
         }
 
-        pair<vector<int>, vector<int>> allAffectsStar = PKB::affects->getAllAffectsStar();
+        pair<vector<StmtNum>, vector<StmtNum>> allAffectsStar = PKB::affects->getAllAffectsStar();
         if (allAffectsStar.first.empty()) {
             return false;
         }

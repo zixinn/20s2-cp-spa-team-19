@@ -6,7 +6,7 @@ using namespace std;
 
 class StmtNodeStub : public ast::Stmt {
 public:
-    StmtNodeStub(int index) : ast::Stmt(new sp::Token(), index) {};
+    StmtNodeStub(StmtNum index) : ast::Stmt(new sp::Token(), index) {};
 };
 
 //    procedure Bill {

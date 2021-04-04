@@ -4,18 +4,19 @@
 #include "QueryUtility.h"
 #include "../PKB/PKB.h"
 
+// Helper class to evaluate statment and procedural Uses
 class UsesEvaluator {
 public:
-	UsesEvaluator();
+    UsesEvaluator();
 
-	static bool evaluate(unordered_map<string, string> declarations, 
-		Clause clause, unordered_map<string, vector<int>>& tempResults);
+    static bool evaluate(unordered_map<STRING, STRING> declarations,
+                         Clause clause, unordered_map<STRING, vector<int>>& tempResults);
 
-	~UsesEvaluator();
+    ~UsesEvaluator();
 private:
-	static bool evaluateStmtUses(unordered_map<string, string> declarations, 
-		Clause clause, unordered_map<string, vector<int>>& tempResults);
+    static bool evaluateStmtUses(unordered_map<STRING, STRING> declarations,
+                                 Clause clause, unordered_map<STRING, vector<int>>& tempResults);
 
-	static bool evaluateProcUses(unordered_map<string, string> declarations, 
-		Clause clause, unordered_map<string, vector<int>>& tempResults);
+    static bool evaluateProcUses(unordered_map<STRING, STRING> declarations,
+                                 Clause clause, unordered_map<STRING, vector<int>>& tempResults);
 };

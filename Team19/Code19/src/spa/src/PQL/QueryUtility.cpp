@@ -2,7 +2,7 @@
 
 using namespace std;
 
-bool checkNameWithQuotes(string s) {
+bool checkNameWithQuotes(STRING s) {
     if (s[0] != '\"' || s[s.length() - 1] != '\"') {
         return false;
     }
@@ -11,15 +11,15 @@ bool checkNameWithQuotes(string s) {
 
 bool isOperator(sp::Token::TokenType tokenType) {
     return tokenType ==  sp::Token::TokenType::PLUS || tokenType ==  sp::Token::TokenType::MINUS
-        || tokenType ==  sp::Token::TokenType::TIMES || tokenType ==  sp::Token::TokenType::DIV
-        || tokenType ==  sp::Token::TokenType::MOD;
+           || tokenType ==  sp::Token::TokenType::TIMES || tokenType ==  sp::Token::TokenType::DIV
+           || tokenType ==  sp::Token::TokenType::MOD;
 }
 
-bool checkExpression(string s) {
+bool checkExpression(STRING s) {
     if (s[0] != '\"' || s[s.length() - 1] != '\"') {
         return false;
     }
-    string str = trim(s.substr(1, s.length() - 2));
+    STRING str = trim(s.substr(1, s.length() - 2));
 
     vector<sp::Token> tokens;
     bool b = Lexer::tokenise(str, tokens);
@@ -40,7 +40,7 @@ bool checkExpression(string s) {
 
     for (int i = 0; i < tokens.size() - 1; i++) {
         sp::Token::TokenType tokenType = tokens.at(i).getType();
-        string tokenLiteral = tokens.at(i).getLiteral();
+        STRING tokenLiteral = tokens.at(i).getLiteral();
         if (tokenType == sp::Token::TokenType::LPAREN) {
             parenCount++;
             isPrevLParen = true;
@@ -76,18 +76,18 @@ bool checkExpression(string s) {
     return true;
 }
 
-bool checkExpressionWithUnderscores(string s) {
+bool checkExpressionWithUnderscores(STRING s) {
     if (s[0] != '_' || s[s.length() - 1] != '_') {
         return false;
     }
     return checkExpression(trim(s.substr(1, s.length() - 2)));
 }
 
-bool checkSynonymDeclared(string synonym, unordered_map<string, string> declarations) {
+bool checkSynonymDeclared(STRING synonym, unordered_map<STRING, STRING> declarations) {
     return declarations.find(synonym) != declarations.end();
 }
 
-string getArgType(string synonym, unordered_map<string, string> declarations) {
+STRING getArgType(STRING synonym, unordered_map<STRING, STRING> declarations) {
     if (checkSynonymDeclared(synonym, declarations)) {
         return declarations[synonym];
     } else if (checkInteger(synonym)) {
@@ -105,7 +105,7 @@ string getArgType(string synonym, unordered_map<string, string> declarations) {
     }
 }
 
-vector<int> selectAll(string synonymType) {
+vector<int> selectAll(STRING synonymType) {
     vector<int> res;
     if (synonymType == PROCEDURE_) {
         return PKB::procTable->getAllProcIDs();
@@ -173,11 +173,11 @@ bool intersectDoubleSynonym(pair<vector<int>, vector<int>> allResults, pair<vect
     return !res.first.empty();
 }
 
-void project(unordered_set<string> toProject, unordered_map<string, vector<int>>& results) {
+void project(unordered_set<STRING> toProject, unordered_map<STRING, vector<int>>& results) {
     // find entries to be removed
-    unordered_set<string> toRemove;
+    unordered_set<STRING> toRemove;
     for (auto it : results) {
-        string synonym = it.first;
+        STRING synonym = it.first;
         if (toProject.find(synonym) == toProject.end()) {
             toRemove.insert(synonym);
         }
@@ -192,14 +192,14 @@ void project(unordered_set<string> toProject, unordered_map<string, vector<int>>
     }
 
     // remove duplicates
-    unordered_map<string, vector<int>> newResults;
+    unordered_map<STRING, vector<int>> newResults;
     for (auto it : results) {
         newResults.insert(make_pair(it.first, vector<int>{}));
     }
-    unordered_set<string> set;
+    unordered_set<STRING> set;
     int numRows = results.begin()->second.size();
     for (int i = 0; i < numRows; i++) {
-        string s;
+        STRING s;
         for (auto it : results) {
             s += to_string(it.second.at(i)) + " ";
         }
@@ -213,8 +213,8 @@ void project(unordered_set<string> toProject, unordered_map<string, vector<int>>
     results = newResults;
 }
 
-int getSize(Clause clause, unordered_map<string, string>& declarations) {
-    string rel = clause.getRel();
+int getSize(Clause clause, unordered_map<STRING, STRING>& declarations) {
+    STRING rel = clause.getRel();
     if (PKB::nextBip->getRunNextBip()) {
         if (rel == "NextBip") {
             return PKB::nextBip->getNextBipSize();
@@ -238,14 +238,14 @@ int getSize(Clause clause, unordered_map<string, string>& declarations) {
     } else if (rel == "Parent*") {
         return PKB::parent->getParentStarSize();
     } else if (rel == "Uses") {
-        string argType = getArgType(clause.getArgs().at(0), declarations);
+        STRING argType = getArgType(clause.getArgs().at(0), declarations);
         if (argType == NAME_ || argType == PROCEDURE_) {
             return PKB::uses->getProcSize();
         } else {
             return PKB::uses->getStmtSize();
         }
     } else if (rel == "Modifies") {
-        string argType = getArgType(clause.getArgs().at(0), declarations);
+        STRING argType = getArgType(clause.getArgs().at(0), declarations);
         if (argType == NAME_ || argType == PROCEDURE_) {
             return PKB::modifies->getProcSize();
         } else {
@@ -270,7 +270,7 @@ int getSize(Clause clause, unordered_map<string, string>& declarations) {
         return max(max(PKB::procTable->getSize(), PKB::varTable->getSize()),
                    max(PKB::constTable->getSize(), PKB::stmtTable->getSize()));
     } else { // pattern clause
-        string argType = getArgType(rel, declarations);
+        STRING argType = getArgType(rel, declarations);
         if (argType == ASSIGN_) {
             return PKB::stmtTable->getAllAssignStmtNums().size();
         } else if (argType == WHILE_) {

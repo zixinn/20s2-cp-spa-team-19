@@ -7,7 +7,7 @@ using namespace std;
 
 class StmtNodeStub : public ast::Stmt {
 public:
-    StmtNodeStub(int index): ast::Stmt(new sp::Token(), index){};
+    StmtNodeStub(StmtNum index): ast::Stmt(new sp::Token(), index){};
 };
 
 //    procedure Bill {
@@ -75,15 +75,15 @@ void setupNextBip() {
 TEST_CASE("NextBipEvaluator evaluate known known") {
     setupNextBip();
 
-    unordered_map<string, vector<int>> tempResults1;
-    bool b1 = NextBipEvaluator::evaluate({}, Clause("NextBip", vector<string>{"10", "5"}, {}, 2), tempResults1);
-    unordered_map<string, vector<int>> expected1 = {};
+    unordered_map<STRING, vector<int>> tempResults1;
+    bool b1 = NextBipEvaluator::evaluate({}, Clause("NextBip", vector<STRING>{"10", "5"}, {}, 2), tempResults1);
+    unordered_map<STRING, vector<int>> expected1 = {};
     REQUIRE(b1);
     REQUIRE(tempResults1 == expected1);
 
-    unordered_map<string, vector<int>> tempResults2;
-    bool b2 = NextBipEvaluator::evaluate({}, Clause("NextBip", vector<string>{"7", "8"}, {}, 2), tempResults2);
-    unordered_map<string, vector<int>> expected2 = {};
+    unordered_map<STRING, vector<int>> tempResults2;
+    bool b2 = NextBipEvaluator::evaluate({}, Clause("NextBip", vector<STRING>{"7", "8"}, {}, 2), tempResults2);
+    unordered_map<STRING, vector<int>> expected2 = {};
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
 }
@@ -91,21 +91,21 @@ TEST_CASE("NextBipEvaluator evaluate known known") {
 TEST_CASE("NextBipEvaluator evaluate known synonym") {
     setupNextBip();
 
-    unordered_map<string, vector<int>> tempResults1;
-    bool b1 = NextBipEvaluator::evaluate({{"n", PROGLINE_}}, Clause("NextBip", vector<string>{"5", "n"}, {"n"}, 1), tempResults1);
+    unordered_map<STRING, vector<int>> tempResults1;
+    bool b1 = NextBipEvaluator::evaluate({{"n", PROGLINE_}}, Clause("NextBip", vector<STRING>{"5", "n"}, {"n"}, 1), tempResults1);
     REQUIRE_FALSE(b1);
     REQUIRE(tempResults1.empty());
 
-    unordered_map<string, vector<int>> tempResults2;
-    bool b2 = NextBipEvaluator::evaluate({{"s", STMT_}}, Clause("NextBip", vector<string>{"4", "s"}, {"s"}, 1), tempResults2);
+    unordered_map<STRING, vector<int>> tempResults2;
+    bool b2 = NextBipEvaluator::evaluate({{"s", STMT_}}, Clause("NextBip", vector<STRING>{"4", "s"}, {"s"}, 1), tempResults2);
     unordered_set<int> actual2(tempResults2["s"].begin(), tempResults2["s"].end());
     unordered_set<int> expected2 {9};
     REQUIRE(b2);
     REQUIRE(tempResults2.size() == 1);
     REQUIRE(actual2 == expected2);
 
-    unordered_map<string, vector<int>> tempResults3;
-    bool b3 = NextBipEvaluator::evaluate({{"a", ASSIGN_}}, Clause("NextBip", vector<string>{"11", "a"}, {"a"}, 1), tempResults3);
+    unordered_map<STRING, vector<int>> tempResults3;
+    bool b3 = NextBipEvaluator::evaluate({{"a", ASSIGN_}}, Clause("NextBip", vector<STRING>{"11", "a"}, {"a"}, 1), tempResults3);
     unordered_set<int> actual3(tempResults3["a"].begin(), tempResults3["a"].end());
     unordered_set<int> expected3 {5, 8};
     REQUIRE(b3);
@@ -116,13 +116,13 @@ TEST_CASE("NextBipEvaluator evaluate known synonym") {
 TEST_CASE("NextBipEvaluator evaluate known underscore") {
     setupNextBip();
 
-    unordered_map<string, vector<int>> tempResults1;
-    bool b1 = NextBipEvaluator::evaluate({}, Clause("NextBip", vector<string>{"4", "_"}, {}, 1), tempResults1);
+    unordered_map<STRING, vector<int>> tempResults1;
+    bool b1 = NextBipEvaluator::evaluate({}, Clause("NextBip", vector<STRING>{"4", "_"}, {}, 1), tempResults1);
     REQUIRE(b1);
     REQUIRE(tempResults1.empty());
 
-    unordered_map<string, vector<int>> tempResults2;
-    bool b2 = NextBipEvaluator::evaluate({}, Clause("NextBip", vector<string>{"14", "_"}, {}, 1), tempResults2);
+    unordered_map<STRING, vector<int>> tempResults2;
+    bool b2 = NextBipEvaluator::evaluate({}, Clause("NextBip", vector<STRING>{"14", "_"}, {}, 1), tempResults2);
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2.empty());
 }
@@ -130,21 +130,21 @@ TEST_CASE("NextBipEvaluator evaluate known underscore") {
 TEST_CASE("NextBipEvaluator evaluate synonym known") {
     setupNextBip();
 
-    unordered_map<string, vector<int>> tempResults1;
-    bool b1 = NextBipEvaluator::evaluate({{"r", READ_}}, Clause("NextBip", vector<string>{"r", "4"}, {"r"}, 1), tempResults1);
+    unordered_map<STRING, vector<int>> tempResults1;
+    bool b1 = NextBipEvaluator::evaluate({{"r", READ_}}, Clause("NextBip", vector<STRING>{"r", "4"}, {"r"}, 1), tempResults1);
     REQUIRE_FALSE(b1);
     REQUIRE(tempResults1.empty());
 
-    unordered_map<string, vector<int>> tempResults2;
-    bool b2 = NextBipEvaluator::evaluate({{"ifs", IF_}}, Clause("NextBip", vector<string>{"ifs", "11"}, {"ifs"}, 1), tempResults2);
+    unordered_map<STRING, vector<int>> tempResults2;
+    bool b2 = NextBipEvaluator::evaluate({{"ifs", IF_}}, Clause("NextBip", vector<STRING>{"ifs", "11"}, {"ifs"}, 1), tempResults2);
     unordered_set<int> actual2(tempResults2["ifs"].begin(), tempResults2["ifs"].end());
     unordered_set<int> expected2 {9};
     REQUIRE(b2);
     REQUIRE(tempResults2.size() == 1);
     REQUIRE(actual2 == expected2);
 
-    unordered_map<string, vector<int>> tempResults3;
-    bool b3 = NextBipEvaluator::evaluate({{"n", PROGLINE_}}, Clause("NextBip", vector<string>{"n", "9"}, {"n"}, 1), tempResults3);
+    unordered_map<STRING, vector<int>> tempResults3;
+    bool b3 = NextBipEvaluator::evaluate({{"n", PROGLINE_}}, Clause("NextBip", vector<STRING>{"n", "9"}, {"n"}, 1), tempResults3);
     unordered_set<int> actual3(tempResults3["n"].begin(), tempResults3["n"].end());
     unordered_set<int> expected3 {4, 7};
     REQUIRE(b3);
@@ -155,13 +155,13 @@ TEST_CASE("NextBipEvaluator evaluate synonym known") {
 TEST_CASE("NextBipEvaluator evaluate underscore known") {
     setupNextBip();
 
-    unordered_map<string, vector<int>> tempResults1;
-    bool b1 = NextBipEvaluator::evaluate({}, Clause("NextBip", vector<string>{"_", "6"}, {}, 1), tempResults1);
+    unordered_map<STRING, vector<int>> tempResults1;
+    bool b1 = NextBipEvaluator::evaluate({}, Clause("NextBip", vector<STRING>{"_", "6"}, {}, 1), tempResults1);
     REQUIRE(b1);
     REQUIRE(tempResults1.empty());
 
-    unordered_map<string, vector<int>> tempResults2;
-    bool b2 = NextBipEvaluator::evaluate({}, Clause("NextBip", vector<string>{"_", "1"}, {}, 1), tempResults2);
+    unordered_map<STRING, vector<int>> tempResults2;
+    bool b2 = NextBipEvaluator::evaluate({}, Clause("NextBip", vector<STRING>{"_", "1"}, {}, 1), tempResults2);
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2.empty());
 }
@@ -169,8 +169,8 @@ TEST_CASE("NextBipEvaluator evaluate underscore known") {
 TEST_CASE("NextBipEvaluator evaluate synonym synonym") {
     setupNextBip();
 
-    unordered_map<string, vector<int>> tempResults1;
-    bool b1 = NextBipEvaluator::evaluate({{"c", CALL_}, {"s", STMT_}}, Clause("NextBip", vector<string>{"c", "s"}, {"c", "s"}, 0), tempResults1);
+    unordered_map<STRING, vector<int>> tempResults1;
+    bool b1 = NextBipEvaluator::evaluate({{"c", CALL_}, {"s", STMT_}}, Clause("NextBip", vector<STRING>{"c", "s"}, {"c", "s"}, 0), tempResults1);
     set<pair<int, int>> actual1;
     for (int i = 0; i < tempResults1.begin()->second.size(); i++) {
         pair<int, int> p = make_pair(tempResults1["c"].at(i), tempResults1["s"].at(i));
@@ -181,8 +181,8 @@ TEST_CASE("NextBipEvaluator evaluate synonym synonym") {
     REQUIRE(tempResults1.size() == 2);
     REQUIRE(actual1 == expected1);
 
-    unordered_map<string, vector<int>> tempResults2;
-    bool b2 = NextBipEvaluator::evaluate({{"n", PROGLINE_}, {"w", WHILE_}}, Clause("NextBip", vector<string>{"n", "w"}, {"n", "w"}, 0), tempResults2);
+    unordered_map<STRING, vector<int>> tempResults2;
+    bool b2 = NextBipEvaluator::evaluate({{"n", PROGLINE_}, {"w", WHILE_}}, Clause("NextBip", vector<STRING>{"n", "w"}, {"n", "w"}, 0), tempResults2);
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2.empty());
 }
@@ -190,16 +190,16 @@ TEST_CASE("NextBipEvaluator evaluate synonym synonym") {
 TEST_CASE("NextBipEvaluator evaluate synonym underscore") {
     setupNextBip();
 
-    unordered_map<string, vector<int>> tempResults1;
-    bool b1 = NextBipEvaluator::evaluate({{"a", ASSIGN_}}, Clause("NextBip", vector<string>{"a", "_"}, {"a"}, 0), tempResults1);
+    unordered_map<STRING, vector<int>> tempResults1;
+    bool b1 = NextBipEvaluator::evaluate({{"a", ASSIGN_}}, Clause("NextBip", vector<STRING>{"a", "_"}, {"a"}, 0), tempResults1);
     unordered_set<int> actual1(tempResults1["a"].begin(), tempResults1["a"].end());
     unordered_set<int> expected1 {1, 3, 6, 8, 10, 11};
     REQUIRE(b1);
     REQUIRE(tempResults1.size() == 1);
     REQUIRE(actual1 == expected1);
 
-    unordered_map<string, vector<int>> tempResults2;
-    bool b2 = NextBipEvaluator::evaluate({{"pn", PRINT_}}, Clause("NextBip", vector<string>{"pn", "_"}, {"pn"}, 0), tempResults2);
+    unordered_map<STRING, vector<int>> tempResults2;
+    bool b2 = NextBipEvaluator::evaluate({{"pn", PRINT_}}, Clause("NextBip", vector<STRING>{"pn", "_"}, {"pn"}, 0), tempResults2);
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2.empty());
 }
@@ -207,24 +207,24 @@ TEST_CASE("NextBipEvaluator evaluate synonym underscore") {
 TEST_CASE("NextBipEvaluator evaluate underscore synonym") {
     setupNextBip();
 
-    unordered_map<string, vector<int>> tempResults1;
-    bool b1 = NextBipEvaluator::evaluate({{"a", ASSIGN_}}, Clause("NextBip", vector<string>{"_", "a"}, {"a"}, 0), tempResults1);
+    unordered_map<STRING, vector<int>> tempResults1;
+    bool b1 = NextBipEvaluator::evaluate({{"a", ASSIGN_}}, Clause("NextBip", vector<STRING>{"_", "a"}, {"a"}, 0), tempResults1);
     unordered_set<int> actual1(tempResults1["a"].begin(), tempResults1["a"].end());
     unordered_set<int> expected1 {3, 5, 6, 8, 10, 11};
     REQUIRE(b1);
     REQUIRE(tempResults1.size() == 1);
     REQUIRE(actual1 == expected1);
 
-    unordered_map<string, vector<int>> tempResults2;
-    bool b2 = NextBipEvaluator::evaluate({{"w", WHILE_}}, Clause("NextBip", vector<string>{"_", "w"}, {"w"}, 0), tempResults2);
+    unordered_map<STRING, vector<int>> tempResults2;
+    bool b2 = NextBipEvaluator::evaluate({{"w", WHILE_}}, Clause("NextBip", vector<STRING>{"_", "w"}, {"w"}, 0), tempResults2);
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2.empty());
 }
 
 TEST_CASE("NextBipEvaluator evaluate underscore underscore") {
     setupNextBip();
-    unordered_map<string, vector<int>> tempResults1;
-    bool b1 = NextBipEvaluator::evaluate({}, Clause("NextBip", vector<string>{"_", "_"}, {}, 0), tempResults1);
+    unordered_map<STRING, vector<int>> tempResults1;
+    bool b1 = NextBipEvaluator::evaluate({}, Clause("NextBip", vector<STRING>{"_", "_"}, {}, 0), tempResults1);
     REQUIRE(b1);
     REQUIRE(tempResults1.empty());
 }
