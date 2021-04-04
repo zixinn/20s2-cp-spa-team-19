@@ -43,7 +43,7 @@ public:
     // E.g. if the affectsBipStarMap has [1: {2,3}], then the size is 2. Because there are pairs (1,2) and (1,3).
     int getAffectsBipStarSize();
 
-    // Compute the AffectsBip and AffectsBip star relationship after Uses and Modifies have been completely populated.
+    // Compute the AffectsBip and AffectsBip star relationship.
     void populateAffectsBipAndAffectsBipStar();
 
     // to switch on/off population of AffectsBip and AffectsBip* relationship

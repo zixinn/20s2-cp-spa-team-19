@@ -77,7 +77,7 @@ private:
     // stores edges of cfg
     // maps <start, end> to set of values,
     // where val is 0 if not branch, +prog_line if branch in and -prog_line if branch back
-    unordered_map<pair<ProgLine, ProgLine>, ProgLine, hash_pair> cfgBipMap;
+    unordered_map<pair<ProgLine, ProgLine>, int, hash_pair> cfgBipMap;
 
     // Maps (n1, branchStack1) to a set of (n2, branchStack2)
     // Each string is n followed by branchStack separated by whitespace
@@ -118,7 +118,7 @@ private:
     void populateNextBipWithBranchStack();
     void dfs(ProgLine n1, string branchStack, unordered_set<string> visited);
 
-    // populate nextBipStarMao, nextBipStarWithBranchStackMap and nextBipStarWithBranchStackNoDummyMap
+    // populate nextBipStarMap, nextBipStarWithBranchStackMap and nextBipStarWithBranchStackNoDummyMap
     void populateNextBipStar();
 
     // Stores <n2, n1> in the reverseNextBipMap/reverseNextBipStarMap.
