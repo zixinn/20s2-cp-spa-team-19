@@ -24,6 +24,7 @@ if [ -f "$FILE" ]; then
 	../../Code19/cmake-build-debug/src/autotester/autotester complexFullSimple_source.txt ParentStar_query.txt ParentStar_out.xml
 	../../Code19/cmake-build-debug/src/autotester/autotester complexFullSimple_source.txt NoClause_query.txt NoClause_out.xml
 	../../Code19/cmake-build-debug/src/autotester/autotester complexFullSimple_source.txt NextBip_query.txt NextBip_out.xml
+	../../Code19/cmake-build-debug/src/autotester/autotester complexFullSimple_source.txt NextBipStar_query.txt NextBipStar_out.xml
 else
 	echo "Enter path to autotester: "
 	read id
@@ -47,5 +48,6 @@ else
 	$id complexFullSimple_source.txt ParentStar_query.txt ParentStar_out.xml
 	$id complexFullSimple_source.txt NoClause_query.txt NoClause_out.xml
 	$id complexFullSimple_source.txt NextBip_query.txt NextBip_out.xml
+	$id complexFullSimple_source.txt NextBipStar_query.txt NextBipStar_out.xml
 fi
 read -p "Press any key to resume ..."

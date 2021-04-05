@@ -23,6 +23,7 @@ if exist ..\..\Code19\build_win\x86-Debug\src\autotester\autotester.exe (
 	..\..\Code19\build_win\x86-Debug\src\autotester\autotester.exe complexFullSimple_source.txt ParentStar_query.txt ParentStar_out.xml
 	..\..\Code19\build_win\x86-Debug\src\autotester\autotester.exe complexFullSimple_source.txt NoClause_query.txt NoClause_out.xml
 	..\..\Code19\build_win\x86-Debug\src\autotester\autotester.exe complexFullSimple_source.txt NextBip_query.txt NextBip_out.xml
+	..\..\Code19\build_win\x86-Debug\src\autotester\autotester.exe complexFullSimple_source.txt NextBipStar_query.txt NextBipStar_out.xml
 ) else (
 	set /p id=Enter path to your autotester:
 	%id% complexFullSimple_source.txt Boolean_query.txt Boolean_out.xml
@@ -45,6 +46,7 @@ if exist ..\..\Code19\build_win\x86-Debug\src\autotester\autotester.exe (
 	%id% complexFullSimple_source.txt ParentStar_query.txt ParentStar_out.xml
 	%id% complexFullSimple_source.txt NoClause_query.txt NoClause_out.xml
 	%id% complexFullSimple_source.txt NextBip_query.txt NextBip_out.xml
+	%id% complexFullSimple_source.txt NextBipStar_query.txt NextBipStar_out.xml
 )
 
 pause
