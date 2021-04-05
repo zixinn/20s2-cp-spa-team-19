@@ -1075,7 +1075,7 @@ none
 5000
 216 - NextBip(r,r) (reflex) (no result)
 read r;
-Select p such that NextBip(r,r)
+Select r such that NextBip(r,r)
 none
 5000
 217 - NextBip(pn,pn) (reflex) (no result)

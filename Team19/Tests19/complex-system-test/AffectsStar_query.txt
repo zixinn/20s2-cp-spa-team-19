@@ -1025,7 +1025,7 @@ none
 5000
 206 - Affects*(r,r) (reflex) (invalid)
 read r;
-Select p such that Affects*(r,r)
+Select r such that Affects*(r,r)
 none
 5000
 207 - Affects*(pn,pn) (reflex) (invalid)

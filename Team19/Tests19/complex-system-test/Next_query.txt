@@ -1075,7 +1075,7 @@ none
 5000
 216 - Next(r,r) (reflex) (no result)
 read r;
-Select p such that Next(r,r)
+Select r such that Next(r,r)
 none
 5000
 217 - Next(pn,pn) (reflex) (no result)
