@@ -6,12 +6,12 @@ ParentTEvaluator::ParentTEvaluator() {
 
 }
 
-bool ParentTEvaluator::evaluate(unordered_map<string, string> declarations, 
-    Clause clause, unordered_map<string, vector<int>>& tempResults) {
-    string firstArg = clause.getArgs().at(0);
-    string secondArg = clause.getArgs().at(1);
-    string firstType = getArgType(firstArg, declarations);
-    string secondType = getArgType(secondArg, declarations);
+bool ParentTEvaluator::evaluate(unordered_map<STRING, STRING> declarations,
+                                Clause clause, unordered_map<STRING, vector<int>>& tempResults) {
+    STRING firstArg = clause.getArgs().at(0);
+    STRING secondArg = clause.getArgs().at(1);
+    STRING firstType = getArgType(firstArg, declarations);
+    STRING secondType = getArgType(secondArg, declarations);
 
     if (firstType == UNDERSCORE_ && secondType == UNDERSCORE_) { // _, _
         return PKB::parent->getParentStarSize() > 0;
@@ -21,7 +21,7 @@ bool ParentTEvaluator::evaluate(unordered_map<string, string> declarations,
         return PKB::parent->isParentStar(stoi(firstArg), stoi(secondArg));
 
     } else if (firstType == INTEGER_ && secondType != INTEGER_) { // known, s or known, _
-        unordered_set<int> children = PKB::parent->getChildrenStar(stoi(firstArg));
+        unordered_set<StmtNum> children = PKB::parent->getChildrenStar(stoi(firstArg));
         if (children.empty()) {
             return false;
         }
@@ -36,7 +36,7 @@ bool ParentTEvaluator::evaluate(unordered_map<string, string> declarations,
         return true;
 
     } else if (firstType != INTEGER_ && secondType == INTEGER_) { // s, known or _, known
-        unordered_set<int> parent = PKB::parent->getParentStar(stoi(secondArg));
+        unordered_set<StmtNum> parent = PKB::parent->getParentStar(stoi(secondArg));
         if (parent.empty()) {
             return false;
         }
@@ -54,7 +54,7 @@ bool ParentTEvaluator::evaluate(unordered_map<string, string> declarations,
         if (firstArg == secondArg) {
             return false;
         }
-        pair<vector<int>, vector<int>> allParentStar = PKB::parent->getAllParentStar();
+        pair<vector<StmtNum>, vector<StmtNum>> allParentStar = PKB::parent->getAllParentStar();
         if (allParentStar.first.empty()) {
             return false;
         }

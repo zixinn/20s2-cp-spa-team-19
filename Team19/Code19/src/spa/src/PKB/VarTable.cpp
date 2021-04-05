@@ -1,7 +1,6 @@
 #include <iostream>
 #include "VarTable.h"
 
-
 VarTable::VarTable() = default;
 
 ID VarTable::getVarID(STRING varName) {

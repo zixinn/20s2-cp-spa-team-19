@@ -1,5 +1,4 @@
 #include "PKB.h"
-#include "../TNode.h"
 
 // Initialise PKB Design entity storage components
 ConstTable* PKB::constTable = new ConstTable();
@@ -63,11 +62,3 @@ bool PKB::populatePKB() {
     affectsBip->populateAffectsBipAndAffectsBipStar();
     return success;
 }
-
-//int PKB::setProcToAST(PROC p, TNode* r) {
-//	return 0;
-//}
-//
-//TNode* PKB::getRootAST (PROC p){
-//	return nullptr;
-//}
