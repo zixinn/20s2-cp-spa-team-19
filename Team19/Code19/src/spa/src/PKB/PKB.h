@@ -13,6 +13,7 @@
 #include "Next.h"
 #include "Affects.h"
 #include "NextBip.h"
+#include "AffectsBip.h"
 
 #include "../AbstractAPI.h"
 
@@ -36,6 +37,7 @@ public:
     static Next* next;
     static Affects* affects;
     static NextBip* nextBip;
+    static AffectsBip* affectsBip;
 
     // Resets the entire PKB (delete everything stored in PKB)
     static void resetPKB();

@@ -13,6 +13,11 @@ bool NextBip::isNextBipStar(ProgLine n1, ProgLine n2) {
     return result != nextBipStarMap.end() && result->second.find(n2) != result->second.end();
 }
 
+bool NextBip::isNextBipStarWithBranchStack(string s1, string s2) {
+    auto result = nextBipStarWithBranchStackMap.find(s1);
+    return result != nextBipStarWithBranchStackMap.end() && result->second.find(s2) != result->second.end();
+}
+
 unordered_set<ProgLine> const & NextBip::getNextBip(ProgLine n1) const {
     auto it = nextBipMap.find(n1);
     if (it == nextBipMap.end()) {
@@ -113,6 +118,14 @@ void NextBip::storeNextBipStar(ProgLine n1, ProgLine n2) {
     }
 }
 
+void NextBip::storeNextBipStarWithBranchStack(string s1, string s2) {
+    if (nextBipStarWithBranchStackMap.find(s1) == nextBipStarWithBranchStackMap.end()) {
+        nextBipStarWithBranchStackMap[s1] = unordered_set<string>{s2};
+    } else {
+        nextBipStarWithBranchStackMap.find(s1)->second.insert(s2);
+    }
+}
+
 int NextBip::getNextBipSize() {
     int cnt = 0;
     for (auto &it : nextBipMap) {
@@ -185,7 +198,7 @@ void NextBip::populateNextBip() {
                 }
 
             } else if (find(allCallStmts.begin(), allCallStmts.end(), p.second) != allCallStmts.end()) { // last stmt is call stmt
-                ProgLine dummy = *nextWithDummyMap.find(p.second)->second.begin();
+                ProgLine dummy = *nextWithDummyMap.find(p.second)->second.begin(); // get the return of that call statement
                 storeNextBip(dummy, n2);
                 cfgBipMap[make_pair(dummy, n2)] = -n1;
 
@@ -217,6 +230,7 @@ void NextBip::populateNextBip() {
         unordered_set<ProgLine> newN2s;
         for (ProgLine n2 : it.second) {
             if (n2 < 0) { // branchBack to procedure where call is the last stmt
+                // nextBip is dummy -> traverse through the path until we find a non dummy node.
                 list<ProgLine> queue;
                 queue.push_back(n2);
                 while (!queue.empty()) {
@@ -231,6 +245,7 @@ void NextBip::populateNextBip() {
                     }
                 }
             } else {
+                // nextBip is not dummy, keep it.
                 newN2s.insert(n2);
             }
             nextBipMap[n1] = newN2s;
@@ -269,7 +284,7 @@ void NextBip::populateNextBipWithBranchStack() {
                 break;
             }
         }
-        if (!skip) { // only dfs if prevBip is empty or if none of the prevBip is a call stmt
+        if (!skip) { // only dfs if prevBip is empty or if none of the prevBip is a call stmt (procedure has no callers)
             string branchStack;
             unordered_set<string> visited;
             dfs(startProgLine, branchStack, visited);
@@ -279,7 +294,7 @@ void NextBip::populateNextBipWithBranchStack() {
 
 void NextBip::dfs(ProgLine n1, string branchStack, unordered_set<string> visited) {
     string stack1 = branchStack;
-    string s1 = to_string(n1) + " " + stack1;
+    string s1 = to_string(n1) + stack1;
     visited.insert(s1);
     unordered_set<ProgLine> n2s = getNextBipWithDummy(n1);
     for (ProgLine n2 : n2s) {
@@ -288,7 +303,7 @@ void NextBip::dfs(ProgLine n1, string branchStack, unordered_set<string> visited
         if (val > 0) { // branch in
             branchStack += " " + to_string(val); // stack.push()
             string stack2 = branchStack;
-            string s2 = to_string(n2) + " " + stack2;
+            string s2 = to_string(n2) + stack2;
             storeNextBipWithBranchStack(s1, s2);
             if (visited.find(s2) == visited.end()) {
                 dfs(n2, branchStack, visited);
@@ -300,7 +315,7 @@ void NextBip::dfs(ProgLine n1, string branchStack, unordered_set<string> visited
                 if (top == -val) {
                     branchStack = branchStack.substr(0, pos); // stack.pop()
                     string stack2 = branchStack;
-                    string s2 = to_string(n2) + " " + stack2;
+                    string s2 = to_string(n2) + stack2;
                     storeNextBipWithBranchStack(s1, s2);
                     if (visited.find(s2) == visited.end()) {
                         dfs(n2, branchStack, visited);
@@ -309,7 +324,7 @@ void NextBip::dfs(ProgLine n1, string branchStack, unordered_set<string> visited
             } // stop
         } else { // val == 0, no branch
             string stack2 = branchStack;
-            string s2 = to_string(n2) + " " + stack2;
+            string s2 = to_string(n2) + stack2;
             storeNextBipWithBranchStack(s1, s2);
             if (visited.find(s2) == visited.end()) {
                 dfs(n2, branchStack, visited);
@@ -323,9 +338,6 @@ void NextBip::populateNextBipStar() {
     for (auto& it : nextBipWithBranchStackMap) {
         string curr = it.first;
         ProgLine n1 = findN(curr);
-        if (n1 < 0) {
-            continue;
-        }
         list<string> queue;
         unordered_set<string> visited;
         visited.insert(curr);
@@ -336,6 +348,7 @@ void NextBip::populateNextBipStar() {
             for (string s2 : s2s) {
                 ProgLine n2 = findN(s2);
                 storeNextBipStar(n1, n2);
+                storeNextBipStarWithBranchStack(curr, s2);
                 if (visited.find(s2) == visited.end()) {
                     visited.insert(s2);
                     queue.push_back(s2);
@@ -345,6 +358,9 @@ void NextBip::populateNextBipStar() {
     }
 
     // remove dummy
+    for (int i = dummyNum; i < 0; i++) {
+        nextBipStarMap.erase(i);
+    }
     for (auto& it : nextBipStarMap) {
         unordered_set<ProgLine> newN2s;
         for (ProgLine n2 : it.second) {
@@ -353,6 +369,25 @@ void NextBip::populateNextBipStar() {
             }
         }
         nextBipStarMap[it.first] = newN2s;
+    }
+
+    nextBipStarWithBranchStackNoDummyMap = nextBipStarWithBranchStackMap;
+    unordered_set<string> toRemove;
+    for (auto it : nextBipStarWithBranchStackNoDummyMap) {
+        if (it.first.find('-') == 0) {
+            toRemove.insert(it.first);
+            continue;
+        }
+        unordered_set<string> newS2s;
+        for (string s2 : it.second) {
+            if (s2.find('-') == string::npos) {
+                newS2s.insert(s2);
+            }
+        }
+        nextBipStarWithBranchStackNoDummyMap[it.first] = newS2s;
+    }
+    for (string s : toRemove) {
+        nextBipStarWithBranchStackNoDummyMap.erase(s);
     }
 }
 
@@ -377,6 +412,10 @@ void NextBip::populateReverseNextBipStar() {
             }
         }
     }
+}
+
+unordered_map<string, unordered_set<string>> NextBip::getNextBipStarWithBranchStackNoDummyMap() {
+    return nextBipStarWithBranchStackNoDummyMap;
 }
 
 void NextBip::setRunNextBip(bool runNextBip) {

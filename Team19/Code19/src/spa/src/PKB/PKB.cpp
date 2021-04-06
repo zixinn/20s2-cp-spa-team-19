@@ -16,6 +16,7 @@ Calls* PKB::calls = new Calls();
 Next* PKB::next = new Next();
 Affects* PKB::affects = new Affects();
 NextBip* PKB::nextBip = new NextBip();
+AffectsBip* PKB::affectsBip = new AffectsBip();
 
 void PKB::resetPKB() {
     delete constTable;
@@ -32,6 +33,7 @@ void PKB::resetPKB() {
     delete next;
     delete affects;
     delete nextBip;
+    delete affectsBip;
 
     constTable = new ConstTable();
     varTable = new VarTable();
@@ -47,6 +49,7 @@ void PKB::resetPKB() {
     next = new Next();
     affects = new Affects();
     nextBip = new NextBip();
+    affectsBip = new AffectsBip();
 }
 
 bool PKB::populatePKB() {
@@ -56,5 +59,6 @@ bool PKB::populatePKB() {
     bool success = calls->processCalls();
     affects->populateAffectsAndAffectsStar();
     nextBip->populateNextBipAndNextBipStar();
+    affectsBip->populateAffectsBipAndAffectsBipStar();
     return success;
 }
