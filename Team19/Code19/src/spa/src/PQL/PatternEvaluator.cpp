@@ -108,7 +108,7 @@ STRING trimQuotesUnderscore(STRING s) {
 bool PatternEvaluator::evaluateIfClause(STRING varName, STRING firstArg, STRING firstType,
                                         unordered_map<STRING, vector<int>>& tempResults) {
     if (firstType != NAME_) { // variable/underscore
-        pair<vector<StmtNum>, vector<ID>> allIfPatterns = PKB::stmtTable->getAllIfPatterns();
+        pair<vector<StmtNum>, vector<VarID>> allIfPatterns = PKB::stmtTable->getAllIfPatterns();
         if (allIfPatterns.first.empty()) {
             return false;
         }
@@ -118,11 +118,11 @@ bool PatternEvaluator::evaluateIfClause(STRING varName, STRING firstArg, STRING 
         }
     } else { // first arg is name in quotation marks
         STRING varSTRING = trimQuotes(firstArg);
-        ID id = PKB::varTable->getVarID(varSTRING);
+        VarID id = PKB::varTable->getVarID(varSTRING);
         if (id == -1) {
             return false;
         }
-        unordered_set<ID> vars = PKB::stmtTable->getIfStmtsWithControlVar(id);
+        unordered_set<VarID> vars = PKB::stmtTable->getIfStmtsWithControlVar(id);
         if (vars.empty()) {
             return false;
         }
@@ -134,7 +134,7 @@ bool PatternEvaluator::evaluateIfClause(STRING varName, STRING firstArg, STRING 
 bool PatternEvaluator::evaluateWhileClause(STRING varName, STRING firstArg, STRING firstType,
                                            unordered_map<STRING, vector<int>>& tempResults) {
     if (firstType != NAME_) { // variable/underscore
-        pair<vector<StmtNum>, vector<ID>> allWhilePatterns = PKB::stmtTable->getAllWhilePatterns();
+        pair<vector<StmtNum>, vector<VarID>> allWhilePatterns = PKB::stmtTable->getAllWhilePatterns();
         if (allWhilePatterns.first.empty()) {
             return false;
         }
@@ -144,11 +144,11 @@ bool PatternEvaluator::evaluateWhileClause(STRING varName, STRING firstArg, STRI
         }
     } else { // first arg is name in quotation marks
         STRING varSTRING = trimQuotes(firstArg);
-        ID id = PKB::varTable->getVarID(varSTRING);
+        VarID id = PKB::varTable->getVarID(varSTRING);
         if (id == -1) {
             return false;
         }
-        unordered_set<ID> vars = PKB::stmtTable->getWhileStmtsWithControlVar(id);
+        unordered_set<VarID> vars = PKB::stmtTable->getWhileStmtsWithControlVar(id);
         if (vars.empty()) {
             return false;
         }

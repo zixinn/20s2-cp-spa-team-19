@@ -22,12 +22,12 @@ bool CallsTEvaluator::evaluate(unordered_map<STRING, STRING> declarations, Claus
     }
 
     if (firstType == NAME_ && secondType == NAME_) { // known, known
-        ID firstProcId = PKB::procTable->getProcID(trim(firstArg.substr(1, firstArg.size() - 2)));
-        ID secondProcId = PKB::procTable->getProcID(trim(secondArg.substr(1, secondArg.size() - 2)));
+        ProcID firstProcId = PKB::procTable->getProcID(trim(firstArg.substr(1, firstArg.size() - 2)));
+        ProcID secondProcId = PKB::procTable->getProcID(trim(secondArg.substr(1, secondArg.size() - 2)));
         return PKB::calls->isCallsStar(firstProcId, secondProcId);
 
     } else if (firstType == NAME_ && secondType != NAME_) { // known, s or known, _
-        ID firstProcId = PKB::procTable->getProcID(trim(firstArg.substr(1, firstArg.size() - 2)));
+        ProcID firstProcId = PKB::procTable->getProcID(trim(firstArg.substr(1, firstArg.size() - 2)));
         unordered_set<StmtNum> callees = PKB::calls->getCalleesStar(firstProcId);
         if (callees.empty()) {
             return false;
@@ -40,7 +40,7 @@ bool CallsTEvaluator::evaluate(unordered_map<STRING, STRING> declarations, Claus
         return true;
 
     } else if (firstType != NAME_ && secondType == NAME_) { // s, known or _, known
-        ID secondProcId = PKB::procTable->getProcID(trim(secondArg.substr(1, secondArg.size() - 2)));
+        ProcID secondProcId = PKB::procTable->getProcID(trim(secondArg.substr(1, secondArg.size() - 2)));
         unordered_set<StmtNum> callers = PKB::calls->getCallersStar(secondProcId);
         if (callers.empty()) {
             return false;
