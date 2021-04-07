@@ -96,7 +96,8 @@ Query QueryPreprocessor::process(STRING query) {
         parseSelect(trim(statements[statements.size() - 1].substr(7)));
     }
 
-    return Query(this->declarations, this->toSelect, { this->clauses }, this->isSyntacticallyValid, this->isSemanticallyValid);
+    return Query(this->declarations, this->toSelect, { this->clauses },
+                 this->isSyntacticallyValid, this->isSemanticallyValid);
 }
 
 void QueryPreprocessor::parseDeclaration(STRING designEntity, STRING synonyms) {

@@ -62,7 +62,6 @@ bool PatternEvaluator::evaluate(unordered_map<STRING, STRING> declarations, Clau
     return result;
 }
 
-// Function to print the index of an element
 int PatternEvaluator::getIndex(vector<STRING> v, STRING s) {
     int result;
     vector<STRING>::iterator it = find(v.begin(), v.end(), s);
@@ -94,13 +93,11 @@ STRING PatternEvaluator::parseExprToExprStr(STRING input) {
     return expr->toString();
 }
 
-// trim STRING with quotes
-STRING trimQuotes(STRING s) {
+STRING PatternEvaluator::trimQuotes(STRING s) {
     return trim(s.substr(1, s.size() - 2));
 }
 
-// trim STRING with quotes and underscore
-STRING trimQuotesUnderscore(STRING s) {
+STRING PatternEvaluator::trimQuotesUnderscore(STRING s) {
     STRING underscoreRemoved = trim(s.substr(1, s.size() - 2));
     return trim(underscoreRemoved.substr(1, underscoreRemoved.size() - 2));
 }
@@ -279,8 +276,8 @@ bool PatternEvaluator::evaluateUnderscoreUnderscore(vector<StmtNum> stmtNums, ST
 }
 
 // Will get all assignment stmt nums that matches RHS
-bool PatternEvaluator::evaluateUnderscoreExpression(vector<StmtNum> stmtNums, STRING varName,
-                                                    STRING secondArg, unordered_map<STRING, vector<int>>& tempResults) { // a(_, "x + y")
+bool PatternEvaluator::evaluateUnderscoreExpression(vector<StmtNum> stmtNums, STRING varName, STRING secondArg,
+                                                    unordered_map<STRING, vector<int>>& tempResults) { // a(_, "x + y")
     STRING exprStr2 = parseExprToExprStr(trimQuotes(secondArg));
     for (StmtNum& stmtNum : stmtNums) {
         pair<STRING, STRING> p = PKB::stmtTable->getAssignExpr(stmtNum);
@@ -297,8 +294,8 @@ bool PatternEvaluator::evaluateUnderscoreExpression(vector<StmtNum> stmtNums, ST
 }
 
 // Will get all assignment stmt nums that have subexpr that matches
-bool PatternEvaluator::evaluateUnderscoreExpressionWithUnderscore(vector<StmtNum> stmtNums, STRING varName,
-                                                                  STRING secondArg, unordered_map<STRING, vector<int>>& tempResults) {// a(_, _"x + y"_)
+bool PatternEvaluator::evaluateUnderscoreExpressionWithUnderscore(vector<StmtNum> stmtNums, STRING varName, STRING secondArg,
+                                                                  unordered_map<STRING, vector<int>>& tempResults) {// a(_, _"x + y"_)
     STRING exprStr2 = parseExprToExprStr(trimQuotesUnderscore(secondArg));
     for (StmtNum& stmtNum : stmtNums) {
         pair<STRING, STRING> p = PKB::stmtTable->getAssignExpr(stmtNum);

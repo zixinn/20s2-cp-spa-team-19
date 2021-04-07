@@ -1,15 +1,12 @@
 #pragma once
 
-#include <unordered_set>
-
-#include "../AbstractAPI.h"
 #include "Query.h"
 #include "QueryUtility.h"
 
-// Optimises queries by grouping and sorting queries
+// Optimises queries by grouping and sorting clauses in the query
 class QueryOptimizer {
 public:
-    // Constuctor for QueryOptimizer
+    // Constructor for QueryOptimizer
     QueryOptimizer();
 
     // Sets a flag in the query optimizer to group clauses
@@ -18,11 +15,11 @@ public:
     void setIsOrderClauses(bool isOrderClauses);
     // Sets a flag in the query optimizer to order groups
     void setIsOrderGroups(bool isOrderGroups);
-    // Sets a flag in the query optimizer to rewrite certain clauses by 
-    // replacing synonyms with their known value
+    // Sets a flag in the query optimizer to rewrite certain clauses
+    // by replacing synonyms with their known value
     void setIsRewriteClauses(bool isRewriteClauses);
 
-    // Optimises the clauses by grouping them, ordering them in their groups,
+    // Optimizes the clauses by grouping them, ordering them in their groups,
     // ordering the groups and rewriting clauses
     Query optimize(Query query);
 
@@ -37,18 +34,19 @@ private:
     bool isOrderGroups = true;
     bool isRewriteClauses = true;
 
-    // Group clauses by clauses without synonyms and clauses with connected synonyms
+    // Groups clauses by clauses without synonyms and clauses with connected synonyms
     void groupClauses(Query& query);
-    // Order groups by placing groups without synonyms in front,
-    // follows by groups that do not return results in Select
+    // Orders groups by placing groups without synonyms in front,
+    // followed by groups that do not return results in Select
     void orderGroups(Query& query);
     // Performs a depth-first search to get indexes of synonyms
-    void dfs(int source, vector<unordered_set<int>> adj, vector<bool>& visited, unordered_set<int>& indexOfSynonymsInGroup);
-    // Orders clauses by number of synonyms already computed 
-    // then by number of known arguments in the clauses
+    void dfs(int source, vector<unordered_set<int>> adj, vector<bool>& visited,
+             unordered_set<int>& indexOfSynonymsInGroup);
+    // Orders clauses by the number of synonyms already computed,
+    // then by the number of known arguments in the clauses,
     // then by the size of the relevant tables in PKB
     void orderClauses(Query& query);
-    // Rewrites clauses by checking for the existence of with-clauses with one synonym and 
-    // one known value and replacing all occurences of that synonym in other clauses with the known value
+    // Rewrites clauses by checking for the existence of with-clauses with one synonym and one known value
+    // and replacing all occurrences of that synonym in other clauses with the known value
     void rewriteClauses(Query& query);
 };

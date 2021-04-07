@@ -1,8 +1,5 @@
 #pragma once
 
-#include <unordered_map>
-#include <vector>
-
 #include "Clause.h"
 
 using namespace std;
@@ -10,7 +7,7 @@ using namespace std;
 // Represents a PQL query
 class Query {
 public:
-    // Construtor for Query
+    // Constructor for Query
     Query();
     Query(unordered_map<STRING, STRING> declarations, vector<STRING> toSelect, vector<vector<Clause>> clauses,
           bool isSyntacticallyValid, bool isSemanticallyValid);
@@ -37,7 +34,7 @@ public:
     // Sets a new vector of sets of synonyms
     void setSynonyms(vector<unordered_set<STRING>> synonyms);
 
-    // Overide equals method to compare Query Objects
+    // Overrides the equals method to compare Query objects
     friend bool operator==(const Query& q1, const Query& q2);
 
     // Destructor for Query

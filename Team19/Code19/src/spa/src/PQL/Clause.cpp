@@ -50,15 +50,15 @@ void Clause::replaceSynonym(STRING synonym, STRING replacement) {
     this->args = newArgs;
 }
 
-// to check if synonym.attrName can be replaced 
+// Checks if synonym.attrName can be replaced
 bool Clause::checkReplacement(STRING syn, STRING attrName, STRING synToReplace, STRING replacement) {
     if (syn != synToReplace) {
         return false;
     }
     if ((attrName == "varName" && !checkInteger(replacement))
-        || (attrName == "procName" && !checkInteger(replacement))
-        || (attrName == "stmt#" && checkInteger(replacement))
-        || (attrName == "value" && checkInteger(replacement))) {
+            || (attrName == "procName" && !checkInteger(replacement))
+            || (attrName == "stmt#" && checkInteger(replacement))
+            || (attrName == "value" && checkInteger(replacement))) {
         return true;
     }
     return false;

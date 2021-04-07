@@ -123,7 +123,8 @@ bool QueryEvaluator::evaluateClause(Clause clause, unordered_map<STRING, vector<
     }
 }
 
-void QueryEvaluator::join(unordered_map<STRING, vector<int>> table, unordered_map<STRING, vector<int>>& results, vector<STRING> commonSynonyms) {
+void QueryEvaluator::join(unordered_map<STRING, vector<int>> table, unordered_map<STRING, vector<int>>& results,
+                          vector<STRING> commonSynonyms) {
     if (results.empty()) {
         results = table;
         return;

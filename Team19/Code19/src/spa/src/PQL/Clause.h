@@ -1,8 +1,5 @@
 #pragma once
 
-#include <unordered_set>
-#include <vector>
-
 #include "../Utility.h"
 
 using namespace std;
@@ -14,9 +11,9 @@ public:
     Clause();
     Clause(STRING rel, vector<STRING> args, unordered_set<STRING> synonyms, int numOfKnown);
 
-    // For suchthat-cl return relationship queried
-    // for with-cl return empty string
-    // for pattern-cl return the synonym queried
+    // For suchthat-cl, returns the relationship queried
+    // For with-cl, returns an empty string
+    // For pattern-cl, returns the synonym queried
     STRING getRel();
     // Returns the arguments in the clause
     vector<STRING> getArgs();
@@ -24,10 +21,10 @@ public:
     unordered_set<STRING> getSynonyms();
     // Returns the total number known values in the clause
     int getNumOfKnown();
-    // Replace an argument in the clause with another string
+    // Replaces an argument in the clause with another string
     void replaceSynonym(STRING synonym, STRING replacement);
 
-    // Overriden methods to compare Clauses
+    // Overriden methods to compare Clause objects
     friend bool operator==(const Clause& c1, const Clause& c2);
     friend bool operator!=(const Clause& c1, const Clause& c2);
 
@@ -35,9 +32,9 @@ public:
     ~Clause();
 
 private:
-    // For suchthat-cl refers to relationship queried
-    // for with-cl refers to empty string
-    // for pattern-cl refers to the synonym queried
+    // For suchthat-cl, refers to relationship queried
+    // For with-cl, refers to empty string
+    // For pattern-cl, refers to the synonym queried
     STRING rel;
     // Vector of arguments in the clause
     vector<STRING> args;

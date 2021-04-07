@@ -18,9 +18,7 @@ bool AffectsBipEvaluator::evaluate(unordered_map<STRING, STRING> declarations, C
     if (firstType == INTEGER_ && secondType == INTEGER_) {  // known, known
         return PKB::affectsBip->isAffectsBip(stoi(firstArg), stoi(secondArg));
 
-    }
-    else if (firstType == INTEGER_ &&
-        secondType != INTEGER_) {  // known, s or known, _
+    } else if (firstType == INTEGER_ && secondType != INTEGER_) {  // known, s or known, _
         unordered_set<StmtNum> affected = PKB::affectsBip->getAffectsBip(stoi(firstArg));
         if (affected.empty()) {
             return false;
@@ -32,9 +30,7 @@ bool AffectsBipEvaluator::evaluate(unordered_map<STRING, STRING> declarations, C
         }
         return true;
 
-    }
-    else if (firstType != INTEGER_ &&
-        secondType == INTEGER_) {  // s, known or _, known
+    } else if (firstType != INTEGER_ && secondType == INTEGER_) {  // s, known or _, known
         unordered_set<StmtNum> affected =
             PKB::affectsBip->getAffectedBip(stoi(secondArg));
         if (affected.empty()) {
@@ -47,8 +43,7 @@ bool AffectsBipEvaluator::evaluate(unordered_map<STRING, STRING> declarations, C
         }
         return true;
 
-    }
-    else {                        // s1, s2 or s, _ or _, s
+    } else {  // s1, s2 or s, _ or _, s
         if (firstArg == secondArg) {  // s, s
             vector<int> res;
             vector<StmtNum> allAssign = selectAll(ASSIGN_);
@@ -71,11 +66,9 @@ bool AffectsBipEvaluator::evaluate(unordered_map<STRING, STRING> declarations, C
         if (firstType != UNDERSCORE_ && secondType != UNDERSCORE_) {  // s1, s2
             tempResults[firstArg] = allAffectsBip.first;
             tempResults[secondArg] = allAffectsBip.second;
-        }
-        else if (firstType != UNDERSCORE_) {  // s, _
+        } else if (firstType != UNDERSCORE_) {  // s, _
             tempResults[firstArg] = allAffectsBip.first;
-        }
-        else {  // _, s
+        } else {  // _, s
             tempResults[secondArg] = allAffectsBip.second;
         }
         return true;

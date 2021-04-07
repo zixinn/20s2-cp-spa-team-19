@@ -1,11 +1,7 @@
 #pragma once
 
 #include <list>
-#include <unordered_set>
 
-#include "../AbstractAPI.h"
-#include "../PKB/PKB.h"
-#include "Clause.h"
 #include "Query.h"
 #include "QueryUtility.h"
 #include "FollowsEvaluator.h"
@@ -58,7 +54,8 @@ private:
 
     // Joins table and results based on common synonyms (if any) and assigns the newResults to results
     // Assumes table is non-empty
-    void join(unordered_map<STRING, vector<int>> table, unordered_map<STRING, vector<int>>& results, vector<STRING> commonSynonyms);
+    void join(unordered_map<STRING, vector<int>> table, unordered_map<STRING, vector<int>>& results,
+              vector<STRING> commonSynonyms);
 
     // Evaluates the synonym to select using the results table and returns a list containing the answers
     list<STRING> evaluateSynonymToSelect(vector<STRING> toSelect);

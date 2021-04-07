@@ -18,8 +18,7 @@ bool AffectsBipTEvaluator::evaluate(unordered_map<STRING, STRING> declarations, 
     if (firstType == INTEGER_ && secondType == INTEGER_) {  // known, known
         return PKB::affectsBip->isAffectsBipStar(stoi(firstArg), stoi(secondArg));
 
-    }
-    else if (firstType == INTEGER_ &&
+    } else if (firstType == INTEGER_ &&
         secondType != INTEGER_) {  // known, s or known, _
         unordered_set<StmtNum> affected = PKB::affectsBip->getAffectsBipStar(stoi(firstArg));
         if (affected.empty()) {
@@ -32,8 +31,7 @@ bool AffectsBipTEvaluator::evaluate(unordered_map<STRING, STRING> declarations, 
         }
         return true;
 
-    }
-    else if (firstType != INTEGER_ &&
+    } else if (firstType != INTEGER_ &&
         secondType == INTEGER_) {  // s, known or _, known
         unordered_set<StmtNum> affected =
             PKB::affectsBip->getAffectedBipStar(stoi(secondArg));
@@ -47,8 +45,7 @@ bool AffectsBipTEvaluator::evaluate(unordered_map<STRING, STRING> declarations, 
         }
         return true;
 
-    }
-    else {                        // s1, s2 or s, _ or _, s
+    } else { // s1, s2 or s, _ or _, s
         if (firstArg == secondArg) {  // s, s
             vector<int> res;
             vector<StmtNum> allAssign = selectAll(ASSIGN_);
@@ -71,11 +68,9 @@ bool AffectsBipTEvaluator::evaluate(unordered_map<STRING, STRING> declarations, 
         if (firstType != UNDERSCORE_ && secondType != UNDERSCORE_) {  // s1, s2
             tempResults[firstArg] = allAffectsBipStar.first;
             tempResults[secondArg] = allAffectsBipStar.second;
-        }
-        else if (firstType != UNDERSCORE_) {  // s, _
+        } else if (firstType != UNDERSCORE_) {  // s, _
             tempResults[firstArg] = allAffectsBipStar.first;
-        }
-        else {  // _, s
+        } else {  // _, s
             tempResults[secondArg] = allAffectsBipStar.second;
         }
         return true;
