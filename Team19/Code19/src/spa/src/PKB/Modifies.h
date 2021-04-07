@@ -23,7 +23,7 @@ public:
     unordered_set<StmtNum> const &getStmtsModifies(VarID varID) const;
 
     // returns the const reference to unordered set of procIDs that modifies varID.
-    unordered_set<StmtNum> const &getProcsModifies(VarID varID) const;
+    unordered_set<ProcID> const &getProcsModifies(VarID varID) const;
 
     // Returns a pair of vectors in the stmtModifiesMap.
     // First vector is a vector of statements. Second is a vector of varIDs.

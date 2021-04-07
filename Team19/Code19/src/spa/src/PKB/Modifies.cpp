@@ -45,7 +45,7 @@ unordered_set<StmtNum> const &Modifies::getStmtsModifies(VarID varID) const {
     return result->second;
 }
 
-unordered_set<StmtNum> const &Modifies::getProcsModifies(VarID varID) const {
+unordered_set<ProcID> const &Modifies::getProcsModifies(VarID varID) const {
     auto result = reverseProcModifiesMap.find(varID);
     if (result == reverseProcModifiesMap.end()) {
         static unordered_set<StmtNum> empty = unordered_set<StmtNum>({});

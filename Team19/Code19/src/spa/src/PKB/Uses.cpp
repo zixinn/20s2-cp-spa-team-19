@@ -45,7 +45,7 @@ unordered_set<StmtNum> const &Uses::getStmtsUses(VarID varID) const {
     return result->second;
 }
 
-unordered_set<StmtNum> const &Uses::getProcsUses(VarID varID) const {
+unordered_set<ProcID> const &Uses::getProcsUses(VarID varID) const {
     auto result = reverseProcUsesMap.find(varID);
     if (result == reverseProcUsesMap.end()) {
         static unordered_set<StmtNum> empty = unordered_set<StmtNum>({});
