@@ -29,8 +29,8 @@ int Clause::getNumOfKnown() {
 
 void Clause::replaceSynonym(STRING synonym, STRING replacement) {
     vector<STRING> newArgs;
-    bool replace = false;
     for (STRING arg : args) {
+        bool replace = false;
         STRING syn = arg;
         int posOfDot = syn.find('.');
         STRING attrName;
