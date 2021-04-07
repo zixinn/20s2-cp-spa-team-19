@@ -131,9 +131,9 @@ TEST_CASE("getNextSize Test") {
 
 TEST_CASE("getAllNext Test") {
     Next* next = setUpNextTest();
-    pair<vector<ID>, vector<ID> > result = next->getAllNext();
-    vector<ID> n1s = result.first;
-    vector<ID> n2s = result.second;
+    pair<vector<ProgLine>, vector<ProgLine> > result = next->getAllNext();
+    vector<ProgLine> n1s = result.first;
+    vector<ProgLine> n2s = result.second;
     int num_pairs = n1s.size();
     // Check that it has correct number of pairs
     REQUIRE(num_pairs == next->getNextSize());
@@ -200,9 +200,9 @@ TEST_CASE("getNextStarSize Test") {
 TEST_CASE("getAllNextStar Test") {
     Next* next = setUpNextTest();
     next->populateNextStar();
-    pair<vector<ID>, vector<ID> > result = next->getAllNextStar();
-    vector<ID> n1s = result.first;
-    vector<ID> n2s = result.second;
+    pair<vector<ProgLine>, vector<ProgLine> > result = next->getAllNextStar();
+    vector<ProgLine> n1s = result.first;
+    vector<ProgLine> n2s = result.second;
     int num_pairs = n1s.size();
     // Check that it has correct number of pairs
     REQUIRE(num_pairs == next->getNextStarSize());

@@ -126,8 +126,8 @@ TEST_CASE("getCallers Test") {
     PKB::calls->storeCalls(5, 4, 2); // suppose we have another procedure s that also calls procedure q.
     REQUIRE(PKB::calls->processCalls());
     REQUIRE(PKB::calls->getCallers(1).empty());    // no procedures call p
-    REQUIRE(PKB::calls->getCallers(2) == unordered_set<ID>({1, 4})); // procedure p and s calls q
-    REQUIRE(PKB::calls->getCallers(3) == unordered_set<ID>({2}));    // only procedure q calls r
+    REQUIRE(PKB::calls->getCallers(2) == unordered_set<ProcID>({1, 4})); // procedure p and s calls q
+    REQUIRE(PKB::calls->getCallers(3) == unordered_set<ProcID>({2}));    // only procedure q calls r
 }
 
 TEST_CASE("getCallees Test") {
@@ -135,9 +135,9 @@ TEST_CASE("getCallees Test") {
     PKB::calls->storeCalls(5, 3, 4);
     PKB::calls->storeCalls(6, 3, 5); // Suppose procedure r calls 2 more procedures
     REQUIRE(PKB::calls->processCalls());
-    REQUIRE(PKB::calls->getCallees(1) == unordered_set<ID>({2})); // procedure p calls q only
-    REQUIRE(PKB::calls->getCallees(2) == unordered_set<ID>({3})); // procedure q calls r only
-    REQUIRE(PKB::calls->getCallees(3) == unordered_set<ID>({4,5})); // procedure r calls 2 more procedures
+    REQUIRE(PKB::calls->getCallees(1) == unordered_set<ProcID>({2})); // procedure p calls q only
+    REQUIRE(PKB::calls->getCallees(2) == unordered_set<ProcID>({3})); // procedure q calls r only
+    REQUIRE(PKB::calls->getCallees(3) == unordered_set<ProcID>({4,5})); // procedure r calls 2 more procedures
     REQUIRE(PKB::calls->getCallees(4).empty());
 }
 
@@ -146,9 +146,9 @@ TEST_CASE("getCallersStar Test") {
     PKB::calls->storeCalls(5, 4, 1); // suppose we have another procedure s that also calls procedure p and calls it twice (stmt 5 and 6)
     PKB::calls->storeCalls(6, 4, 1);
     REQUIRE(PKB::calls->processCalls());
-    REQUIRE(PKB::calls->getCallersStar(1) == unordered_set<ID>({4})); // procedure s calls p
-    REQUIRE(PKB::calls->getCallersStar(2) == unordered_set<ID>({1, 4})); // procedure p calls q so s calls* q
-    REQUIRE(PKB::calls->getCallersStar(3) == unordered_set<ID>({2, 1, 4}));    // procedure q calls r, so procedure p and s calls* r
+    REQUIRE(PKB::calls->getCallersStar(1) == unordered_set<ProcID>({4})); // procedure s calls p
+    REQUIRE(PKB::calls->getCallersStar(2) == unordered_set<ProcID>({1, 4})); // procedure p calls q so s calls* q
+    REQUIRE(PKB::calls->getCallersStar(3) == unordered_set<ProcID>({2, 1, 4}));    // procedure q calls r, so procedure p and s calls* r
     REQUIRE(PKB::calls->getCallersStar(4).empty()); // no procedure calls/calls* s
 }
 
@@ -156,10 +156,10 @@ TEST_CASE("getCalleesStar Test") {
     setUpCallsTest();
     PKB::calls->storeCalls(5, 4, 1); // suppose we have another procedure s that also calls procedure p.
     REQUIRE(PKB::calls->processCalls());
-    REQUIRE(PKB::calls->getCalleesStar(1) == unordered_set<ID>({2, 3})); // procedure p calls q and calls* r
-    REQUIRE(PKB::calls->getCalleesStar(2) == unordered_set<ID>({3})); // procedure q calls r only
+    REQUIRE(PKB::calls->getCalleesStar(1) == unordered_set<ProcID>({2, 3})); // procedure p calls q and calls* r
+    REQUIRE(PKB::calls->getCalleesStar(2) == unordered_set<ProcID>({3})); // procedure q calls r only
     REQUIRE(PKB::calls->getCalleesStar(3).empty()); // procedure r does not call any procedures
-    REQUIRE(PKB::calls->getCalleesStar(4) == unordered_set<ID>({1, 2, 3})); // s calls p, thus it calls* q and r
+    REQUIRE(PKB::calls->getCalleesStar(4) == unordered_set<ProcID>({1, 2, 3})); // s calls p, thus it calls* q and r
 }
 
 TEST_CASE("getStmtsOfCalls test") {
@@ -199,9 +199,9 @@ TEST_CASE("getAllCalls Test") {
     PKB::calls->storeCalls(5, 4, 1); // suppose procedure s calls procedure p twice (stmt 5 and stmt 6).
     PKB::calls->storeCalls(6, 4, 1);
     REQUIRE(PKB::calls->processCalls());
-    pair<vector<ID>, vector<ID> > result = PKB::calls->getAllCalls();
-    vector<ID> ps = result.first;
-    vector<ID> qs = result.second;
+    pair<vector<ProcID>, vector<ProcID> > result = PKB::calls->getAllCalls();
+    vector<ProcID> ps = result.first;
+    vector<ProcID> qs = result.second;
     int num_pairs = ps.size();
     // Check that it has correct number of pairs
     REQUIRE(num_pairs == PKB::calls->getCallsSize());
@@ -217,9 +217,9 @@ TEST_CASE("getAllCallsStar Test") {
     PKB::calls->storeCalls(5, 4, 1); // suppose procedure s calls procedure p twice (stmt 5 and stmt 6).
     PKB::calls->storeCalls(6, 4, 1);
     REQUIRE(PKB::calls->processCalls());
-    pair<vector<ID>, vector<ID> > result = PKB::calls->getAllCallsStar();
-    vector<ID> ps = result.first;
-    vector<ID> qs = result.second;
+    pair<vector<ProcID>, vector<ProcID> > result = PKB::calls->getAllCallsStar();
+    vector<ProcID> ps = result.first;
+    vector<ProcID> qs = result.second;
     int num_pairs = ps.size();
     // Check that it has correct number of pairs
     REQUIRE(num_pairs == PKB::calls->getCallsStarSize());
@@ -234,23 +234,23 @@ TEST_CASE("check uses and modifies") {
     setUpCallsTest();
     REQUIRE(PKB::calls->processCalls());
     REQUIRE(PKB::uses->getProcsUses(1).empty()); // no procedure uses a
-    REQUIRE(PKB::uses->getProcsUses(2) == unordered_set<ID>({1, 2})); // procedure p and q use b
+    REQUIRE(PKB::uses->getProcsUses(2) == unordered_set<VarID>({1, 2})); // procedure p and q use b
     REQUIRE(PKB::uses->getProcsUses(3).empty()); // no procedure uses c
-    REQUIRE(PKB::uses->getProcsUses(4) == unordered_set<ID>({1, 2, 3})); // all procedure use d
+    REQUIRE(PKB::uses->getProcsUses(4) == unordered_set<VarID>({1, 2, 3})); // all procedure use d
 
     REQUIRE(PKB::uses->getStmtsUses(1).empty()); // no statements uses a
-    REQUIRE(PKB::uses->getStmtsUses(2) == unordered_set<ID>({1, 2})); // statements 1 and 2 use b
+    REQUIRE(PKB::uses->getStmtsUses(2) == unordered_set<VarID>({1, 2})); // statements 1 and 2 use b
     REQUIRE(PKB::uses->getStmtsUses(3).empty()); // no statements uses c
-    REQUIRE(PKB::uses->getStmtsUses(4) == unordered_set<ID>({1, 3, 4})); // statements 1,3,4 use d
+    REQUIRE(PKB::uses->getStmtsUses(4) == unordered_set<VarID>({1, 3, 4})); // statements 1,3,4 use d
 
-    REQUIRE(PKB::modifies->getProcsModifies(1) == unordered_set<ID>({1, 2})); // procedure p and q modify a
+    REQUIRE(PKB::modifies->getProcsModifies(1) == unordered_set<VarID>({1, 2})); // procedure p and q modify a
     REQUIRE(PKB::modifies->getProcsModifies(2).empty()); // no procedure modifies b
-    REQUIRE(PKB::modifies->getProcsModifies(3) == unordered_set<ID>({1, 2, 3})); // all procedures modify c
+    REQUIRE(PKB::modifies->getProcsModifies(3) == unordered_set<VarID>({1, 2, 3})); // all procedures modify c
     REQUIRE(PKB::modifies->getProcsModifies(4).empty()); // no procedure modifies d
 
-    REQUIRE(PKB::modifies->getStmtsModifies(1) == unordered_set<ID>({1, 2})); // statement 1 and 2 modify a
+    REQUIRE(PKB::modifies->getStmtsModifies(1) == unordered_set<VarID>({1, 2})); // statement 1 and 2 modify a
     REQUIRE(PKB::modifies->getStmtsModifies(2).empty()); // no statement modifies b
-    REQUIRE(PKB::modifies->getStmtsModifies(3) == unordered_set<ID>({1, 3, 4})); // statement 1,3,4 modify c
+    REQUIRE(PKB::modifies->getStmtsModifies(3) == unordered_set<VarID>({1, 3, 4})); // statement 1,3,4 modify c
     REQUIRE(PKB::modifies->getStmtsModifies(4).empty()); // no statement modifies d
 }
 
@@ -290,26 +290,26 @@ TEST_CASE("check uses and modifies – with containers") {
     PKB::populatePKB();
 
     REQUIRE(PKB::uses->getProcsUses(1).empty()); // no procedure uses a
-    REQUIRE(PKB::uses->getProcsUses(2) == unordered_set<ID>({1, 2})); // procedure p and q use b
+    REQUIRE(PKB::uses->getProcsUses(2) == unordered_set<VarID>({1, 2})); // procedure p and q use b
     REQUIRE(PKB::uses->getProcsUses(3).empty()); // no procedure uses c
-    REQUIRE(PKB::uses->getProcsUses(4) == unordered_set<ID>({1})); // procedure p uses d
-    REQUIRE(PKB::uses->getProcsUses(5) == unordered_set<ID>({1})); // procedure p uses e
+    REQUIRE(PKB::uses->getProcsUses(4) == unordered_set<VarID>({1})); // procedure p uses d
+    REQUIRE(PKB::uses->getProcsUses(5) == unordered_set<VarID>({1})); // procedure p uses e
 
     REQUIRE(PKB::uses->getStmtsUses(1).empty()); // no statements uses a
-    REQUIRE(PKB::uses->getStmtsUses(2) == unordered_set<ID>({1, 2, 3, 4})); // statements 1, 2, 3, 4 use b
+    REQUIRE(PKB::uses->getStmtsUses(2) == unordered_set<VarID>({1, 2, 3, 4})); // statements 1, 2, 3, 4 use b
     REQUIRE(PKB::uses->getStmtsUses(3).empty()); // no statements uses c
-    REQUIRE(PKB::uses->getStmtsUses(4) == unordered_set<ID>({1})); // statements 1 use d
-    REQUIRE(PKB::uses->getStmtsUses(5) == unordered_set<ID>({1,2})); // statement 1,2 uses e
+    REQUIRE(PKB::uses->getStmtsUses(4) == unordered_set<VarID>({1})); // statements 1 use d
+    REQUIRE(PKB::uses->getStmtsUses(5) == unordered_set<VarID>({1,2})); // statement 1,2 uses e
 
-    REQUIRE(PKB::modifies->getProcsModifies(1) == unordered_set<ID>({1, 2})); // procedure p and q modify a
+    REQUIRE(PKB::modifies->getProcsModifies(1) == unordered_set<VarID>({1, 2})); // procedure p and q modify a
     REQUIRE(PKB::modifies->getProcsModifies(2).empty()); // no procedure modifies b
-    REQUIRE(PKB::modifies->getProcsModifies(3) == unordered_set<ID>({1, 2, 3})); // all procedures modify c
+    REQUIRE(PKB::modifies->getProcsModifies(3) == unordered_set<VarID>({1, 2, 3})); // all procedures modify c
     REQUIRE(PKB::modifies->getProcsModifies(4).empty()); // no procedure modifies d
     REQUIRE(PKB::modifies->getProcsModifies(5).empty()); // no procedure modifies e
 
-    REQUIRE(PKB::modifies->getStmtsModifies(1) == unordered_set<ID>({1, 2, 3, 4})); // statement 1, 2, 3, 4 modify a
+    REQUIRE(PKB::modifies->getStmtsModifies(1) == unordered_set<VarID>({1, 2, 3, 4})); // statement 1, 2, 3, 4 modify a
     REQUIRE(PKB::modifies->getStmtsModifies(2).empty()); // no statement modifies b
-    REQUIRE(PKB::modifies->getStmtsModifies(3) == unordered_set<ID>({1, 2, 3, 5, 6})); // statement 1,2,3,5,6 modify c
+    REQUIRE(PKB::modifies->getStmtsModifies(3) == unordered_set<VarID>({1, 2, 3, 5, 6})); // statement 1,2,3,5,6 modify c
     REQUIRE(PKB::modifies->getStmtsModifies(4).empty()); // no statement modifies d
     REQUIRE(PKB::modifies->getStmtsModifies(5).empty()); // no statement modifies e
 }

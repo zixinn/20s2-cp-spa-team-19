@@ -19,26 +19,26 @@ TEST_CASE("ONE PROCEDURE - storeNewProcedure and exitProcedure Test (no While/If
     DesignExtractor::exitProcedure();
 
     // Check procTable
-    ID procID = PKB::procTable->getProcID("strobelight");
+    ProcID procID = PKB::procTable->getProcID("strobelight");
     REQUIRE(PKB::procTable->hasProc("strobelight") == true);
     REQUIRE(procID == 0);
     // Check StmtLst
     REQUIRE(PKB::stmtLstTable->hasStmtLst(1) == true);
 
     // Check varNames
-    ID varID = PKB::varTable->getVarID("reason");
+    VarID varID = PKB::varTable->getVarID("reason");
     REQUIRE(varID == 0);    // varTable ID starts indexing at 0
     REQUIRE(PKB::varTable->getVarName(varID) == "reason");
-    ID varID1 = PKB::varTable->getVarID("dyed");
+    VarID varID1 = PKB::varTable->getVarID("dyed");
     REQUIRE(varID1 == 1);
     REQUIRE(PKB::varTable->getVarName(varID1) == "dyed");
-    ID varID2 = PKB::varTable->getVarID("scaramouche");
+    VarID varID2 = PKB::varTable->getVarID("scaramouche");
     REQUIRE(varID2 == 2);
     REQUIRE(PKB::varTable->getVarName(varID2) == "scaramouche");
-    ID varID3 = PKB::varTable->getVarID("tartaglia");
+    VarID varID3 = PKB::varTable->getVarID("tartaglia");
     REQUIRE(varID3 == 3);
     REQUIRE(PKB::varTable->getVarName(varID3) == "tartaglia");
-    ID varID4 = PKB::varTable->getVarID("pustota");
+    VarID varID4 = PKB::varTable->getVarID("pustota");
     REQUIRE(varID4 == 4);
     REQUIRE(PKB::varTable->getVarName(varID4) == "pustota");
 
@@ -51,10 +51,10 @@ TEST_CASE("ONE PROCEDURE - storeNewProcedure and exitProcedure Test (no While/If
 
     // Check Modifies
     // Assign Stmt
-    REQUIRE(PKB::modifies->getProcsModifies(varID2) == unordered_set<ID>{ 0 });
+    REQUIRE(PKB::modifies->getProcsModifies(varID2) == unordered_set<ProcID>{ 0 });
     REQUIRE(PKB::modifies->getStmtsModifies(varID2) == unordered_set<StmtNum>{ 3 });
     // Read Stmt
-    REQUIRE(PKB::modifies->getProcsModifies(varID1) == unordered_set<ID>{ 0 });
+    REQUIRE(PKB::modifies->getProcsModifies(varID1) == unordered_set<ProcID>{ 0 });
     REQUIRE(PKB::modifies->getStmtsModifies(varID1) == unordered_set<StmtNum>{ 2 });
 
     // Check Uses
@@ -76,10 +76,10 @@ TEST_CASE("storeNewCall successful") {
     DesignExtractor::exitProcedure();
 
     // Check procTable
-    ID procID = PKB::procTable->getProcID("strobelight");
+    ProcID procID = PKB::procTable->getProcID("strobelight");
     REQUIRE(PKB::procTable->hasProc("strobelight") == true);
     REQUIRE(procID == 0);
-    ID procID2 = PKB::procTable->getProcID("strobeend");
+    ProcID procID2 = PKB::procTable->getProcID("strobeend");
     REQUIRE(PKB::procTable->hasProc("strobeend") == true);
     REQUIRE(procID2 == 1);
     // Check StmtLst
@@ -94,10 +94,10 @@ TEST_CASE("storeNewCall recursive, unsuccessful") {
     DesignExtractor::exitProcedure();
 
     // Check procTable
-    ID procID = PKB::procTable->getProcID("strobelight");
+    ProcID procID = PKB::procTable->getProcID("strobelight");
     REQUIRE(PKB::procTable->hasProc("strobelight") == true);
     REQUIRE(procID == 0);
-    ID procID2 = PKB::procTable->getProcID("strobeend");
+    ProcID procID2 = PKB::procTable->getProcID("strobeend");
     REQUIRE(PKB::procTable->hasProc("strobeend") == false);
     REQUIRE(procID2 == -1);
     // Check StmtLst
@@ -109,7 +109,7 @@ TEST_CASE("storeNewAssignment Const RHS Test") {
 
     DesignExtractor::storeNewAssignment(1, "axel", assStmtAxel);     // axel = 420;
     // Check varName
-    ID varID = PKB::varTable->getVarID("axel");
+    VarID varID = PKB::varTable->getVarID("axel");
     REQUIRE(varID == 0);    // varTable ID starts indexing at 0
     REQUIRE(PKB::varTable->getVarName(varID) == "axel");
     // Check ConstTable
@@ -125,12 +125,12 @@ TEST_CASE("storeNewAssignment VarName RHS Test") {
 
     DesignExtractor::storeNewAssignment(1, "axel2", assStmtAxel2); // axel2 = semelparity;
     // Check varName, LHS
-    ID varID = PKB::varTable->getVarID("axel2");
+    VarID varID = PKB::varTable->getVarID("axel2");
     REQUIRE(varID == 0);    // varTable ID starts indexing at 0
     REQUIRE(PKB::varTable->getVarName(varID) == "axel2");
 
     // Check varName, RHS
-    ID varIDRHS = PKB::varTable->getVarID("semelparity");
+    VarID varIDRHS = PKB::varTable->getVarID("semelparity");
     REQUIRE(varIDRHS == 1);    // second variable in varTable
     REQUIRE(PKB::varTable->getVarName(varIDRHS) == "semelparity");
 
@@ -146,15 +146,15 @@ TEST_CASE("storeNewAssignment InfixExpr containing VarNames and Consts Test") {
     DesignExtractor::storeNewAssignment(1, "eternal", assStmtEternal);     // eternal = senescence + sequestration * 2 * 0;
 
     // Check varName, LHS
-    ID varID = PKB::varTable->getVarID("eternal");
+    VarID varID = PKB::varTable->getVarID("eternal");
     REQUIRE(varID == 0);    // varTable ID starts indexing at 0
     REQUIRE(PKB::varTable->getVarName(varID) == "eternal");
 
     // Check varName, RHS
-    ID varIDRHS = PKB::varTable->getVarID("senescence");
+    VarID varIDRHS = PKB::varTable->getVarID("senescence");
     REQUIRE(varIDRHS == 1);    // second variable in varTable
     REQUIRE(PKB::varTable->getVarName(varIDRHS) == "senescence");
-    ID varIDRHS2 = PKB::varTable->getVarID("sequestration");
+    VarID varIDRHS2 = PKB::varTable->getVarID("sequestration");
     REQUIRE(varIDRHS2 == 2);    // second variable in varTable
     REQUIRE(PKB::varTable->getVarName(varIDRHS2) == "sequestration");
 
@@ -177,7 +177,7 @@ TEST_CASE("storeNewRead Test") {
     DesignExtractor::storeNewRead(1, "procedure", readStmt);
 
     // Check varName
-    ID varID = PKB::varTable->getVarID("procedure");
+    VarID varID = PKB::varTable->getVarID("procedure");
     REQUIRE(varID == 0);    // varTable ID starts indexing at 0
     REQUIRE(PKB::varTable->getVarName(varID) == "procedure");
 
@@ -195,7 +195,7 @@ TEST_CASE("storeNewPrint Test") {
     DesignExtractor::storeNewPrint(1, "defenestration", printStmt);
 
     // Check varName
-    ID varID = PKB::varTable->getVarID("defenestration");
+    VarID varID = PKB::varTable->getVarID("defenestration");
     REQUIRE(varID == 0);    // varTable ID starts indexing at 0
     REQUIRE(PKB::varTable->getVarName(varID) == "defenestration");
 
@@ -224,19 +224,19 @@ TEST_CASE("[SIMPLE, no nested while/if] storeNewWhile and exitWhile Test") {
     REQUIRE(PKB::stmtLstTable->hasStmtLst(2) == true); // StmtLst of while loop
     REQUIRE(PKB::stmtLstTable->hasStmtLst(3) == false); // Stmt 3 not in a separate stmtLst
     // Check varNames
-    ID condVarId = PKB::varTable->getVarID("x");
+    VarID condVarId = PKB::varTable->getVarID("x");
     REQUIRE(condVarId == 0);    // varTable ID starts indexing at 0
     REQUIRE(PKB::varTable->getVarName(condVarId) == "x");
-    ID condVarId2 = PKB::varTable->getVarID("y");
+    VarID condVarId2 = PKB::varTable->getVarID("y");
     REQUIRE(condVarId2 == 1);    // varTable ID starts indexing at 0
     REQUIRE(PKB::varTable->getVarName(condVarId2) == "y");
-    ID varID = PKB::varTable->getVarID("axel2");
+    VarID varID = PKB::varTable->getVarID("axel2");
     REQUIRE(varID == 2);    // varTable ID starts indexing at 0
     REQUIRE(PKB::varTable->getVarName(varID) == "axel2");
-    ID varID2 = PKB::varTable->getVarID("semelparity");
+    VarID varID2 = PKB::varTable->getVarID("semelparity");
     REQUIRE(varID2 == 3);
     REQUIRE(PKB::varTable->getVarName(varID2) == "semelparity");
-    ID varID3 = PKB::varTable->getVarID("shine");
+    VarID varID3 = PKB::varTable->getVarID("shine");
     REQUIRE(varID3 == 4);
     REQUIRE(PKB::varTable->getVarName(varID3) == "shine");
 
@@ -264,9 +264,9 @@ TEST_CASE("[SIMPLE, no nested while/if] storeNewWhile and exitWhile Test") {
     REQUIRE(PKB::uses->getStmtsUses(varID2) == unordered_set<StmtNum>{ 1, 2 }); // as 1 is a container stmt
 
     // Check Modifies
-    REQUIRE(PKB::modifies->getStmtsModifies(varID) == unordered_set<ID>{ 1, 2 }); // as 1 is a container stmt
-    REQUIRE(PKB::modifies->getStmtsModifies(varID3) == unordered_set<ID>{ 1, 3 }); // as 1 is a container stmt
-    REQUIRE(PKB::modifies->getProcsModifies(varID3) == unordered_set<ID>{ 0 });
+    REQUIRE(PKB::modifies->getStmtsModifies(varID) == unordered_set<StmtNum>{ 1, 2 }); // as 1 is a container stmt
+    REQUIRE(PKB::modifies->getStmtsModifies(varID3) == unordered_set<StmtNum>{ 1, 3 }); // as 1 is a container stmt
+    REQUIRE(PKB::modifies->getProcsModifies(varID3) == unordered_set<ProcID>{ 0 });
 
     // Check Next
     REQUIRE(PKB::next->getNext(1) == unordered_set<ProgLine>{ 2 });
@@ -297,26 +297,26 @@ TEST_CASE("[ONE NESTED WHILE] storeNewWhile and exitWhile Test") {
     REQUIRE(PKB::stmtLstTable->hasStmtLst(4) == true); // Line containing nested while loop's stmtLst
 
     // Check cond varNames
-    ID condVarId = PKB::varTable->getVarID("x");
+    VarID condVarId = PKB::varTable->getVarID("x");
     REQUIRE(condVarId == 0);    // varTable ID starts indexing at 0
     REQUIRE(PKB::varTable->getVarName(condVarId) == "x");
-    ID condVarId2 = PKB::varTable->getVarID("y");
+    VarID condVarId2 = PKB::varTable->getVarID("y");
     REQUIRE(condVarId2 == 1);
     REQUIRE(PKB::varTable->getVarName(condVarId2) == "y");
-    ID condVarId3 = PKB::varTable->getVarID("a");
+    VarID condVarId3 = PKB::varTable->getVarID("a");
     REQUIRE(condVarId3 == 4);   // Gap in varID because of line 2 AssignStmt
     REQUIRE(PKB::varTable->getVarName(condVarId3) == "a");
-    ID condVarId4 = PKB::varTable->getVarID("z");
+    VarID condVarId4 = PKB::varTable->getVarID("z");
     REQUIRE(condVarId4 == 5);
     REQUIRE(PKB::varTable->getVarName(condVarId4) == "z");
     // Check rest ofvarNames
-    ID varID = PKB::varTable->getVarID("axel2");
+    VarID varID = PKB::varTable->getVarID("axel2");
     REQUIRE(varID == 2);    // varTable ID starts indexing at 0
     REQUIRE(PKB::varTable->getVarName(varID) == "axel2");
-    ID varID2 = PKB::varTable->getVarID("semelparity");
+    VarID varID2 = PKB::varTable->getVarID("semelparity");
     REQUIRE(varID2 == 3);
     REQUIRE(PKB::varTable->getVarName(varID2) == "semelparity");
-    ID varID3 = PKB::varTable->getVarID("shine");
+    VarID varID3 = PKB::varTable->getVarID("shine");
     REQUIRE(varID3 == 6);   // due to cond variables in nested While loop
     REQUIRE(PKB::varTable->getVarName(varID3) == "shine");
 
@@ -354,9 +354,9 @@ TEST_CASE("[ONE NESTED WHILE] storeNewWhile and exitWhile Test") {
                                                                        condVarId3, condVarId4, varID2 });
 
     // Check Modifies
-    REQUIRE(PKB::modifies->getStmtsModifies(varID) == unordered_set<ID>{ 1, 2 }); // as 1 is a container stmt
-    REQUIRE(PKB::modifies->getStmtsModifies(varID3) == unordered_set<ID>{ 1, 3, 4 }); // as 1, 3 are container stmts
-    REQUIRE(PKB::modifies->getProcsModifies(varID3) == unordered_set<ID>{ 0 });
+    REQUIRE(PKB::modifies->getStmtsModifies(varID) == unordered_set<StmtNum>{ 1, 2 }); // as 1 is a container stmt
+    REQUIRE(PKB::modifies->getStmtsModifies(varID3) == unordered_set<StmtNum>{ 1, 3, 4 }); // as 1, 3 are container stmts
+    REQUIRE(PKB::modifies->getProcsModifies(varID3) == unordered_set<ProcID>{ 0 });
 
     // Check Next
     REQUIRE(PKB::next->getNext(1) == unordered_set<ProgLine>{ 2 });
@@ -386,17 +386,17 @@ TEST_CASE("[SIMPLE, no nested if/while] storeNewIf and storeNewElse and endIfEls
     REQUIRE(PKB::stmtLstTable->hasStmtLst(4) == true); // Else's stmtLst
 
     // Check varNames
-    ID varID = PKB::varTable->getVarID("axel2");
+    VarID varID = PKB::varTable->getVarID("axel2");
     REQUIRE(varID == 0);    // varTable ID starts indexing at 0
     REQUIRE(PKB::varTable->getVarName(varID) == "axel2");
-    ID varID2 = PKB::varTable->getVarID("semelparity");
+    VarID varID2 = PKB::varTable->getVarID("semelparity");
     REQUIRE(varID2 == 1);
     REQUIRE(PKB::varTable->getVarName(varID2) == "semelparity");
 
-    ID condVarId = PKB::varTable->getVarID("x");
+    VarID condVarId = PKB::varTable->getVarID("x");
     REQUIRE(condVarId == 2);    // varTable ID starts indexing at 0
     REQUIRE(PKB::varTable->getVarName(condVarId) == "x");
-    ID condVarId2 = PKB::varTable->getVarID("y");
+    VarID condVarId2 = PKB::varTable->getVarID("y");
     REQUIRE(condVarId2 == 3);    // varTable ID starts indexing at 0
     REQUIRE(PKB::varTable->getVarName(condVarId2) == "y");
 
@@ -404,11 +404,11 @@ TEST_CASE("[SIMPLE, no nested if/while] storeNewIf and storeNewElse and endIfEls
     REQUIRE(PKB::stmtTable->getIfStmtsWithControlVar(condVarId) == unordered_set<StmtNum>{ 2 });
     REQUIRE(PKB::stmtTable->getIfStmtsWithControlVar(condVarId2) == unordered_set<StmtNum>{ 2 });
 
-    ID varID3 = PKB::varTable->getVarID("slalom");  // Both Assignments' exprs are the same, so no new var added.
+    VarID varID3 = PKB::varTable->getVarID("slalom");  // Both Assignments' exprs are the same, so no new var added.
     REQUIRE(varID3 == 4);
     REQUIRE(PKB::varTable->getVarName(varID3) == "slalom");
 
-    ID varID4 = PKB::varTable->getVarID("shine");
+    VarID varID4 = PKB::varTable->getVarID("shine");
     REQUIRE(varID4 == 5);
     REQUIRE(PKB::varTable->getVarName(varID4) == "shine");
 
@@ -437,9 +437,9 @@ TEST_CASE("[SIMPLE, no nested if/while] storeNewIf and storeNewElse and endIfEls
     REQUIRE(PKB::uses->getVarsUsedByProc(0) == unordered_set<StmtNum>{ condVarId, condVarId2, varID2 });
 
     // Check Modifies
-    REQUIRE(PKB::modifies->getStmtsModifies(varID) == unordered_set<ID>{ 1 });
-    REQUIRE(PKB::modifies->getStmtsModifies(varID3) == unordered_set<ID>{ 2, 3 }); // as 2 is a container stmt
-    REQUIRE(PKB::modifies->getStmtsModifies(varID4) == unordered_set<ID>{ 2, 4 }); // as 2 is a container stmt
+    REQUIRE(PKB::modifies->getStmtsModifies(varID) == unordered_set<StmtNum>{ 1 });
+    REQUIRE(PKB::modifies->getStmtsModifies(varID3) == unordered_set<StmtNum>{ 2, 3 }); // as 2 is a container stmt
+    REQUIRE(PKB::modifies->getStmtsModifies(varID4) == unordered_set<StmtNum>{ 2, 4 }); // as 2 is a container stmt
 
     // Check Next
     REQUIRE(PKB::next->getNext(1) == unordered_set<ProgLine>{ 2 });
@@ -484,42 +484,42 @@ TEST_CASE("[ONE NESTED IF] storeNewIf and storeNewElse and endIfElse Test") {
     REQUIRE(PKB::stmtLstTable->hasStmtLst(7) == false);
 
     // Check varNames
-    ID varID = PKB::varTable->getVarID("axel2");
+    VarID varID = PKB::varTable->getVarID("axel2");
     REQUIRE(varID == 0);    // varTable ID starts indexing at 0
     REQUIRE(PKB::varTable->getVarName(varID) == "axel2");
-    ID varID2 = PKB::varTable->getVarID("semelparity");
+    VarID varID2 = PKB::varTable->getVarID("semelparity");
     REQUIRE(varID2 == 1);
     REQUIRE(PKB::varTable->getVarName(varID2) == "semelparity");
 
-    ID condVarId = PKB::varTable->getVarID("x");
+    VarID condVarId = PKB::varTable->getVarID("x");
     REQUIRE(condVarId == 2);    // varTable ID starts indexing at 0
     REQUIRE(PKB::varTable->getVarName(condVarId) == "x");
-    ID condVarId2 = PKB::varTable->getVarID("y");
+    VarID condVarId2 = PKB::varTable->getVarID("y");
     REQUIRE(condVarId2 == 3);    // varTable ID starts indexing at 0
     REQUIRE(PKB::varTable->getVarName(condVarId2) == "y");
 
-    ID varID3 = PKB::varTable->getVarID("slalom");  // Both Assignments' exprs are the same, so no new var added.
+    VarID varID3 = PKB::varTable->getVarID("slalom");  // Both Assignments' exprs are the same, so no new var added.
     REQUIRE(varID3 == 4);
     REQUIRE(PKB::varTable->getVarName(varID3) == "slalom");
 
     // Nested If vars
-    ID condVarId3 = PKB::varTable->getVarID("a");
+    VarID condVarId3 = PKB::varTable->getVarID("a");
     REQUIRE(condVarId3 == 5);   // Gap in varID because of line 2 AssignStmt
     REQUIRE(PKB::varTable->getVarName(condVarId3) == "a");
-    ID condVarId4 = PKB::varTable->getVarID("z");
+    VarID condVarId4 = PKB::varTable->getVarID("z");
     REQUIRE(condVarId4 == 6);
     REQUIRE(PKB::varTable->getVarName(condVarId4) == "z");
 
-    ID varID4 = PKB::varTable->getVarID("quartz");
+    VarID varID4 = PKB::varTable->getVarID("quartz");
     REQUIRE(varID4 == 7);
     REQUIRE(PKB::varTable->getVarName(varID4) == "quartz");
-    ID varID5 = PKB::varTable->getVarID("conspiracy");
+    VarID varID5 = PKB::varTable->getVarID("conspiracy");
     REQUIRE(varID5 == 8);
     REQUIRE(PKB::varTable->getVarName(varID5) == "conspiracy");
-    ID varID6 = PKB::varTable->getVarID("sapphire");
+    VarID varID6 = PKB::varTable->getVarID("sapphire");
     REQUIRE(varID6 == 9);
     REQUIRE(PKB::varTable->getVarName(varID6) == "sapphire");
-    ID varID7 = PKB::varTable->getVarID("droning");
+    VarID varID7 = PKB::varTable->getVarID("droning");
     REQUIRE(varID7 == 10);
     REQUIRE(PKB::varTable->getVarName(varID7) == "droning");
 
@@ -570,11 +570,11 @@ TEST_CASE("[ONE NESTED IF] storeNewIf and storeNewElse and endIfElse Test") {
     REQUIRE(PKB::uses->getVarsUsedByProc(0) == unordered_set<StmtNum>{ condVarId, condVarId2,
                                                                        condVarId3, condVarId4, varID2, varID5 });
     // Check Modifies
-    REQUIRE(PKB::modifies->getStmtsModifies(varID) == unordered_set<ID>{ 1 });
-    REQUIRE(PKB::modifies->getStmtsModifies(varID3) == unordered_set<ID>{ 2, 3 }); // as 2 is a container stmt
-    REQUIRE(PKB::modifies->getStmtsModifies(varID4) == unordered_set<ID>{ 2, 4, 5 }); // 2, 4 is container stmt
-    REQUIRE(PKB::modifies->getStmtsModifies(varID6) == unordered_set<ID>{ 2, 4, 6 });
-    REQUIRE(PKB::modifies->getStmtsModifies(varID7) == unordered_set<ID>{ 2, 4, 7, 8 });
+    REQUIRE(PKB::modifies->getStmtsModifies(varID) == unordered_set<StmtNum>{ 1 });
+    REQUIRE(PKB::modifies->getStmtsModifies(varID3) == unordered_set<StmtNum>{ 2, 3 }); // as 2 is a container stmt
+    REQUIRE(PKB::modifies->getStmtsModifies(varID4) == unordered_set<StmtNum>{ 2, 4, 5 }); // 2, 4 is container stmt
+    REQUIRE(PKB::modifies->getStmtsModifies(varID6) == unordered_set<StmtNum>{ 2, 4, 6 });
+    REQUIRE(PKB::modifies->getStmtsModifies(varID7) == unordered_set<StmtNum>{ 2, 4, 7, 8 });
 
     // Check Next
     // Tests DE's ability to extract Next for nested if statements with no explicit 'end' point in the CFG for outer if
@@ -703,42 +703,42 @@ TEST_CASE("[WHILE-IF NESTING] storeNewWhile & storeNewIf Interaction Test") {
     REQUIRE(PKB::stmtLstTable->hasStmtLst(7) == false);
 
     // Check varNames
-    ID varID = PKB::varTable->getVarID("axel2");
+    VarID varID = PKB::varTable->getVarID("axel2");
     REQUIRE(varID == 0);    // varTable ID starts indexing at 0
     REQUIRE(PKB::varTable->getVarName(varID) == "axel2");
-    ID varID2 = PKB::varTable->getVarID("semelparity");
+    VarID varID2 = PKB::varTable->getVarID("semelparity");
     REQUIRE(varID2 == 1);
     REQUIRE(PKB::varTable->getVarName(varID2) == "semelparity");
 
-    ID condVarId = PKB::varTable->getVarID("x");
+    VarID condVarId = PKB::varTable->getVarID("x");
     REQUIRE(condVarId == 2);    // varTable ID starts indexing at 0
     REQUIRE(PKB::varTable->getVarName(condVarId) == "x");
-    ID condVarId2 = PKB::varTable->getVarID("y");
+    VarID condVarId2 = PKB::varTable->getVarID("y");
     REQUIRE(condVarId2 == 3);    // varTable ID starts indexing at 0
     REQUIRE(PKB::varTable->getVarName(condVarId2) == "y");
 
-    ID varID3 = PKB::varTable->getVarID("slalom");  // Both Assignments' exprs are the same, so no new var added.
+    VarID varID3 = PKB::varTable->getVarID("slalom");  // Both Assignments' exprs are the same, so no new var added.
     REQUIRE(varID3 == 4);
     REQUIRE(PKB::varTable->getVarName(varID3) == "slalom");
 
     // Nested If vars
-    ID condVarId3 = PKB::varTable->getVarID("a");
+    VarID condVarId3 = PKB::varTable->getVarID("a");
     REQUIRE(condVarId3 == 5);   // Gap in varID because of line 2 AssignStmt
     REQUIRE(PKB::varTable->getVarName(condVarId3) == "a");
-    ID condVarId4 = PKB::varTable->getVarID("z");
+    VarID condVarId4 = PKB::varTable->getVarID("z");
     REQUIRE(condVarId4 == 6);
     REQUIRE(PKB::varTable->getVarName(condVarId4) == "z");
 
-    ID varID4 = PKB::varTable->getVarID("quartz");
+    VarID varID4 = PKB::varTable->getVarID("quartz");
     REQUIRE(varID4 == 7);
     REQUIRE(PKB::varTable->getVarName(varID4) == "quartz");
-    ID varID5 = PKB::varTable->getVarID("conspiracy");
+    VarID varID5 = PKB::varTable->getVarID("conspiracy");
     REQUIRE(varID5 == 8);
     REQUIRE(PKB::varTable->getVarName(varID5) == "conspiracy");
-    ID varID6 = PKB::varTable->getVarID("sapphire");
+    VarID varID6 = PKB::varTable->getVarID("sapphire");
     REQUIRE(varID6 == 9);
     REQUIRE(PKB::varTable->getVarName(varID6) == "sapphire");
-    ID varID7 = PKB::varTable->getVarID("droning");
+    VarID varID7 = PKB::varTable->getVarID("droning");
     REQUIRE(varID7 == 10);
     REQUIRE(PKB::varTable->getVarName(varID7) == "droning");
 
@@ -789,11 +789,11 @@ TEST_CASE("[WHILE-IF NESTING] storeNewWhile & storeNewIf Interaction Test") {
     REQUIRE(PKB::uses->getVarsUsedByProc(0) == unordered_set<StmtNum>{ condVarId, condVarId2,
                                                                        condVarId3, condVarId4, varID2, varID5 });
     // Check Modifies
-    REQUIRE(PKB::modifies->getStmtsModifies(varID) == unordered_set<ID>{ 1 });
-    REQUIRE(PKB::modifies->getStmtsModifies(varID3) == unordered_set<ID>{ 2, 3 }); // as 2 is a container stmt
-    REQUIRE(PKB::modifies->getStmtsModifies(varID4) == unordered_set<ID>{ 2, 4, 5 }); // 2, 4 is container stmt
-    REQUIRE(PKB::modifies->getStmtsModifies(varID6) == unordered_set<ID>{ 2, 4, 6 });
-    REQUIRE(PKB::modifies->getStmtsModifies(varID7) == unordered_set<ID>{ 2, 4, 7 });
+    REQUIRE(PKB::modifies->getStmtsModifies(varID) == unordered_set<StmtNum>{ 1 });
+    REQUIRE(PKB::modifies->getStmtsModifies(varID3) == unordered_set<StmtNum>{ 2, 3 }); // as 2 is a container stmt
+    REQUIRE(PKB::modifies->getStmtsModifies(varID4) == unordered_set<StmtNum>{ 2, 4, 5 }); // 2, 4 is container stmt
+    REQUIRE(PKB::modifies->getStmtsModifies(varID6) == unordered_set<StmtNum>{ 2, 4, 6 });
+    REQUIRE(PKB::modifies->getStmtsModifies(varID7) == unordered_set<StmtNum>{ 2, 4, 7 });
 
     // Check Next
     REQUIRE(PKB::next->getNext(1) == unordered_set<ProgLine>{ 2 });
@@ -835,10 +835,10 @@ TEST_CASE("Multi-procedure test") {
     DesignExtractor::exitProcedure();
 
     // Check procTable
-    ID procID = PKB::procTable->getProcID("arabesque");
+    ProcID procID = PKB::procTable->getProcID("arabesque");
     REQUIRE(PKB::procTable->hasProc("arabesque") == true);
     REQUIRE(procID == 0);
-    ID procID2 = PKB::procTable->getProcID("deux");
+    ProcID procID2 = PKB::procTable->getProcID("deux");
     REQUIRE(PKB::procTable->hasProc("deux") == true);
     REQUIRE(procID2 == 1);
 
@@ -853,42 +853,42 @@ TEST_CASE("Multi-procedure test") {
     REQUIRE(PKB::stmtLstTable->hasStmtLst(8) == false);
 
     // Check varNames
-    ID varID = PKB::varTable->getVarID("axel2");
+    VarID varID = PKB::varTable->getVarID("axel2");
     REQUIRE(varID == 0);    // varTable ID starts indexing at 0
     REQUIRE(PKB::varTable->getVarName(varID) == "axel2");
-    ID varID2 = PKB::varTable->getVarID("semelparity");
+    VarID varID2 = PKB::varTable->getVarID("semelparity");
     REQUIRE(varID2 == 1);
     REQUIRE(PKB::varTable->getVarName(varID2) == "semelparity");
 
-    ID condVarId = PKB::varTable->getVarID("x");
+    VarID condVarId = PKB::varTable->getVarID("x");
     REQUIRE(condVarId == 2);    // varTable ID starts indexing at 0
     REQUIRE(PKB::varTable->getVarName(condVarId) == "x");
-    ID condVarId2 = PKB::varTable->getVarID("y");
+    VarID condVarId2 = PKB::varTable->getVarID("y");
     REQUIRE(condVarId2 == 3);    // varTable ID starts indexing at 0
     REQUIRE(PKB::varTable->getVarName(condVarId2) == "y");
 
-    ID varID3 = PKB::varTable->getVarID("slalom");  // Both Assignments' exprs are the same, so no new var added.
+    VarID varID3 = PKB::varTable->getVarID("slalom");  // Both Assignments' exprs are the same, so no new var added.
     REQUIRE(varID3 == 4);
     REQUIRE(PKB::varTable->getVarName(varID3) == "slalom");
 
     // Nested If vars
-    ID condVarId3 = PKB::varTable->getVarID("a");
+    VarID condVarId3 = PKB::varTable->getVarID("a");
     REQUIRE(condVarId3 == 5);   // Gap in varID because of line 2 AssignStmt
     REQUIRE(PKB::varTable->getVarName(condVarId3) == "a");
-    ID condVarId4 = PKB::varTable->getVarID("z");
+    VarID condVarId4 = PKB::varTable->getVarID("z");
     REQUIRE(condVarId4 == 6);
     REQUIRE(PKB::varTable->getVarName(condVarId4) == "z");
 
-    ID varID4 = PKB::varTable->getVarID("quartz");
+    VarID varID4 = PKB::varTable->getVarID("quartz");
     REQUIRE(varID4 == 7);
     REQUIRE(PKB::varTable->getVarName(varID4) == "quartz");
-    ID varID5 = PKB::varTable->getVarID("conspiracy");
+    VarID varID5 = PKB::varTable->getVarID("conspiracy");
     REQUIRE(varID5 == 8);
     REQUIRE(PKB::varTable->getVarName(varID5) == "conspiracy");
-    ID varID6 = PKB::varTable->getVarID("sapphire");
+    VarID varID6 = PKB::varTable->getVarID("sapphire");
     REQUIRE(varID6 == 9);
     REQUIRE(PKB::varTable->getVarName(varID6) == "sapphire");
-    ID varID7 = PKB::varTable->getVarID("droning");
+    VarID varID7 = PKB::varTable->getVarID("droning");
     REQUIRE(varID7 == 10);
     REQUIRE(PKB::varTable->getVarName(varID7) == "droning");
 
@@ -945,11 +945,11 @@ TEST_CASE("Multi-procedure test") {
     REQUIRE(PKB::uses->getVarsUsedByProc(1) == unordered_set<StmtNum>{ condVarId3, condVarId4, varID5 });
 
     // Check Modifies
-    REQUIRE(PKB::modifies->getStmtsModifies(varID) == unordered_set<ID>{ 1 });
-    REQUIRE(PKB::modifies->getStmtsModifies(varID3) == unordered_set<ID>{ 2, 3, 4 }); // as 2 is a container stmt
-    REQUIRE(PKB::modifies->getStmtsModifies(varID4) == unordered_set<ID>{ 5, 6 }); // as 4 is container stmt
-    REQUIRE(PKB::modifies->getStmtsModifies(varID6) == unordered_set<ID>{ 5, 7 });
-    REQUIRE(PKB::modifies->getStmtsModifies(varID7) == unordered_set<ID>{ 5, 8 });
+    REQUIRE(PKB::modifies->getStmtsModifies(varID) == unordered_set<StmtNum>{ 1 });
+    REQUIRE(PKB::modifies->getStmtsModifies(varID3) == unordered_set<StmtNum>{ 2, 3, 4 }); // as 2 is a container stmt
+    REQUIRE(PKB::modifies->getStmtsModifies(varID4) == unordered_set<StmtNum>{ 5, 6 }); // as 4 is container stmt
+    REQUIRE(PKB::modifies->getStmtsModifies(varID6) == unordered_set<StmtNum>{ 5, 7 });
+    REQUIRE(PKB::modifies->getStmtsModifies(varID7) == unordered_set<StmtNum>{ 5, 8 });
 
     // Check Next
     REQUIRE(PKB::next->getNext(1) == unordered_set<ProgLine>{ 2 });
@@ -962,74 +962,74 @@ TEST_CASE("Multi-procedure test") {
     REQUIRE(PKB::next->getNext(8) == unordered_set<ProgLine>{ 5 });
 
     // Check if/else storage
-    REQUIRE(PKB::stmtTable->getIfStmtRange(2) == make_pair(3, set<int>{3}));
-    REQUIRE(PKB::stmtTable->getElseStmtRange(2) == make_pair(4, set<int>{4}));
+    REQUIRE(PKB::stmtTable->getIfStmtRange(2) == make_pair(3, set<StmtNum>{3}));
+    REQUIRE(PKB::stmtTable->getElseStmtRange(2) == make_pair(4, set<StmtNum>{4}));
 }
 
 // Test cases for stacks and related methods
 TEST_CASE("Generic Stack Operations Test") {
-    vector<vector<int>> stmtLstsStack;
-    vector<set<ID>> usesStack;
-    vector<set<ID>> modifiesStack;
-    vector<int> parentStack;
+    vector<vector<StmtNum>> stmtLstsStack;
+    vector<set<VarID>> usesStack;
+    vector<set<VarID>> modifiesStack;
+    vector<StmtNum> parentStack;
 
     // Test stmtLstsStack
-    vector<ID> numbers{ 0, 1, 3, 400, 70000};
+    vector<StmtNum> numbers{ 0, 1, 3, 400, 70000};
     // -3 is an invalid stmtNum, but DesignExtractor assumes all inputs from Parser are valid.
-    vector<ID> numbers2{ INT_MAX, 0, 1, -3, 400, 809};
+    vector<StmtNum> numbers2{ INT_MAX, 0, 1, -3, 400, 809};
     REQUIRE(stmtLstsStack.size() == 0);
-    DesignExtractor::DEStack<vector<int>>::stackPush(stmtLstsStack, numbers);
+    DesignExtractor::DEStack<vector<StmtNum>>::stackPush(stmtLstsStack, numbers);
     REQUIRE(stmtLstsStack.size() == 1);
-    REQUIRE(DesignExtractor::DEStack<vector<ID>>::stackPop(stmtLstsStack) == numbers);
-    REQUIRE_THROWS(DesignExtractor::DEStack<vector<ID>>::stackPop(stmtLstsStack),
+    REQUIRE(DesignExtractor::DEStack<vector<StmtNum>>::stackPop(stmtLstsStack) == numbers);
+    REQUIRE_THROWS(DesignExtractor::DEStack<vector<StmtNum>>::stackPop(stmtLstsStack),
                    std::out_of_range("DE: attempted to pop an empty stack."));
-    DesignExtractor::DEStack<vector<int>>::stackPush(stmtLstsStack, numbers);
-    DesignExtractor::DEStack<vector<int>>::stackPush(stmtLstsStack, numbers);
-    DesignExtractor::DEStack<vector<int>>::stackPush(stmtLstsStack, numbers2);
+    DesignExtractor::DEStack<vector<StmtNum>>::stackPush(stmtLstsStack, numbers);
+    DesignExtractor::DEStack<vector<StmtNum>>::stackPush(stmtLstsStack, numbers);
+    DesignExtractor::DEStack<vector<StmtNum>>::stackPush(stmtLstsStack, numbers2);
     REQUIRE(stmtLstsStack.size() == 3);
-    REQUIRE(DesignExtractor::DEStack<vector<ID>>::stackPop(stmtLstsStack) == numbers2);
+    REQUIRE(DesignExtractor::DEStack<vector<StmtNum>>::stackPop(stmtLstsStack) == numbers2);
 
     // Test usesStack
-    set<ID> usesIDs{ 0, 1, 3, 400, 70000};
-    set<ID> usesIDs2{ INT_MAX, 0, 1, -3, 400, 809};
+    set<VarID> usesIDs{ 0, 1, 3, 400, 70000};
+    set<VarID> usesIDs2{ INT_MAX, 0, 1, -3, 400, 809};
     REQUIRE(usesStack.size() == 0);
-    DesignExtractor::DEStack<set<ID>>::stackPush(usesStack, usesIDs);
+    DesignExtractor::DEStack<set<VarID>>::stackPush(usesStack, usesIDs);
     REQUIRE(usesStack.size() == 1);
-    REQUIRE(DesignExtractor::DEStack<set<ID>>::stackPop(usesStack) == usesIDs);
-    REQUIRE_THROWS(DesignExtractor::DEStack<set<ID>>::stackPop(usesStack),
+    REQUIRE(DesignExtractor::DEStack<set<VarID>>::stackPop(usesStack) == usesIDs);
+    REQUIRE_THROWS(DesignExtractor::DEStack<set<VarID>>::stackPop(usesStack),
                    std::out_of_range("DE: attempted to pop an empty stack."));
-    DesignExtractor::DEStack<set<int>>::stackPush(usesStack, usesIDs);
-    DesignExtractor::DEStack<set<int>>::stackPush(usesStack, usesIDs);
-    DesignExtractor::DEStack<set<int>>::stackPush(usesStack, usesIDs2);
+    DesignExtractor::DEStack<set<VarID>>::stackPush(usesStack, usesIDs);
+    DesignExtractor::DEStack<set<VarID>>::stackPush(usesStack, usesIDs);
+    DesignExtractor::DEStack<set<VarID>>::stackPush(usesStack, usesIDs2);
     REQUIRE(usesStack.size() == 3);
-    REQUIRE(DesignExtractor::DEStack<set<ID>>::stackPop(usesStack) == usesIDs2);
+    REQUIRE(DesignExtractor::DEStack<set<VarID>>::stackPop(usesStack) == usesIDs2);
 
     // Test modifiesStack
-    set<ID> modifiesIDs{ 0, 1, 3, 400, 70000};
-    set<ID> modifiesIDs2{ INT_MAX, 0, 1, -3, 400, 809};
+    set<VarID> modifiesIDs{ 0, 1, 3, 400, 70000};
+    set<VarID> modifiesIDs2{ INT_MAX, 0, 1, -3, 400, 809};
     REQUIRE(modifiesStack.size() == 0);
-    DesignExtractor::DEStack<set<ID>>::stackPush(modifiesStack, usesIDs);
+    DesignExtractor::DEStack<set<VarID>>::stackPush(modifiesStack, usesIDs);
     REQUIRE(modifiesStack.size() == 1);
-    REQUIRE(DesignExtractor::DEStack<set<ID>>::stackPop(modifiesStack) == usesIDs);
-    REQUIRE_THROWS(DesignExtractor::DEStack<set<ID>>::stackPop(modifiesStack),
+    REQUIRE(DesignExtractor::DEStack<set<VarID>>::stackPop(modifiesStack) == usesIDs);
+    REQUIRE_THROWS(DesignExtractor::DEStack<set<VarID>>::stackPop(modifiesStack),
                    std::out_of_range("DE: attempted to pop an empty stack."));
-    DesignExtractor::DEStack<set<int>>::stackPush(modifiesStack, usesIDs);
-    DesignExtractor::DEStack<set<int>>::stackPush(modifiesStack, usesIDs);
-    DesignExtractor::DEStack<set<int>>::stackPush(modifiesStack, usesIDs2);
+    DesignExtractor::DEStack<set<VarID>>::stackPush(modifiesStack, usesIDs);
+    DesignExtractor::DEStack<set<VarID>>::stackPush(modifiesStack, usesIDs);
+    DesignExtractor::DEStack<set<VarID>>::stackPush(modifiesStack, usesIDs2);
     REQUIRE(modifiesStack.size() == 3);
-    REQUIRE(DesignExtractor::DEStack<set<ID>>::stackPop(modifiesStack) == usesIDs2);
+    REQUIRE(DesignExtractor::DEStack<set<VarID>>::stackPop(modifiesStack) == usesIDs2);
 
     // Test parentStack
     REQUIRE(parentStack.size() == 0);
-    DesignExtractor::DEStack<ID>::stackPush(parentStack, 3);
+    DesignExtractor::DEStack<StmtNum>::stackPush(parentStack, 3);
     REQUIRE(parentStack.size() == 1);
-    REQUIRE(DesignExtractor::DEStack<ID>::stackPop(parentStack) == 3);
-    REQUIRE_THROWS(DesignExtractor::DEStack<ID>::stackPop(parentStack),
+    REQUIRE(DesignExtractor::DEStack<StmtNum>::stackPop(parentStack) == 3);
+    REQUIRE_THROWS(DesignExtractor::DEStack<StmtNum>::stackPop(parentStack),
                    std::out_of_range("DE: attempted to pop an empty stack."));
-    DesignExtractor::DEStack<ID>::stackPush(parentStack, 5);
-    DesignExtractor::DEStack<ID>::stackPush(parentStack, 356);
-    DesignExtractor::DEStack<ID>::stackPush(parentStack, 909090);
+    DesignExtractor::DEStack<StmtNum>::stackPush(parentStack, 5);
+    DesignExtractor::DEStack<StmtNum>::stackPush(parentStack, 356);
+    DesignExtractor::DEStack<StmtNum>::stackPush(parentStack, 909090);
     REQUIRE(parentStack.size() == 3);
-    REQUIRE(DesignExtractor::DEStack<ID>::stackPop(parentStack) == 909090);
+    REQUIRE(DesignExtractor::DEStack<StmtNum>::stackPop(parentStack) == 909090);
 }
 

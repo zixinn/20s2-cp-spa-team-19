@@ -87,16 +87,16 @@ TEST_CASE("procModifiesVar Test") {
 
 TEST_CASE("getVarsModifiedByStmt Test") {
     Modifies* modifies = setUpStmtModifies();
-    REQUIRE(modifies->getVarsModifiedByStmt(1) == unordered_set<ID>({1,2,3}));
-    REQUIRE(modifies->getVarsModifiedByStmt(2) == unordered_set<ID>({1,3}));
-    REQUIRE(modifies->getVarsModifiedByStmt(3) == unordered_set<ID>({1}));
+    REQUIRE(modifies->getVarsModifiedByStmt(1) == unordered_set<VarID>({1,2,3}));
+    REQUIRE(modifies->getVarsModifiedByStmt(2) == unordered_set<VarID>({1,3}));
+    REQUIRE(modifies->getVarsModifiedByStmt(3) == unordered_set<VarID>({1}));
 }
 
 TEST_CASE("getVarsModifiedByProc Test") {
     Modifies* modifies = setUpProcModifies();
-    REQUIRE(modifies->getVarsModifiedByProc(1) == unordered_set<ID>({2,3,4}));
-    REQUIRE(modifies->getVarsModifiedByProc(2) == unordered_set<ID>({1,3}));
-    REQUIRE(modifies->getVarsModifiedByProc(3) == unordered_set<ID>({4}));
+    REQUIRE(modifies->getVarsModifiedByProc(1) == unordered_set<VarID>({2,3,4}));
+    REQUIRE(modifies->getVarsModifiedByProc(2) == unordered_set<VarID>({1,3}));
+    REQUIRE(modifies->getVarsModifiedByProc(3) == unordered_set<VarID>({4}));
 }
 
 TEST_CASE("getStmtModifies Test") {
@@ -108,17 +108,17 @@ TEST_CASE("getStmtModifies Test") {
 
 TEST_CASE("getProcModifies Test") {
     Modifies* modifies = setUpProcModifies();
-    REQUIRE(modifies->getProcsModifies(1) == unordered_set<ID>({2}));
-    REQUIRE(modifies->getProcsModifies(2) == unordered_set<ID>({1}));
-    REQUIRE(modifies->getProcsModifies(3) == unordered_set<ID>({1,2}));
-    REQUIRE(modifies->getProcsModifies(4) == unordered_set<ID>({1,3}));
+    REQUIRE(modifies->getProcsModifies(1) == unordered_set<ProcID>({2}));
+    REQUIRE(modifies->getProcsModifies(2) == unordered_set<ProcID>({1}));
+    REQUIRE(modifies->getProcsModifies(3) == unordered_set<ProcID>({1,2}));
+    REQUIRE(modifies->getProcsModifies(4) == unordered_set<ProcID>({1,3}));
 }
 
 TEST_CASE("getAllStmtModifies Test") {
     Modifies* modifies = setUpStmtModifies();
-    pair<vector<StmtNum>, vector<ID> > result = modifies->getAllStmtModifies();
+    pair<vector<StmtNum>, vector<VarID> > result = modifies->getAllStmtModifies();
     vector<StmtNum> stmts = result.first;
-    vector<ID> varIDs = result.second;
+    vector<VarID> varIDs = result.second;
     int num_pairs = stmts.size();
     // Check that it has correct number of pairs
     REQUIRE(num_pairs == modifies->getStmtSize());
@@ -131,9 +131,9 @@ TEST_CASE("getAllStmtModifies Test") {
 
 TEST_CASE("getAllProcModifies Test") {
     Modifies* modifies = setUpProcModifies();
-    pair<vector<StmtNum>, vector<ID> > result = modifies->getAllProcModifies();
-    vector<ID> procIDs = result.first;
-    vector<ID> varIDs = result.second;
+    pair<vector<ProcID>, vector<VarID> > result = modifies->getAllProcModifies();
+    vector<ProcID> procIDs = result.first;
+    vector<VarID> varIDs = result.second;
     int num_pairs = procIDs.size();
     // Check that it has correct number of pairs
     REQUIRE(num_pairs == modifies->getProcSize());

@@ -233,17 +233,17 @@ TEST_CASE("getWhileStmtsWithControlVar Test") {
 
 TEST_CASE("getControlVarsOfIfStmt Test") {
     StmtTable* stmtTable = setUpIfWhileTests();
-    REQUIRE(stmtTable->getControlVarsOfIfStmt(1) == unordered_set<ID>({1,2}));
-    REQUIRE(stmtTable->getControlVarsOfIfStmt(2) == unordered_set<ID>({1}));
+    REQUIRE(stmtTable->getControlVarsOfIfStmt(1) == unordered_set<VarID>({1,2}));
+    REQUIRE(stmtTable->getControlVarsOfIfStmt(2) == unordered_set<VarID>({1}));
     REQUIRE(stmtTable->getControlVarsOfIfStmt(3).empty());
-    REQUIRE(stmtTable->getControlVarsOfIfStmt(6) == unordered_set<ID>({4}));
+    REQUIRE(stmtTable->getControlVarsOfIfStmt(6) == unordered_set<VarID>({4}));
     REQUIRE(stmtTable->getControlVarsOfIfStmt(9).empty());
-    REQUIRE(stmtTable->getControlVarsOfIfStmt(10) == unordered_set<ID>({3}));
-    REQUIRE(stmtTable->getControlVarsOfIfStmt(13) == unordered_set<ID>({7}));
+    REQUIRE(stmtTable->getControlVarsOfIfStmt(10) == unordered_set<VarID>({3}));
+    REQUIRE(stmtTable->getControlVarsOfIfStmt(13) == unordered_set<VarID>({7}));
     REQUIRE(stmtTable->getControlVarsOfIfStmt(16).empty());
     REQUIRE(stmtTable->getControlVarsOfIfStmt(17).empty());
-    REQUIRE(stmtTable->getControlVarsOfIfStmt(20) == unordered_set<ID>({10}));
-    REQUIRE(stmtTable->getControlVarsOfIfStmt(22) == unordered_set<ID>({12,13}));
+    REQUIRE(stmtTable->getControlVarsOfIfStmt(20) == unordered_set<VarID>({10}));
+    REQUIRE(stmtTable->getControlVarsOfIfStmt(22) == unordered_set<VarID>({12,13}));
     REQUIRE(stmtTable->getControlVarsOfIfStmt(25).empty());
     REQUIRE(stmtTable->getControlVarsOfIfStmt(30).empty());
 }
@@ -252,16 +252,16 @@ TEST_CASE("getControlVarOfWhileStmt Test") {
     StmtTable* stmtTable = setUpIfWhileTests();
     REQUIRE(stmtTable->getControlVarsOfWhileStmt(1).empty());
     REQUIRE(stmtTable->getControlVarsOfWhileStmt(2).empty());
-    REQUIRE(stmtTable->getControlVarsOfWhileStmt(3) == unordered_set<ID>({1,2}));
+    REQUIRE(stmtTable->getControlVarsOfWhileStmt(3) == unordered_set<VarID>({1,2}));
     REQUIRE(stmtTable->getControlVarsOfWhileStmt(6).empty());
-    REQUIRE(stmtTable->getControlVarsOfWhileStmt(9) == unordered_set<ID>({6}));
+    REQUIRE(stmtTable->getControlVarsOfWhileStmt(9) == unordered_set<VarID>({6}));
     REQUIRE(stmtTable->getControlVarsOfWhileStmt(10).empty());
     REQUIRE(stmtTable->getControlVarsOfWhileStmt(13).empty());
-    REQUIRE(stmtTable->getControlVarsOfWhileStmt(16) == unordered_set<ID>({7}));
-    REQUIRE(stmtTable->getControlVarsOfWhileStmt(17) == unordered_set<ID>({8}));
+    REQUIRE(stmtTable->getControlVarsOfWhileStmt(16) == unordered_set<VarID>({7}));
+    REQUIRE(stmtTable->getControlVarsOfWhileStmt(17) == unordered_set<VarID>({8}));
     REQUIRE(stmtTable->getControlVarsOfWhileStmt(20).empty());
     REQUIRE(stmtTable->getControlVarsOfWhileStmt(22).empty());
-    REQUIRE(stmtTable->getControlVarsOfWhileStmt(25) == unordered_set<ID>({14,15}));
+    REQUIRE(stmtTable->getControlVarsOfWhileStmt(25) == unordered_set<VarID>({14,15}));
     REQUIRE(stmtTable->getControlVarsOfWhileStmt(30).empty());
 }
 
@@ -353,9 +353,9 @@ TEST_CASE("isWhileStmtWithControlVar Test") {
 
 TEST_CASE("getAllIfPatterns Test") {
     StmtTable* stmtTable = setUpIfWhileTests();
-    pair<vector<StmtNum>, vector<ID> > result = stmtTable->getAllIfPatterns();
+    pair<vector<StmtNum>, vector<VarID> > result = stmtTable->getAllIfPatterns();
     vector<StmtNum> stmtNums = result.first;
-    vector<ID> controlVars = result.second;
+    vector<VarID> controlVars = result.second;
     int num_pairs = stmtNums.size();
     // Check that it has correct number of pairs
     REQUIRE(num_pairs == stmtTable->getIfPatternsSize());
@@ -368,9 +368,9 @@ TEST_CASE("getAllIfPatterns Test") {
 
 TEST_CASE("getAllWhilePatterns Test") {
     StmtTable* stmtTable = setUpIfWhileTests();
-    pair<vector<StmtNum>, vector<ID> > result = stmtTable->getAllWhilePatterns();
+    pair<vector<StmtNum>, vector<VarID> > result = stmtTable->getAllWhilePatterns();
     vector<StmtNum> stmtNums = result.first;
-    vector<ID> controlVars = result.second;
+    vector<VarID> controlVars = result.second;
     int num_pairs = stmtNums.size();
     // Check that it has correct number of pairs
     REQUIRE(num_pairs == stmtTable->getWhilePatternsSize());

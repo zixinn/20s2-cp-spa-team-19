@@ -138,9 +138,9 @@ TEST_CASE("getNextBipSize Test") {
 
 TEST_CASE("getAllNextBip Test") {
     NextBip* nextBip = setUpNextBipTest();
-    pair<vector<ID>, vector<ID> > result = nextBip->getAllNextBip();
-    vector<ID> n1s = result.first;
-    vector<ID> n2s = result.second;
+    pair<vector<ProgLine>, vector<ProgLine> > result = nextBip->getAllNextBip();
+    vector<ProgLine> n1s = result.first;
+    vector<ProgLine> n2s = result.second;
     int num_pairs = n1s.size();
     // Check that it has correct number of pairs
     REQUIRE(num_pairs == nextBip->getNextBipSize());
@@ -295,9 +295,9 @@ TEST_CASE("getNextBipStarSize Test") {
 
 TEST_CASE("getAllNextBipStar Test") {
     NextBip* nextBip = setUpNextBipTest();
-    pair<vector<ID>, vector<ID> > result = nextBip->getAllNextBipStar();
-    vector<ID> n1s = result.first;
-    vector<ID> n2s = result.second;
+    pair<vector<ProgLine>, vector<ProgLine> > result = nextBip->getAllNextBipStar();
+    vector<ProgLine> n1s = result.first;
+    vector<ProgLine> n2s = result.second;
     int num_pairs = n1s.size();
     // Check that it has correct number of pairs
     REQUIRE(num_pairs == nextBip->getNextBipStarSize());

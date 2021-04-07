@@ -87,16 +87,16 @@ TEST_CASE("procUsesVar Test") {
 
 TEST_CASE("getVarsUsedByStmt Test") {
     Uses* uses = setUpStmtUses();
-    REQUIRE(uses->getVarsUsedByStmt(1) == unordered_set<ID>({1,2,3}));
-    REQUIRE(uses->getVarsUsedByStmt(2) == unordered_set<ID>({1,3}));
-    REQUIRE(uses->getVarsUsedByStmt(3) == unordered_set<ID>({1}));
+    REQUIRE(uses->getVarsUsedByStmt(1) == unordered_set<VarID>({1,2,3}));
+    REQUIRE(uses->getVarsUsedByStmt(2) == unordered_set<VarID>({1,3}));
+    REQUIRE(uses->getVarsUsedByStmt(3) == unordered_set<VarID>({1}));
 }
 
 TEST_CASE("getVarsUsedByProc Test") {
     Uses* uses = setUpProcUses();
-    REQUIRE(uses->getVarsUsedByProc(1) == unordered_set<ID>({2,3,4}));
-    REQUIRE(uses->getVarsUsedByProc(2) == unordered_set<ID>({1,3}));
-    REQUIRE(uses->getVarsUsedByProc(3) == unordered_set<ID>({4}));
+    REQUIRE(uses->getVarsUsedByProc(1) == unordered_set<VarID>({2,3,4}));
+    REQUIRE(uses->getVarsUsedByProc(2) == unordered_set<VarID>({1,3}));
+    REQUIRE(uses->getVarsUsedByProc(3) == unordered_set<VarID>({4}));
 }
 
 TEST_CASE("getStmtUses Test") {
@@ -108,17 +108,17 @@ TEST_CASE("getStmtUses Test") {
 
 TEST_CASE("getProcUses Test") {
     Uses* uses = setUpProcUses();
-    REQUIRE(uses->getProcsUses(1) == unordered_set<ID>({2}));
-    REQUIRE(uses->getProcsUses(2) == unordered_set<ID>({1}));
-    REQUIRE(uses->getProcsUses(3) == unordered_set<ID>({1,2}));
-    REQUIRE(uses->getProcsUses(4) == unordered_set<ID>({1,3}));
+    REQUIRE(uses->getProcsUses(1) == unordered_set<ProcID>({2}));
+    REQUIRE(uses->getProcsUses(2) == unordered_set<ProcID>({1}));
+    REQUIRE(uses->getProcsUses(3) == unordered_set<ProcID>({1,2}));
+    REQUIRE(uses->getProcsUses(4) == unordered_set<ProcID>({1,3}));
 }
 
 TEST_CASE("getAllStmtUses Test") {
     Uses* uses = setUpStmtUses();
-    pair<vector<StmtNum>, vector<ID> > result = uses->getAllStmtUses();
+    pair<vector<StmtNum>, vector<VarID> > result = uses->getAllStmtUses();
     vector<StmtNum> stmts = result.first;
-    vector<ID> varIDs = result.second;
+    vector<VarID> varIDs = result.second;
     int num_pairs = stmts.size();
     // Check that it has correct number of pairs
     REQUIRE(num_pairs == uses->getStmtSize());
@@ -131,9 +131,9 @@ TEST_CASE("getAllStmtUses Test") {
 
 TEST_CASE("getAllProcUses Test") {
     Uses* uses = setUpProcUses();
-    pair<vector<StmtNum>, vector<ID> > result = uses->getAllProcUses();
-    vector<ID> procIDs = result.first;
-    vector<ID> varIDs = result.second;
+    pair<vector<ProcID>, vector<VarID> > result = uses->getAllProcUses();
+    vector<ProcID> procIDs = result.first;
+    vector<VarID> varIDs = result.second;
     int num_pairs = procIDs.size();
     // Check that it has correct number of pairs
     REQUIRE(num_pairs == uses->getProcSize());
