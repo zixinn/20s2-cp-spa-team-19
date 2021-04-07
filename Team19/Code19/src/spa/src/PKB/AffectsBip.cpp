@@ -48,9 +48,9 @@ unordered_set<StmtNum> const &AffectsBip::getAffectedBipStar(StmtNum a2) const {
 pair<vector<StmtNum>, vector<StmtNum> > AffectsBip::getAllAffectsBip() {
     vector<StmtNum> a1s, a2s;
     for (auto &it : affectsBipMap) {
-        for (ID n2 : it.second) {
+        for (StmtNum a2 : it.second) {
             a1s.push_back(it.first);
-            a2s.push_back(n2);
+            a2s.push_back(a2);
         }
     }
     return make_pair(a1s, a2s);
@@ -59,9 +59,9 @@ pair<vector<StmtNum>, vector<StmtNum> > AffectsBip::getAllAffectsBip() {
 pair<vector<StmtNum>, vector<StmtNum> > AffectsBip::getAllAffectsBipStar() {
     vector<StmtNum> a1s, a2s;
     for (auto &it : affectsBipStarMap) {
-        for (ID n2 : it.second) {
+        for (StmtNum a2 : it.second) {
             a1s.push_back(it.first);
-            a2s.push_back(n2);
+            a2s.push_back(a2);
         }
     }
     return make_pair(a1s, a2s);
@@ -160,7 +160,7 @@ void AffectsBip::populateAffectsBip() {
             if (find(allAssignStmtNums.begin(), allAssignStmtNums.end(), n2) == allAssignStmtNums.end()) {
                 continue;
             }
-            ID v = *PKB::modifies->getVarsModifiedByStmt(n1).begin();
+            VarID v = *PKB::modifies->getVarsModifiedByStmt(n1).begin();
             if (!(PKB::uses->stmtUsesVar(n2, v))) {
                 continue;
             }
@@ -175,7 +175,7 @@ void AffectsBip::populateAffectsBip() {
     }
 }
 
-bool AffectsBip::pathDoesNotModifyWithBranchStack(STRING s1, STRING s2, ID v, unordered_set<STRING> visited) {
+bool AffectsBip::pathDoesNotModifyWithBranchStack(STRING s1, STRING s2, VarID v, unordered_set<STRING> visited) {
     visited.insert(s1);
     if (s1 == s2) {
         // we have found our path that has not modified v

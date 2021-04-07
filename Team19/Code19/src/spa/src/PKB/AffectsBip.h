@@ -83,7 +83,7 @@ private:
     void storeAffectsBipWithBranchStack(STRING s1, STRING s2);
 
     // Checks that there exists a path from a1 to a2 such that along the path, v is not modified.
-    bool pathDoesNotModifyWithBranchStack(STRING s1, STRING s2, ID v, unordered_set<STRING> visited);
+    bool pathDoesNotModifyWithBranchStack(STRING s1, STRING s2, VarID v, unordered_set<STRING> visited);
 
     // extract the ProgLine (the first number before first space) from s
     ProgLine findN(STRING s);

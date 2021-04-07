@@ -27,6 +27,7 @@ using namespace std;
 
 typedef int StmtNum;
 typedef int ProgLine;
-typedef int ID;
+typedef int VarID;
+typedef int ProcID;
 typedef int CONST;
 typedef std::string STRING;

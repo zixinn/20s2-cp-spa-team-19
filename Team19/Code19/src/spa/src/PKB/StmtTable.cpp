@@ -3,14 +3,14 @@
 
 StmtTable::StmtTable() = default;
 
-bool StmtTable::isIfStmtWithControlVar(StmtNum stmtNum, ID controlVarID) {
+bool StmtTable::isIfStmtWithControlVar(StmtNum stmtNum, VarID controlVarID) {
     if (ifPatternsMap.find(stmtNum) == ifPatternsMap.end()) {
         return false;
     }
     return ifPatternsMap.find(stmtNum)->second.find(controlVarID) != ifPatternsMap.find(stmtNum)->second.end();
 }
 
-bool StmtTable::isWhileStmtWithControlVar(StmtNum stmtNum, ID controlVarID) {
+bool StmtTable::isWhileStmtWithControlVar(StmtNum stmtNum, VarID controlVarID) {
     if (whilePatternsMap.find(stmtNum) == whilePatternsMap.end()) {
         return false;
     }
@@ -26,7 +26,7 @@ ast::Stmt* StmtTable::getStmtNode(StmtNum stmtNum) {
     }
 }
 
-unordered_set<StmtNum> const &StmtTable::getIfStmtsWithControlVar(ID controlVarID) const {
+unordered_set<StmtNum> const &StmtTable::getIfStmtsWithControlVar(VarID controlVarID) const {
     if (reverseIfPatternsMap.find(controlVarID) == reverseIfPatternsMap.end()) {
         static unordered_set<StmtNum> empty = unordered_set<StmtNum>({});
         return empty;
@@ -35,7 +35,7 @@ unordered_set<StmtNum> const &StmtTable::getIfStmtsWithControlVar(ID controlVarI
     }
 }
 
-unordered_set<StmtNum> const &StmtTable::getWhileStmtsWithControlVar(ID controlVarID) const {
+unordered_set<StmtNum> const &StmtTable::getWhileStmtsWithControlVar(VarID controlVarID) const {
     if (reverseWhilePatternsMap.find(controlVarID) == reverseWhilePatternsMap.end()) {
         static unordered_set<StmtNum> empty = unordered_set<StmtNum>({});
         return empty;
@@ -44,7 +44,7 @@ unordered_set<StmtNum> const &StmtTable::getWhileStmtsWithControlVar(ID controlV
     }
 }
 
-unordered_set<ID> const &StmtTable::getControlVarsOfIfStmt(StmtNum stmtNum) const {
+const unordered_set<VarID> & StmtTable::getControlVarsOfIfStmt(StmtNum stmtNum) const {
     if (ifPatternsMap.find(stmtNum) == ifPatternsMap.end()) {
         static unordered_set<StmtNum> empty = unordered_set<StmtNum>({});
         return empty;
@@ -53,7 +53,7 @@ unordered_set<ID> const &StmtTable::getControlVarsOfIfStmt(StmtNum stmtNum) cons
     }
 }
 
-unordered_set<ID> const &StmtTable::getControlVarsOfWhileStmt(StmtNum stmtNum) const {
+const unordered_set<VarID> & StmtTable::getControlVarsOfWhileStmt(StmtNum stmtNum) const {
     if (whilePatternsMap.find(stmtNum) == whilePatternsMap.end()) {
         static unordered_set<StmtNum> empty = unordered_set<StmtNum>({});
         return empty;
@@ -62,7 +62,7 @@ unordered_set<ID> const &StmtTable::getControlVarsOfWhileStmt(StmtNum stmtNum) c
     }
 }
 
-ID StmtTable::getReadVariableOfStmt(StmtNum stmtNum) {
+VarID StmtTable::getReadVariableOfStmt(StmtNum stmtNum) {
     auto it = readVariablesMap.find(stmtNum);
     if (it == readVariablesMap.end()) {
         return -1;
@@ -70,7 +70,7 @@ ID StmtTable::getReadVariableOfStmt(StmtNum stmtNum) {
     return it->second;
 }
 
-ID StmtTable::getPrintVariableOfStmt(StmtNum stmtNum) {
+VarID StmtTable::getPrintVariableOfStmt(StmtNum stmtNum) {
     auto it = printVariablesMap.find(stmtNum);
     if (it == printVariablesMap.end()) {
         return -1;
@@ -78,7 +78,7 @@ ID StmtTable::getPrintVariableOfStmt(StmtNum stmtNum) {
     return it->second;
 }
 
-unordered_set<StmtNum> const &StmtTable::getStmtNumsOfReadWithVar(ID readVarID) const {
+unordered_set<StmtNum> const &StmtTable::getStmtNumsOfReadWithVar(VarID readVarID) const {
     if (reverseReadVariablesMap.find(readVarID) == reverseReadVariablesMap.end()) {
         static unordered_set<StmtNum> empty = unordered_set<StmtNum>({});
         return empty;
@@ -86,7 +86,7 @@ unordered_set<StmtNum> const &StmtTable::getStmtNumsOfReadWithVar(ID readVarID) 
         return reverseReadVariablesMap.find(readVarID)->second;
     }
 }
-unordered_set<StmtNum> const &StmtTable::getStmtNumsOfPrintWithVar(ID printVarID) const {
+unordered_set<StmtNum> const &StmtTable::getStmtNumsOfPrintWithVar(VarID printVarID) const {
     if (reversePrintVariablesMap.find(printVarID) == reversePrintVariablesMap.end()) {
         static unordered_set<StmtNum> empty = unordered_set<StmtNum>({});
         return empty;
@@ -95,11 +95,11 @@ unordered_set<StmtNum> const &StmtTable::getStmtNumsOfPrintWithVar(ID printVarID
     }
 }
 
-pair<vector<StmtNum>, vector<ID> > StmtTable::getAllIfPatterns() {
+pair<vector<StmtNum>, vector<VarID>> StmtTable::getAllIfPatterns() {
     vector<StmtNum> first;
-    vector<ID> varIDs;
+    vector<VarID> varIDs;
     for (auto &it : ifPatternsMap) {
-        for (ID varID : it.second) {
+        for (VarID varID : it.second) {
             first.push_back(it.first);
             varIDs.push_back(varID);
         }
@@ -107,11 +107,11 @@ pair<vector<StmtNum>, vector<ID> > StmtTable::getAllIfPatterns() {
     return make_pair(first, varIDs);
 }
 
-pair<vector<StmtNum>, vector<ID> > StmtTable::getAllWhilePatterns() {
+pair<vector<StmtNum>, vector<VarID>> StmtTable::getAllWhilePatterns() {
     vector<StmtNum> first;
-    vector<ID> varIDs;
+    vector<VarID> varIDs;
     for (auto &it : whilePatternsMap) {
-        for (ID varID : it.second) {
+        for (VarID varID : it.second) {
             first.push_back(it.first);
             varIDs.push_back(varID);
         }
@@ -227,11 +227,11 @@ bool StmtTable::storeAssignExpr(StmtNum stmtNum, STRING varName, STRING expr) {
     return assignExprMap.insert({stmtNum, make_pair(varName, expr)}).second;
 }
 
-bool StmtTable::storeReadVariableForStmt(StmtNum stmtNum, ID readVarID) {
+bool StmtTable::storeReadVariableForStmt(StmtNum stmtNum, VarID readVarID) {
     if (readVariablesMap.find(stmtNum) != readVariablesMap.end()) {
         return false;
     }
-    readVariablesMap.insert({stmtNum, readVarID}).second;
+    readVariablesMap.insert({stmtNum, readVarID});
 
     auto it = reverseReadVariablesMap.find(readVarID);
     if (it == reverseReadVariablesMap.end()) {
@@ -243,11 +243,11 @@ bool StmtTable::storeReadVariableForStmt(StmtNum stmtNum, ID readVarID) {
     return true;
 }
 
-bool StmtTable::storePrintVariableForStmt(StmtNum stmtNum, ID printVarID) {
+bool StmtTable::storePrintVariableForStmt(StmtNum stmtNum, VarID printVarID) {
     if (printVariablesMap.find(stmtNum) != printVariablesMap.end()) {
         return false;
     }
-    printVariablesMap.insert({stmtNum, printVarID}).second;
+    printVariablesMap.insert({stmtNum, printVarID});
 
     auto it = reversePrintVariablesMap.find(printVarID);
     if (it == reversePrintVariablesMap.end()) {
@@ -259,7 +259,7 @@ bool StmtTable::storePrintVariableForStmt(StmtNum stmtNum, ID printVarID) {
     return true;
 }
 
-bool StmtTable::storeIfPattern(StmtNum stmtNum, ID controlVarID) {
+bool StmtTable::storeIfPattern(StmtNum stmtNum, VarID controlVarID) {
     if (whilePatternsMap.find(stmtNum) != whilePatternsMap.end()) {
         return false;
     }
@@ -287,7 +287,7 @@ bool StmtTable::storeIfPattern(StmtNum stmtNum, ID controlVarID) {
     return true;
 }
 
-bool StmtTable::storeWhilePattern(StmtNum stmtNum, ID controlVarID) {
+bool StmtTable::storeWhilePattern(StmtNum stmtNum, VarID controlVarID) {
     if (ifPatternsMap.find(stmtNum) != ifPatternsMap.end()) {
         return false;
     }

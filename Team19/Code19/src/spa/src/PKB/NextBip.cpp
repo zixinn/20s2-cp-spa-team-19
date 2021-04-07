@@ -173,7 +173,7 @@ void NextBip::populateNextBip() {
 
     for (ProgLine n1 : allProgLines) {
         if (find(allCallStmts.begin(), allCallStmts.end(), n1) != allCallStmts.end()) { // n1 is a call stmt
-            ID callee = PKB::calls->getCalleeInStmt(n1); // proc id of callee
+            ProcID callee = PKB::calls->getCalleeInStmt(n1); // proc id of callee
             pair<ProgLine, ProgLine> p = PKB::procTable->getProcRange(callee); // <startStmt, endStmt>
 
             // BranchIn
@@ -273,8 +273,8 @@ void NextBip::populateReverseNextBip() {
 
 void NextBip::populateNextBipWithBranchStack() {
     vector<ProgLine> allCallStmts = PKB::stmtTable->getAllCallStmtNums();
-    vector<ID> procIds = PKB::procTable->getAllProcIDs();
-    for (ID id : procIds) {
+    vector<ProcID> procIds = PKB::procTable->getAllProcIDs();
+    for (ProcID id : procIds) {
         ProgLine startProgLine = PKB::procTable->getProcRange(id).first;
         unordered_set<ProgLine> prevBip = getPreviousBip(startProgLine);
         bool skip = false;

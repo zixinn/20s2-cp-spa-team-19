@@ -3,7 +3,7 @@
 
 VarTable::VarTable() = default;
 
-ID VarTable::getVarID(STRING varName) {
+VarID VarTable::getVarID(STRING varName) {
     if (varNameIDMap.find(varName) == varNameIDMap.end()) {
         return -1;
     } else {
@@ -11,7 +11,7 @@ ID VarTable::getVarID(STRING varName) {
     }
 }
 
-STRING VarTable::getVarName(ID varID) {
+STRING VarTable::getVarName(VarID varID) {
     try {
         return varNames.at(varID);
     } catch (out_of_range const& e) {
@@ -24,7 +24,7 @@ vector<STRING> const &VarTable::getAllVarNames() const {
     return varNames;
 }
 
-vector<STRING> VarTable::convertVarIDsToNames(vector<ID> varIDs) {
+vector<STRING> VarTable::convertVarIDsToNames(vector<VarID> varIDs) {
     vector<string> result;
     for (int id : varIDs) {
         result.push_back(getVarName(id));
@@ -32,8 +32,8 @@ vector<STRING> VarTable::convertVarIDsToNames(vector<ID> varIDs) {
     return result;
 }
 
-vector<ID> VarTable::getAllVarIDs() {
-    vector<ID> result;
+vector<VarID> VarTable::getAllVarIDs() {
+    vector<VarID> result;
     for (auto &it : varNameIDMap) {
         result.push_back(it.second);
     }
@@ -44,7 +44,7 @@ int VarTable::getSize() {
     return varNames.size();
 }
 
-ID VarTable::storeVarName(STRING varName) {
+VarID VarTable::storeVarName(STRING varName) {
     if (hasVar(varName)) {
         return getVarID(varName);
     } else {

@@ -70,7 +70,7 @@ private:
     bool storeAffectsStar(StmtNum a1, StmtNum a2);
 
     // Checks that there exists a path from a1 to a2 such that along the path, v is not modified.
-    bool pathDoesNotModify(StmtNum a1, StmtNum a2, ID v, unordered_set<StmtNum> visited);
+    bool pathDoesNotModify(StmtNum a1, StmtNum a2, VarID v, unordered_set<StmtNum> visited);
 
     void populateAffects();
 
