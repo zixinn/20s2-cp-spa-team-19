@@ -14,7 +14,7 @@ public:
     // Returns true if NextBip*(n1,n2)
     bool isNextBipStar(ProgLine n1, ProgLine n2);
 
-    bool isNextBipStarWithBranchStack(string s1, string s2);
+    bool isNextBipStarWithBranchStack(STRING s1, STRING s2);
 
     // Returns n2's such that NextBip(n1, n2)
     unordered_set<ProgLine> const &getNextBip(ProgLine n1) const;
@@ -28,7 +28,7 @@ public:
     // Returns n1's such that NextBip*(n1, n2)
     unordered_set<ProgLine> const & getPreviousBipStar(ProgLine n2) const;
 
-    unordered_set<string> const &getNextBipWithBranchStack(string s1) const;
+    unordered_set<STRING> const &getNextBipWithBranchStack(STRING s1) const;
 
     // Returns a pair of vectors in the nextBipMap.
     // First vector is vector of n1's. Second is vector of n2's.
@@ -50,7 +50,7 @@ public:
 
     void populateNextBipAndNextBipStar();
 
-    unordered_map<string, unordered_set<string>> getNextBipStarWithBranchStackNoDummyMap();
+    unordered_map<STRING, unordered_set<STRING>> getNextBipStarWithBranchStackNoDummyMap();
 
     // to switch on/off population of NextBip and NextBip* relationship
     void setRunNextBip(bool runNextBip);
@@ -81,9 +81,9 @@ private:
 
     // Maps (n1, branchStack1) to a set of (n2, branchStack2)
     // Each string is n followed by branchStack separated by whitespace
-    unordered_map<string, unordered_set<string>> nextBipWithBranchStackMap;
-    unordered_map<string, unordered_set<string>> nextBipStarWithBranchStackMap;
-    unordered_map<string, unordered_set<string>> nextBipStarWithBranchStackNoDummyMap;
+    unordered_map<STRING, unordered_set<STRING>> nextBipWithBranchStackMap;
+    unordered_map<STRING, unordered_set<STRING>> nextBipStarWithBranchStackMap;
+    unordered_map<STRING, unordered_set<STRING>> nextBipStarWithBranchStackNoDummyMap;
 
     // Stores n1 as key, set of n2's as value for NextBip relationship
     unordered_map<ProgLine, unordered_set<ProgLine>> nextBipMap;
@@ -102,8 +102,8 @@ private:
     void storeNextBipStar(ProgLine n1, ProgLine n2);
 
     // Stores <s1, s2> in the nextBipWithBranchStackMap/nextBipStarWithBranchStackMap.
-    void storeNextBipWithBranchStack(string s1, string s2);
-    void storeNextBipStarWithBranchStack(string s1, string s2);
+    void storeNextBipWithBranchStack(STRING s1, STRING s2);
+    void storeNextBipStarWithBranchStack(STRING s1, STRING s2);
 
     // Returns n2's such that NextBipWithDummy(n1, n2)
     unordered_set<ProgLine> const &getNextBipWithDummy(ProgLine n1) const;
@@ -116,7 +116,7 @@ private:
 
     // use dfs to find the branch stack and populate nextBipWithBranchStackMap
     void populateNextBipWithBranchStack();
-    void dfs(ProgLine n1, string branchStack, unordered_set<string> visited);
+    void dfs(ProgLine n1, STRING branchStack, unordered_set<STRING> visited);
 
     // populate nextBipStarMap, nextBipStarWithBranchStackMap and nextBipStarWithBranchStackNoDummyMap
     void populateNextBipStar();
@@ -126,7 +126,7 @@ private:
     void populateReverseNextBipStar();
 
     // extract the ProgLine (the first number before first space) from s
-    ProgLine findN(string s);
+    ProgLine findN(STRING s);
 
     // switch to populate NextBip and NextBip*
     bool runNextBip = true;
