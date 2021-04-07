@@ -35,12 +35,12 @@ QueryPreprocessor::QueryPreprocessor() {
         validSuchThatArgType["NextBip*"] = { { STMT_, READ_, PRINT_, ASSIGN_, CALL_, WHILE_, IF_, PROGLINE_, INTEGER_, UNDERSCORE_ },
                                              { STMT_, READ_, PRINT_, ASSIGN_, CALL_, WHILE_, IF_, PROGLINE_, INTEGER_, UNDERSCORE_ } };
     }
-    /*if (PKB::affectsBip->getRunAffectsBip()) {
+    if (PKB::affectsBip->getRunAffectsBip()) {
         validSuchThatArgType["AffectsBip"] = { { STMT_, ASSIGN_, PROGLINE_, INTEGER_, UNDERSCORE_ },
                                             { STMT_, ASSIGN_, PROGLINE_, INTEGER_, UNDERSCORE_ } };
         validSuchThatArgType["AffectsBip*"] = { { STMT_, ASSIGN_, PROGLINE_, INTEGER_, UNDERSCORE_ },
                                              { STMT_, ASSIGN_, PROGLINE_, INTEGER_, UNDERSCORE_ } };
-    }*/
+    }
 
     validPatternArgType["assign"] = { { VARIABLE_, NAME_, UNDERSCORE_ },
                                       { UNDERSCORE_, NAME_, EXPRESSION_, EXPRESSIONWITHUNDERSCORE_ } };

@@ -222,13 +222,13 @@ int getSize(Clause clause, unordered_map<STRING, STRING>& declarations) {
             return PKB::nextBip->getNextBipStarSize();
         }
     }
-    /*if (PKB::affectsBip->getRunNextBip()) {
+    if (PKB::affectsBip->getRunAffectsBip()) {
         if (rel == "AffectsBip") {
             return PKB::affectsBip->getAffectsBipSize();
         } else if (rel == "AffectsBip*") {
             return PKB::affectsBip->getAffectsBipStarSize();
         }
-    }*/
+    }
     if (rel == "Follows") {
         return PKB::follows->getFollowsSize();
     } else if (rel == "Follows*") {
