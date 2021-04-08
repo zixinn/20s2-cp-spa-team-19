@@ -35,12 +35,12 @@ QueryPreprocessor::QueryPreprocessor() {
         validSuchThatArgType["NextBip*"] = { { STMT_, READ_, PRINT_, ASSIGN_, CALL_, WHILE_, IF_, PROGLINE_, INTEGER_, UNDERSCORE_ },
                                              { STMT_, READ_, PRINT_, ASSIGN_, CALL_, WHILE_, IF_, PROGLINE_, INTEGER_, UNDERSCORE_ } };
     }
-    /*if (PKB::affectsBip->getRunAffectsBip()) {
+    if (PKB::affectsBip->getRunAffectsBip()) {
         validSuchThatArgType["AffectsBip"] = { { STMT_, ASSIGN_, PROGLINE_, INTEGER_, UNDERSCORE_ },
                                             { STMT_, ASSIGN_, PROGLINE_, INTEGER_, UNDERSCORE_ } };
         validSuchThatArgType["AffectsBip*"] = { { STMT_, ASSIGN_, PROGLINE_, INTEGER_, UNDERSCORE_ },
                                              { STMT_, ASSIGN_, PROGLINE_, INTEGER_, UNDERSCORE_ } };
-    }*/
+    }
 
     validPatternArgType["assign"] = { { VARIABLE_, NAME_, UNDERSCORE_ },
                                       { UNDERSCORE_, NAME_, EXPRESSION_, EXPRESSIONWITHUNDERSCORE_ } };
@@ -96,7 +96,8 @@ Query QueryPreprocessor::process(STRING query) {
         parseSelect(trim(statements[statements.size() - 1].substr(7)));
     }
 
-    return Query(this->declarations, this->toSelect, { this->clauses }, this->isSyntacticallyValid, this->isSemanticallyValid);
+    return Query(this->declarations, this->toSelect, { this->clauses },
+                 this->isSyntacticallyValid, this->isSemanticallyValid);
 }
 
 void QueryPreprocessor::parseDeclaration(STRING designEntity, STRING synonyms) {

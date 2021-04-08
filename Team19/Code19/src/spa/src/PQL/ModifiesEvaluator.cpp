@@ -6,17 +6,21 @@ ModifiesEvaluator::ModifiesEvaluator() {
 
 }
 
-bool ModifiesEvaluator::evaluate(unordered_map<STRING, STRING> declarations, Clause clause, unordered_map<STRING, vector<int>>& tempResults) {
+bool ModifiesEvaluator::evaluate(unordered_map<STRING, STRING> declarations, Clause clause,
+                                 unordered_map<STRING, vector<int>>& tempResults) {
     STRING firstArg = clause.getArgs().at(0);
     STRING firstType = getArgType(firstArg, declarations);
     if (firstType == NAME_ || firstType == PROCEDURE_) {
         return evaluateProcModifies(declarations, clause, tempResults);
-    } else { // firstType == INTEGER_ || firstType == STMT_ || firstType == READ_ || firstType == ASSIGN_ || firstType == CALL_ || firstType == WHILE_ || firstType == IF_
+    } else {
+        // firstType == INTEGER_ || firstType == STMT_ || firstType == READ_ || firstType == ASSIGN_
+        // || firstType == CALL_ || firstType == WHILE_ || firstType == IF_
         return evaluateStmtModifies(declarations, clause, tempResults);
     }
 }
 
-bool ModifiesEvaluator::evaluateStmtModifies(unordered_map<STRING, STRING> declarations, Clause clause, unordered_map<STRING, vector<int>>& tempResults) {
+bool ModifiesEvaluator::evaluateStmtModifies(unordered_map<STRING, STRING> declarations, Clause clause,
+                                             unordered_map<STRING, vector<int>>& tempResults) {
     STRING firstArg = clause.getArgs().at(0);
     STRING secondArg = clause.getArgs().at(1);
     STRING firstType = getArgType(firstArg, declarations);
@@ -89,7 +93,8 @@ bool ModifiesEvaluator::evaluateStmtModifies(unordered_map<STRING, STRING> decla
     }
 }
 
-bool ModifiesEvaluator::evaluateProcModifies(unordered_map<STRING, STRING> declarations, Clause clause, unordered_map<STRING, vector<int>>& tempResults) {
+bool ModifiesEvaluator::evaluateProcModifies(unordered_map<STRING, STRING> declarations, Clause clause,
+                                             unordered_map<STRING, vector<int>>& tempResults) {
     STRING firstArg = clause.getArgs().at(0);
     STRING secondArg = clause.getArgs().at(1);
     STRING firstType = getArgType(firstArg, declarations);

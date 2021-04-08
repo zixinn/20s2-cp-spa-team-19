@@ -830,4 +830,21 @@ TEST_CASE("QueryOptimizer optimize rewriteClauses - rewrite stmt#, value and pro
     REQUIRE(actual4.getToSelect() == expected4.getToSelect());
     REQUIRE(actual4.getIsSyntacticallyValid() == expected4.getIsSyntacticallyValid());
     REQUIRE(actual4.getIsSemanticallyValid() == expected4.getIsSemanticallyValid());
+
+    // stmt s, s1; assign a; prog_line p;
+    // Select <s, p, s1> such that Affects*(s, p) and Affects*(p, s1) with s.stmt# = p with s.stmt# = 8
+    Clause c51 = Clause("Affects*", { "s", "p" }, { "s", "p" }, 0);
+    Clause c52 = Clause("Affects*", { "p", "s1" }, { "p", "s1" }, 0);
+    Clause c53 = Clause("", { "s.stmt#", "p" }, { "s", "p" }, 0);
+    Clause c54 = Clause("", { "s.stmt#", "8" }, { "s" }, 1);
+    Query q5 = Query({ {"s", STMT_}, {"s1", STMT_}, {"a", ASSIGN_}, {"p", PROGLINE_} }, { "s", "p", "s1" }, { {c51, c52, c53, c54} }, true, true);
+    Query actual5 = qo.optimize(q5);
+    Clause c55 = Clause("Affects*", { "8", "p" }, { "p" }, 1);
+    Clause c56 = Clause("", { "8", "p" }, { "p" }, 1);
+    Query expected5 = Query({ {"s", STMT_}, {"s1", STMT_}, {"a", ASSIGN_}, {"p", PROGLINE_} }, { "s", "p", "s1" }, { {c55, c52, c56, c54} }, true, true);
+    REQUIRE(actual5.getDeclarations() == expected5.getDeclarations());
+    REQUIRE(actual5.getToSelect() == expected5.getToSelect());
+    REQUIRE(actual5.getClauses().at(0) == expected5.getClauses().at(0));
+    REQUIRE(actual5.getIsSyntacticallyValid() == expected5.getIsSyntacticallyValid());
+    REQUIRE(actual5.getIsSemanticallyValid() == expected5.getIsSemanticallyValid());
 }

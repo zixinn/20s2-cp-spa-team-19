@@ -134,7 +134,7 @@ namespace CondExprUtils {
             out = CheckSubExpr(input);
         }
         catch (sp::UtilsException& ex) {
-            std::cerr << ex.what() << "\n";
+            // out = false;
         }
         return out;
     }

@@ -1,8 +1,7 @@
 #pragma once
 
-#include <iostream>
-#include <vector>
 #include <algorithm>
+
 #include "AbstractAPI.h"
 
 // A collection of utility functions used in SPA

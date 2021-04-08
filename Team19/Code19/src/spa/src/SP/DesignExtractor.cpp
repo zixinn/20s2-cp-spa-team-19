@@ -132,6 +132,7 @@ void DesignExtractor::storeNewElse() {
     // Last stmt in currentNext is the last statement in 'then'
     // Thus, its Next relationship is with the stmt after the IfElse statement.
     set<ProgLine> lastThenStmt = currentNext.back();
+    PKB::stmtTable->storeIfStmt(parentStack.back(), startStmt, lastThenStmt);
     createNewCurrentState(currentParent);
 
     vector<set<ProgLine>> storedNextEntries = DEStack<vector<set<ProgLine>>>::stackPop(nextStack);
@@ -142,7 +143,6 @@ void DesignExtractor::storeNewElse() {
     storedNextEntries.push_back(lastThenStmt);
     DEStack<vector<set<ProgLine>>>::stackPush(nextStack, storedNextEntries);
 
-    PKB::stmtTable->storeIfStmt(currentParent, startStmt, lastThenStmt);
 }
 
 void DesignExtractor::endIfElse() {
@@ -150,13 +150,13 @@ void DesignExtractor::endIfElse() {
     storeCurrentStmtLstRelationships(); // Store If stmt's stmtLst's relationships
     StmtNum startStmt = currentStmtLst.front();
     set<ProgLine> lastElseStmt = currentNext.back();
+    PKB::stmtTable->storeElseStmt(parentStack.back(), startStmt, lastElseStmt);
     popSavedState();                    // Reset to previous local state variables
 
     // Add the ProgLine of the branching Else to the ProgLine of the branching Then
     for (int e: lastElseStmt) {
         currentNext.back().insert(e);   // add to the previous currentNext
     }
-    PKB::stmtTable->storeElseStmt(currentParent, startStmt, lastElseStmt);
 }
 
 void DesignExtractor::storeNewAssignment(StmtNum stmtNum, STRING variableName, AssignStmt* AST) {
