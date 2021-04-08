@@ -101,7 +101,7 @@ procedure colors {
 		}
 	}
 	progline = progline;
-	if ((procedure > statement) || ((((progline) == (statement))) && (print > read))) then {
+	if ((procedure > statement) || (((progline) == (statement)) && (print > read))) then {
 		then = assign;
 		print = call - black;
 		progline = 5555;
