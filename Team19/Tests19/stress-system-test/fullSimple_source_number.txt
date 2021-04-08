@@ -106,7 +106,7 @@ procedure colors {
 		}
 	}
 75	progline = progline;
-76	if ((procedure > statement) || ((((progline) == (statement))) && (print > read))) then {
+76	if ((procedure > statement) || (((progline) == (statement)) && (print > read))) then {
 77		then = assign;
 78		print = call - black;
 79		progline = 5555;
@@ -769,7 +769,7 @@ procedure p26 {
 481								statement = statement + statement;
 482								while (!(if + 456 == 789 - red2)) {
 483									call black;
-484									while ((brown == 45)) {
+484									while (brown == 45) {
 485										read brown;
 486										while (bryon > x) {
 487											call black;
