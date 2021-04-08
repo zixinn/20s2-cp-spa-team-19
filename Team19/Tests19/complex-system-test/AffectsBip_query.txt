@@ -1,0 +1,1295 @@
+1 - Select Boolean, AffectsBip(_,_)
+
+Select BOOLEAN such that AffectsBip(_,_)
+TRUE
+5000
+2 - Select s, AffectsBip(_,_)
+stmt s;
+Select s such that AffectsBip(_,_)
+1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99
+5000
+3 - Select v, AffectsBip(_,_)
+variable v;
+Select v such that AffectsBip(_,_)
+Kn17e,assign,black,blue,blue1,blue2,blue3,call,chi11i,chicken,chickenRice,duck,earn,else,gold,green,green1,green2,grey,if,money,noodle,onion,orange,print,procedure,progline,purple,ramen,read,red,red1,red2,rice,sci333ors,silver,sprING000Ni0n,spring,statement,then,used,w9113t,while,white,yellow
+5000
+4 - Select cons, AffectsBip(_,_)
+constant c;
+Select c such that AffectsBip(_,_)
+2,0,4,6,10,1,100,12,1241242134,15,169,197,21,234,26,26433,290918238,3,314,3279502,3993,424809,456,46,5,500,5555,7,75105820,789,8,88,884,9,926535897,93238,9749
+5000
+5 - Select n, AffectsBip(_,_)
+prog_line n;
+Select n such that AffectsBip(_,_)
+1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99
+5000
+6 - Select p, AffectsBip(_,_)
+procedure p;
+Select p such that AffectsBip(_,_)
+f00d,colors,obj3ct,simple,t0pUp,procedure
+5000
+7 - Select r, AffectsBip(_,_)
+read r;
+Select r such that AffectsBip(_,_)
+1,13,34,61,67,76,89,97
+5000
+8 - Select pn, AffectsBip(_,_)
+print pn;
+Select pn such that AffectsBip(_,_)
+6,18,23,49,63,66,77,88,99
+5000
+9 - Select c, AffectsBip(_,_)
+call c;
+Select c such that AffectsBip(_,_)
+3,12,20,24,52,68,84,85,94,98
+5000
+10 - Select w, AffectsBip(_,_)
+while w;
+Select w such that AffectsBip(_,_)
+10,31,37,44,47,55,56,58,62,87
+5000
+11 - Select ifs, AffectsBip(_,_)
+if ifs;
+Select ifs such that AffectsBip(_,_)
+7,17,29,32,45,46,53,59,72,82,92
+5000
+12 - Select a, AffectsBip(_,_)
+assign a;
+Select a such that AffectsBip(_,_)
+2,4,5,8,9,11,14,15,16,19,21,22,25,26,27,28,30,33,35,36,38,39,40,41,42,43,48,50,51,54,57,60,64,65,69,70,71,73,74,75,78,79,80,81,83,86,90,91,93,95,96
+5000
+13 - AffectsBip(_,s)
+stmt s;
+Select s such that AffectsBip(_,s)
+4,8,11,14,15,19,9,22,25,28,30,35,36,40,51,57,70,48,33,50,41,65,38,39,42,54,60,71,73,74,79,69,86,90,93,96
+5000
+14 - AffectsBip(_,n)
+prog_line n;
+Select n such that AffectsBip(_,n)
+4,8,11,14,15,19,9,22,25,28,30,35,36,40,51,57,70,48,33,50,41,65,38,39,42,54,60,71,73,74,79,69,86,90,93,96
+5000
+15 - AffectsBip(_,r) (invalid)
+read r;
+Select r such that AffectsBip(_,r)
+none
+5000
+16 - AffectsBip(_,pn) (invalid)
+print pn;
+Select pn such that AffectsBip(_,pn)
+none
+5000
+17 - AffectsBip(_,c) (invalid)
+call c;
+Select c such that AffectsBip(_,c)
+none
+5000
+18 - AffectsBip(_,w) (invalid)
+while w;
+Select w such that AffectsBip(_,w)
+none
+5000
+19 - AffectsBip(_,ifs) (invalid)
+if ifs;
+Select ifs such that AffectsBip(_,ifs)
+none
+5000
+20 - AffectsBip(_,a)
+assign a;
+Select a such that AffectsBip(_,a)
+4,8,11,14,15,19,9,22,25,28,30,35,36,40,51,57,70,48,33,50,41,65,38,39,42,54,60,71,73,74,79,69,86,90,93,96
+5000
+21 - Select BOOLEAN, true AffectsBip(_,s)
+stmt s;
+Select BOOLEAN such that AffectsBip(_,s)
+TRUE
+5000
+22 - AffectsBip(_,v) (invalid)
+variable v;
+Select v such that AffectsBip(_,v)
+none
+5000
+23 - AffectsBip(_,cons) (invalid)
+constant c;
+Select c such that AffectsBip(_,c)
+none
+5000
+24 - AffectsBip(_,proc) (invalid)
+procedure p;
+Select p such that AffectsBip(_,p)
+none
+5000
+25 - AffectsBip(s,_)
+stmt s;
+Select s such that AffectsBip(s,_)
+2,4,5,11,19,25,26,27,28,30,35,36,38,39,40,41,42,43,48,50,51,54,57,60,64,65,69,70,73,75,78,79,81,83,90,91,95,96
+5000
+26 - AffectsBip(n,_)
+prog_line n;
+Select n such that AffectsBip(n,_)
+2,4,5,11,19,25,26,27,28,30,35,36,38,39,40,41,42,43,48,50,51,54,57,60,64,65,69,70,73,75,78,79,81,83,90,91,95,96
+5000
+27 - AffectsBip(r,_) (invalid)
+read r;
+Select r such that AffectsBip(r,_)
+none
+5000
+28 - AffectsBip(pn,_) (invalid)
+print pn;
+Select pn such that AffectsBip(pn,_)
+none
+5000
+29 - AffectsBip(c,_) (invalid)
+call c;
+Select c such that AffectsBip(c,_)
+none
+5000
+30 - AffectsBip(w,_) (invalid)
+while w;
+Select w such that AffectsBip(w,_)
+none
+5000
+31 - AffectsBip(ifs,_) (invalid)
+if ifs;
+Select ifs such that AffectsBip(ifs,_)
+none
+5000
+32 - AffectsBip(a,_)
+assign a;
+Select a such that AffectsBip(a,_)
+2,4,5,11,19,25,26,27,28,30,35,36,38,39,40,41,42,43,48,50,51,54,57,60,64,65,69,70,73,75,78,79,81,83,90,91,95,96
+5000
+33 - Select BOOLEAN, true AffectsBip(s,_)
+stmt s;
+Select BOOLEAN such that AffectsBip(s,_)
+TRUE
+5000
+34 - AffectsBip(v,_) (invalid)
+variable v;
+Select v such that AffectsBip(v,_)
+none
+5000
+35 - AffectsBip(cons,_) (invalid)
+constant c;
+Select c such that AffectsBip(c,_)
+none
+5000
+36 - AffectsBip(proc,_) (invalid)
+procedure p;
+Select p such that AffectsBip(p,_)
+none
+5000
+37 - AffectsBip(s,known)
+stmt s;
+Select s such that AffectsBip(s,8)
+2
+5000
+38 - AffectsBip(n,known)
+prog_line n;
+Select n such that AffectsBip(n,19)
+4
+5000
+39 - AffectsBip(r,known) (invalid)
+read r;
+Select r such that AffectsBip(r,8)
+none
+5000
+40 - AffectsBip(pn,known) (invalid)
+print pn;
+Select pn such that AffectsBip(pn,8)
+none
+5000
+41 - AffectsBip(c,known) (invalid)
+call c;
+Select c such that AffectsBip(c,19)
+none
+5000
+42 - AffectsBip(w,known) (invalid)
+while w;
+Select w such that AffectsBip(w,51)
+none
+5000
+43 - AffectsBip(ifs,known) (invalid)
+if ifs;
+Select ifs such that AffectsBip(ifs,34)
+none
+5000
+44 - AffectsBip(a,known)
+assign a;
+Select a such that AffectsBip(a,57)
+28,35,36,40,51
+5000
+45 - Select BOOLEAN, true AffectsBip(s,known)
+stmt s;
+Select BOOLEAN such that AffectsBip(s,41)
+TRUE
+5000
+46 - AffectsBip(v,known) (invalid)
+variable v;
+Select v such that AffectsBip(v,42)
+none
+5000
+47 - AffectsBip(cons,known) (invalid)
+constant c;
+Select c such that AffectsBip(c,49)
+none
+5000
+48 - AffectsBip(proc,known) (invalid)
+procedure p;
+Select p such that AffectsBip(p,55)
+none
+5000
+49 - AffectsBip(s,known) (no result)
+stmt s;
+Select s such that AffectsBip(s, 5)
+none
+5000
+50 - AffectsBip(n,known) (no result)
+prog_line n;
+Select n such that AffectsBip(n,2)
+none
+5000
+51 - AffectsBip(a,known) (no result)
+assign a;
+Select a such that AffectsBip(a,2)
+none
+5000
+52 - AffectsBip(known,s)
+stmt s;
+Select s such that AffectsBip(5,s)
+9,22
+5000
+53 - AffectsBip(known,n)
+prog_line n;
+Select n such that AffectsBip(39,n)
+25,35,38,42,50,65,70
+5000
+54 - AffectsBip(known,r) (invalid)
+read r;
+Select r such that AffectsBip(2,r)
+none
+5000
+55 - AffectsBip(known,pn) (invalid)
+print pn;
+Select pn such that AffectsBip(26,pn)
+none
+5000
+56 - AffectsBip(known,c) (invalid)
+call c;
+Select c such that AffectsBip(50,c)
+none
+5000
+57 - AffectsBip(known,w) (invalid)
+while w;
+Select w such that AffectsBip(70,w)
+none
+5000
+58 - AffectsBip(known,ifs) (invalid)
+if ifs;
+Select ifs such that AffectsBip(75,ifs)
+none
+5000
+59 - AffectsBip(known,a)
+assign a;
+Select a such that AffectsBip(42,a)
+50,54,69,74
+5000
+60 - Select BOOLEAN, true AffectsBip(known,s)
+stmt s;
+Select BOOLEAN such that AffectsBip(s,38)
+TRUE
+5000
+61 - AffectsBip(known,v) (invalid)
+variable v;
+Select v such that AffectsBip(11,v)
+none
+5000
+62 - AffectsBip(known, cons) (invalid)
+constant c;
+Select c such that AffectsBip(12,c)
+none
+5000
+63 - AffectsBip(known, proc) (invalid)
+procedure p;
+Select p such that AffectsBip(13,p)
+none
+5000
+64 - AffectsBip(known,s) (no result)
+stmt s;
+Select s such that AffectsBip(74,s)
+none
+5000
+65 - AffectsBip(known,n) (no result)
+prog_line n;
+Select n such that AffectsBip(22,n)
+none
+5000
+66 - AffectsBip(known,a) (no result)
+assign a;
+Select a such that AffectsBip(33,a)
+none
+5000
+67 - Select Boolean, AffectsBip(known,known)
+
+Select BOOLEAN such that AffectsBip(39,38)
+TRUE
+5000
+68 - Select s, AffectsBip(known,known)
+stmt s;
+Select s such that AffectsBip(2,8)
+1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99
+5000
+69 - Select v, AffectsBip(known,known)
+variable v;
+Select v such that AffectsBip(39,42)
+Kn17e,assign,black,blue,blue1,blue2,blue3,call,chi11i,chicken,chickenRice,duck,earn,else,gold,green,green1,green2,grey,if,money,noodle,onion,orange,print,procedure,progline,purple,ramen,read,red,red1,red2,rice,sci333ors,silver,sprING000Ni0n,spring,statement,then,used,w9113t,while,white,yellow
+5000
+70 - Select cons, AffectsBip(known,known)
+constant c;
+Select c such that AffectsBip(5,22)
+2,0,4,6,10,1,100,12,1241242134,15,169,197,21,234,26,26433,290918238,3,314,3279502,3993,424809,456,46,5,500,5555,7,75105820,789,8,88,884,9,926535897,93238,9749
+5000
+71 - Select n, AffectsBip(known,known)
+prog_line n;
+Select n such that AffectsBip(51,57)
+1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99
+5000
+72 - Select p, AffectsBip(known,known)
+procedure p;
+Select p such that AffectsBip(39,50)
+f00d,colors,obj3ct,simple,t0pUp,procedure
+5000
+73 - Select r, AffectsBip(known,known)
+read r;
+Select r such that AffectsBip(39,38)
+1,13,34,61,67,76,89,97
+5000
+74 - Select pn, AffectsBip(known,known)
+print pn;
+Select pn such that AffectsBip(39,65)
+6,18,23,49,63,66,77,88,99
+5000
+75 - Select c, AffectsBip(known,known)
+call c;
+Select c such that AffectsBip(35,57)
+3,12,20,24,52,68,84,85,94,98
+5000
+76 - Select w, AffectsBip(known,known)
+while w;
+Select w such that AffectsBip(51,70)
+10,31,37,44,47,55,56,58,62,87
+5000
+77 - Select ifs, AffectsBip(known,known)
+if ifs;
+Select ifs such that AffectsBip(39,70)
+7,17,29,32,45,46,53,59,72,82,92
+5000
+78 - Select a, AffectsBip(known,known)
+assign a;
+Select a such that AffectsBip(39,65)
+2,4,5,8,9,11,14,15,16,19,21,22,25,26,27,28,30,33,35,36,38,39,40,41,42,43,48,50,51,54,57,60,64,65,69,70,71,73,74,75,78,79,80,81,83,86,90,91,93,95,96
+5000
+79 - Select Boolean, false AffectsBip(known,known)
+
+Select BOOLEAN such that AffectsBip(71,79)
+FALSE
+5000
+80 - AffectsBip(r1,r2) (invalid)
+read r1,r2;
+Select <r1,r2> such that AffectsBip(r1,r2)
+none
+5000
+81 - AffectsBip(r,pn) (invalid)
+read r; print pn;
+Select <r,pn> such that AffectsBip(r,pn)
+none
+5000
+82 - AffectsBip(r,c) (invalid)
+read r; call c;
+Select <r,c> such that AffectsBip(r,c)
+none
+5000
+83 - AffectsBip(r,w) (invalid)
+read r; while w;
+Select <r,w> such that AffectsBip(r,w)
+none
+5000
+84 - AffectsBip(r,ifs) (invalid)
+read r; if ifs;
+Select <r,ifs> such that AffectsBip(r,ifs)
+none
+5000
+85 - AffectsBip(r,a) (invalid)
+read r; assign a;
+Select <r, a> such that AffectsBip(r,a)
+none
+5000
+86 - AffectsBip(r,n) (invalid)
+read r; prog_line n;
+Select <r, n> such that AffectsBip(r,n)
+none
+5000
+87 - AffectsBip(r,s) (invalid)
+read r; stmt s;
+Select <r, s> such that AffectsBip(r,s)
+none
+5000
+88 - AffectsBip(r, cons) (invalid)
+read r; constant c;
+Select <r, c> such that AffectsBip(r, c)
+none
+5000
+89 - AffectsBip(r, proc) (invalid)
+read r; procedure p;
+Select <r,p> such that AffectsBip(r,p)
+none
+5000
+90 - AffectsBip(r,v) (invalid)
+read r; variable v;
+Select <r,v> such that AffectsBip(r,v)
+none
+5000
+91 - AffectsBip(pn,r) (invalid)
+read r; print pn;
+Select <pn, r> such that AffectsBip(pn,r)
+none
+5000
+92 - AffectsBip(pn,pn) (invalid)
+print pn1,pn2;
+Select <pn1,pn2> such that AffectsBip(pn1,pn2)
+none
+5000
+93 - AffectsBip(pn,c) (invalid)
+print pn; call c;
+Select <pn,c> such that AffectsBip(pn,c)
+none
+5000
+94 - AffectsBip(pn,w) (invalid)
+print pn; while w;
+Select <pn,w> such that AffectsBip(pn,w)
+none
+5000
+95 - AffectsBip(pn,ifs) (invalid)
+print pn; if ifs;
+Select <pn,ifs> such that AffectsBip(pn,ifs)
+none
+5000
+96 - AffectsBip(pn,a) (invalid)
+print pn; assign a;
+Select <pn, a> such that AffectsBip(pn,a)
+none
+5000
+97 - AffectsBip(pn,n) (invalid)
+print pn; prog_line n;
+Select <pn, n> such that AffectsBip(pn,n)
+none
+5000
+98 - AffectsBip(pn,s) (invalid)
+print pn; stmt s;
+Select <pn, s> such that AffectsBip(pn,s)
+none
+5000
+99 - AffectsBip(pn, cons) (invalid)
+print pn; constant c;
+Select <pn, c> such that AffectsBip(pn, c)
+none
+5000
+100 - AffectsBip(pn, proc) (invalid)
+print pn; procedure p;
+Select <pn,p> such that AffectsBip(pn,p)
+none
+5000
+101 - AffectsBip(pn,v) (invalid)
+print pn; variable v;
+Select <pn,v> such that AffectsBip(pn,v)
+none
+5000
+102 - AffectsBip(c,r) (invalid)
+read r; call c;
+Select <c, r> such that AffectsBip(c,r)
+none
+5000
+103 - AffectsBip(c,pn) (invalid)
+call c; print pn;
+Select <c,pn> such that AffectsBip(c,pn)
+none
+5000
+104 - AffectsBip(c1,c2) (invalid)
+call c1, c2;
+Select <c1,c2> such that AffectsBip(c1,c2)
+none
+5000
+105 - AffectsBip(c,w) (invalid)
+call c; while w;
+Select <c,w> such that AffectsBip(c,w)
+none
+5000
+106 - AffectsBip(c,ifs) (invalid)
+call c; if ifs;
+Select <c,ifs> such that AffectsBip(c,ifs)
+none
+5000
+107 - AffectsBip(c,a) (invalid)
+call c; assign a;
+Select <c, a> such that AffectsBip(c,a)
+none
+5000
+108 - AffectsBip(c,n) (invalid)
+call c; prog_line n;
+Select <c, n> such that AffectsBip(c,n)
+none
+5000
+109 - AffectsBip(c,s) (invalid)
+call c; stmt s;
+Select <c, s> such that AffectsBip(c,s)
+none
+5000
+110 - AffectsBip(c, cons) (invalid)
+call c; constant cons;
+Select <c, cons> such that AffectsBip(c, cons)
+none
+5000
+111 - AffectsBip(c, proc) (invalid)
+call c; procedure p;
+Select <c,p> such that AffectsBip(c,p)
+none
+5000
+112 - AffectsBip(c,v) (invalid)
+call c; variable v;
+Select <c,v> such that AffectsBip(c,v)
+none
+5000
+113 - AffectsBip(w,r) (invalid)
+read r; while w;
+Select <w, r> such that AffectsBip(w,r)
+none
+5000
+114 - AffectsBip(w,pn) (invalid)
+while w; print pn;
+Select <w,pn> such that AffectsBip(w,pn)
+none
+5000
+115 - AffectsBip(w,c) (invalid)
+while w; call c;
+Select <w,c> such that AffectsBip(w,c)
+none
+5000
+116 - AffectsBip(w1,w2) (invalid)
+while w1, w2;
+Select <w1,w2> such that AffectsBip(w1,w2)
+none
+5000
+117 - AffectsBip(w,ifs) (invalid)
+while w; if ifs;
+Select <w,ifs> such that AffectsBip(w,ifs)
+none
+5000
+118 - AffectsBip(w,a) (invalid)
+while w; assign a;
+Select <w, a> such that AffectsBip(w,a)
+none
+5000
+119 - AffectsBip(w,n) (invalid)
+while w; prog_line n;
+Select <w, n> such that AffectsBip(w,n)
+none
+5000
+120 - AffectsBip(w,s) (invalid)
+while w; stmt s;
+Select <w, s> such that AffectsBip(w,s)
+none
+5000
+121 - AffectsBip(w, cons) (invalid)
+while w; constant cons;
+Select <w, cons> such that AffectsBip(w, cons)
+none
+5000
+122 - AffectsBip(w, proc) (invalid)
+while w; procedure p;
+Select <w,p> such that AffectsBip(w,p)
+none
+5000
+123 - AffectsBip(w,v) (invalid)
+while w; variable v;
+Select <w,v> such that AffectsBip(w,v)
+none
+5000
+124 - AffectsBip(ifs,r) (invalid)
+read r; if ifs;
+Select <ifs, r> such that AffectsBip(ifs,r)
+none
+5000
+125 - AffectsBip(ifs,pn) (invalid)
+if ifs; print pn;
+Select <ifs,pn> such that AffectsBip(ifs,pn)
+none
+5000
+126 - AffectsBip(ifs,c) (invalid)
+if ifs; call c;
+Select <ifs,c> such that AffectsBip(ifs,c)
+none
+5000
+127 - AffectsBip(ifs,w) (invalid)
+if ifs; while w;
+Select <ifs,w> such that AffectsBip(ifs,w)
+none
+5000
+128 - AffectsBip(ifs1,ifs2) (invalid)
+if ifs1, ifs2;
+Select <ifs1,ifs2> such that AffectsBip(ifs1,ifs2)
+none
+5000
+129 - AffectsBip(ifs,a) (invalid)
+if ifs; assign a;
+Select <ifs, a> such that AffectsBip(ifs,a)
+none
+5000
+130 - AffectsBip(ifs,n) (invalid)
+if ifs; prog_line n;
+Select <ifs, n> such that AffectsBip(ifs,n)
+none
+5000
+131 - AffectsBip(ifs,s) (invalid)
+if ifs; stmt s;
+Select <ifs, s> such that AffectsBip(ifs,s)
+none
+5000
+132 - AffectsBip(ifs, cons) (invalid)
+if ifs; constant cons;
+Select <ifs, cons> such that AffectsBip(ifs, cons)
+none
+5000
+133 - AffectsBip(ifs, proc) (invalid)
+if ifs; procedure p;
+Select <ifs,p> such that AffectsBip(ifs,p)
+none
+5000
+134 - AffectsBip(ifs,v) (invalid)
+if ifs; variable v;
+Select <ifs,v> such that AffectsBip(ifs,v)
+none
+5000
+135 - AffectsBip(a,r) (invalid)
+read r; assign a;
+Select <a, r> such that AffectsBip(a,r)
+none
+5000
+136 - AffectsBip(a,pn) (invalid)
+assign a; print pn;
+Select <a,pn> such that AffectsBip(a,pn)
+none
+5000
+137 - AffectsBip(a,c) (invalid)
+assign a; call c;
+Select <a,c> such that AffectsBip(a,c)
+none
+5000
+138 - AffectsBip(a,w) (invalid)
+assign a; while w;
+Select <a,w> such that AffectsBip(a,w)
+none
+5000
+139 - AffectsBip(a1,ifs) (invalid)
+assign a1; if ifs;
+Select <a1,ifs> such that AffectsBip(a1,ifs)
+none
+5000
+140 - AffectsBip(a1,a2)
+assign a1,a2;
+Select <a1, a2> such that AffectsBip(a1,a2)
+2 8,4 19,5 9,5 22,11 14,11 15,19 22,25 28,25 36,25 40,26 70,27 48,27 70,28 25,28 33,28 41,28 50,28 57,28 65,28 70,30 11,30 15,35 25,35 33,35 41,35 50,35 57,35 65,35 70,36 51,36 57,36 70,38 39,39 25,39 35,39 38,39 42,39 50,39 65,39 70,40 51,40 57,40 70,41 50,42 50,42 54,42 69,42 74,43 69,48 48,48 70,50 48,50 70,51 51,51 57,51 70,54 69,57 65,60 30,60 41,60 65,64 4,65 25,65 35,65 38,65 42,65 50,65 65,65 70,69 50,69 54,69 69,69 74,70 69,73 93,75 71,75 79,78 79,78 71,79 73,79 90,81 86,83 86,90 74,91 50,91 54,91 60,91 65,95 86,96 96
+5000
+141 - AffectsBip(a,n)
+assign a; prog_line n;
+Select <a, n> such that AffectsBip(a,n)
+2 8,4 19,5 9,5 22,11 14,11 15,19 22,25 28,25 36,25 40,26 70,27 48,27 70,28 25,28 33,28 41,28 50,28 57,28 65,28 70,30 11,30 15,35 25,35 33,35 41,35 50,35 57,35 65,35 70,36 51,36 57,36 70,38 39,39 25,39 35,39 38,39 42,39 50,39 65,39 70,40 51,40 57,40 70,41 50,42 50,42 54,42 69,42 74,43 69,48 48,48 70,50 48,50 70,51 51,51 57,51 70,54 69,57 65,60 30,60 41,60 65,64 4,65 25,65 35,65 38,65 42,65 50,65 65,65 70,69 50,69 54,69 69,69 74,70 69,73 93,75 71,75 79,78 79,78 71,79 73,79 90,81 86,83 86,90 74,91 50,91 54,91 60,91 65,95 86,96 96
+5000
+142 - AffectsBip(a,s)
+assign a; stmt s;
+Select <a, s> such that AffectsBip(a,s)
+2 8,4 19,5 9,5 22,11 14,11 15,19 22,25 28,25 36,25 40,26 70,27 48,27 70,28 25,28 33,28 41,28 50,28 57,28 65,28 70,30 11,30 15,35 25,35 33,35 41,35 50,35 57,35 65,35 70,36 51,36 57,36 70,38 39,39 25,39 35,39 38,39 42,39 50,39 65,39 70,40 51,40 57,40 70,41 50,42 50,42 54,42 69,42 74,43 69,48 48,48 70,50 48,50 70,51 51,51 57,51 70,54 69,57 65,60 30,60 41,60 65,64 4,65 25,65 35,65 38,65 42,65 50,65 65,65 70,69 50,69 54,69 69,69 74,70 69,73 93,75 71,75 79,78 79,78 71,79 73,79 90,81 86,83 86,90 74,91 50,91 54,91 60,91 65,95 86,96 96
+5000
+143 - AffectsBip(a, cons) (invalid)
+assign a; constant cons;
+Select <a, cons> such that AffectsBip(a, cons)
+none
+5000
+144 - AffectsBip(a, proc) (invalid)
+assign a; procedure p;
+Select <a,p> such that AffectsBip(a,p)
+none
+5000
+145 - AffectsBip(a,v) (invalid)
+assign a; variable v;
+Select <a,v> such that AffectsBip(a,v)
+none
+5000
+146 - AffectsBip(n,r) (invalid)
+read r; prog_line n;
+Select <n, r> such that AffectsBip(n,r)
+none
+5000
+147 - AffectsBip(n,pn) (invalid)
+prog_line n; print pn;
+Select <n,pn> such that AffectsBip(n,pn)
+none
+5000
+148 - AffectsBip(n,c) (invalid)
+prog_line n; call c;
+Select <n,c> such that AffectsBip(n,c)
+none
+5000
+149 - AffectsBip(n,w) (invalid)
+prog_line n; while w;
+Select <n,w> such that AffectsBip(n,w)
+none
+5000
+150 - AffectsBip(n,ifs) (invalid)
+prog_line n; if ifs;
+Select <n,ifs> such that AffectsBip(n,ifs)
+none
+5000
+151 - AffectsBip(n,a)
+prog_line n; assign a;
+Select <n, a> such that AffectsBip(n,a)
+2 8,4 19,5 9,5 22,11 14,11 15,19 22,25 28,25 36,25 40,26 70,27 48,27 70,28 25,28 33,28 41,28 50,28 57,28 65,28 70,30 11,30 15,35 25,35 33,35 41,35 50,35 57,35 65,35 70,36 51,36 57,36 70,38 39,39 25,39 35,39 38,39 42,39 50,39 65,39 70,40 51,40 57,40 70,41 50,42 50,42 54,42 69,42 74,43 69,48 48,48 70,50 48,50 70,51 51,51 57,51 70,54 69,57 65,60 30,60 41,60 65,64 4,65 25,65 35,65 38,65 42,65 50,65 65,65 70,69 50,69 54,69 69,69 74,70 69,73 93,75 71,75 79,78 79,78 71,79 73,79 90,81 86,83 86,90 74,91 50,91 54,91 60,91 65,95 86,96 96
+5000
+152 - AffectsBip(n1,n2)
+prog_line n1,n2;
+Select <n1, n2> such that AffectsBip(n1,n2)
+2 8,4 19,5 9,5 22,11 14,11 15,19 22,25 28,25 36,25 40,26 70,27 48,27 70,28 25,28 33,28 41,28 50,28 57,28 65,28 70,30 11,30 15,35 25,35 33,35 41,35 50,35 57,35 65,35 70,36 51,36 57,36 70,38 39,39 25,39 35,39 38,39 42,39 50,39 65,39 70,40 51,40 57,40 70,41 50,42 50,42 54,42 69,42 74,43 69,48 48,48 70,50 48,50 70,51 51,51 57,51 70,54 69,57 65,60 30,60 41,60 65,64 4,65 25,65 35,65 38,65 42,65 50,65 65,65 70,69 50,69 54,69 69,69 74,70 69,73 93,75 71,75 79,78 79,78 71,79 73,79 90,81 86,83 86,90 74,91 50,91 54,91 60,91 65,95 86,96 96
+5000
+153 - AffectsBip(n,s)
+prog_line n; stmt s;
+Select <n, s> such that AffectsBip(n,s)
+2 8,4 19,5 9,5 22,11 14,11 15,19 22,25 28,25 36,25 40,26 70,27 48,27 70,28 25,28 33,28 41,28 50,28 57,28 65,28 70,30 11,30 15,35 25,35 33,35 41,35 50,35 57,35 65,35 70,36 51,36 57,36 70,38 39,39 25,39 35,39 38,39 42,39 50,39 65,39 70,40 51,40 57,40 70,41 50,42 50,42 54,42 69,42 74,43 69,48 48,48 70,50 48,50 70,51 51,51 57,51 70,54 69,57 65,60 30,60 41,60 65,64 4,65 25,65 35,65 38,65 42,65 50,65 65,65 70,69 50,69 54,69 69,69 74,70 69,73 93,75 71,75 79,78 79,78 71,79 73,79 90,81 86,83 86,90 74,91 50,91 54,91 60,91 65,95 86,96 96
+5000
+154 - AffectsBip(n, cons) (invalid)
+prog_line n; constant cons;
+Select <n, cons> such that AffectsBip(n, cons)
+none
+5000
+155 - AffectsBip(n, proc) (invalid)
+prog_line n; procedure p;
+Select <n,p> such that AffectsBip(n,p)
+none
+5000
+156 - AffectsBip(n,v) (invalid)
+prog_line n; variable v;
+Select <n,v> such that AffectsBip(n,v)
+none
+5000
+157 - AffectsBip(s,r) (invalid)
+read r; stmt s;
+Select <s, r> such that AffectsBip(s,r)
+none
+5000
+158 - AffectsBip(s,pn) (invalid)
+stmt s; print pn;
+Select <s,pn> such that AffectsBip(s,pn)
+none
+5000
+159 - AffectsBip(s,c) (invalid)
+stmt s; call c;
+Select <s,c> such that AffectsBip(s,c)
+none
+5000
+160 - AffectsBip(s,w) (invalid)
+stmt s; while w;
+Select <s,w> such that AffectsBip(s,w)
+none
+5000
+161 - AffectsBip(s,ifs) (invalid)
+stmt s; if ifs;
+Select <s,ifs> such that AffectsBip(s,ifs)
+none
+5000
+162 - AffectsBip(s,a)
+stmt s; assign a;
+Select <s, a> such that AffectsBip(s,a)
+2 8,4 19,5 9,5 22,11 14,11 15,19 22,25 28,25 36,25 40,26 70,27 48,27 70,28 25,28 33,28 41,28 50,28 57,28 65,28 70,30 11,30 15,35 25,35 33,35 41,35 50,35 57,35 65,35 70,36 51,36 57,36 70,38 39,39 25,39 35,39 38,39 42,39 50,39 65,39 70,40 51,40 57,40 70,41 50,42 50,42 54,42 69,42 74,43 69,48 48,48 70,50 48,50 70,51 51,51 57,51 70,54 69,57 65,60 30,60 41,60 65,64 4,65 25,65 35,65 38,65 42,65 50,65 65,65 70,69 50,69 54,69 69,69 74,70 69,73 93,75 71,75 79,78 79,78 71,79 73,79 90,81 86,83 86,90 74,91 50,91 54,91 60,91 65,95 86,96 96
+5000
+163 - AffectsBip(s,n)
+stmt s; prog_line n;
+Select <s, n> such that AffectsBip(s,n)
+2 8,4 19,5 9,5 22,11 14,11 15,19 22,25 28,25 36,25 40,26 70,27 48,27 70,28 25,28 33,28 41,28 50,28 57,28 65,28 70,30 11,30 15,35 25,35 33,35 41,35 50,35 57,35 65,35 70,36 51,36 57,36 70,38 39,39 25,39 35,39 38,39 42,39 50,39 65,39 70,40 51,40 57,40 70,41 50,42 50,42 54,42 69,42 74,43 69,48 48,48 70,50 48,50 70,51 51,51 57,51 70,54 69,57 65,60 30,60 41,60 65,64 4,65 25,65 35,65 38,65 42,65 50,65 65,65 70,69 50,69 54,69 69,69 74,70 69,73 93,75 71,75 79,78 79,78 71,79 73,79 90,81 86,83 86,90 74,91 50,91 54,91 60,91 65,95 86,96 96
+5000
+164 - AffectsBip(s,s)
+stmt s1,s2;
+Select <s1, s2> such that AffectsBip(s1,s2)
+2 8,4 19,5 9,5 22,11 14,11 15,19 22,25 28,25 36,25 40,26 70,27 48,27 70,28 25,28 33,28 41,28 50,28 57,28 65,28 70,30 11,30 15,35 25,35 33,35 41,35 50,35 57,35 65,35 70,36 51,36 57,36 70,38 39,39 25,39 35,39 38,39 42,39 50,39 65,39 70,40 51,40 57,40 70,41 50,42 50,42 54,42 69,42 74,43 69,48 48,48 70,50 48,50 70,51 51,51 57,51 70,54 69,57 65,60 30,60 41,60 65,64 4,65 25,65 35,65 38,65 42,65 50,65 65,65 70,69 50,69 54,69 69,69 74,70 69,73 93,75 71,75 79,78 79,78 71,79 73,79 90,81 86,83 86,90 74,91 50,91 54,91 60,91 65,95 86,96 96
+5000
+165 - AffectsBip(s, cons) (invalid)
+stmt s; constant cons;
+Select <s, cons> such that AffectsBip(s, cons)
+none
+5000
+166 - AffectsBip(s, proc) (invalid)
+stmt s; procedure p;
+Select <s,p> such that AffectsBip(s,p)
+none
+5000
+167 - AffectsBip(s,v) (invalid)
+stmt s; variable v;
+Select <s,v> such that AffectsBip(s,v)
+none
+5000
+168 - AffectsBip(cons,r) (invalid)
+read r; constant cons;
+Select <cons, r> such that AffectsBip(cons,r)
+none
+5000
+169 - AffectsBip(cons,pn) (invalid)
+constant cons; print pn;
+Select <cons,pn> such that AffectsBip(cons,pn)
+none
+5000
+170 - AffectsBip(cons,c) (invalid)
+constant cons; call c;
+Select <cons,c> such that AffectsBip(cons,c)
+none
+5000
+171 - AffectsBip(cons,w) (invalid)
+constant cons; while w;
+Select <cons,w> such that AffectsBip(cons,w)
+none
+5000
+172 - AffectsBip(cons,ifs) (invalid)
+constant cons; if ifs;
+Select <cons,ifs> such that AffectsBip(cons,ifs)
+none
+5000
+173 - AffectsBip(cons,a) (invalid)
+constant cons; assign a;
+Select <cons, a> such that AffectsBip(cons,a)
+none
+5000
+174 - AffectsBip(cons,n) (invalid)
+constant cons; prog_line n;
+Select <cons, n> such that AffectsBip(cons,n)
+none
+5000
+175 - AffectsBip(cons,s) (invalid)
+constant cons; stmt s;
+Select <cons, s> such that AffectsBip(cons,s)
+none
+5000
+176 - AffectsBip(cons1, cons2) (invalid)
+constant cons1, cons2;
+Select <cons1, cons2> such that AffectsBip(cons1, cons2)
+none
+5000
+177 - AffectsBip(cons, proc) (invalid)
+constant cons; procedure p;
+Select <cons,p> such that AffectsBip(cons,p)
+none
+5000
+178 - AffectsBip(cons,v) (invalid)
+constant cons; variable v;
+Select <cons,v> such that AffectsBip(cons,v)
+none
+5000
+179 - AffectsBip(p,r) (invalid)
+read r; procedure p;
+Select <p, r> such that AffectsBip(p,r)
+none
+5000
+180 - AffectsBip(p,pn) (invalid)
+procedure p; print pn;
+Select <p,pn> such that AffectsBip(p,pn)
+none
+5000
+181 - AffectsBip(p,c) (invalid)
+procedure p; call c;
+Select <p,c> such that AffectsBip(p,c)
+none
+5000
+182 - AffectsBip(p,w) (invalid)
+procedure p; while w;
+Select <p,w> such that AffectsBip(p,w)
+none
+5000
+183 - AffectsBip(p,ifs) (invalid)
+procedure p; if ifs;
+Select <p,ifs> such that AffectsBip(p,ifs)
+none
+5000
+184 - AffectsBip(p,a) (invalid)
+procedure p; assign a;
+Select <p, a> such that AffectsBip(p,a)
+none
+5000
+185 - AffectsBip(p,n) (invalid)
+procedure p; prog_line n;
+Select <p, n> such that AffectsBip(p,n)
+none
+5000
+186 - AffectsBip(p,s) (invalid)
+procedure p; stmt s;
+Select <p, s> such that AffectsBip(p,s)
+none
+5000
+187 - AffectsBip(p, cons) (invalid)
+procedure p; constant cons;
+Select <p, cons> such that AffectsBip(p, cons)
+none
+5000
+188 - AffectsBip(p1, p2) (invalid)
+procedure p1,p2;
+Select <p1,p2> such that AffectsBip(p1,p2)
+none
+5000
+189 - AffectsBip(p,v) (invalid)
+procedure p; variable v;
+Select <p,v> such that AffectsBip(p,v)
+none
+5000
+190 - AffectsBip(v,r) (invalid)
+read r; variable v;
+Select <v, r> such that AffectsBip(v,r)
+none
+5000
+191 - AffectsBip(v,pn) (invalid)
+variable v; print pn;
+Select <v,pn> such that AffectsBip(v,pn)
+none
+5000
+192 - AffectsBip(v,c) (invalid)
+variable v; call c;
+Select <v,c> such that AffectsBip(v,c)
+none
+5000
+193 - AffectsBip(v,w) (invalid)
+variable v; while w;
+Select <v,w> such that AffectsBip(v,w)
+none
+5000
+194 - AffectsBip(v,ifs) (invalid)
+variable v; if ifs;
+Select <v,ifs> such that AffectsBip(v,ifs)
+none
+5000
+195 - AffectsBip(v,a) (invalid)
+variable v; assign a;
+Select <v, a> such that AffectsBip(v,a)
+none
+5000
+196 - AffectsBip(v,n) (invalid)
+variable v; prog_line n;
+Select <v, n> such that AffectsBip(v,n)
+none
+5000
+197 - AffectsBip(v,s) (invalid)
+variable v; stmt s;
+Select <v, s> such that AffectsBip(v,s)
+none
+5000
+198 - AffectsBip(v, cons) (invalid)
+variable v; constant cons;
+Select <v, cons> such that AffectsBip(v, cons)
+none
+5000
+199 - AffectsBip(v, p) (invalid)
+variable v; procedure p;
+Select <v,p> such that AffectsBip(v,p)
+none
+5000
+200 - AffectsBip(v1,v2) (invalid)
+variable v1, v2;
+Select <v1,v2> such that AffectsBip(v1,v2)
+none
+5000
+201 - AffectsBip(s,s) (reflex)
+stmt s;
+Select s such that AffectsBip(s,s)
+48,51,65,69,96
+5000
+202 - AffectsBip(v,v) (reflex) (invalid)
+variable v;
+Select v such that AffectsBip(v,v)
+none
+5000
+203 - AffectsBip(const,const) (reflex) (invalid)
+constant c;
+Select c such that AffectsBip(c,c)
+none
+5000
+204 - AffectsBip(n,n) (reflex)
+prog_line n;
+Select n such that AffectsBip(n,n)
+48,51,65,69,96
+5000
+205 - AffectsBip(p,p) (reflex) (invalid)
+procedure p;
+Select p such that AffectsBip(p,p)
+none
+5000
+206 - AffectsBip(r,r) (reflex) (invalid)
+read r;
+Select r such that AffectsBip(r,r)
+none
+5000
+207 - AffectsBip(pn,pn) (reflex) (invalid)
+print pn;
+Select pn such that AffectsBip(pn,pn)
+none
+5000
+208 - AffectsBip(c,c) (reflex) (invalid)
+call c;
+Select c such that AffectsBip(c,c)
+none
+5000
+209 - AffectsBip(w,w) (reflex) (invalid)
+while w;
+Select w such that AffectsBip(w,w)
+none
+5000
+210 - AffectsBip(ifs,ifs) (reflex) (invalid)
+if ifs;
+Select ifs such that AffectsBip(ifs,ifs)
+none
+5000
+211 - AffectsBip(a,a) (reflex)
+assign a;
+Select a such that AffectsBip(a,a)
+48,51,65,69,96
+5000
+212 - Select s, AffectsBip(_,known)
+stmt s;
+Select s such that AffectsBip(_,8)
+1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99
+5000
+213 - Select v, AffectsBip(_,known)
+variable v;
+Select v such that AffectsBip(_,57)
+Kn17e,assign,black,blue,blue1,blue2,blue3,call,chi11i,chicken,chickenRice,duck,earn,else,gold,green,green1,green2,grey,if,money,noodle,onion,orange,print,procedure,progline,purple,ramen,read,red,red1,red2,rice,sci333ors,silver,sprING000Ni0n,spring,statement,then,used,w9113t,while,white,yellow
+5000
+214 - Select const, AffectsBip(_,known)
+constant c;
+Select c such that AffectsBip(_,40)
+2,0,4,6,10,1,100,12,1241242134,15,169,197,21,234,26,26433,290918238,3,314,3279502,3993,424809,456,46,5,500,5555,7,75105820,789,8,88,884,9,926535897,93238,9749
+5000
+215 - Select n, AffectsBip(_,known)
+prog_line n;
+Select n such that AffectsBip(_,41)
+1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99
+5000
+216 - Select p, AffectsBip(_,known)
+procedure p;
+Select p such that AffectsBip(_,54)
+f00d,colors,obj3ct,simple,t0pUp,procedure
+5000
+217 - Select r, AffectsBip(_,known)
+read r;
+Select r such that AffectsBip(_,79)
+1,13,34,61,67,76,89,97
+5000
+218 - Select pn, AffectsBip(_,known)
+print pn;
+Select pn such that AffectsBip(_,69)
+6,18,23,49,63,66,77,88,99
+5000
+219 - Select c, AffectsBip(_,known)
+call c;
+Select c such that AffectsBip(_,22)
+3,12,20,24,52,68,84,85,94,98
+5000
+220 - Select w, AffectsBip(_,known)
+while w;
+Select w such that AffectsBip(_,28)
+10,31,37,44,47,55,56,58,62,87
+5000
+221 - Select ifs, AffectsBip(_,known)
+if ifs;
+Select ifs such that AffectsBip(_,40)
+7,17,29,32,45,46,53,59,72,82,92
+5000
+222 - Select a, AffectsBip(_,known)
+assign a;
+Select a such that AffectsBip(_,57)
+2,4,5,8,9,11,14,15,16,19,21,22,25,26,27,28,30,33,35,36,38,39,40,41,42,43,48,50,51,54,57,60,64,65,69,70,71,73,74,75,78,79,80,81,83,86,90,91,93,95,96
+5000
+223 - Select s, AffectsBip(_,known) (no result)
+stmt s;
+Select s such that AffectsBip(_,1)
+none
+5000
+224 - Select v, AffectsBip(_,known) (no result)
+variable v;
+Select v such that AffectsBip(_,100)
+none
+5000
+225 - Select const, AffectsBip(_,known) (no result)
+constant c;
+Select c such that AffectsBip(_,43)
+none
+5000
+226 - Select n, AffectsBip(_,known) (no result)
+prog_line n;
+Select n such that AffectsBip(_,80)
+none
+5000
+227 - Select p, AffectsBip(_,known) (no result)
+procedure p;
+Select p such that AffectsBip(_,111)
+none
+5000
+228 - Select r, AffectsBip(_,known) (no result)
+read r;
+Select r such that AffectsBip(_,78)
+none
+5000
+229 - Select pn, AffectsBip(_,known) (no result)
+print pn;
+Select pn such that AffectsBip(_,1)
+none
+5000
+230 - Select c, AffectsBip(_,known) (no result)
+call c;
+Select c such that AffectsBip(_,0)
+none
+5000
+231 - Select w, AffectsBip(_,known) (no result)
+while w;
+Select w such that AffectsBip(_,95)
+none
+5000
+232 - Select ifs, AffectsBip(_,known) (no result)
+if ifs;
+Select ifs such that AffectsBip(_,21)
+none
+5000
+233 - Select a, AffectsBip(_,known) (no result)
+assign a;
+Select a such that AffectsBip(_,99)
+none
+5000
+234 - Select Boolean, true AffectsBip(_,known)
+
+Select BOOLEAN such that AffectsBip(_,28)
+TRUE
+5000
+235 - Select Boolean, false AffectsBip(_,known)
+
+Select BOOLEAN such that AffectsBip(_,2)
+FALSE
+5000
+236 - Select s, AffectsBip(known,_)
+stmt s;
+Select s such that AffectsBip(2,_)
+1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99
+5000
+237 - Select v, AffectsBip(known,_)
+variable v;
+Select v such that AffectsBip(4,_)
+Kn17e,assign,black,blue,blue1,blue2,blue3,call,chi11i,chicken,chickenRice,duck,earn,else,gold,green,green1,green2,grey,if,money,noodle,onion,orange,print,procedure,progline,purple,ramen,read,red,red1,red2,rice,sci333ors,silver,sprING000Ni0n,spring,statement,then,used,w9113t,while,white,yellow
+5000
+238 - Select const, AffectsBip(known,_)
+constant c;
+Select c such that AffectsBip(5,_)
+2,0,4,6,10,1,100,12,1241242134,15,169,197,21,234,26,26433,290918238,3,314,3279502,3993,424809,456,46,5,500,5555,7,75105820,789,8,88,884,9,926535897,93238,9749
+5000
+239 - Select n, AffectsBip(known,_)
+prog_line n;
+Select n such that AffectsBip(19,_)
+1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99
+5000
+240 - Select p, AffectsBip(known,_)
+procedure p;
+Select p such that AffectsBip(25,_)
+f00d,colors,obj3ct,simple,t0pUp,procedure
+5000
+241 - Select r, AffectsBip(known,_)
+read r;
+Select r such that AffectsBip(26,_)
+1,13,34,61,67,76,89,97
+5000
+242 - Select pn, AffectsBip(known,_)
+print pn;
+Select pn such that AffectsBip(27,_)
+6,18,23,49,63,66,77,88,99
+5000
+243 - Select c, AffectsBip(known,_)
+call c;
+Select c such that AffectsBip(28,_)
+3,12,20,24,52,68,84,85,94,98
+5000
+244 - Select w, AffectsBip(known,_)
+while w;
+Select w such that AffectsBip(35,_)
+10,31,37,44,47,55,56,58,62,87
+5000
+245 - Select ifs, AffectsBip(known,_)
+if ifs;
+Select ifs such that AffectsBip(36,_)
+7,17,29,32,45,46,53,59,72,82,92
+5000
+246 - Select a, AffectsBip(known,_)
+assign a;
+Select a such that AffectsBip(38,_)
+2,4,5,8,9,11,14,15,16,19,21,22,25,26,27,28,30,33,35,36,38,39,40,41,42,43,48,50,51,54,57,60,64,65,69,70,71,73,74,75,78,79,80,81,83,86,90,91,93,95,96
+5000
+247 - Select s, AffectsBip(known,_) (no result)
+stmt s;
+Select s such that AffectsBip(0,_)
+none
+5000
+248 - Select v, AffectsBip(known,_) (no result)
+variable v;
+Select v such that AffectsBip(1,_)
+none
+5000
+249 - Select const, AffectsBip(known,_) (no result)
+constant c;
+Select c such that AffectsBip(3,_)
+none
+5000
+250 - Select n, AffectsBip(known,_) (no result)
+prog_line n;
+Select n such that AffectsBip(6,_)
+none
+5000
+251 - Select p, AffectsBip(known,_) (no result)
+procedure p;
+Select p such that AffectsBip(20,_)
+none
+5000
+252 - Select r, AffectsBip(known,_) (no result)
+read r;
+Select r such that AffectsBip(21,_)
+none
+5000
+253 - Select pn, AffectsBip(known,_) (no result)
+print pn;
+Select pn such that AffectsBip(45,_)
+none
+5000
+254 - Select c, AffectsBip(known,_) (no result)
+call c;
+Select c such that AffectsBip(53,_)
+none
+5000
+255 - Select w, AffectsBip(known,_) (no result)
+while w;
+Select w such that AffectsBip(59,_)
+none
+5000
+256 - Select ifs, AffectsBip(known,_) (no result)
+if ifs;
+Select ifs such that AffectsBip(63,_)
+none
+5000
+257 - Select a, AffectsBip(known,_) (no result)
+assign a;
+Select a such that AffectsBip(74,_)
+none
+5000
+258 - Select Boolean, true AffectsBip(known,_)
+
+Select BOOLEAN such that AffectsBip(78,_)
+TRUE
+5000
+259 - Select Boolean, false AffectsBip(known,_) (no result)
+
+Select BOOLEAN such that AffectsBip(68,_)
+FALSE
+5000
