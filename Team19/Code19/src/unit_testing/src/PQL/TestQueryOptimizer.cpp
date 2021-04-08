@@ -830,14 +830,6 @@ TEST_CASE("QueryOptimizer optimize rewriteClauses - rewrite stmt#, value and pro
     REQUIRE(actual4.getToSelect() == expected4.getToSelect());
     REQUIRE(actual4.getIsSyntacticallyValid() == expected4.getIsSyntacticallyValid());
     REQUIRE(actual4.getIsSemanticallyValid() == expected4.getIsSemanticallyValid());
-}
-
-TEST_CASE("QueryOptimizer optimize rewriteClauses") {
-    QueryOptimizer qo = QueryOptimizer();
-    qo.setIsGroup(false);
-    qo.setIsOrderClauses(false);
-    qo.setIsOrderGroups(false);
-    qo.setIsRewriteClauses(true);
 
     // stmt s, s1; assign a; prog_line p;
     // Select <s, p, s1> such that Affects*(s, p) and Affects*(p, s1) with s.stmt# = p with s.stmt# = 8
@@ -852,10 +844,7 @@ TEST_CASE("QueryOptimizer optimize rewriteClauses") {
     Query expected5 = Query({ {"s", STMT_}, {"s1", STMT_}, {"a", ASSIGN_}, {"p", PROGLINE_} }, { "s", "p", "s1" }, { {c55, c52, c56, c54} }, true, true);
     REQUIRE(actual5.getDeclarations() == expected5.getDeclarations());
     REQUIRE(actual5.getToSelect() == expected5.getToSelect());
-    REQUIRE(actual5.getClauses().at(0).at(0) == expected5.getClauses().at(0).at(0));
-    REQUIRE(actual5.getClauses().at(0).at(1) == expected5.getClauses().at(0).at(1));
-    REQUIRE(actual5.getClauses().at(0).at(2) == expected5.getClauses().at(0).at(2));
-    REQUIRE(actual5.getClauses().at(0).at(3) == expected5.getClauses().at(0).at(3));
+    REQUIRE(actual5.getClauses().at(0) == expected5.getClauses().at(0));
     REQUIRE(actual5.getIsSyntacticallyValid() == expected5.getIsSyntacticallyValid());
     REQUIRE(actual5.getIsSemanticallyValid() == expected5.getIsSemanticallyValid());
 }

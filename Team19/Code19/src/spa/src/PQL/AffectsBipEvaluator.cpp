@@ -31,8 +31,7 @@ bool AffectsBipEvaluator::evaluate(unordered_map<STRING, STRING> declarations, C
         return true;
 
     } else if (firstType != INTEGER_ && secondType == INTEGER_) {  // s, known or _, known
-        unordered_set<StmtNum> affected =
-            PKB::affectsBip->getAffectedBip(stoi(secondArg));
+        unordered_set<StmtNum> affected = PKB::affectsBip->getAffectedBip(stoi(secondArg));
         if (affected.empty()) {
             return false;
         }
@@ -58,8 +57,7 @@ bool AffectsBipEvaluator::evaluate(unordered_map<STRING, STRING> declarations, C
             return !res.empty();
         }
 
-        pair<vector<StmtNum>, vector<StmtNum>> allAffectsBip =
-            PKB::affectsBip->getAllAffectsBip();
+        pair<vector<StmtNum>, vector<StmtNum>> allAffectsBip = PKB::affectsBip->getAllAffectsBip();
         if (allAffectsBip.first.empty()) {
             return false;
         }

@@ -18,8 +18,7 @@ bool AffectsBipTEvaluator::evaluate(unordered_map<STRING, STRING> declarations, 
     if (firstType == INTEGER_ && secondType == INTEGER_) {  // known, known
         return PKB::affectsBip->isAffectsBipStar(stoi(firstArg), stoi(secondArg));
 
-    } else if (firstType == INTEGER_ &&
-        secondType != INTEGER_) {  // known, s or known, _
+    } else if (firstType == INTEGER_ && secondType != INTEGER_) {  // known, s or known, _
         unordered_set<StmtNum> affected = PKB::affectsBip->getAffectsBipStar(stoi(firstArg));
         if (affected.empty()) {
             return false;
@@ -31,10 +30,8 @@ bool AffectsBipTEvaluator::evaluate(unordered_map<STRING, STRING> declarations, 
         }
         return true;
 
-    } else if (firstType != INTEGER_ &&
-        secondType == INTEGER_) {  // s, known or _, known
-        unordered_set<StmtNum> affected =
-            PKB::affectsBip->getAffectedBipStar(stoi(secondArg));
+    } else if (firstType != INTEGER_ && secondType == INTEGER_) {  // s, known or _, known
+        unordered_set<StmtNum> affected = PKB::affectsBip->getAffectedBipStar(stoi(secondArg));
         if (affected.empty()) {
             return false;
         }
@@ -60,8 +57,7 @@ bool AffectsBipTEvaluator::evaluate(unordered_map<STRING, STRING> declarations, 
             return !res.empty();
         }
 
-        pair<vector<StmtNum>, vector<StmtNum>> allAffectsBipStar =
-            PKB::affectsBip->getAllAffectsBipStar();
+        pair<vector<StmtNum>, vector<StmtNum>> allAffectsBipStar = PKB::affectsBip->getAllAffectsBipStar();
         if (allAffectsBipStar.first.empty()) {
             return false;
         }
