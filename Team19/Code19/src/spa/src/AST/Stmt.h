@@ -1,16 +1,15 @@
 #pragma once
-#include <string>
 #include "AST/Node.h"
 
 // Interface Stmt for anything with a statement number
 namespace ast {
-	class Stmt : public Node
-	{
-		int index;
-	public:
-		Stmt(sp::Token* token, int index) :Node{ token }, index{ index } {};
-		int getIndex() { return index; };
-		virtual std::string toString() { return "STMT: OVERRIDE THIS"; };
-		~Stmt() {};
-	};
+    class Stmt : public Node
+    {
+        StmtNum index;
+    public:
+        Stmt(sp::Token* token, StmtNum index) :Node{ token }, index{ index } {};
+        StmtNum getIndex() { return index; };
+        virtual STRING toString() { return "STMT: OVERRIDE THIS"; };
+        ~Stmt() {};
+    };
 }

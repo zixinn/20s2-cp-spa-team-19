@@ -6,32 +6,36 @@ ModifiesEvaluator::ModifiesEvaluator() {
 
 }
 
-bool ModifiesEvaluator::evaluate(unordered_map<string, string> declarations, Clause clause, unordered_map<string, vector<int>>& tempResults) {
-    string firstArg = clause.getArgs().at(0);
-    string firstType = getArgType(firstArg, declarations);
+bool ModifiesEvaluator::evaluate(unordered_map<STRING, STRING> declarations, Clause clause,
+                                 unordered_map<STRING, vector<int>>& tempResults) {
+    STRING firstArg = clause.getArgs().at(0);
+    STRING firstType = getArgType(firstArg, declarations);
     if (firstType == NAME_ || firstType == PROCEDURE_) {
         return evaluateProcModifies(declarations, clause, tempResults);
-    } else { // firstType == INTEGER_ || firstType == STMT_ || firstType == READ_ || firstType == ASSIGN_ || firstType == CALL_ || firstType == WHILE_ || firstType == IF_
+    } else {
+        // firstType == INTEGER_ || firstType == STMT_ || firstType == READ_ || firstType == ASSIGN_
+        // || firstType == CALL_ || firstType == WHILE_ || firstType == IF_
         return evaluateStmtModifies(declarations, clause, tempResults);
     }
 }
 
-bool ModifiesEvaluator::evaluateStmtModifies(unordered_map<string, string> declarations, Clause clause, unordered_map<string, vector<int>>& tempResults) {
-    string firstArg = clause.getArgs().at(0);
-    string secondArg = clause.getArgs().at(1);
-    string firstType = getArgType(firstArg, declarations);
-    string secondType = getArgType(secondArg, declarations);
+bool ModifiesEvaluator::evaluateStmtModifies(unordered_map<STRING, STRING> declarations, Clause clause,
+                                             unordered_map<STRING, vector<int>>& tempResults) {
+    STRING firstArg = clause.getArgs().at(0);
+    STRING secondArg = clause.getArgs().at(1);
+    STRING firstType = getArgType(firstArg, declarations);
+    STRING secondType = getArgType(secondArg, declarations);
 
     if (firstType == INTEGER_) { // 1, "v" or 1, v or 1, _
         if (secondType == NAME_) { // 1, "v"
-            int varId = PKB::varTable->getVarID(trim(secondArg.substr(1, secondArg.size() - 2)));
+            ID varId = PKB::varTable->getVarID(trim(secondArg.substr(1, secondArg.size() - 2)));
             if (varId == -1) {
                 return false;
             }
             return PKB::modifies->stmtModifiesVar(stoi(firstArg), varId);
 
         } else { // 1, v or 1, _
-            unordered_set<int> vars = PKB::modifies->getVarsModifiedByStmt(stoi(firstArg));
+            unordered_set<ID> vars = PKB::modifies->getVarsModifiedByStmt(stoi(firstArg));
             if (vars.empty()) {
                 return false;
             }
@@ -48,11 +52,11 @@ bool ModifiesEvaluator::evaluateStmtModifies(unordered_map<string, string> decla
 
     } else { // s, "v" or s, v or s, _
         if (secondType == NAME_) { // s, "v"
-            int varId = PKB::varTable->getVarID(trim(secondArg.substr(1, secondArg.size() - 2)));
+            ID varId = PKB::varTable->getVarID(trim(secondArg.substr(1, secondArg.size() - 2)));
             if (varId == -1) {
                 return false;
             }
-            unordered_set<int> stmts = PKB::modifies->getStmtsModifies(varId);
+            unordered_set<StmtNum> stmts = PKB::modifies->getStmtsModifies(varId);
             if (stmts.empty()) {
                 return false;
             }
@@ -64,7 +68,7 @@ bool ModifiesEvaluator::evaluateStmtModifies(unordered_map<string, string> decla
             return nonEmpty;
 
         } else { // s, v or s, _
-            pair<vector<int>, vector<int>> allStmtModifies = PKB::modifies->getAllStmtModifies();
+            pair<vector<StmtNum>, vector<ID>> allStmtModifies = PKB::modifies->getAllStmtModifies();
             if (allStmtModifies.first.empty()) {
                 return false;
             }
@@ -89,23 +93,24 @@ bool ModifiesEvaluator::evaluateStmtModifies(unordered_map<string, string> decla
     }
 }
 
-bool ModifiesEvaluator::evaluateProcModifies(unordered_map<string, string> declarations, Clause clause, unordered_map<string, vector<int>>& tempResults) {
-    string firstArg = clause.getArgs().at(0);
-    string secondArg = clause.getArgs().at(1);
-    string firstType = getArgType(firstArg, declarations);
-    string secondType = getArgType(secondArg, declarations);
+bool ModifiesEvaluator::evaluateProcModifies(unordered_map<STRING, STRING> declarations, Clause clause,
+                                             unordered_map<STRING, vector<int>>& tempResults) {
+    STRING firstArg = clause.getArgs().at(0);
+    STRING secondArg = clause.getArgs().at(1);
+    STRING firstType = getArgType(firstArg, declarations);
+    STRING secondType = getArgType(secondArg, declarations);
 
     if (firstType == NAME_) { // "main", "v" or "main", v or "main", _
-        int procId = PKB::procTable->getProcID(trim(firstArg.substr(1, firstArg.size() - 2)));
+        ID procId = PKB::procTable->getProcID(trim(firstArg.substr(1, firstArg.size() - 2)));
         if (secondType == NAME_) { // "main", "v"
-            int varId = PKB::varTable->getVarID(trim(secondArg.substr(1, secondArg.size() - 2)));
+            ID varId = PKB::varTable->getVarID(trim(secondArg.substr(1, secondArg.size() - 2)));
             if (procId == -1 || varId == -1) {
                 return false;
             }
             return PKB::modifies->procModifiesVar(procId, varId);
 
         } else { // "main", v or "main", _
-            unordered_set<int> vars = PKB::modifies->getVarsModifiedByProc(procId);
+            unordered_set<ID> vars = PKB::modifies->getVarsModifiedByProc(procId);
             if (vars.empty()) {
                 return false;
             }
@@ -122,11 +127,11 @@ bool ModifiesEvaluator::evaluateProcModifies(unordered_map<string, string> decla
 
     } else { // p, "v" or p, v or p, _
         if (secondType == NAME_) { // p, "v"
-            int varId = PKB::varTable->getVarID(trim(secondArg.substr(1, secondArg.size() - 2)));
+            ID varId = PKB::varTable->getVarID(trim(secondArg.substr(1, secondArg.size() - 2)));
             if (varId == -1) {
                 return false;
             }
-            unordered_set<int> procs = PKB::modifies->getProcsModifies(varId);
+            unordered_set<ID> procs = PKB::modifies->getProcsModifies(varId);
             if (procs.empty()) {
                 return false;
             }
@@ -138,7 +143,7 @@ bool ModifiesEvaluator::evaluateProcModifies(unordered_map<string, string> decla
             return nonEmpty;
 
         } else { // p, v or p, _
-            pair<vector<int>, vector<int>> allProcModifies = PKB::modifies->getAllProcModifies();
+            pair<vector<ID>, vector<ID>> allProcModifies = PKB::modifies->getAllProcModifies();
             if (allProcModifies.first.empty()) {
                 return false;
             }

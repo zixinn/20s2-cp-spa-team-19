@@ -13,21 +13,21 @@ TEST_CASE("trim") {
     REQUIRE(trim("ghij    ") == "ghij");
 
     //leading and trailing whitespace
-    REQUIRE(trim(" my string ") == "my string");
-    REQUIRE(trim("    my string    ") == "my string");
+    REQUIRE(trim(" my STRING ") == "my STRING");
+    REQUIRE(trim("    my STRING    ") == "my STRING");
 
     // other types of whitespace
-    REQUIRE(trim(" \n\t my string ") == "my string");
-    REQUIRE(trim("    my string\n") == "my string");
+    REQUIRE(trim(" \n\t my STRING ") == "my STRING");
+    REQUIRE(trim("    my STRING\n") == "my STRING");
 
-    // whitespace in string
-    REQUIRE(trim("    whitespace \nin    string\t ") == "whitespace \nin    string");
+    // whitespace in STRING
+    REQUIRE(trim("    whitespace \nin    STRING\t ") == "whitespace \nin    STRING");
 }
 
 TEST_CASE("split") {
     // split by comma
-    vector<string> actual = split("a, b, c", ",");
-    vector<string> expected = {"a", "b", "c"};
+    vector<STRING> actual = split("a, b, c", ",");
+    vector<STRING> expected = {"a", "b", "c"};
     REQUIRE(actual == expected);
 
     actual = split("a", ",");
@@ -39,7 +39,7 @@ TEST_CASE("split") {
     expected = {"assign a", "while w", "Select w such that Parent* (w, a) pattern a (\"count\", _)"};
     REQUIRE(actual == expected);
 
-    // split by comma with empty string
+    // split by comma with empty STRING
     actual = split("x, y, , z", ",");
     expected = {"x", "y", "", "z"};
     REQUIRE(actual == expected);
@@ -49,14 +49,14 @@ TEST_CASE("split") {
     expected = {"f1", "", "", "", "g2", "h3"};
     REQUIRE(actual == expected);
 
-    // split empty string
+    // split empty STRING
     actual = split("", " ");
     expected = { };
     REQUIRE(actual == expected);
 
     // split with delimiter not found
-    actual = split("this is a string", ",");
-    expected = {"this is a string"};
+    actual = split("this is a STRING", ",");
+    expected = {"this is a STRING"};
     REQUIRE(actual == expected);
 
     // split by multiple characters

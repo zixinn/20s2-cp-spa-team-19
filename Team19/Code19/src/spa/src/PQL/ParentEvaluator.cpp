@@ -6,12 +6,12 @@ ParentEvaluator::ParentEvaluator() {
 
 }
 
-bool ParentEvaluator::evaluate(unordered_map<string, string> declarations, 
-    Clause clause, unordered_map<string, vector<int>>& tempResults) {
-    string firstArg = clause.getArgs().at(0);
-    string secondArg = clause.getArgs().at(1);
-    string firstType = getArgType(firstArg, declarations);
-    string secondType = getArgType(secondArg, declarations);
+bool ParentEvaluator::evaluate(unordered_map<STRING, STRING> declarations, Clause clause,
+                               unordered_map<STRING, vector<int>>& tempResults) {
+    STRING firstArg = clause.getArgs().at(0);
+    STRING secondArg = clause.getArgs().at(1);
+    STRING firstType = getArgType(firstArg, declarations);
+    STRING secondType = getArgType(secondArg, declarations);
 
     if (firstType == UNDERSCORE_ && secondType == UNDERSCORE_) { // _, _
         return PKB::parent->getParentSize() > 0;
@@ -36,7 +36,7 @@ bool ParentEvaluator::evaluate(unordered_map<string, string> declarations,
         return true;
 
     } else if (firstType != INTEGER_ && secondType == INTEGER_) { // s, known or _, known
-        int parent = PKB::parent->getParent(stoi(secondArg));
+        StmtNum parent = PKB::parent->getParent(stoi(secondArg));
         if (parent == -1) {
             return false;
         }
@@ -54,7 +54,7 @@ bool ParentEvaluator::evaluate(unordered_map<string, string> declarations,
         if (firstArg == secondArg) {
             return false;
         }
-        pair<vector<int>, vector<int>> allParent = PKB::parent->getAllParent();
+        pair<vector<StmtNum>, vector<StmtNum>> allParent = PKB::parent->getAllParent();
         if (allParent.first.empty()) {
             return false;
         }

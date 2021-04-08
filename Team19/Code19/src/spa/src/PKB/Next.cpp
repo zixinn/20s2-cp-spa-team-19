@@ -104,19 +104,23 @@ int Next::getNextStarSize() {
     return cnt;
 }
 
+unordered_map<ProgLine, unordered_set<ProgLine> > Next::getNextMap() {
+    return nextMap;
+}
+
 void Next::populateNextStar() {
     unordered_set<ProgLine> n2s;
-    ID curr;
+    ProgLine curr;
     for (auto &it : nextMap) {
         curr = it.first;
-        list<int> queue;
+        list<ProgLine> queue;
         unordered_set<ProgLine> processedProgLine;
         processedProgLine.insert(curr);
         queue.push_back(curr);
         while (!queue.empty()) {
             n2s = getNext(queue.front());
             queue.pop_front();
-            for (ID n2 : n2s) {
+            for (ProgLine n2 : n2s) {
                 storeNextStar(curr, n2);
                 if (curr != n2 && processedProgLine.find(n2) == processedProgLine.end()) {
                     processedProgLine.insert(n2);

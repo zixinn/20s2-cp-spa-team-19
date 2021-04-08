@@ -118,6 +118,7 @@ void setupAffects() {
     PKB::next->storeNext(9,11);
     PKB::next->storeNext(10,11);
 
+    PKB::nextBip->setRunNextBip(false);
     PKB::populatePKB();
 }
 
@@ -144,6 +145,7 @@ void setupAffects2() {
 
     PKB::next->storeNext(1,2);
 
+    PKB::nextBip->setRunNextBip(false);
     PKB::populatePKB();
 }
 
@@ -214,21 +216,22 @@ void setupAffects3() {
     PKB::next->storeNext(4,5);
     PKB::next->storeNext(5,2);
 
+    PKB::nextBip->setRunNextBip(false);
     PKB::populatePKB();
 }
 
 TEST_CASE("AffectsEvaluator evaluate known known") {
     setupAffects();
 
-    unordered_map<string, vector<int>> tempResults1;
-    bool b1 = AffectsEvaluator::evaluate({}, Clause("Affects", vector<string>{"3", "5"}, {}, 2), tempResults1);
-    unordered_map<string, vector<int>> expected1 = {};
+    unordered_map<STRING, vector<int>> tempResults1;
+    bool b1 = AffectsEvaluator::evaluate({}, Clause("Affects", vector<STRING>{"3", "5"}, {}, 2), tempResults1);
+    unordered_map<STRING, vector<int>> expected1 = {};
     REQUIRE(b1);
     REQUIRE(tempResults1 == expected1);
 
-    unordered_map<string, vector<int>> tempResults2;
-    bool b2 = AffectsEvaluator::evaluate({}, Clause("Affects", vector<string>{"6", "11"}, {}, 2), tempResults2);
-    unordered_map<string, vector<int>> expected2 = {};
+    unordered_map<STRING, vector<int>> tempResults2;
+    bool b2 = AffectsEvaluator::evaluate({}, Clause("Affects", vector<STRING>{"6", "11"}, {}, 2), tempResults2);
+    unordered_map<STRING, vector<int>> expected2 = {};
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
 }
@@ -236,23 +239,23 @@ TEST_CASE("AffectsEvaluator evaluate known known") {
 TEST_CASE("AffectsEvaluator evaluate known synonym") {
     setupAffects();
 
-    unordered_map<string, vector<int>> tempResults1;
-    bool b1 = AffectsEvaluator::evaluate({{"a", ASSIGN_}}, Clause("Affects", vector<string>{"6", "a"}, {"a"}, 1), tempResults1);
-//    unordered_map<string, vector<int>> expected1 = {{"a", vector<int>{9, 10}}};
+    unordered_map<STRING, vector<int>> tempResults1;
+    bool b1 = AffectsEvaluator::evaluate({{"a", ASSIGN_}}, Clause("Affects", vector<STRING>{"6", "a"}, {"a"}, 1), tempResults1);
+//    unordered_map<STRING, vector<int>> expected1 = {{"a", vector<int>{9, 10}}};
     unordered_set<int> actual1(tempResults1["a"].begin(), tempResults1["a"].end());
     unordered_set<int> expected1 {9, 10};
     REQUIRE(b1);
     REQUIRE(actual1 == expected1);
 
-    unordered_map<string, vector<int>> tempResults2;
-    bool b2 = AffectsEvaluator::evaluate({{"n", PROGLINE_}}, Clause("Affects", vector<string>{"2", "n"}, {"n"}, 1), tempResults2);
-    unordered_map<string, vector<int>> expected2 = {{"n", vector<int>{3}}};
+    unordered_map<STRING, vector<int>> tempResults2;
+    bool b2 = AffectsEvaluator::evaluate({{"n", PROGLINE_}}, Clause("Affects", vector<STRING>{"2", "n"}, {"n"}, 1), tempResults2);
+    unordered_map<STRING, vector<int>> expected2 = {{"n", vector<int>{3}}};
     REQUIRE(b2);
     REQUIRE(tempResults2 == expected2);
 
-    unordered_map<string, vector<int>> tempResults3;
-    bool b3 = AffectsEvaluator::evaluate({{"s", STMT_}}, Clause("Affects", vector<string>{"4", "s"}, {"s"}, 1), tempResults3);
-    unordered_map<string, vector<int>> expected3 = {};
+    unordered_map<STRING, vector<int>> tempResults3;
+    bool b3 = AffectsEvaluator::evaluate({{"s", STMT_}}, Clause("Affects", vector<STRING>{"4", "s"}, {"s"}, 1), tempResults3);
+    unordered_map<STRING, vector<int>> expected3 = {};
     REQUIRE_FALSE(b3);
     REQUIRE(tempResults3 == expected3);
 }
@@ -260,15 +263,15 @@ TEST_CASE("AffectsEvaluator evaluate known synonym") {
 TEST_CASE("AffectsEvaluator evaluate known underscore") {
     setupAffects();
 
-    unordered_map<string, vector<int>> tempResults1;
-    bool b1 = AffectsEvaluator::evaluate({}, Clause("Affects", vector<string>{"7", "_"}, {}, 1), tempResults1);
-    unordered_map<string, vector<int>> expected1 = {};
+    unordered_map<STRING, vector<int>> tempResults1;
+    bool b1 = AffectsEvaluator::evaluate({}, Clause("Affects", vector<STRING>{"7", "_"}, {}, 1), tempResults1);
+    unordered_map<STRING, vector<int>> expected1 = {};
     REQUIRE(b1);
     REQUIRE(tempResults1 == expected1);
 
-    unordered_map<string, vector<int>> tempResults2;
-    bool b2 = AffectsEvaluator::evaluate({}, Clause("Affects", vector<string>{"1", "_"}, {}, 1), tempResults2);
-    unordered_map<string, vector<int>> expected2 = {};
+    unordered_map<STRING, vector<int>> tempResults2;
+    bool b2 = AffectsEvaluator::evaluate({}, Clause("Affects", vector<STRING>{"1", "_"}, {}, 1), tempResults2);
+    unordered_map<STRING, vector<int>> expected2 = {};
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
 }
@@ -276,17 +279,17 @@ TEST_CASE("AffectsEvaluator evaluate known underscore") {
 TEST_CASE("AffectsEvaluator evaluate synonym known") {
     setupAffects();
 
-    unordered_map<string, vector<int>> tempResults1;
-    bool b1 = AffectsEvaluator::evaluate({{"a", ASSIGN_}}, Clause("Affects", vector<string>{"a", "11"}, {"a"}, 1), tempResults1);
-//    unordered_map<string, vector<int>> expected1 = {{"a", vector<int>{7, 9}}};
+    unordered_map<STRING, vector<int>> tempResults1;
+    bool b1 = AffectsEvaluator::evaluate({{"a", ASSIGN_}}, Clause("Affects", vector<STRING>{"a", "11"}, {"a"}, 1), tempResults1);
+//    unordered_map<STRING, vector<int>> expected1 = {{"a", vector<int>{7, 9}}};
     unordered_set<int> actual1(tempResults1["a"].begin(), tempResults1["a"].end());
     unordered_set<int> expected1 {7, 9};
     REQUIRE(b1);
     REQUIRE(actual1 == expected1);
 
-    unordered_map<string, vector<int>> tempResults2;
-    bool b2 = AffectsEvaluator::evaluate({{"s", STMT_}}, Clause("Affects", vector<string>{"s", "6"}, {"s"}, 1), tempResults2);
-    unordered_map<string, vector<int>> expected2 = {};
+    unordered_map<STRING, vector<int>> tempResults2;
+    bool b2 = AffectsEvaluator::evaluate({{"s", STMT_}}, Clause("Affects", vector<STRING>{"s", "6"}, {"s"}, 1), tempResults2);
+    unordered_map<STRING, vector<int>> expected2 = {};
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
 }
@@ -294,45 +297,45 @@ TEST_CASE("AffectsEvaluator evaluate synonym known") {
 TEST_CASE("AffectsEvaluator evaluate underscore known") {
     setupAffects();
 
-    unordered_map<string, vector<int>> tempResults1;
-    bool b1 = AffectsEvaluator::evaluate({}, Clause("Affects", vector<string>{"_", "9"}, {}, 1), tempResults1);
-    unordered_map<string, vector<int>> expected1 = {};
+    unordered_map<STRING, vector<int>> tempResults1;
+    bool b1 = AffectsEvaluator::evaluate({}, Clause("Affects", vector<STRING>{"_", "9"}, {}, 1), tempResults1);
+    unordered_map<STRING, vector<int>> expected1 = {};
     REQUIRE(b1);
     REQUIRE(tempResults1 == expected1);
 
-    unordered_map<string, vector<int>> tempResults2;
-    bool b2 = AffectsEvaluator::evaluate({}, Clause("Affects", vector<string>{"_", "8"}, {}, 1), tempResults2);
-    unordered_map<string, vector<int>> expected2 = {};
+    unordered_map<STRING, vector<int>> tempResults2;
+    bool b2 = AffectsEvaluator::evaluate({}, Clause("Affects", vector<STRING>{"_", "8"}, {}, 1), tempResults2);
+    unordered_map<STRING, vector<int>> expected2 = {};
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
 }
 
 TEST_CASE("AffectsEvaluator evaluate synonym synonym") {
     setupAffects();
-    unordered_map<string, vector<int>> tempResults1;
-    bool b1 = AffectsEvaluator::evaluate({{"a", ASSIGN_}, {"n", PROGLINE_}}, Clause("Affects", vector<string>{"a", "n"}, {"n"}, 0), tempResults1);
-//    unordered_map<string, vector<int>> expected1 = {{"a", vector<int>{2, 3, 6, 6, 7, 9}}, {"n", vector<int>{3, 5, 9, 10, 11, 11}}};
+    unordered_map<STRING, vector<int>> tempResults1;
+    bool b1 = AffectsEvaluator::evaluate({{"a", ASSIGN_}, {"n", PROGLINE_}}, Clause("Affects", vector<STRING>{"a", "n"}, {"n"}, 0), tempResults1);
+//    unordered_map<STRING, vector<int>> expected1 = {{"a", vector<int>{2, 3, 6, 6, 7, 9}}, {"n", vector<int>{3, 5, 9, 10, 11, 11}}};
     set<pair<int, int>> actual1;
     for (int i = 0; i < tempResults1.begin()->second.size(); i++) {
         pair<int, int> p = make_pair(tempResults1["a"].at(i), tempResults1["n"].at(i));
         actual1.insert(p);
     }
     set<pair<int, int>> expected1 = {{make_pair(2, 3), make_pair(3, 5), make_pair(6, 9),
-                                      make_pair(6, 10), make_pair(7, 11), make_pair(9, 11)}};
+                                             make_pair(6, 10), make_pair(7, 11), make_pair(9, 11)}};
     REQUIRE(b1);
     REQUIRE(tempResults1.size() == 2);
     REQUIRE(actual1 == expected1);
 
     setupAffects2();
-    unordered_map<string, vector<int>> tempResults2;
-    bool b2 = AffectsEvaluator::evaluate({{"a1", ASSIGN_}, {"a2", ASSIGN_}}, Clause("Affects", vector<string>{"a1", "a2"}, {"a1", "a2"}, 0), tempResults2);
-    unordered_map<string, vector<int>> expected2 = {};
+    unordered_map<STRING, vector<int>> tempResults2;
+    bool b2 = AffectsEvaluator::evaluate({{"a1", ASSIGN_}, {"a2", ASSIGN_}}, Clause("Affects", vector<STRING>{"a1", "a2"}, {"a1", "a2"}, 0), tempResults2);
+    unordered_map<STRING, vector<int>> expected2 = {};
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
 
     setupAffects3();
-    unordered_map<string, vector<int>> tempResults3;
-    bool b3 = AffectsEvaluator::evaluate({ {"a", ASSIGN_} }, Clause("Affects", vector<string>{"a", "a"}, {"a"}, 0), tempResults3);
+    unordered_map<STRING, vector<int>> tempResults3;
+    bool b3 = AffectsEvaluator::evaluate({ {"a", ASSIGN_} }, Clause("Affects", vector<STRING>{"a", "a"}, {"a"}, 0), tempResults3);
     unordered_set<int> actual3(tempResults3["a"].begin(), tempResults3["a"].end());
     unordered_set<int> expected3 {3, 5};
     REQUIRE(b3);
@@ -341,52 +344,52 @@ TEST_CASE("AffectsEvaluator evaluate synonym synonym") {
 
 TEST_CASE("AffectsEvaluator evaluate synonym underscore") {
     setupAffects();
-    unordered_map<string, vector<int>> tempResults1;
-    bool b1 = AffectsEvaluator::evaluate({{"s", STMT_}}, Clause("Affects", vector<string>{"s", "_"}, {"s"}, 0), tempResults1);
-//    unordered_map<string, vector<int>> expected1 = {{"s", vector<int>{2, 3, 6, 7, 9}}};
+    unordered_map<STRING, vector<int>> tempResults1;
+    bool b1 = AffectsEvaluator::evaluate({{"s", STMT_}}, Clause("Affects", vector<STRING>{"s", "_"}, {"s"}, 0), tempResults1);
+//    unordered_map<STRING, vector<int>> expected1 = {{"s", vector<int>{2, 3, 6, 7, 9}}};
     unordered_set<int> actual1(tempResults1["s"].begin(), tempResults1["s"].end());
     unordered_set<int> expected1 {2, 3, 6, 7, 9};
     REQUIRE(b1);
     REQUIRE(actual1 == expected1);
 
     setupAffects2();
-    unordered_map<string, vector<int>> tempResults2;
-    bool b2 = AffectsEvaluator::evaluate({{"a", ASSIGN_}}, Clause("Affects", vector<string>{"a", "_"}, {"a"}, 0), tempResults2);
-    unordered_map<string, vector<int>> expected2 = {};
+    unordered_map<STRING, vector<int>> tempResults2;
+    bool b2 = AffectsEvaluator::evaluate({{"a", ASSIGN_}}, Clause("Affects", vector<STRING>{"a", "_"}, {"a"}, 0), tempResults2);
+    unordered_map<STRING, vector<int>> expected2 = {};
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
 }
 
 TEST_CASE("AffectsEvaluator evaluate underscore synonym") {
     setupAffects();
-    unordered_map<string, vector<int>> tempResults1;
-    bool b1 = AffectsEvaluator::evaluate({{"a", ASSIGN_}}, Clause("Affects", vector<string>{"_", "a"}, {"a"}, 0), tempResults1);
-//    unordered_map<string, vector<int>> expected1 = {{"a", vector<int>{3, 5, 9, 10, 11}}};
+    unordered_map<STRING, vector<int>> tempResults1;
+    bool b1 = AffectsEvaluator::evaluate({{"a", ASSIGN_}}, Clause("Affects", vector<STRING>{"_", "a"}, {"a"}, 0), tempResults1);
+//    unordered_map<STRING, vector<int>> expected1 = {{"a", vector<int>{3, 5, 9, 10, 11}}};
     unordered_set<int> actual1(tempResults1["a"].begin(), tempResults1["a"].end());
     unordered_set<int> expected1 {3, 5, 9, 10, 11};
     REQUIRE(b1);
     REQUIRE(actual1 == expected1);
 
     setupAffects2();
-    unordered_map<string, vector<int>> tempResults2;
-    bool b2 = AffectsEvaluator::evaluate({{"n", PROGLINE_}}, Clause("Affects", vector<string>{"_", "n"}, {"n"}, 0), tempResults2);
-    unordered_map<string, vector<int>> expected2 = {};
+    unordered_map<STRING, vector<int>> tempResults2;
+    bool b2 = AffectsEvaluator::evaluate({{"n", PROGLINE_}}, Clause("Affects", vector<STRING>{"_", "n"}, {"n"}, 0), tempResults2);
+    unordered_map<STRING, vector<int>> expected2 = {};
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
 }
 
 TEST_CASE("AffectsEvaluator evaluate underscore underscore") {
     setupAffects();
-    unordered_map<string, vector<int>> tempResults1;
-    bool b1 = AffectsEvaluator::evaluate({}, Clause("Affects", vector<string>{"_", "_"}, {}, 0), tempResults1);
-    unordered_map<string, vector<int>> expected1 = {};
+    unordered_map<STRING, vector<int>> tempResults1;
+    bool b1 = AffectsEvaluator::evaluate({}, Clause("Affects", vector<STRING>{"_", "_"}, {}, 0), tempResults1);
+    unordered_map<STRING, vector<int>> expected1 = {};
     REQUIRE(b1);
     REQUIRE(tempResults1 == expected1);
 
     setupAffects2();
-    unordered_map<string, vector<int>> tempResults2;
-    bool b2 = AffectsEvaluator::evaluate({}, Clause("Affects", vector<string>{"_", "_"}, {}, 0), tempResults2);
-    unordered_map<string, vector<int>> expected2 = {};
+    unordered_map<STRING, vector<int>> tempResults2;
+    bool b2 = AffectsEvaluator::evaluate({}, Clause("Affects", vector<STRING>{"_", "_"}, {}, 0), tempResults2);
+    unordered_map<STRING, vector<int>> expected2 = {};
     REQUIRE_FALSE(b2);
     REQUIRE(tempResults2 == expected2);
 }

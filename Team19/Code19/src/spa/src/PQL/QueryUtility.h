@@ -1,29 +1,23 @@
 #pragma once
 
-#include <string>
-#include <unordered_set>
-#include <vector>
-
-#include "../AbstractAPI.h"
-#include "../Utility.h"
 #include "../PKB/PKB.h"
 #include "../SP/Lexer.h"
 #include "Clause.h"
 
 // Checks if name with quotes conforms to naming standards
 // Returns true if name is valid, false otherwise
-bool checkNameWithQuotes(std::string s);
+bool checkNameWithQuotes(STRING s);
 
 // Returns true if the TokenType is an operator, false otherwise
 bool isOperator(sp::Token::TokenType tokenType);
 
 // Checks if expression is valid
 // Returns true if expression is valid, false otherwise
-bool checkExpression(std::string s);
+bool checkExpression(STRING s);
 
 // Checks if expression with underscores is valid
 // Returns true if expression is valid, false otherwise
-bool checkExpressionWithUnderscores(std::string s);
+bool checkExpressionWithUnderscores(STRING s);
 
 // Checks if the synonym has been declared in declarations
 bool checkSynonymDeclared(string synonym, unordered_map<string, string> declarations);

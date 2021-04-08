@@ -6,11 +6,12 @@ FollowsTEvaluator::FollowsTEvaluator() {
 
 }
 
-bool FollowsTEvaluator::evaluate(unordered_map<string, string> declarations, Clause clause, unordered_map<string, vector<int>>& tempResults) {
-    string firstArg = clause.getArgs().at(0);
-    string secondArg = clause.getArgs().at(1);
-    string firstType = getArgType(firstArg, declarations);
-    string secondType = getArgType(secondArg, declarations);
+bool FollowsTEvaluator::evaluate(unordered_map<STRING, STRING> declarations, Clause clause,
+                                 unordered_map<STRING, vector<int>>& tempResults) {
+    STRING firstArg = clause.getArgs().at(0);
+    STRING secondArg = clause.getArgs().at(1);
+    STRING firstType = getArgType(firstArg, declarations);
+    STRING secondType = getArgType(secondArg, declarations);
 
     if (firstType == UNDERSCORE_ && secondType == UNDERSCORE_) { // _, _
         return PKB::follows->getFollowsStarSize() > 0;
@@ -20,7 +21,7 @@ bool FollowsTEvaluator::evaluate(unordered_map<string, string> declarations, Cla
         return PKB::follows->isFollowsStar(stoi(firstArg), stoi(secondArg));
 
     } else if (firstType == INTEGER_ && secondType != INTEGER_) { // known, s or known, _
-        unordered_set<int> followers = PKB::follows->getFollowerStar(stoi(firstArg));
+        unordered_set<StmtNum> followers = PKB::follows->getFollowerStar(stoi(firstArg));
         if (followers.empty()) {
             return false;
         }
@@ -35,7 +36,7 @@ bool FollowsTEvaluator::evaluate(unordered_map<string, string> declarations, Cla
         return true;
 
     } else if (firstType != INTEGER_ && secondType == INTEGER_) { // s, known or _, known
-        unordered_set<int> followees = PKB::follows->getFolloweeStar(stoi(secondArg));
+        unordered_set<StmtNum> followees = PKB::follows->getFolloweeStar(stoi(secondArg));
         if (followees.empty()) {
             return false;
         }
@@ -53,7 +54,7 @@ bool FollowsTEvaluator::evaluate(unordered_map<string, string> declarations, Cla
         if (firstArg == secondArg) {
             return false;
         }
-        pair<vector<int>, vector<int>> allFollowsStar = PKB::follows->getAllFollowsStar();
+        pair<vector<StmtNum>, vector<StmtNum>> allFollowsStar = PKB::follows->getAllFollowsStar();
         if (allFollowsStar.first.empty()) {
             return false;
         }

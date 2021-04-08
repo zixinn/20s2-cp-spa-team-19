@@ -6,11 +6,12 @@ NextTEvaluator::NextTEvaluator() {
 
 }
 
-bool NextTEvaluator::evaluate(unordered_map<string, string> declarations, Clause clause, unordered_map<string, vector<int>>& tempResults) {
-    string firstArg = clause.getArgs().at(0);
-    string secondArg = clause.getArgs().at(1);
-    string firstType = getArgType(firstArg, declarations);
-    string secondType = getArgType(secondArg, declarations);
+bool NextTEvaluator::evaluate(unordered_map<STRING, STRING> declarations, Clause clause,
+                              unordered_map<STRING, vector<int>>& tempResults) {
+    STRING firstArg = clause.getArgs().at(0);
+    STRING secondArg = clause.getArgs().at(1);
+    STRING firstType = getArgType(firstArg, declarations);
+    STRING secondType = getArgType(secondArg, declarations);
 
     if (firstType == UNDERSCORE_ && secondType == UNDERSCORE_) { // _, _
         return PKB::next->getNextStarSize() > 0;
@@ -20,7 +21,7 @@ bool NextTEvaluator::evaluate(unordered_map<string, string> declarations, Clause
         return PKB::next->isNextStar(stoi(firstArg), stoi(secondArg));
 
     } else if (firstType == INTEGER_ && secondType != INTEGER_) { // known, s or known, _
-        unordered_set<int> next = PKB::next->getNextStar(stoi(firstArg));
+        unordered_set<ProgLine> next = PKB::next->getNextStar(stoi(firstArg));
         if (next.empty()) {
             return false;
         }
@@ -35,7 +36,7 @@ bool NextTEvaluator::evaluate(unordered_map<string, string> declarations, Clause
         return true;
 
     } else if (firstType != INTEGER_ && secondType == INTEGER_) { // s, known or _, known
-        unordered_set<int> previous = PKB::next->getPreviousStar(stoi(secondArg));
+        unordered_set<ProgLine> previous = PKB::next->getPreviousStar(stoi(secondArg));
         if (previous.empty()) {
             return false;
         }
@@ -64,7 +65,7 @@ bool NextTEvaluator::evaluate(unordered_map<string, string> declarations, Clause
             return !res.empty();
         }
 
-        pair<vector<int>, vector<int>> allNext = PKB::next->getAllNextStar();
+        pair<vector<ProgLine>, vector<ProgLine>> allNext = PKB::next->getAllNextStar();
         if (allNext.first.empty()) {
             return false;
         }

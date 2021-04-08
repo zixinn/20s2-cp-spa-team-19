@@ -4,7 +4,6 @@
 
 class ProcTable {
 public:
-
     // Constructor for ProcTable
     ProcTable();
 

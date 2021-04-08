@@ -17,25 +17,38 @@ QueryPreprocessor::QueryPreprocessor() {
     validSuchThatArgType["Modifies"] = { { STMT_, READ_, PROCEDURE_, ASSIGN_, CALL_, WHILE_, IF_, PROGLINE_, INTEGER_, NAME_ },
                                          { VARIABLE_, NAME_, UNDERSCORE_ } };
     validSuchThatArgType["Calls"] = { { PROCEDURE_, NAME_, UNDERSCORE_ },
-                                         { PROCEDURE_, NAME_, UNDERSCORE_ } };
-    validSuchThatArgType["Calls*"] = { { PROCEDURE_, NAME_, UNDERSCORE_ },
                                       { PROCEDURE_, NAME_, UNDERSCORE_ } };
+    validSuchThatArgType["Calls*"] = { { PROCEDURE_, NAME_, UNDERSCORE_ },
+                                       { PROCEDURE_, NAME_, UNDERSCORE_ } };
     validSuchThatArgType["Next"] = { { STMT_, READ_, PRINT_, ASSIGN_, CALL_, WHILE_, IF_, PROGLINE_, INTEGER_, UNDERSCORE_ },
-                                       { STMT_, READ_, PRINT_, ASSIGN_, CALL_, WHILE_, IF_, PROGLINE_, INTEGER_, UNDERSCORE_ } };
-    validSuchThatArgType["Next*"] = { { STMT_, READ_, PRINT_, ASSIGN_, CALL_, WHILE_, IF_, PROGLINE_, INTEGER_, UNDERSCORE_ },
                                      { STMT_, READ_, PRINT_, ASSIGN_, CALL_, WHILE_, IF_, PROGLINE_, INTEGER_, UNDERSCORE_ } };
+    validSuchThatArgType["Next*"] = { { STMT_, READ_, PRINT_, ASSIGN_, CALL_, WHILE_, IF_, PROGLINE_, INTEGER_, UNDERSCORE_ },
+                                      { STMT_, READ_, PRINT_, ASSIGN_, CALL_, WHILE_, IF_, PROGLINE_, INTEGER_, UNDERSCORE_ } };
     validSuchThatArgType["Affects"] = { { STMT_, ASSIGN_, PROGLINE_, INTEGER_, UNDERSCORE_ },
-                                     { STMT_, ASSIGN_, PROGLINE_, INTEGER_, UNDERSCORE_ } };
-    validSuchThatArgType["Affects*"] = { { STMT_, ASSIGN_, PROGLINE_, INTEGER_, UNDERSCORE_ },
                                         { STMT_, ASSIGN_, PROGLINE_, INTEGER_, UNDERSCORE_ } };
+    validSuchThatArgType["Affects*"] = { { STMT_, ASSIGN_, PROGLINE_, INTEGER_, UNDERSCORE_ },
+                                         { STMT_, ASSIGN_, PROGLINE_, INTEGER_, UNDERSCORE_ } };
+
+    if (PKB::nextBip->getRunNextBip()) {
+        validSuchThatArgType["NextBip"] = { { STMT_, READ_, PRINT_, ASSIGN_, CALL_, WHILE_, IF_, PROGLINE_, INTEGER_, UNDERSCORE_ },
+                                            { STMT_, READ_, PRINT_, ASSIGN_, CALL_, WHILE_, IF_, PROGLINE_, INTEGER_, UNDERSCORE_ } };
+        validSuchThatArgType["NextBip*"] = { { STMT_, READ_, PRINT_, ASSIGN_, CALL_, WHILE_, IF_, PROGLINE_, INTEGER_, UNDERSCORE_ },
+                                             { STMT_, READ_, PRINT_, ASSIGN_, CALL_, WHILE_, IF_, PROGLINE_, INTEGER_, UNDERSCORE_ } };
+    }
+    if (PKB::affectsBip->getRunAffectsBip()) {
+        validSuchThatArgType["AffectsBip"] = { { STMT_, ASSIGN_, PROGLINE_, INTEGER_, UNDERSCORE_ },
+                                            { STMT_, ASSIGN_, PROGLINE_, INTEGER_, UNDERSCORE_ } };
+        validSuchThatArgType["AffectsBip*"] = { { STMT_, ASSIGN_, PROGLINE_, INTEGER_, UNDERSCORE_ },
+                                             { STMT_, ASSIGN_, PROGLINE_, INTEGER_, UNDERSCORE_ } };
+    }
 
     validPatternArgType["assign"] = { { VARIABLE_, NAME_, UNDERSCORE_ },
                                       { UNDERSCORE_, NAME_, EXPRESSION_, EXPRESSIONWITHUNDERSCORE_ } };
     validPatternArgType["while"] = { { VARIABLE_, NAME_, UNDERSCORE_ },
                                      { UNDERSCORE_ } };
     validPatternArgType["if"] = { { VARIABLE_, NAME_, UNDERSCORE_ },
-                                      { UNDERSCORE_ },
-                                      { UNDERSCORE_ } };
+                                  { UNDERSCORE_ },
+                                  { UNDERSCORE_ } };
 
     attrMap[PROCEDURE_] = { "procName" };
     attrMap[CALL_] = { "procName", "stmt#" };
@@ -49,7 +62,7 @@ QueryPreprocessor::QueryPreprocessor() {
     attrMap[ASSIGN_] = { "stmt#" };
 }
 
-Query QueryPreprocessor::process(string query) {
+Query QueryPreprocessor::process(STRING query) {
     this->declarations.clear();
     this->toSelect.clear();
     this->clauses.clear();
@@ -60,7 +73,7 @@ Query QueryPreprocessor::process(string query) {
         this->isSyntacticallyValid = false;
     }
 
-    vector<string> statements;
+    vector<STRING> statements;
     if (this->isSyntacticallyValid) {
         statements = split(query, ";");
         if (statements[statements.size() - 1].find("Select ") != 0) {
@@ -74,8 +87,8 @@ Query QueryPreprocessor::process(string query) {
             break;
         }
         int space = statements[i].find(' ');
-        string designEntity = trim(statements[i].substr(0, space));
-        string synonyms = trim(statements[i].substr(space + 1));
+        STRING designEntity = trim(statements[i].substr(0, space));
+        STRING synonyms = trim(statements[i].substr(space + 1));
         parseDeclaration(designEntity, synonyms);
     }
 
@@ -83,15 +96,16 @@ Query QueryPreprocessor::process(string query) {
         parseSelect(trim(statements[statements.size() - 1].substr(7)));
     }
 
-    return Query(this->declarations, this->toSelect, { this->clauses }, this->isSyntacticallyValid, this->isSemanticallyValid);
+    return Query(this->declarations, this->toSelect, { this->clauses },
+                 this->isSyntacticallyValid, this->isSemanticallyValid);
 }
 
-void QueryPreprocessor::parseDeclaration(string designEntity, string synonyms) {
+void QueryPreprocessor::parseDeclaration(STRING designEntity, STRING synonyms) {
     if (!checkDesignEntity(designEntity) || synonyms.at(synonyms.length() - 1) == ',') {
         this->isSyntacticallyValid = false;
     } else {
-        vector<string> synonymsVector = split(synonyms, ",");
-        for (string synonym : synonymsVector) {
+        vector<STRING> synonymsVector = split(synonyms, ",");
+        for (STRING synonym : synonymsVector) {
             if (!checkName(synonym)) {
                 this->isSyntacticallyValid = false;
                 break;
@@ -106,11 +120,11 @@ void QueryPreprocessor::parseDeclaration(string designEntity, string synonyms) {
     }
 }
 
-bool QueryPreprocessor::checkDesignEntity(string designEntity) {
+bool QueryPreprocessor::checkDesignEntity(STRING designEntity) {
     return this->designEntities.find(designEntity) != this->designEntities.end();
 }
 
-void QueryPreprocessor::parseSelect(string select) {
+void QueryPreprocessor::parseSelect(STRING select) {
     int suchThatPos = select.find(" such that ");
     int patternPos = select.find(" pattern ");
     int withPos = select.find(" with ");
@@ -150,7 +164,7 @@ int QueryPreprocessor::getNextPos(vector<int> pos) {
     return next == INT_MAX ? -1 : next;
 }
 
-void QueryPreprocessor::parseToSelect(string resultCl) {
+void QueryPreprocessor::parseToSelect(STRING resultCl) {
     if (resultCl == "BOOLEAN") {
         if (this->isSemanticallyValid) {
             this->toSelect.push_back(resultCl);
@@ -160,14 +174,14 @@ void QueryPreprocessor::parseToSelect(string resultCl) {
         }
 
     } else if (regex_match(resultCl, regex("^<.*>$"))) { // tuples
-        string synonyms = trim(resultCl.substr(1, resultCl.length() - 2));
+        STRING synonyms = trim(resultCl.substr(1, resultCl.length() - 2));
         if (synonyms.at(synonyms.length() - 1) == ',') {
             this->isSyntacticallyValid = false;
         } else {
-            vector<string> synonymsVector = split(synonyms, ",");
-            for (string elem : synonymsVector) {
+            vector<STRING> synonymsVector = split(synonyms, ",");
+            for (STRING elem : synonymsVector) {
                 int pos = elem.find('.');
-                if (pos == string::npos) { // synonym
+                if (pos == STRING::npos) { // synonym
                     if (!checkName(elem)) {
                         this->isSyntacticallyValid = false;
                         break;
@@ -179,8 +193,8 @@ void QueryPreprocessor::parseToSelect(string resultCl) {
                     }
 
                 } else { // attrRef
-                    string synonym = trim(elem.substr(0, pos));
-                    string attrName = trim(elem.substr(pos + 1));
+                    STRING synonym = trim(elem.substr(0, pos));
+                    STRING attrName = trim(elem.substr(pos + 1));
                     checkAttrRef(synonym, attrName);
                     if (this->isSyntacticallyValid && this->isSemanticallyValid) {
                         this->toSelect.push_back(synonym.append(".").append(attrName));
@@ -191,7 +205,7 @@ void QueryPreprocessor::parseToSelect(string resultCl) {
 
     } else { // elem
         int pos = resultCl.find('.');
-        if (pos == string::npos) { // synonym
+        if (pos == STRING::npos) { // synonym
             if (!checkName(resultCl)) {
                 this->isSyntacticallyValid = false;
             } else if (!checkSynonymDeclared(resultCl, this->declarations)) {
@@ -202,8 +216,8 @@ void QueryPreprocessor::parseToSelect(string resultCl) {
             }
 
         } else { //attrRef
-            string synonym = trim(resultCl.substr(0, pos));
-            string attrName = trim(resultCl.substr(pos + 1));
+            STRING synonym = trim(resultCl.substr(0, pos));
+            STRING attrName = trim(resultCl.substr(pos + 1));
             checkAttrRef(synonym, attrName);
 
             if (this->isSyntacticallyValid && this->isSemanticallyValid) {
@@ -213,7 +227,7 @@ void QueryPreprocessor::parseToSelect(string resultCl) {
     }
 }
 
-void QueryPreprocessor::checkAttrRef(string synonym, string attrName) {
+void QueryPreprocessor::checkAttrRef(STRING synonym, STRING attrName) {
     if (!checkName(synonym) || attrNames.find(attrName) == attrNames.end()) {
         this->isSyntacticallyValid = false;
     } else {
@@ -224,7 +238,7 @@ void QueryPreprocessor::checkAttrRef(string synonym, string attrName) {
     }
 }
 
-void QueryPreprocessor::parseSuchThatClauses(string clauses) {
+void QueryPreprocessor::parseSuchThatClauses(STRING clauses) {
     int andPos = -5;
     int nextPos = clauses.find(" and ");
 
@@ -239,7 +253,7 @@ void QueryPreprocessor::parseSuchThatClauses(string clauses) {
     }
 }
 
-void QueryPreprocessor::parseSuchThatClause(string clause) {
+void QueryPreprocessor::parseSuchThatClause(STRING clause) {
     if (!regex_match(clause, regex("^.*\\(.*,.*\\)$"))) {
         this->isSyntacticallyValid = false;
     } else {
@@ -247,22 +261,22 @@ void QueryPreprocessor::parseSuchThatClause(string clause) {
         int comma = clause.find(',');
         int right = clause.length() - 1;
 
-        string rel = trim(clause.substr(0, left));
-        string firstArg = trim(clause.substr(left + 1, comma - left - 1));
-        string secondArg = trim(clause.substr(comma + 1, right - comma - 1));
+        STRING rel = trim(clause.substr(0, left));
+        STRING firstArg = trim(clause.substr(left + 1, comma - left - 1));
+        STRING secondArg = trim(clause.substr(comma + 1, right - comma - 1));
         checkSuchThatClause(rel, { firstArg, secondArg });
     }
 }
 
-void QueryPreprocessor::checkSuchThatClause(string rel, vector<string> args) {
-    unordered_set<string> synonyms = unordered_set<string>();
+void QueryPreprocessor::checkSuchThatClause(STRING rel, vector<STRING> args) {
+    unordered_set<STRING> synonyms = unordered_set<STRING>();
     int numOfKnown = 0;
     if (this->validSuchThatArgType.find(rel) == this->validSuchThatArgType.end()) {
         this->isSyntacticallyValid = false;
     } else {
-        vector<unordered_set<string>> validArgType = this->validSuchThatArgType.find(rel)->second;
+        vector<unordered_set<STRING>> validArgType = this->validSuchThatArgType.find(rel)->second;
         for (int i = 0; i < validArgType.size(); i++) {
-            string argType = getArgType(args[i], this->declarations);
+            STRING argType = getArgType(args[i], this->declarations);
             if (validArgType[i].find(argType) != validArgType[i].end()) {
                 if (argType == INTEGER_ || argType == NAME_) {
                     numOfKnown++;
@@ -285,7 +299,7 @@ void QueryPreprocessor::checkSuchThatClause(string rel, vector<string> args) {
     }
 }
 
-void QueryPreprocessor::parsePatternClauses(string clauses) {
+void QueryPreprocessor::parsePatternClauses(STRING clauses) {
     int andPos = -5;
     int nextPos = clauses.find(" and ");
 
@@ -300,7 +314,7 @@ void QueryPreprocessor::parsePatternClauses(string clauses) {
     }
 }
 
-void QueryPreprocessor::parsePatternClause(string clause) {
+void QueryPreprocessor::parsePatternClause(STRING clause) {
     if (!regex_match(clause, regex("^.*\\(.*,.*\\)$")) && !regex_match(clause, regex("^.*\\(.*,.*,.*\\)$"))) {
         this->isSyntacticallyValid = false;
     } else {
@@ -309,35 +323,35 @@ void QueryPreprocessor::parsePatternClause(string clause) {
         int comma2 = clause.find(',', comma + 1);
         int right = clause.length() - 1;
 
-        string syn = trim(clause.substr(0, left));
-        string firstArg = trim(clause.substr(left + 1, comma - left - 1));
+        STRING syn = trim(clause.substr(0, left));
+        STRING firstArg = trim(clause.substr(left + 1, comma - left - 1));
 
-        if (comma2 == string::npos) { // assign, while
-            string secondArg = trim(clause.substr(comma + 1, right - comma - 1));
+        if (comma2 == STRING::npos) { // assign, while
+            STRING secondArg = trim(clause.substr(comma + 1, right - comma - 1));
             checkPatternClause(syn, { firstArg, secondArg });
         } else { // if
-            string secondArg = trim(clause.substr(comma + 1, comma2 - comma - 1));
-            string thirdArg = trim(clause.substr(comma2 + 1, right - comma2 - 1));
+            STRING secondArg = trim(clause.substr(comma + 1, comma2 - comma - 1));
+            STRING thirdArg = trim(clause.substr(comma2 + 1, right - comma2 - 1));
             checkPatternClause(syn, { firstArg, secondArg, thirdArg });
         }
     }
 }
 
-void QueryPreprocessor::checkPatternClause(string syn, vector<string> args) {
-    unordered_set<string> synonyms = unordered_set<string>();
+void QueryPreprocessor::checkPatternClause(STRING syn, vector<STRING> args) {
+    unordered_set<STRING> synonyms = unordered_set<STRING>();
     int numOfKnown = 0;
-    string synArgType = getArgType(syn, this->declarations);
+    STRING synArgType = getArgType(syn, this->declarations);
     if (synArgType != ASSIGN_ && synArgType != WHILE_ && synArgType != IF_) {
         this->isSyntacticallyValid = false;
     } else {
         synonyms.insert(syn);
-        vector<unordered_set<string>> validArgType = this->validPatternArgType.find(synArgType)->second;
+        vector<unordered_set<STRING>> validArgType = this->validPatternArgType.find(synArgType)->second;
         if (args.size() != validArgType.size()) {
             this->isSyntacticallyValid = false;
         }
 
         for (int i = 0; i < validArgType.size() && this->isSyntacticallyValid; i++) {
-            string argType = getArgType(args[i], this->declarations);
+            STRING argType = getArgType(args[i], this->declarations);
             if (validArgType[i].find(argType) != validArgType[i].end()) {
                 if (argType == NAME_ || argType == EXPRESSION_ || argType == EXPRESSIONWITHUNDERSCORE_) {
                     numOfKnown++;
@@ -360,7 +374,7 @@ void QueryPreprocessor::checkPatternClause(string syn, vector<string> args) {
     }
 }
 
-void QueryPreprocessor::parseWithClauses(string clauses) {
+void QueryPreprocessor::parseWithClauses(STRING clauses) {
     int andPos = -5;
     int nextPos = clauses.find(" and ");
 
@@ -375,24 +389,24 @@ void QueryPreprocessor::parseWithClauses(string clauses) {
     }
 }
 
-void QueryPreprocessor::parseWithClause(string clause) {
+void QueryPreprocessor::parseWithClause(STRING clause) {
     int pos = clause.find('=');
-    if (pos == string::npos) {
+    if (pos == STRING::npos) {
         this->isSyntacticallyValid = false;
     } else {
-        string left = trim(clause.substr(0, pos));
-        string right = trim(clause.substr(pos + 1));
+        STRING left = trim(clause.substr(0, pos));
+        STRING right = trim(clause.substr(pos + 1));
         checkWithClause(left, right);
     }
 }
 
-void QueryPreprocessor::checkWithClause(string left, string right) {
-    unordered_set<string> synonyms = unordered_set<string>();
+void QueryPreprocessor::checkWithClause(STRING left, STRING right) {
+    unordered_set<STRING> synonyms = unordered_set<STRING>();
     int numOfKnown = 0;
-    string argTypeLeft;
-    string argTypeRight;
-    string leftType = checkRef(left, synonyms, numOfKnown, argTypeLeft);
-    string rightType = checkRef(right, synonyms, numOfKnown, argTypeRight);
+    STRING argTypeLeft;
+    STRING argTypeRight;
+    STRING leftType = checkRef(left, synonyms, numOfKnown, argTypeLeft);
+    STRING rightType = checkRef(right, synonyms, numOfKnown, argTypeRight);
     if (this->isSyntacticallyValid && leftType != rightType) {
         this->isSemanticallyValid = false;
     }
@@ -406,10 +420,10 @@ void QueryPreprocessor::checkWithClause(string left, string right) {
     }
 }
 
-string QueryPreprocessor::checkRef(string &ref, unordered_set<string>& synonyms, int& numOfKnown, string& argType) {
-    string type;
+STRING QueryPreprocessor::checkRef(STRING &ref, unordered_set<STRING>& synonyms, int& numOfKnown, STRING& argType) {
+    STRING type;
     int pos = ref.find('.');
-    if (pos == string::npos) { // NAME_ | INTEGER_ | synonym
+    if (pos == STRING::npos) { // NAME_ | INTEGER_ | synonym
         argType = getArgType(ref, this->declarations);
         if (argType == NAME_) {
             type = NAME_;
@@ -429,8 +443,8 @@ string QueryPreprocessor::checkRef(string &ref, unordered_set<string>& synonyms,
             return type;
         }
     } else { // attrRef
-        string synonym = trim(ref.substr(0, pos));
-        string attrName = trim(ref.substr(pos + 1));
+        STRING synonym = trim(ref.substr(0, pos));
+        STRING attrName = trim(ref.substr(pos + 1));
         checkAttrRef(synonym, attrName);
         if (!this->isSyntacticallyValid) {
             return type;

@@ -1,21 +1,25 @@
 #pragma once
 
-#include "Clause.h"
 #include "QueryUtility.h"
-#include "../PKB/PKB.h"
 #include "../SP/ParserUtils.h"
 #include "../SP/Parser.h"
 
+// Helper class to evaluate pattern clauses
 class PatternEvaluator {
 public:
-	PatternEvaluator();
+    // Constructor for PatternEvaluator
+    PatternEvaluator();
 
-	static bool evaluate(unordered_map<string, string> declarations,
-		Clause clause, unordered_map<string, vector<int>>& tempResults);
+    // Evaluates the clause and stores the results in the unordered map tempResults
+    // Returns true if the clause can be satisfied and false otherwise
+    static bool evaluate(unordered_map<STRING, STRING> declarations,
+                         Clause clause, unordered_map<STRING, vector<int>>& tempResults);
 
-	~PatternEvaluator();
+    // Destructor for PatternEvaluator
+    ~PatternEvaluator();
 
 private:
+    // Enum for the different types of pattern clauses
     enum queryTypes {
         varUnderscore = 0,
         variableName = 1,
@@ -31,30 +35,71 @@ private:
         underscoreExprWithUnderscore = 23,
     };
 
-    static int getIndex(vector<string> v, string s);
-    static int getQueryType(string firstType, string secondType);
-    static string parseExprToExprStr(string input);
+    // Returns the index of string s in the vector v
+    static int getIndex(vector<STRING> v, STRING s);
+    // Returns the enum representing the type of pattern clause
+    static int getQueryType(STRING firstType, STRING secondType);
 
-    static bool evaluateIfClause(string varName, string firstArg, string firstType, 
-        unordered_map<string, vector<int>>& tempResults);
-    static bool evaluateWhileClause(string varName, string firstArg, string firstType,
-        unordered_map<string, vector<int>>& tempResults);
-    static bool evaluateNameUnderscore(vector<int> stmtNums, string varName, string firstArg,
-        unordered_map<string, vector<int>>& tempResults);
-    static bool evaluateNameExpression(vector<int> stmtNums, string varName, string firstArg,
-        string secondArg, unordered_map<string, vector<int>>& tempResults);
-    static bool evaluateNameExpressionWithUnderscore(vector<int> stmtNums, string varName, string firstArg,
-        string secondArg, unordered_map<string, vector<int>>& tempResults);
-    static bool evaluateVarUnderscore(vector<int> stmtNums, string varName, string firstArg,
-        unordered_map<string, vector<int>>& tempResults);
-    static bool evaluateVarExpression(vector<int> stmtNums, string varName, string firstArg,
-        string secondArg, unordered_map<string, vector<int>>& tempResults);
-    static bool evaluateVarExpressionWithUnderscore(vector<int> stmtNums, string varName, string firstArg,
-        string secondArg, unordered_map<string, vector<int>>& tempResults);
-    static bool evaluateUnderscoreUnderscore(vector<int> stmtNums, string varName,
-        unordered_map<string, vector<int>>& tempResults);
-    static bool evaluateUnderscoreExpression(vector<int> stmtNums, string varName,
-        string secondArg, unordered_map<string, vector<int>>& tempResults);
-    static bool evaluateUnderscoreExpressionWithUnderscore(vector<int> stmtNums, string varName,
-        string secondArg, unordered_map<string, vector<int>>& tempResults);
+    // Adds brackets to the expression such that it is left-associative
+    static STRING parseExprToExprStr(STRING input);
+
+    // Trims string with quotes
+    static STRING trimQuotes(STRING s);
+    // Trims string with quotes and underscore
+    static STRING trimQuotesUnderscore(STRING s);
+
+    // Evaluates the if pattern clause and stores the results in the unordered map tempResults
+    // Returns true if the clause can be satisfied and false otherwise
+    static bool evaluateIfClause(STRING varName, STRING firstArg, STRING firstType,
+                                 unordered_map<STRING, vector<int>>& tempResults);
+    // Evaluates the while pattern clause and stores the results in the unordered map tempResults
+    // Returns true if the clause can be satisfied and false otherwise
+    static bool evaluateWhileClause(STRING varName, STRING firstArg, STRING firstType,
+                                    unordered_map<STRING, vector<int>>& tempResults);
+
+    // Evaluates the assign pattern clause with variable name on the LHS and _ on the RHS
+    // Stores the results in the unordered map tempResults
+    // Returns true if the clause can be satisfied and false otherwise
+    static bool evaluateNameUnderscore(vector<StmtNum> stmtNums, STRING varName, STRING firstArg,
+                                       unordered_map<STRING, vector<int>>& tempResults);
+    // Evaluates the assign pattern clause with variable name on the LHS and full expression on the RHS
+    // Stores the results in the unordered map tempResults
+    // Returns true if the clause can be satisfied and false otherwise
+    static bool evaluateNameExpression(vector<StmtNum> stmtNums, STRING varName, STRING firstArg,
+                                       STRING secondArg, unordered_map<STRING, vector<int>>& tempResults);
+    // Evaluates the assign pattern clause with variable name on the LHS and partial expression on the RHS
+    // Stores the results in the unordered map tempResults
+    // Returns true if the clause can be satisfied and false otherwise
+    static bool evaluateNameExpressionWithUnderscore(vector<StmtNum> stmtNums, STRING varName, STRING firstArg,
+                                                     STRING secondArg, unordered_map<STRING, vector<int>>& tempResults);
+    // Evaluates the assign pattern clause with synonym on the LHS and _ on the RHS
+    // Stores the results in the unordered map tempResults
+    // Returns true if the clause can be satisfied and false otherwise
+    static bool evaluateVarUnderscore(vector<StmtNum> stmtNums, STRING varName, STRING firstArg,
+                                      unordered_map<STRING, vector<int>>& tempResults);
+    // Evaluates the assign pattern clause with synonym on the LHS and full expression on the RHS
+    // Stores the results in the unordered map tempResults
+    // Returns true if the clause can be satisfied and false otherwise
+    static bool evaluateVarExpression(vector<StmtNum> stmtNums, STRING varName, STRING firstArg,
+                                      STRING secondArg, unordered_map<STRING, vector<int>>& tempResults);
+    // Evaluates the assign pattern clause with synonym on the LHS and partial expression on the RHS
+    // Stores the results in the unordered map tempResults
+    // Returns true if the clause can be satisfied and false otherwise
+    static bool evaluateVarExpressionWithUnderscore(vector<StmtNum> stmtNums, STRING varName, STRING firstArg,
+                                                    STRING secondArg, unordered_map<STRING, vector<int>>& tempResults);
+    // Evaluates the assign pattern clause with _ on both the LHS and the RHS
+    // Stores the results in the unordered map tempResults
+    // Returns true if the clause can be satisfied and false otherwise
+    static bool evaluateUnderscoreUnderscore(vector<StmtNum> stmtNums, STRING varName,
+                                             unordered_map<STRING, vector<int>>& tempResults);
+    // Evaluates the assign pattern clause with _ on the LHS and full expression on the RHS
+    // Stores the results in the unordered map tempResults
+    // Returns true if the clause can be satisfied and false otherwise
+    static bool evaluateUnderscoreExpression(vector<StmtNum> stmtNums, STRING varName, STRING secondArg,
+                                             unordered_map<STRING, vector<int>>& tempResults);
+    // Evaluates the assign pattern clause with _ on the LHS and partial expression on the RHS
+    // Stores the results in the unordered map tempResults
+    // Returns true if the clause can be satisfied and false otherwise
+    static bool evaluateUnderscoreExpressionWithUnderscore(vector<StmtNum> stmtNums, STRING varName, STRING secondArg,
+                                                           unordered_map<STRING, vector<int>>& tempResults);
 };

@@ -85,14 +85,14 @@ TEST_CASE("checkExpressionWithUnderscores") {
 }
 
 TEST_CASE("checkSynonymDeclared") {
-    unordered_map<string, string> declarations = {{"a", "assign"}, {"v", "variable"}};
+    unordered_map<STRING, STRING> declarations = {{"a", "assign"}, {"v", "variable"}};
     checkSynonymDeclared("a", declarations);
     REQUIRE(checkSynonymDeclared("a", declarations));
     REQUIRE_FALSE(checkSynonymDeclared("w", declarations));
 }
 
 TEST_CASE("getArgType") {
-    unordered_map<string, string> declarations = {{"a", "assign"}, {"v", "variable"}};
+    unordered_map<STRING, STRING> declarations = {{"a", "assign"}, {"v", "variable"}};
     REQUIRE(getArgType("v", declarations) == VARIABLE_);
     REQUIRE(getArgType("123", declarations) == INTEGER_);
     REQUIRE(getArgType("_", declarations) == UNDERSCORE_);
@@ -105,7 +105,7 @@ TEST_CASE("getArgType") {
 
 class StmtNodeStub : public ast::Stmt {
 public:
-    StmtNodeStub(int index): ast::Stmt(new sp::Token(), index){};
+    StmtNodeStub(StmtNum index): ast::Stmt(new sp::Token(), index){};
 };
 
 void setupPKB() {
@@ -223,16 +223,16 @@ TEST_CASE("intersectDoubleSynonym") {
 
 TEST_CASE("project") {
     // empty result (all columns removed)
-    unordered_set<string> toProject1 {"a", "v"};
-    unordered_map<string, vector<int>> results1;
+    unordered_set<STRING> toProject1 {"a", "v"};
+    unordered_map<STRING, vector<int>> results1;
     results1["c"] = {9, 8, 7, 6, 5, 4, 3};
     results1["n"] = {1, 2, 3, 4, 5, 6, 7};
     project(toProject1, results1);
     REQUIRE(results1.empty());
 
     // non-empty result (some columns removed), duplicates
-    unordered_set<string> toProject2 {"a", "v"};
-    unordered_map<string, vector<int>> results2;
+    unordered_set<STRING> toProject2 {"a", "v"};
+    unordered_map<STRING, vector<int>> results2;
     results2["a"] = {1, 3, 5, 3, 7, 7, 5};
     results2["c"] = {9, 8, 7, 6, 5, 4, 3};
     results2["v"] = {2, 4, 6, 4, 8, 9, 6};
@@ -243,8 +243,8 @@ TEST_CASE("project") {
     REQUIRE(results2["v"] == vector<int>{2, 4, 6, 8, 9});
 
     // no columns removed, no duplicates
-    unordered_set<string> toProject3 {"c", "n"};
-    unordered_map<string, vector<int>> results3;
+    unordered_set<STRING> toProject3 {"c", "n"};
+    unordered_map<STRING, vector<int>> results3;
     results3["c"] = {9, 8, 7, 6, 5, 4, 3};
     results3["n"] = {1, 2, 3, 4, 5, 6, 7};
     project(toProject3, results3);
@@ -253,8 +253,8 @@ TEST_CASE("project") {
     REQUIRE(results3["n"] == vector<int>{1, 2, 3, 4, 5, 6, 7});
 
     // no columns removed, duplicates
-    unordered_set<string> toProject4 {"a", "v"};
-    unordered_map<string, vector<int>> results4;
+    unordered_set<STRING> toProject4 {"a", "v"};
+    unordered_map<STRING, vector<int>> results4;
     results4["a"] = {1, 3, 5, 3, 7, 7, 5};
     results4["v"] = {2, 4, 6, 4, 8, 9, 6};
     project(toProject4, results4);
@@ -280,6 +280,7 @@ void setupPKB2() {
     ast::Stmt* stmtNodeStub = new StmtNodeStub(0);
 
     PKB::procTable->storeProcName("sumDigits"); // 0
+    PKB::procTable->storeProcStmt(0, 1, 7);
 
     PKB::varTable->storeVarName("number"); // 0
     PKB::varTable->storeVarName("sum"); // 1
@@ -339,6 +340,8 @@ void setupPKB2() {
     PKB::next->storeNext(6, 7);
     PKB::next->storeNext(6, 3);
 
+    PKB::nextBip->setRunNextBip(true);
+    PKB::affectsBip->setRunAffectsBip(true);
     PKB::populatePKB();
 }
 
@@ -358,6 +361,10 @@ TEST_CASE("getSize") {
     REQUIRE(PKB::next->getNextStarSize() == 31);
     REQUIRE(PKB::affects->getAffectsSize() == 5);
     REQUIRE(PKB::affects->getAffectsStarSize() == 6);
+    REQUIRE(PKB::nextBip->getNextBipSize() == 8);
+    REQUIRE(PKB::nextBip->getNextBipStarSize() == 31);
+    REQUIRE(PKB::affectsBip->getAffectsBipSize() == 5);
+    REQUIRE(PKB::affectsBip->getAffectsBipStarSize() == 6);
     REQUIRE(PKB::procTable->getSize() == 1);
     REQUIRE(PKB::varTable->getSize() == 3);
     REQUIRE(PKB::constTable->getSize() == 2);
@@ -366,9 +373,9 @@ TEST_CASE("getSize") {
     REQUIRE(PKB::stmtTable->getAllWhileStmtNums().size() == 1);
     REQUIRE(PKB::stmtTable->getAllIfStmtNums().size() == 0);
 
-    unordered_map<string, string> declarations = {{"s", STMT_}, {"r", READ_}, {"pn", PRINT_}, {"a", ASSIGN_},
+    unordered_map<STRING, STRING> declarations = {{"s", STMT_}, {"r", READ_}, {"pn", PRINT_}, {"a", ASSIGN_},
                                                   {"c", CALL_}, {"w", WHILE_}, {"ifs", IF_}, {"v", VARIABLE_},
-                                                  {"cc", CONSTANT_}, {"p", PROCEDURE_}, {"n1", PROGLINE_}};
+                                                  {"cc", CONSTANT_}, {"p", PROCEDURE_}, {"n", PROGLINE_}};
 
     Clause c1 = Clause("Follows", {"6", "s"}, {"s"}, 1);
     REQUIRE(getSize(c1, declarations) == 5);
@@ -393,4 +400,10 @@ TEST_CASE("getSize") {
 
     Clause c8 = Clause("ifs", {"v", "_", "_"}, {"ifs", "v"}, 0);
     REQUIRE(getSize(c8, declarations) == 0);
+
+    Clause c9 = Clause("NextBip*", {"3", "n"}, {"n"}, 1);
+    REQUIRE(getSize(c9, declarations) == 31);
+
+    Clause c10 = Clause("AffectsBip", {"5", "5"}, {}, 2);
+    REQUIRE(getSize(c10, declarations) == 5);
 }

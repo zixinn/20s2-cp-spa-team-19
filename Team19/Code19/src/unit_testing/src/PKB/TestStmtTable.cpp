@@ -5,7 +5,7 @@ using namespace std;
 
 class StmtNodeStub : public ast::Stmt {
 public:
-    StmtNodeStub(int index): ast::Stmt(new sp::Token(), index){};
+    StmtNodeStub(StmtNum index): ast::Stmt(new sp::Token(), index){};
 };
 
 StmtTable* setupStmtTestTable() {
@@ -43,6 +43,15 @@ StmtTable* setUpIfWhileTests() {
     stmtTable->storeIfPattern(22, 13);
     stmtTable->storeWhilePattern(25, 14);
     stmtTable->storeWhilePattern(25, 15);
+    return stmtTable;
+}
+
+StmtTable* setUpIfTests() {
+    StmtTable* stmtTable = new StmtTable();
+    stmtTable->storeIfStmt(2, 3, set<StmtNum>{5});
+    stmtTable->storeIfStmt(16, 17, set<StmtNum>{22});
+    stmtTable->storeElseStmt(16, 23, set<StmtNum>{25});
+    stmtTable->storeElseStmt(2, 6, set<StmtNum>{22, 25});
     return stmtTable;
 }
 
@@ -103,6 +112,16 @@ TEST_CASE("storeIfPattern and storeWhilePattern Test") {
     REQUIRE_FALSE(stmtTable->storeWhilePattern(3,2));
     REQUIRE(stmtTable->storeWhilePattern(4, 2));
     REQUIRE_FALSE(stmtTable->storeIfPattern(4,3));
+}
+
+TEST_CASE("storeIfStmt and storeElseStmt Test") {
+    StmtTable* stmtTable = new StmtTable();
+    REQUIRE(stmtTable->storeIfStmt(2, 3, set<StmtNum>{5}));
+    REQUIRE_FALSE(stmtTable->storeIfStmt(2, 3, set<StmtNum>{5}));
+    REQUIRE(stmtTable->storeIfStmt(16, 17, set<StmtNum>{22}));
+    REQUIRE(stmtTable->storeElseStmt(16, 23, set<StmtNum>{25}));
+    REQUIRE(stmtTable->storeElseStmt(2, 6, set<StmtNum>{22, 25}));
+    REQUIRE_FALSE(stmtTable->storeElseStmt(2, 6, set<StmtNum>{22, 25}));
 }
 
 TEST_CASE("getSize Test [StmtTable]") {
@@ -372,4 +391,12 @@ TEST_CASE("getAssignExpr Test") {
     pair<STRING, STRING> result2 = stmtTable->getAssignExpr(2);
     REQUIRE(result2.first == "a");
     REQUIRE(result2.second == "a+b");
+}
+
+TEST_CASE("getIfStmtRange and getElseStmtRange Test") {
+    StmtTable* stmtTable = setUpIfTests();
+    REQUIRE(stmtTable->getIfStmtRange(2) == make_pair(3, set<StmtNum>{5}));
+    REQUIRE(stmtTable->getElseStmtRange(2) == make_pair(6, set<StmtNum>{22, 25}));
+    REQUIRE(stmtTable->getIfStmtRange(16) == make_pair(17, set<StmtNum>{22}));
+    REQUIRE(stmtTable->getElseStmtRange(16) == make_pair(23, set<StmtNum>{25}));
 }

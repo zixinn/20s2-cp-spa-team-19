@@ -1,20 +1,16 @@
-#include <iterator>
-#include <set>
-
 #include "WithEvaluator.h"
-#include "QueryUtility.h"
 
 using namespace std;
 
 WithEvaluator::WithEvaluator() {
 }
 
-bool WithEvaluator::evaluate(unordered_map<string, string> declarations, Clause clause, 
-	unordered_map<string, vector<int>>& tempResults) {
-    string firstArg = clause.getArgs().at(0);
-    string secondArg = clause.getArgs().at(1);
-    unordered_map<string, string> firstArgMap = getArgumentMap(firstArg, declarations);
-    unordered_map<string, string> secondArgMap = getArgumentMap(secondArg, declarations);
+bool WithEvaluator::evaluate(unordered_map<STRING, STRING> declarations, Clause clause,
+                             unordered_map<STRING, vector<int>>& tempResults) {
+    STRING firstArg = clause.getArgs().at(0);
+    STRING secondArg = clause.getArgs().at(1);
+    unordered_map<STRING, STRING> firstArgMap = getArgumentMap(firstArg, declarations);
+    unordered_map<STRING, STRING> secondArgMap = getArgumentMap(secondArg, declarations);
     vector<int> results;
     bool isEqual;
 
@@ -41,12 +37,11 @@ bool WithEvaluator::evaluate(unordered_map<string, string> declarations, Clause 
     return isEqual;
 }
 
-unordered_map<string, string> WithEvaluator::getArgumentMap(string arg, 
-    unordered_map<string, string> declarations) { // [argType, attrName, synonym/integer/name]
-    unordered_map<string, string> argMap;
+unordered_map<STRING, STRING> WithEvaluator::getArgumentMap(STRING arg, unordered_map<STRING, STRING> declarations) { // [argType, attrName, synonym/integer/name]
+    unordered_map<STRING, STRING> argMap;
     int posOfDot = arg.find('.');
 
-    if (posOfDot == string::npos) { // no dot found
+    if (posOfDot == STRING::npos) { // no dot found
         argMap["argType"] = getArgType(arg, declarations);
         argMap["attrName"] = "";
         argMap["arg"] = arg;
@@ -58,13 +53,12 @@ unordered_map<string, string> WithEvaluator::getArgumentMap(string arg,
     return argMap;
 }
 
-// trim string with quotes
-string WithEvaluator::trimQuotes(string s) {
+STRING WithEvaluator::trimQuotes(STRING s) {
     return trim(s.substr(1, s.size() - 2));
 }
 
-void WithEvaluator::storeResults(vector<int> results, unordered_map<string, string> argMap,
-    unordered_map<string, vector<int>>& tempResults) {
+void WithEvaluator::storeResults(vector<int> results, unordered_map<STRING, STRING> argMap,
+                                 unordered_map<STRING, vector<int>>& tempResults) {
     vector<int> synonymValues;
     if (argMap["argType"] == NAME_ || argMap["argType"] == INTEGER_) {
         return; // don't need to store anything
@@ -73,7 +67,7 @@ void WithEvaluator::storeResults(vector<int> results, unordered_map<string, stri
     }
 }
 
-vector<int> WithEvaluator::getValues(unordered_map<string, string> argMap) { //[argType, attrName, synonym/integer/name]
+vector<int> WithEvaluator::getValues(unordered_map<STRING, STRING> argMap) { // [argType, attrName, synonym/integer/name]
     if (argMap["argType"] == INTEGER_) {
         return vector<int>{stoi(argMap["arg"])};
     } else if (argMap["attrName"] == "procName") {
@@ -85,7 +79,7 @@ vector<int> WithEvaluator::getValues(unordered_map<string, string> argMap) { //[
     } else if (argMap["attrName"] == "varName") {
         if (argMap["argType"] == VARIABLE_) {
             return PKB::varTable->getAllVarIDs();
-        } else if (argMap["argType"] == READ_) { 
+        } else if (argMap["argType"] == READ_) {
             return PKB::stmtTable->getAllReadStmtNums();
         } else if (argMap["argType"] == PRINT_) {
             return PKB::stmtTable->getAllPrintStmtNums();
@@ -111,8 +105,8 @@ vector<int> WithEvaluator::getValues(unordered_map<string, string> argMap) { //[
     }
 }
 
-bool WithEvaluator::compareNames(unordered_map<string, string> firstArgMap, unordered_map<string, string> secondArgMap,
-    unordered_map<string, vector<int>>& tempResults) {
+bool WithEvaluator::compareNames(unordered_map<STRING, STRING> firstArgMap, unordered_map<STRING, STRING> secondArgMap,
+                                 unordered_map<STRING, vector<int>>& tempResults) {
     vector<int> results1;
     vector<int> results2;
 
@@ -150,11 +144,11 @@ bool WithEvaluator::compareNames(unordered_map<string, string> firstArgMap, unor
     }
 }
 
-vector<int> WithEvaluator::compareOneArgTypeName(string name, unordered_map<string, string> argMap) {
+vector<int> WithEvaluator::compareOneArgTypeName(STRING name, unordered_map<STRING, STRING> argMap) {
     vector<int> results;
-    string argType = argMap["argType"];
+    STRING argType = argMap["argType"];
     if (argType == PROCEDURE_) {
-        int procId = PKB::procTable->getProcID(name);
+        ID procId = PKB::procTable->getProcID(name);
         if (procId != -1) {
             results.push_back(procId);
         }
@@ -185,7 +179,7 @@ vector<int> WithEvaluator::compareOneArgTypeName(string name, unordered_map<stri
     return results;
 }
 
-string WithEvaluator::getName(unordered_map<string, string> argMap, int num) {
+STRING WithEvaluator::getName(unordered_map<STRING, STRING> argMap, StmtNum num) {
     if (argMap["argType"] == NAME_) {
         return argMap["arg"];
     } else if (argMap["argType"] == PROCEDURE_) {
