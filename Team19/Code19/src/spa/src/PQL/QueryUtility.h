@@ -1,10 +1,5 @@
 #pragma once
 
-#include <unordered_set>
-#include <vector>
-
-#include "../AbstractAPI.h"
-#include "../Utility.h"
 #include "../PKB/PKB.h"
 #include "../SP/Lexer.h"
 #include "Clause.h"

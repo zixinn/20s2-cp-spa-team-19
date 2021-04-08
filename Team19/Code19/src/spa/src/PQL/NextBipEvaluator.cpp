@@ -6,7 +6,8 @@ NextBipEvaluator::NextBipEvaluator() {
 
 }
 
-bool NextBipEvaluator::evaluate(unordered_map<STRING, STRING> declarations, Clause clause, unordered_map<STRING, vector<int>>& tempResults) {
+bool NextBipEvaluator::evaluate(unordered_map<STRING, STRING> declarations, Clause clause,
+                                unordered_map<STRING, vector<int>>& tempResults) {
     STRING firstArg = clause.getArgs().at(0);
     STRING secondArg = clause.getArgs().at(1);
     STRING firstType = getArgType(firstArg, declarations);

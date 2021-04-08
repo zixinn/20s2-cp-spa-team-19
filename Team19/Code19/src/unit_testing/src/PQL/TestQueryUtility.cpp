@@ -341,7 +341,7 @@ void setupPKB2() {
     PKB::next->storeNext(6, 3);
 
     PKB::nextBip->setRunNextBip(true);
-    // PKB::affectsBip->setRunAffectsBip(true);
+    PKB::affectsBip->setRunAffectsBip(true);
     PKB::populatePKB();
 }
 
@@ -363,8 +363,8 @@ TEST_CASE("getSize") {
     REQUIRE(PKB::affects->getAffectsStarSize() == 6);
     REQUIRE(PKB::nextBip->getNextBipSize() == 8);
     REQUIRE(PKB::nextBip->getNextBipStarSize() == 31);
-    /*REQUIRE(PKB::affectsBip->getAffectsBipSize() == 5);
-    REQUIRE(PKB::affectsBip->getAffectsBipStarSize() == 6);*/
+    REQUIRE(PKB::affectsBip->getAffectsBipSize() == 5);
+    REQUIRE(PKB::affectsBip->getAffectsBipStarSize() == 6);
     REQUIRE(PKB::procTable->getSize() == 1);
     REQUIRE(PKB::varTable->getSize() == 3);
     REQUIRE(PKB::constTable->getSize() == 2);
@@ -404,6 +404,6 @@ TEST_CASE("getSize") {
     Clause c9 = Clause("NextBip*", {"3", "n"}, {"n"}, 1);
     REQUIRE(getSize(c9, declarations) == 31);
 
-    /*Clause c10 = Clause("AffectsBip", {"5", "5"}, {}, 2);
-    REQUIRE(getSize(c10, declarations) == 5);*/
+    Clause c10 = Clause("AffectsBip", {"5", "5"}, {}, 2);
+    REQUIRE(getSize(c10, declarations) == 5);
 }

@@ -85,13 +85,13 @@ bool QueryEvaluator::evaluateClause(Clause clause, unordered_map<STRING, vector<
             return NextBipTEvaluator::evaluate(this->declarations, clause, tempResults);
         }
     }
-    /*if (PKB::affectsBip->getRunAffectsBip()) {
+    if (PKB::affectsBip->getRunAffectsBip()) {
         if (rel == "AffectsBip") {
             return AffectsBipEvaluator::evaluate(this->declarations, clause, tempResults);
         } else if (rel == "AffectsBip*") {
             return AffectsBipTEvaluator::evaluate(this->declarations, clause, tempResults);
         }
-    }*/
+    }
     if (rel == "Follows") {
         return FollowsEvaluator::evaluate(this->declarations, clause, tempResults);
     } else if (rel == "Follows*") {
@@ -123,7 +123,8 @@ bool QueryEvaluator::evaluateClause(Clause clause, unordered_map<STRING, vector<
     }
 }
 
-void QueryEvaluator::join(unordered_map<STRING, vector<int>> table, unordered_map<STRING, vector<int>>& results, vector<STRING> commonSynonyms) {
+void QueryEvaluator::join(unordered_map<STRING, vector<int>> table, unordered_map<STRING, vector<int>>& results,
+                          vector<STRING> commonSynonyms) {
     if (results.empty()) {
         results = table;
         return;
