@@ -148,29 +148,29 @@ vector<int> WithEvaluator::compareOneArgTypeName(STRING name, unordered_map<STRI
     vector<int> results;
     STRING argType = argMap["argType"];
     if (argType == PROCEDURE_) {
-        ID procId = PKB::procTable->getProcID(name);
+        ProcID procId = PKB::procTable->getProcID(name);
         if (procId != -1) {
             results.push_back(procId);
         }
     } else if (argType == CALL_) {
-        ID procId = PKB::procTable->getProcID(name);
+        ProcID procId = PKB::procTable->getProcID(name);
         if (procId != -1) {
             unordered_set<StmtNum> stmts = PKB::calls->getStmtNumThatCallsCallee(procId);
             results.assign(stmts.begin(), stmts.end());
         }
     } else if (argType == VARIABLE_) {
-        ID varId = PKB::varTable->getVarID(name);
+        VarID varId = PKB::varTable->getVarID(name);
         if (varId != -1) {
             results.push_back(varId);
         }
     } else if (argType == READ_) {
-        ID varId = PKB::varTable->getVarID(name);
+        VarID varId = PKB::varTable->getVarID(name);
         if (varId != -1) {
             unordered_set<StmtNum> stmts = PKB::stmtTable->getStmtNumsOfReadWithVar(varId);
             results.assign(stmts.begin(), stmts.end());
         }
     } else { // argType == PRINT_
-        ID varId = PKB::varTable->getVarID(name);
+        VarID varId = PKB::varTable->getVarID(name);
         if (varId != -1) {
             unordered_set<StmtNum> stmts = PKB::stmtTable->getStmtNumsOfPrintWithVar(varId);
             results.assign(stmts.begin(), stmts.end());
@@ -185,15 +185,15 @@ STRING WithEvaluator::getName(unordered_map<STRING, STRING> argMap, StmtNum num)
     } else if (argMap["argType"] == PROCEDURE_) {
         return PKB::procTable->getProcName(num);
     } else if (argMap["argType"] == CALL_) {
-        ID procCalled = PKB::calls->getCalleeInStmt(num);
+        ProcID procCalled = PKB::calls->getCalleeInStmt(num);
         return PKB::procTable->getProcName(procCalled);
     } else if (argMap["argType"] == VARIABLE_) {
         return PKB::varTable->getVarName(num);
     } else if (argMap["argType"] == READ_) {
-        ID varRead = PKB::stmtTable->getReadVariableOfStmt(num);
+        VarID varRead = PKB::stmtTable->getReadVariableOfStmt(num);
         return PKB::varTable->getVarName(varRead);
     } else { // argMap["argType"] == PRINT_
-        ID varPrint = PKB::stmtTable->getPrintVariableOfStmt(num);
+        VarID varPrint = PKB::stmtTable->getPrintVariableOfStmt(num);
         return PKB::varTable->getVarName(varPrint);
     }
 }

@@ -2,7 +2,7 @@
 
 ProcTable::ProcTable() = default;
 
-ID ProcTable::getProcID(STRING procName) {
+ProcID ProcTable::getProcID(STRING procName) {
     if (procNameIDMap.find(procName) == procNameIDMap.end()) {
         return -1;
     } else {
@@ -10,7 +10,7 @@ ID ProcTable::getProcID(STRING procName) {
     }
 }
 
-STRING ProcTable::getProcName(ID procID) {
+STRING ProcTable::getProcName(ProcID procID) {
     try {
         return procNames.at(procID);
     } catch (out_of_range const& e) {
@@ -19,7 +19,7 @@ STRING ProcTable::getProcName(ID procID) {
     }
 }
 
-pair<StmtNum, StmtNum> ProcTable::getProcRange(ID procID) {
+pair<StmtNum, StmtNum> ProcTable::getProcRange(ProcID procID) {
     if (procStmtMap.find(procID) == procStmtMap.end()) {
         cerr << "Index out of range: No procedure with ID " << procID << " in procStmtMap." << endl;
         throw exception();
@@ -32,7 +32,7 @@ vector<STRING> const &ProcTable::getAllProcNames() const {
     return procNames;
 }
 
-vector<STRING> ProcTable::convertProcIDsToNames(vector<ID> procIDs) {
+vector<STRING> ProcTable::convertProcIDsToNames(vector<ProcID> procIDs) {
     vector<string> result;
     for (int id : procIDs) {
         result.push_back(getProcName(id));
@@ -40,8 +40,8 @@ vector<STRING> ProcTable::convertProcIDsToNames(vector<ID> procIDs) {
     return result;
 }
 
-vector<ID> ProcTable::getAllProcIDs() {
-    vector<ID> result;
+vector<ProcID> ProcTable::getAllProcIDs() {
+    vector<ProcID> result;
     for (auto &it : procNameIDMap) {
         result.push_back(it.second);
     }
@@ -52,7 +52,7 @@ int ProcTable::getSize() {
     return procNames.size();
 }
 
-ID ProcTable::storeProcName(STRING procName) {
+ProcID ProcTable::storeProcName(STRING procName) {
     if (hasProc(procName)) {
         return getProcID(procName);
     } else {
@@ -63,7 +63,7 @@ ID ProcTable::storeProcName(STRING procName) {
     }
 }
 
-bool ProcTable::storeProcStmt(ID procID, StmtNum startStmt, StmtNum endStmt) {
+bool ProcTable::storeProcStmt(ProcID procID, StmtNum startStmt, StmtNum endStmt) {
     return procStmtMap.insert({procID, make_pair(startStmt, endStmt)}).second;
 }
 

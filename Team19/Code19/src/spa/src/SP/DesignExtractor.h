@@ -57,7 +57,7 @@ private:
     // For bookkeeping
     // "Current statement" refers to the statement that Parser has called DE to process
     // The procedure ID for the procedure containing the current statement
-    static ID currentProcedureID;
+    static ProcID currentProcedureID;
 
     // The variables here are all /relative/ to the current statement.
     // The stmtLst for the current statement
@@ -65,9 +65,9 @@ private:
     // The ID of the (direct) Parent of the current statement
     static StmtNum currentParent;
     // The current list of modified variables for this statement
-    static set<ID> currentModifiedVarsLst;
+    static set<VarID> currentModifiedVarsLst;
     // The current list of used variables for this statement
-    static set<ID> currentUsedVarsLst;
+    static set<VarID> currentUsedVarsLst;
     // A list of set<StmtNum> containing the Next statements for the current statement
     // Next requires a set<ProgLine> due to If statements branching
     static vector<set<ProgLine>> currentNext;
@@ -75,8 +75,8 @@ private:
     // Each stack stores its respective entries for the CURRENT PROCEDURE (currentProcedureId)
     // e.g. a stack of stmtLsts, a stack of vectors (containing IDs)
     static vector<vector<StmtNum>> stmtLstsStack;    // StmtNums
-    static vector<set<ID>> usesStack;
-    static vector<set<ID>> modifiesStack;
+    static vector<set<VarID>> usesStack;
+    static vector<set<VarID>> modifiesStack;
     static vector<StmtNum> parentStack;
     // The above stacks must be handled together as a unit.
     static vector<vector<set<ProgLine>>> nextStack;
@@ -85,7 +85,7 @@ private:
     // Wipes the local state variables for the given parent (container) statement
     static void popSavedState(); // pop all stacks, restoring the current state variables
     // Reset local state variables to prepare for a new procedure
-    static void createNewCurrentState(ID currentParent);
+    static void createNewCurrentState(StmtNum currentParent);
 
     // Other internal DE methods
     // Extracts varNames and Constants from the RHS of an AssignStmt

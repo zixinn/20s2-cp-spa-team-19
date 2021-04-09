@@ -29,14 +29,14 @@ bool UsesEvaluator::evaluateStmtUses(unordered_map<STRING, STRING> declarations,
     if (firstType == INTEGER_) { // 1, "v" or 1, v or 1, _
         StmtNum stmtNum = stoi(firstArg);
         if (secondType == NAME_) { // 1, "v"
-            ID varId = PKB::varTable->getVarID(trim(secondArg.substr(1, secondArg.size() - 2)));
+            VarID varId = PKB::varTable->getVarID(trim(secondArg.substr(1, secondArg.size() - 2)));
             if (varId == -1) {
                 return false;
             }
             return PKB::uses->stmtUsesVar(stmtNum, varId);
 
         } else { // 1, v or 1, _
-            unordered_set<ID> varSet = PKB::uses->getVarsUsedByStmt(stmtNum);
+            unordered_set<VarID> varSet = PKB::uses->getVarsUsedByStmt(stmtNum);
 
             if (varSet.empty()) {
                 return false;
@@ -56,7 +56,7 @@ bool UsesEvaluator::evaluateStmtUses(unordered_map<STRING, STRING> declarations,
         vector<StmtNum> usesStmts = PKB::uses->getAllStmtUses().first;
 
         if (secondType == NAME_) { // s, "v"
-            ID varId = PKB::varTable->getVarID(trim(secondArg.substr(1, secondArg.size() - 2)));
+            VarID varId = PKB::varTable->getVarID(trim(secondArg.substr(1, secondArg.size() - 2)));
             if (varId == -1) {
                 return false;
             }
@@ -72,7 +72,7 @@ bool UsesEvaluator::evaluateStmtUses(unordered_map<STRING, STRING> declarations,
             return nonEmpty;
 
         } else { // s, v or s, _
-            pair<vector<StmtNum>, vector<ID>> allStmtUses = PKB::uses->getAllStmtUses();
+            pair<vector<StmtNum>, vector<VarID>> allStmtUses = PKB::uses->getAllStmtUses();
             if (allStmtUses.first.empty()) {
                 return false;
             }
@@ -106,16 +106,16 @@ bool UsesEvaluator::evaluateProcUses(unordered_map<STRING, STRING> declarations,
     STRING secondType = getArgType(secondArg, declarations);
 
     if (firstType == NAME_) { // "main", "v" or "main", v or "main", _
-        ID procId = PKB::procTable->getProcID(trim(firstArg.substr(1, firstArg.size() - 2)));
+        ProcID procId = PKB::procTable->getProcID(trim(firstArg.substr(1, firstArg.size() - 2)));
         if (secondType == NAME_) { // "main", "v"
-            ID varId = PKB::varTable->getVarID(trim(secondArg.substr(1, secondArg.size() - 2)));
+            VarID varId = PKB::varTable->getVarID(trim(secondArg.substr(1, secondArg.size() - 2)));
             if (procId == -1 || varId == -1) {
                 return false;
             }
             return PKB::uses->procUsesVar(procId, varId);
 
         } else { // "main", v or "main", _
-            unordered_set<ID> vars = PKB::uses->getVarsUsedByProc(procId);
+            unordered_set<VarID> vars = PKB::uses->getVarsUsedByProc(procId);
             if (vars.empty()) {
                 return false;
             }
@@ -132,11 +132,11 @@ bool UsesEvaluator::evaluateProcUses(unordered_map<STRING, STRING> declarations,
 
     } else { // p, "v" or p, v or p, _
         if (secondType == NAME_) { // p, "v"
-            ID varId = PKB::varTable->getVarID(trim(secondArg.substr(1, secondArg.size() - 2)));
+            VarID varId = PKB::varTable->getVarID(trim(secondArg.substr(1, secondArg.size() - 2)));
             if (varId == -1) {
                 return false;
             }
-            unordered_set<ID> procs = PKB::uses->getProcsUses(varId);
+            unordered_set<ProcID> procs = PKB::uses->getProcsUses(varId);
             if (procs.empty()) {
                 return false;
             }
@@ -148,7 +148,7 @@ bool UsesEvaluator::evaluateProcUses(unordered_map<STRING, STRING> declarations,
             return nonEmpty;
 
         } else { // p, v or p, _
-            pair<vector<ID>, vector<ID>> allProcUses = PKB::uses->getAllProcUses();
+            pair<vector<ProcID>, vector<VarID>> allProcUses = PKB::uses->getAllProcUses();
             if (allProcUses.first.empty()) {
                 return false;
             }

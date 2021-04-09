@@ -48,9 +48,9 @@ unordered_set<StmtNum> const &Affects::getAffectedStar(StmtNum a2) const {
 pair<vector<StmtNum>, vector<StmtNum> > Affects::getAllAffects() {
     vector<StmtNum> a1s, a2s;
     for (auto &it : affectsMap) {
-        for (ID n2 : it.second) {
+        for (StmtNum a2 : it.second) {
             a1s.push_back(it.first);
-            a2s.push_back(n2);
+            a2s.push_back(a2);
         }
     }
     return make_pair(a1s, a2s);
@@ -59,9 +59,9 @@ pair<vector<StmtNum>, vector<StmtNum> > Affects::getAllAffects() {
 pair<vector<StmtNum>, vector<StmtNum> > Affects::getAllAffectsStar() {
     vector<StmtNum> a1s, a2s;
     for (auto &it : affectsStarMap) {
-        for (ID n2 : it.second) {
+        for (StmtNum a2 : it.second) {
             a1s.push_back(it.first);
-            a2s.push_back(n2);
+            a2s.push_back(a2);
         }
     }
     return make_pair(a1s, a2s);
@@ -137,7 +137,7 @@ void Affects::populateAffects() {
     // For every pair of assignment statements a1 and a2 that has a control flow path [isNext*(a1, a2)], find the variable v such that Modifies(a1,v) and check that stmtUsesVar(a2, v)
     // Search for all possible paths to find a path that does not modify v along the way. [in pathDoesNotModify()]
     // If found a path, storeAffects(a1, a2)
-    ID v;
+    VarID v;
     for (StmtNum a1 : PKB::stmtTable->getAllAssignStmtNums()) {
         for (StmtNum a2 : PKB::stmtTable->getAllAssignStmtNums()) {
             if (!PKB::next->isNextStar(a1, a2)) {
@@ -160,7 +160,7 @@ void Affects::populateAffects() {
     }
 }
 
-bool Affects::pathDoesNotModify(StmtNum a1, StmtNum a2, ID v, unordered_set<StmtNum> visited) {
+bool Affects::pathDoesNotModify(StmtNum a1, StmtNum a2, VarID v, unordered_set<StmtNum> visited) {
 
     visited.insert(a1);
 
@@ -199,7 +199,7 @@ bool Affects::pathDoesNotModify(StmtNum a1, StmtNum a2, ID v, unordered_set<Stmt
 
 void Affects::populateAffectsStar() {
     unordered_set<StmtNum> a2s;
-    ID curr;
+    StmtNum curr;
     for (auto &it : affectsMap) {
         curr = it.first;
         list<StmtNum> queue;

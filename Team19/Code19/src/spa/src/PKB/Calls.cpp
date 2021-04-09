@@ -9,75 +9,75 @@ bool Calls::hasCyclicalCall() {
     return isCyclic;
 }
 
-bool Calls::isCalls(ID p, ID q) {
-    unordered_map<ID, unordered_set<ID>>::const_iterator result = callsMap.find(p);
+bool Calls::isCalls(ProcID p, ProcID q) {
+    unordered_map<ProcID, unordered_set<ProcID>>::const_iterator result = callsMap.find(p);
     return result != callsMap.end() && result->second.find(q) != result->second.end();
 }
 
-bool Calls::isCallsStar(ID p, ID q) {
-    unordered_map<ID, unordered_set<ID>>::const_iterator result = callsStarMap.find(p);
+bool Calls::isCallsStar(ProcID p, ProcID q) {
+    unordered_map<ProcID, unordered_set<ProcID>>::const_iterator result = callsStarMap.find(p);
     return result != callsStarMap.end() && result->second.find(q) != result->second.end();
 }
 
-ID Calls::getCalleeInStmt(StmtNum stmtNum) {
+ProcID Calls::getCalleeInStmt(StmtNum stmtNum) {
     if (callsStmtCalleeMap.find(stmtNum) == callsStmtCalleeMap.end()) {
         return -1;
     }
     return callsStmtCalleeMap.find(stmtNum)->second;
 }
 
-unordered_set<StmtNum> const &Calls::getStmtNumThatCallsCallee(ID calleeID) const {
+unordered_set<StmtNum> const &Calls::getStmtNumThatCallsCallee(ProcID calleeID) const {
     if (reverseCallsStmtCalleeMap.find(calleeID) == reverseCallsStmtCalleeMap.end()) {
-        static unordered_set<ID> empty = unordered_set<ID>({});
+        static unordered_set<StmtNum> empty = unordered_set<StmtNum>({});
         return empty;
     }
     return reverseCallsStmtCalleeMap.find(calleeID)->second;
 }
 
-unordered_set<ID> const &Calls::getCallers(ID q) const {
+const unordered_set<ProcID> & Calls::getCallers(ProcID q) const {
     if (reverseCallsMap.find(q) == reverseCallsMap.end()) {
-        static unordered_set<ID> empty = unordered_set<ID>({});
+        static unordered_set<ProcID> empty = unordered_set<ProcID>({});
         return empty;
     }
     return reverseCallsMap.find(q)->second;
 }
 
-unordered_set<ID> const &Calls::getCallees(ID p) const {
+const unordered_set<ProcID> & Calls::getCallees(ProcID p) const {
     if (callsMap.find(p) == callsMap.end()) {
-        static unordered_set<ID> empty = unordered_set<ID>({});
+        static unordered_set<ProcID> empty = unordered_set<ProcID>({});
         return empty;
     }
     return callsMap.find(p)->second;
 }
 
-unordered_set<ID> const &Calls::getCallersStar(ID q) const {
+const unordered_set<ProcID> & Calls::getCallersStar(ProcID q) const {
     if (reverseCallsStarMap.find(q) == reverseCallsStarMap.end()) {
-        static unordered_set<ID> empty = unordered_set<ID>({});
+        static unordered_set<ProcID> empty = unordered_set<ProcID>({});
         return empty;
     }
     return reverseCallsStarMap.find(q)->second;
 }
 
-unordered_set<ID> const &Calls::getCalleesStar(ID p) const {
+const unordered_set<ProcID> & Calls::getCalleesStar(ProcID p) const {
     if (callsStarMap.find(p) == callsStarMap.end()) {
-        static unordered_set<ID> empty = unordered_set<ID>({});
+        static unordered_set<ProcID> empty = unordered_set<ProcID>({});
         return empty;
     }
     return callsStarMap.find(p)->second;
 }
 
-unordered_set<StmtNum> const &Calls::getStmtsOfCalls(ID p, ID q) {
+unordered_set<StmtNum> const &Calls::getStmtsOfCalls(ProcID p, ProcID q) {
     if (!isCalls(p, q)) {
-        static unordered_set<ID> empty = unordered_set<ID>({});
+        static unordered_set<StmtNum> empty = unordered_set<StmtNum>({});
         return empty;
     }
     return callsStmtMap.find(p)->second.find(q)->second;
 }
 
-pair<vector<ID>, vector<ID> > Calls::getAllCalls() {
-    vector<ID> ps, qs;
+pair<vector<ProcID>, vector<ProcID>> Calls::getAllCalls() {
+    vector<ProcID> ps, qs;
     for (auto &it : callsMap) {
-        for (ID q : it.second) {
+        for (ProcID q : it.second) {
             ps.push_back(it.first);
             qs.push_back(q);
         }
@@ -85,10 +85,10 @@ pair<vector<ID>, vector<ID> > Calls::getAllCalls() {
     return make_pair(ps, qs);
 }
 
-pair<vector<ID>, vector<ID> > Calls::getAllCallsStar() {
-    vector<ID> ps, qs;
+pair<vector<ProcID>, vector<ProcID>> Calls::getAllCallsStar() {
+    vector<ProcID> ps, qs;
     for (auto &it : callsStarMap) {
-        for (ID q : it.second) {
+        for (ProcID q : it.second) {
             ps.push_back(it.first);
             qs.push_back(q);
         }
@@ -112,7 +112,7 @@ int Calls::getCallsStarSize() {
     return cnt;
 }
 
-bool Calls::storeCalls(StmtNum stmtNum, ID p, ID q) {
+bool Calls::storeCalls(StmtNum stmtNum, ProcID p, ProcID q) {
     if (callsRawInfoTable.find(stmtNum) != callsRawInfoTable.end()) {
         return false;
     }
@@ -125,7 +125,7 @@ bool Calls::hasCalls(StmtNum stmtNum) {
 }
 
 bool Calls::processCalls() {
-    ID p, q;
+    ProcID p, q;
     StmtNum stmtNum;
     for (auto &it : callsRawInfoTable) {
         stmtNum = it.first;
@@ -134,14 +134,14 @@ bool Calls::processCalls() {
 
         auto it2 = callsMap.find(p);
         if (it2 == callsMap.end()) {
-            callsMap.insert({p, unordered_set<ID>({q})});
+            callsMap.insert({p, unordered_set<ProcID>({q})});
         } else {
             it2->second.insert(q);
         }
 
         it2 = reverseCallsMap.find(q);
         if (it2 == reverseCallsMap.end()) {
-            reverseCallsMap.insert({q, unordered_set<ID>({p})});
+            reverseCallsMap.insert({q, unordered_set<ProcID>({p})});
         } else {
             it2->second.insert(p);
         }
@@ -160,7 +160,7 @@ bool Calls::processCalls() {
 
         auto it3 = reverseCallsStmtCalleeMap.find(q);
         if (it3 == reverseCallsStmtCalleeMap.end()) {
-            reverseCallsStmtCalleeMap.insert({q, unordered_set<ID>({stmtNum})});
+            reverseCallsStmtCalleeMap.insert({q, unordered_set<StmtNum>({stmtNum})});
         } else {
             it3->second.insert(stmtNum);
         }
@@ -175,7 +175,7 @@ bool Calls::processCalls() {
     return false;
 }
 
-bool Calls::storeCallStar(ID p, ID q) {
+bool Calls::storeCallStar(ProcID p, ProcID q) {
     if (isCallsStar(p, q)) {
         return false;
     }
@@ -197,8 +197,8 @@ bool Calls::storeCallStar(ID p, ID q) {
 }
 
 void Calls::populateCallsStar() {
-    unordered_set<ID> qs;
-    ID curr;
+    unordered_set<ProcID> qs;
+    ProcID curr;
     for (auto &it : callsMap) {
         curr = it.first;
         list<int> queue;
@@ -206,7 +206,7 @@ void Calls::populateCallsStar() {
         while (!queue.empty()) {
             qs = getCallees(queue.front());
             queue.pop_front();
-            for (ID q : qs) {
+            for (ProcID q : qs) {
                 if (curr == q) {
                     isCyclic = true;
                     break;
@@ -226,14 +226,14 @@ void Calls::updateAllUsesAndModifies() {
     // Find the stmtNums where the Calls(p, q) occurs
     // For each stmtNum, storeUsesModifies(stmtNum, p, q)
 
-    for (ID p : getAllCalls().first) {
+    for (ProcID p : getAllCalls().first) {
         updateUsesAndModifiesForProcedure(p);
     }
 }
 
-void Calls::updateUsesAndModifiesForProcedure(ID p) {
+void Calls::updateUsesAndModifiesForProcedure(ProcID p) {
     processedProcedures.insert(p);
-    for (ID q : getCallees(p)) {
+    for (ProcID q : getCallees(p)) {
         if (processedProcedures.find(q) == processedProcedures.end()) {
             processedProcedures.insert(q);
             updateUsesAndModifiesForProcedure(q);
@@ -245,7 +245,7 @@ void Calls::updateUsesAndModifiesForProcedure(ID p) {
     processedProcedures.erase(p);
 }
 
-void Calls::storeUsesAndModifies(StmtNum stmtNum, ID p, ID q) {
+void Calls::storeUsesAndModifies(StmtNum stmtNum, ProcID p, ProcID q) {
 //    E.g.
 //       procedure p {
 //    1.     if (c == d) { --> Uses(1, b), Modifies(1, a)
@@ -258,17 +258,17 @@ void Calls::storeUsesAndModifies(StmtNum stmtNum, ID p, ID q) {
 //       }
 
     // Get the variables that are modified by the callee, q
-    unordered_set<ID> variablesModified = PKB::modifies->getVarsModifiedByProc(q);
-    unordered_set<ID> variablesUsed = PKB::uses->getVarsUsedByProc(q);
+    unordered_set<VarID> variablesModified = PKB::modifies->getVarsModifiedByProc(q);
+    unordered_set<VarID> variablesUsed = PKB::uses->getVarsUsedByProc(q);
 
     // Add Modifies(p, variable) and Modifies(stmtNum, variable) for all variables modified by q.
-    for (ID variable : variablesModified) {
+    for (VarID variable : variablesModified) {
         PKB::modifies->storeProcModifies(p, variable);
         PKB::modifies->storeStmtModifies(stmtNum, variable);
     }
 
     // Add Uses(p, variable) and Uses(stmtNum, variable) for all variables used by q.
-    for (ID variable : variablesUsed) {
+    for (VarID variable : variablesUsed) {
         PKB::uses->storeProcUses(p, variable);
         PKB::uses->storeStmtUses(stmtNum, variable);
     }
@@ -276,10 +276,10 @@ void Calls::storeUsesAndModifies(StmtNum stmtNum, ID p, ID q) {
     // All parent*s of this Calls statement also modifies/uses the variables modified/used by q.
     unordered_set<StmtNum> parentStars = PKB::parent->getParentStar(stmtNum);
     for (StmtNum stmt : parentStars) {
-        for (ID variable : variablesModified) {
+        for (VarID variable : variablesModified) {
             PKB::modifies->storeStmtModifies(stmt, variable);
         }
-        for (ID variable : variablesUsed) {
+        for (VarID variable : variablesUsed) {
             PKB::uses->storeStmtUses(stmt, variable);
         }
     }

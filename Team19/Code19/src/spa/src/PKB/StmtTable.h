@@ -11,35 +11,35 @@ public:
     StmtTable();
 
     // Returns true if stmtNum is an If stmt and that it has that control variable
-    bool isIfStmtWithControlVar(StmtNum stmtNum, ID controlVarID);
+    bool isIfStmtWithControlVar(StmtNum stmtNum, VarID controlVarID);
 
     // Returns true if stmtNum is an While stmt and that it has that control variable
-    bool isWhileStmtWithControlVar(StmtNum stmtNum, ID controlVarID);
+    bool isWhileStmtWithControlVar(StmtNum stmtNum, VarID controlVarID);
 
     // Returns the statement node given the stmtNum. Throws error if statement is not in statement table.
     ast::Stmt* getStmtNode(StmtNum stmtNum);
 
     // Returns the set of statement numbers given the control variable. Returns an empty set if it is not a control variable of an if(while) statement.
-    unordered_set<StmtNum> const &getIfStmtsWithControlVar(ID controlVarID) const;
-    unordered_set<StmtNum> const &getWhileStmtsWithControlVar(ID controlVarID) const;
+    unordered_set<StmtNum> const &getIfStmtsWithControlVar(VarID controlVarID) const;
+    unordered_set<StmtNum> const &getWhileStmtsWithControlVar(VarID controlVarID) const;
 
     // Returns the control variable(s) given the statement number. Returns an empty set if the statement number given is not an if(while) statement / does not use a control variable.
-    unordered_set<ID> const &getControlVarsOfIfStmt(StmtNum stmtNum) const;
-    unordered_set<ID> const &getControlVarsOfWhileStmt(StmtNum stmtNum) const;
+    const unordered_set<VarID> & getControlVarsOfIfStmt(StmtNum stmtNum) const;
+    const unordered_set<VarID> & getControlVarsOfWhileStmt(StmtNum stmtNum) const;
 
     // Returns the read/print variable given the stmtNum. Return -1 if the stmtNum is not a read(print) statement
-    ID getReadVariableOfStmt(StmtNum stmtNum);
-    ID getPrintVariableOfStmt(StmtNum stmtNum);
+    VarID getReadVariableOfStmt(StmtNum stmtNum);
+    VarID getPrintVariableOfStmt(StmtNum stmtNum);
 
     // Returns the const reference to a set of read(print) statement numbers with the given variable.
-    unordered_set<StmtNum> const &getStmtNumsOfReadWithVar(ID readVarID) const;
-    unordered_set<StmtNum> const &getStmtNumsOfPrintWithVar(ID printVarID) const;
+    unordered_set<StmtNum> const &getStmtNumsOfReadWithVar(VarID readVarID) const;
+    unordered_set<StmtNum> const &getStmtNumsOfPrintWithVar(VarID printVarID) const;
 
     // Returns a pair of vectors in the ifPatternsMap / whilePatternsMap.
     // First vector is a vector of stmtNums. Second is a vector of varIDs.
     // For e.g., if (1,2), (3,4), (5,6) is in the PatternsMap, then it will return <[1,3,5],[2,4,6]>
-    pair<vector<StmtNum>, vector<ID> > getAllIfPatterns();
-    pair<vector<StmtNum>, vector<ID> > getAllWhilePatterns();
+    pair<vector<StmtNum>, vector<VarID>> getAllIfPatterns();
+    pair<vector<StmtNum>, vector<VarID>> getAllWhilePatterns();
 
     // Returns the pair<lhs, rhs> of assignment given the stmtNum. Throws error if statement is not in statement table.
     pair<STRING, STRING> getAssignExpr(StmtNum stmtNum);
@@ -79,16 +79,16 @@ public:
     // Stores <stmtnum, varID> into read(print)VariablesMap
     // Stores <varID, set<stmtNum>> into the reverseRead(Print)VariablesMap
     // Called by DE. Returns TRUE if the information is added successfully, returns FALSE otherwise.
-    bool storeReadVariableForStmt(StmtNum stmtNum, ID readVarID);
-    bool storePrintVariableForStmt(StmtNum stmtNum, ID printVarID);
+    bool storeReadVariableForStmt(StmtNum stmtNum, VarID readVarID);
+    bool storePrintVariableForStmt(StmtNum stmtNum, VarID printVarID);
 
     // Stores <stmtNum, controlVar> into ifPatternsMap, <controlVar, stmtNum> into reverseIfPatternsMap
     // Called by DE. Returns TRUE if the information is added successfully, returns FALSE otherwise.
-    bool storeIfPattern(StmtNum stmtNum, ID controlVarID);
+    bool storeIfPattern(StmtNum stmtNum, VarID controlVarID);
 
     // Stores <stmtNum, controlVar> into whilePatternsMap, <controlVar, stmtNum> into reverseWhilePatternsMap
     // Called by DE. Returns TRUE if the information is added successfully, returns FALSE otherwise.
-    bool storeWhilePattern(StmtNum stmtNum, ID controlVarID);
+    bool storeWhilePattern(StmtNum stmtNum, VarID controlVarID);
 
     // Stores the if/else stmt that spans from startStmt to endStmt. Returns true if insertion took place.
     bool storeIfStmt(StmtNum ifStmtNum, StmtNum startStmt, const set<StmtNum>& endStmt);
@@ -105,19 +105,20 @@ private:
     unordered_map<StmtNum, pair<STRING, STRING> > assignExprMap;
 
     // A map that stores the statement number of read/print statements as key, the variable as value
-    unordered_map<StmtNum, ID> readVariablesMap;
-    unordered_map<StmtNum, ID> printVariablesMap;
+    unordered_map<StmtNum, VarID> readVariablesMap;
+    unordered_map<StmtNum, VarID> printVariablesMap;
 
-    unordered_map<ID, unordered_set<StmtNum> > reverseReadVariablesMap;
-    unordered_map<ID, unordered_set<StmtNum> > reversePrintVariablesMap;
+    // A map that stores the variableID of read/print statements as key, the set of statement numbers of these read/print statements as value
+    unordered_map<VarID, unordered_set<StmtNum> > reverseReadVariablesMap;
+    unordered_map<VarID, unordered_set<StmtNum> > reversePrintVariablesMap;
 
     // Stores StmtNum as key, and the set of control variable as value
-    unordered_map<StmtNum, unordered_set<ID> > ifPatternsMap;
-    unordered_map<StmtNum, unordered_set<ID> > whilePatternsMap;
+    unordered_map<StmtNum, unordered_set<VarID> > ifPatternsMap;
+    unordered_map<StmtNum, unordered_set<VarID> > whilePatternsMap;
 
     // Stores control variable as key, and a set of stmtNum as value
-    unordered_map<ID, unordered_set<StmtNum> > reverseIfPatternsMap;
-    unordered_map<ID, unordered_set<StmtNum> > reverseWhilePatternsMap;
+    unordered_map<VarID, unordered_set<StmtNum> > reverseIfPatternsMap;
+    unordered_map<VarID, unordered_set<StmtNum> > reverseWhilePatternsMap;
 
     // A map that stores if stmt num as key, and a set of <startStmt, endStmt> as value.
     unordered_map<StmtNum, pair<StmtNum, set<StmtNum>>> ifStmtMap;
