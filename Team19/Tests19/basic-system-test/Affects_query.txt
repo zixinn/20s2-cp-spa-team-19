@@ -1,0 +1,300 @@
+1 - Select Boolean, Affects(_,_)
+
+Select BOOLEAN such that Affects(_,_)
+TRUE
+5000
+2 - Select s, Affects(_,_)
+stmt s;
+Select s such that Affects(_,_)
+1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27
+5000
+3 - Select v, Affects(_,_)
+variable v; stmt s;
+Select v such that Affects(_,_)
+teacup0, lesion, bluebell, melody, maison, gossamer, x, something, coeur, cerveau, boro, ardent, guru, pardon, z, y
+5000
+4 - Select c, Affects(_,_)
+variable v; stmt s; constant c;
+Select c such that Affects(_,_)
+1,2,5,8,23,56,258080
+5000
+5 - Select n, Affects(_,_)
+stmt s; prog_line n;
+Select n such that Affects(_,_)
+1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27
+5000
+6 - Select n, Affects(_,_)
+stmt s; prog_line n; procedure p;
+Select p such that Affects(_,_)
+shikashi, Honeysuckle, something
+5000
+7 - Select r Affects(_,_)
+stmt s; prog_line n; procedure p; read r;
+Select r such that Affects(_,_)
+13, 24, 27
+5000
+8 - Select pn Affects(_,_)
+stmt s; prog_line n; procedure p; read r; print pn;
+Select pn such that Affects(_,_)
+1, 9, 10, 14, 19
+5000
+9 - Select c Affects(_,_)
+stmt s; prog_line n; procedure p; read r; print pn; call c;
+Select c such that Affects(_,_)
+11, 12, 20
+5000
+10 - Select w Affects(_,_)
+stmt s; prog_line n; procedure p; read r; print pn; call c; while w;
+Select w such that Affects(_,_)
+3, 15
+5000
+11 - Select ifs, Affects(_,_)
+if ifs;
+Select ifs such that Affects(_,_)
+6, 23
+5000
+12 - Select a, Affects(_,_)
+assign a;
+Select a such that Affects(_,_)
+2,4,5,7,8,16,17,18,21,22,25,26
+5000
+13 - Affects(_,s)
+stmt s;
+Select s such that Affects(_,s)
+7,8
+5000
+14 - Affects(_,n)
+prog_line n;
+Select n such that Affects(_,n)
+7,8
+5000
+15 - Affects(_,r) (invalid)
+read r;
+Select r such that Affects(_,r)
+none
+5000
+16 - Affects(_,pn) (invalid)
+print pn;
+Select pn such that Affects(_,pn)
+none
+5000
+17 - Affects(_,c) (invalid)
+call c;
+Select c such that Affects(_,c)
+none
+5000
+18 - Affects(_,w) (invalid)
+while w;
+Select w such that Affects(_,w)
+none
+5000
+19 - Affects(_,ifs) (invalid)
+if ifs;
+Select ifs such that Affects(_,ifs)
+none
+5000
+20 - Affects(_,a)
+assign a;
+Select a such that Affects(_,a)
+7,8
+5000
+21 - Select BOOLEAN, true Affects(_,s)
+stmt s;
+Select BOOLEAN such that Affects(_,s)
+TRUE
+5000
+22 - Affects(_,v) (invalid)
+variable v;
+Select v such that Affects(_,v)
+none
+5000
+23 - Affects(_,cons) (invalid)
+constant c;
+Select c such that Affects(_,c)
+none
+5000
+24 - Affects(_,proc) (invalid)
+procedure p;
+Select p such that Affects(_,p)
+none
+5000
+25 - Affects(s,_)
+stmt s;
+Select s such that Affects(s,_)
+2,5
+5000
+26 - Affects(n,_)
+prog_line n;
+Select n such that Affects(n,_)
+2,5
+5000
+27 - Affects(r,_) (invalid)
+read r;
+Select r such that Affects(r,_)
+none
+5000
+28 - Affects(pn,_) (invalid)
+print pn;
+Select pn such that Affects(pn,_)
+none
+5000
+29 - Affects(c,_) (invalid)
+call c;
+Select c such that Affects(c,_)
+none
+5000
+30 - Affects(w,_) (invalid)
+while w;
+Select w such that Affects(w,_)
+none
+5000
+31 - Affects(ifs,_) (invalid)
+if ifs;
+Select ifs such that Affects(ifs,_)
+none
+5000
+32 - Affects(a,_)
+assign a;
+Select a such that Affects(a,_)
+2,5
+5000
+33 - Select BOOLEAN, true Affects(s,_)
+stmt s;
+Select BOOLEAN such that Affects(s,_)
+TRUE
+5000
+34 - Affects(v,_) (invalid)
+variable v;
+Select v such that Affects(v,_)
+none
+5000
+35 - Affects(cons,_) (invalid)
+constant c;
+Select c such that Affects(c,_)
+none
+5000
+36 - Affects(proc,_) (invalid)
+procedure p;
+Select p such that Affects(p,_)
+none
+5000
+37 - Affects(s,known)
+stmt s;
+Select s such that Affects(s,8)
+2,5
+5000
+38 - Affects(n,known)
+prog_line n;
+Select n such that Affects(n,8)
+2,5
+5000
+39 - Affects(r,known) (invalid)
+read r;
+Select r such that Affects(r,8)
+none
+5000
+40 - Affects(pn,known) (invalid)
+print pn;
+Select pn such that Affects(pn,8)
+none
+5000
+41 - Affects(c,known) (invalid)
+call c;
+Select c such that Affects(c,19)
+none
+5000
+42 - Affects(w,known) (invalid)
+while w;
+Select w such that Affects(w,51)
+none
+5000
+43 - Affects(ifs,known) (invalid)
+if ifs;
+Select ifs such that Affects(ifs,34)
+none
+5000
+44 - Affects(a,known)
+assign a;
+Select a such that Affects(a,8)
+2,5
+5000
+45 - Select BOOLEAN, true Affects(s,known)
+stmt s;
+Select BOOLEAN such that Affects(s,8)
+TRUE
+5000
+46 - Affects(v,known) (invalid)
+variable v;
+Select v such that Affects(v,42)
+none
+5000
+47 - Affects(cons,known) (invalid)
+constant c;
+Select c such that Affects(c,49)
+none
+5000
+48 - Affects(proc,known) (invalid)
+procedure p;
+Select p such that Affects(p,55)
+none
+5000
+49 - Affects(s,known) (no result)
+stmt s;
+Select s such that Affects(s, 5)
+none
+5000
+50 - Affects(n,known) (no result)
+prog_line n;
+Select n such that Affects(n,2)
+none
+5000
+51 - Affects(a,known) (no result)
+assign a;
+Select a such that Affects(a,2)
+none
+5000
+52 - Affects(known,s)
+stmt s;
+Select s such that Affects(2,s)
+7,8
+5000
+53 - Affects(known,n)
+prog_line n;
+Select n such that Affects(2,n)
+7,8
+5000
+54 - Affects(known,r) (invalid)
+read r;
+Select r such that Affects(2,r)
+none
+5000
+55 - Affects(known,pn) (invalid)
+print pn;
+Select pn such that Affects(2,pn)
+none
+5000
+56 - Affects(known,c) (invalid)
+call c;
+Select c such that Affects(50,c)
+none
+5000
+57 - Affects(known,w) (invalid)
+while w;
+Select w such that Affects(70,w)
+none
+5000
+58 - Affects(known,ifs) (invalid)
+if ifs;
+Select ifs such that Affects(75,ifs)
+none
+5000
+59 - Affects(known,a)
+assign a;
+Select a such that Affects(2,a)
+7,8
+5000
+60 - Select BOOLEAN, true Affects(known,s)
+stmt s;
+Select BOOLEAN such that Affects(s,7)
+TRUE
+5000
