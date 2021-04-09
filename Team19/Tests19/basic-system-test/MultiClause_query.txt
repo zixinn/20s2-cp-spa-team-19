@@ -1,0 +1,60 @@
+1 - no synonym in clauses
+constant c;
+Select c such that Next(1,2) and Modifies(18, "lesion") such that Calls("something", "shikashi") with 1 = 1
+1,2,5,8,23,56,258080
+5000
+2 - no common synonym in clauses (3 clauses)
+assign a, aa; variable v; procedure p, p1;
+Select <a, aa, v, p, p1> such that Next*(a, 7) pattern aa(v, _"lesion*2"_) such that Calls(p, "something")
+2 7 x Honeysuckle Honeysuckle, 2 8 x Honeysuckle Honeysuckle, 2 7 x Honeysuckle something, 2 8 x Honeysuckle something, 2 7 x Honeysuckle shikashi, 2 8 x Honeysuckle shikashi, 4 7 x Honeysuckle Honeysuckle, 4 8 x Honeysuckle Honeysuckle, 4 7 x Honeysuckle something, 4 8 x Honeysuckle something, 4 7 x Honeysuckle shikashi, 4 8 x Honeysuckle shikashi, 5 7 x Honeysuckle Honeysuckle, 5 8 x Honeysuckle Honeysuckle, 5 7 x Honeysuckle something, 5 8 x Honeysuckle something, 5 7 x Honeysuckle shikashi, 5 8 x Honeysuckle shikashi
+5000
+3 - no common synonym in clauses (4 clauses)
+constant c; procedure p; variable v; stmt s, s1; while w; if ifs;
+Select v.varName such that Uses(p, v) and Next(s, s1) with c.value = ifs.stmt# with 54321 = 54321
+teacup0, lesion, bluebell, melody, maison, gossamer, x, something, coeur, cerveau, boro, guru, y
+5000
+4 - no common synonym in clauses (5 clauses)
+assign a, a1, a2; if ifs; while w; variable v, v1; stmt s, s1;
+Select v such that Next(a, ifs) pattern w(v, _) with s.stmt# = 6 and a1.stmt# = s1.stmt# pattern a2(v1, _"lesion*2"_)
+melody, maison
+5000
+5 - 1 common synonym in clauses (2 clauses)
+if ifs; call c; assign a;
+Select c.procName such that Next*(a, a) pattern a("x", _)
+shikashi, something
+5000
+6 - 1 common synonym in clauses (3 clauses)
+assign a; if ifs;
+Select a.stmt# pattern a("lesion", _) such that Next*(a, 15) and Parent(6, 7)
+17, 18
+5000
+7 - 1 common synonym in clauses (4 clauses)
+prog_line s; while w; variable v; assign a;
+Select <s, w> such that Parent*(w, _) pattern w("melody", _) and w(v, _) with w.stmt# = s
+3 3
+5000
+8 - 1 common synonym in clauses (5 clauses)
+assign a; if ifs; variable v, v1; stmt s;
+Select a such that Uses(a, v) pattern a("x", _) with a.stmt# = s.stmt# and v1.varName = "lesion" such that Next(ifs, a)
+7, 8
+5000
+9 - 2 common synonym in clauses (3 clauses)
+variable v, v1; assign a;
+Select <a, v, v1> such that Uses(a, v) pattern a(v, _) with v.varName = v1.varName
+26 guru guru
+5000
+10 - 2 common synonym in clauses (4 clauses)
+if ifs; while w; variable v; call c;
+Select BOOLEAN pattern ifs(v, _, _) and w(v,_) such that Next(ifs, w) and Modifies(c, v)
+FALSE
+5000
+11 - 2 common synonym in clauses (5 clauses)
+constant c; prog_line pl; while w; variable v; call ca;
+Select c.value with c.value = pl such that Next*(pl, w) pattern w(v, _) such that Parent*(w, pl) with ca.stmt# = pl
+none
+5000
+12 - chains
+while w; assign a; if ifs; variable v;
+Select w such that Parent*(w, a) and Next*(a, ifs) pattern ifs(v, _, _) with v.varName = "lesion"
+3
+5000
