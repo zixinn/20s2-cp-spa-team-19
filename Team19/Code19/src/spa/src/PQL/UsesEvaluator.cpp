@@ -1,8 +1,4 @@
-#include <iterator>
-#include <set>
-
 #include "UsesEvaluator.h"
-#include "QueryUtility.h"
 
 using namespace std;
 
@@ -16,14 +12,15 @@ bool UsesEvaluator::evaluate(unordered_map<STRING, STRING> declarations, Clause 
     STRING firstType = getArgType(firstArg, declarations);
     if (firstType == NAME_ || firstType == PROCEDURE_) {
         return evaluateProcUses(declarations, clause, tempResults);
-    }
-    else { // firstType == INTEGER_ || firstType == STMT_ || firstType == READ_ || firstType == ASSIGN_ || firstType == CALL_ || firstType == WHILE_ || firstType == IF_
+    } else {
+        // firstType == INTEGER_ || firstType == STMT_ || firstType == READ_ || firstType == ASSIGN_
+        // || firstType == CALL_ || firstType == WHILE_ || firstType == IF_
         return evaluateStmtUses(declarations, clause, tempResults);
     }
 }
 
-bool UsesEvaluator::evaluateStmtUses(unordered_map<STRING, STRING> declarations,
-                                     Clause clause, unordered_map<STRING, vector<int>>& tempResults) {
+bool UsesEvaluator::evaluateStmtUses(unordered_map<STRING, STRING> declarations, Clause clause,
+                                     unordered_map<STRING, vector<int>>& tempResults) {
     STRING firstArg = clause.getArgs().at(0);
     STRING secondArg = clause.getArgs().at(1);
     STRING firstType = getArgType(firstArg, declarations);
@@ -101,8 +98,8 @@ bool UsesEvaluator::evaluateStmtUses(unordered_map<STRING, STRING> declarations,
     }
 }
 
-bool UsesEvaluator::evaluateProcUses(unordered_map<STRING, STRING> declarations,
-                                     Clause clause, unordered_map<STRING, vector<int>>& tempResults) {
+bool UsesEvaluator::evaluateProcUses(unordered_map<STRING, STRING> declarations, Clause clause,
+                                     unordered_map<STRING, vector<int>>& tempResults) {
     STRING firstArg = clause.getArgs().at(0);
     STRING secondArg = clause.getArgs().at(1);
     STRING firstType = getArgType(firstArg, declarations);

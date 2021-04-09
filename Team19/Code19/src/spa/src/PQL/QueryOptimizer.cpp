@@ -101,7 +101,8 @@ void QueryOptimizer::groupClauses(Query& query) {
     query.setClauses(groups);
 }
 
-void QueryOptimizer::dfs(int source, vector<unordered_set<int>> adj, vector<bool>& visited, unordered_set<int>& indexOfSynonymsInGroup) {
+void QueryOptimizer::dfs(int source, vector<unordered_set<int>> adj, vector<bool>& visited,
+                         unordered_set<int>& indexOfSynonymsInGroup) {
     visited[source] = true;
     indexOfSynonymsInGroup.insert(source);
     for (int v : adj.at(source)) {

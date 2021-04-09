@@ -1,8 +1,4 @@
-#include <iterator>
-#include <set>
-
 #include "WithEvaluator.h"
-#include "QueryUtility.h"
 
 using namespace std;
 
@@ -20,13 +16,13 @@ bool WithEvaluator::evaluate(unordered_map<STRING, STRING> declarations, Clause 
 
     // both arguments are integer or both are name
     if (firstArgMap["argType"] == INTEGER_ && secondArgMap["argType"] == INTEGER_
-        || firstArgMap["argType"] == NAME_ && secondArgMap["argType"] == NAME_) {
+            || firstArgMap["argType"] == NAME_ && secondArgMap["argType"] == NAME_) {
         return firstArgMap["arg"] == secondArgMap["arg"];
     }
     // both arguments are varName/procName/name
     if (firstArgMap["argType"] == NAME_ || secondArgMap["argType"] == NAME_
-        || firstArgMap["attrName"] == "varName" || secondArgMap["attrName"] == "varName"
-        || firstArgMap["attrName"] == "procName" || secondArgMap["attrName"] == "procName") {
+            || firstArgMap["attrName"] == "varName" || secondArgMap["attrName"] == "varName"
+            || firstArgMap["attrName"] == "procName" || secondArgMap["attrName"] == "procName") {
         return compareNames(firstArgMap, secondArgMap, tempResults);
     }
     // both arguments are stmt#/value/integer
@@ -41,8 +37,7 @@ bool WithEvaluator::evaluate(unordered_map<STRING, STRING> declarations, Clause 
     return isEqual;
 }
 
-unordered_map<STRING, STRING> WithEvaluator::getArgumentMap(STRING arg,
-                                                            unordered_map<STRING, STRING> declarations) { // [argType, attrName, synonym/integer/name]
+unordered_map<STRING, STRING> WithEvaluator::getArgumentMap(STRING arg, unordered_map<STRING, STRING> declarations) { // [argType, attrName, synonym/integer/name]
     unordered_map<STRING, STRING> argMap;
     int posOfDot = arg.find('.');
 
@@ -58,7 +53,6 @@ unordered_map<STRING, STRING> WithEvaluator::getArgumentMap(STRING arg,
     return argMap;
 }
 
-// trim STRING with quotes
 STRING WithEvaluator::trimQuotes(STRING s) {
     return trim(s.substr(1, s.size() - 2));
 }
@@ -73,7 +67,7 @@ void WithEvaluator::storeResults(vector<int> results, unordered_map<STRING, STRI
     }
 }
 
-vector<int> WithEvaluator::getValues(unordered_map<STRING, STRING> argMap) { //[argType, attrName, synonym/integer/name]
+vector<int> WithEvaluator::getValues(unordered_map<STRING, STRING> argMap) { // [argType, attrName, synonym/integer/name]
     if (argMap["argType"] == INTEGER_) {
         return vector<int>{stoi(argMap["arg"])};
     } else if (argMap["attrName"] == "procName") {

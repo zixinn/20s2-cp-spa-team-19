@@ -556,12 +556,12 @@ TEST_CASE("process query with bip clause") {
     Query expected = Query(declarations, {"n"}, { {c1} }, true, true);
     REQUIRE(actual == expected);
 
-    /*query = "assign a1, a2;\nSelect <a1, a2> such that AffectsBip*(a1, a2)";
+    query = "assign a1, a2;\nSelect <a1, a2> such that AffectsBip*(a1, a2)";
     actual = qp.process(query);
     c1 = Clause("AffectsBip*", { "a1", "a2" }, {"a1", "a2"}, 0);
     unordered_map<STRING, STRING> declarations1;
     declarations1["a1"] = "assign";
     declarations1["a2"] = "assign";
     expected = Query(declarations1, {"a1", "a2"}, { {c1} }, true, true);
-    REQUIRE(actual == expected);*/
+    REQUIRE(actual == expected);
 }

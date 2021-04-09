@@ -1039,7 +1039,7 @@ void setupQp3() {
     PKB::calls->storeCalls(3, 0, 1);
 
     PKB::nextBip->setRunNextBip(true);
-    // PKB::affectsBip->setRunAffectsBip(true);
+    PKB::affectsBip->setRunAffectsBip(true);
     PKB::populatePKB();
 }
 
@@ -1063,7 +1063,7 @@ TEST_CASE("QueryEvaluator evaluate query with bip") {
     unordered_set<STRING> expected2 = { "4", "5", "6", "7" };
     REQUIRE(actual2 == expected2);
 
-    /*STRING query3 = "assign a; Select a such that AffectsBip(a, 5)";
+    STRING query3 = "assign a; Select a such that AffectsBip(a, 5)";
     Query q3 = qp.process(query3);
     list<STRING> list3 = qe.evaluate(q3);
     unordered_set<STRING> actual3(begin(list3), end(list3));
@@ -1075,5 +1075,5 @@ TEST_CASE("QueryEvaluator evaluate query with bip") {
     list<STRING> list4 = qe.evaluate(q4);
     unordered_set<STRING> actual4(begin(list4), end(list4));
     unordered_set<STRING> expected4 = { "FALSE" };
-    REQUIRE(actual4 == expected4);*/
+    REQUIRE(actual4 == expected4);
 }

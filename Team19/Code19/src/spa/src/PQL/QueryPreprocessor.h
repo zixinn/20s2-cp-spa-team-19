@@ -1,11 +1,7 @@
 #pragma once
 
 #include <regex>
-#include <unordered_set>
 
-#include "../AbstractAPI.h"
-#include "../Utility.h"
-#include "Clause.h"
 #include "Query.h"
 #include "QueryUtility.h"
 
