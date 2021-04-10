@@ -1,0 +1,105 @@
+1 - No clause booleam
+
+Select BOOLEAN
+TRUE
+5000
+2 - boolean (clause return true)
+
+Select BOOLEAN such that Follows(178, 225)
+TRUE
+5000
+3 - boolean (clause return table)
+stmt s;
+Select BOOLEAN such that Follows(s, 42)
+TRUE
+5000
+4 - boolean (clause return false)
+
+Select BOOLEAN such that Affects*(245, 249)
+FALSE
+5000
+5 - boolean (clause return nth)
+procedure p, p1;
+Select BOOLEAN such that Calls(p, p1) and Modifies(p, "e")
+FALSE
+5000
+6 - boolean (one clause true, one clause false)
+
+Select BOOLEAN such that Parent(57, 58) and Parent(1, 2)
+FALSE
+5000
+7 - boolean (one clause true, one clause return nothing)
+assign a;
+Select BOOLEAN such that Next(1, 2) pattern a("chilli", "1")
+FALSE
+5000
+8 - boolean (one clause true, one clause return table)
+stmt s;
+Select BOOLEAN such that Next(1,2) such that Next*(1, s)
+TRUE
+5000
+9 - boolean (one clause return table, one clause return nothing)
+stmt s, s1; assign a;
+Select BOOLEAN such that Affects*(s, s1) pattern a("chilli", "1")
+FALSE
+5000
+10 - boolean (one clause false, one clause return table)
+stmt s, s1;
+Select BOOLEAN such that Follows(2, 1) such that Next(s, s1)
+FALSE
+5000
+11 - boolean (one clause false, one clause return nothing)
+assign a;
+Select BOOLEAN such that Next(235,253) pattern a(_, "v")
+FALSE
+5000
+12 - boolean wildcard such that
+
+Select BOOLEAN such that Follows(_,_)
+TRUE
+5000
+13 - boolean wildcard such that
+assign a;
+Select BOOLEAN such that Modifies(_, _)
+FALSE
+5000
+14 - boolean wildcard pattern
+if if;
+Select BOOLEAN pattern if(_,_,_)
+TRUE
+5000
+15 - boolean pattern
+assign a;
+Select BOOLEAN pattern a("sci333ors", _)
+TRUE
+5000
+16 - boolean syntax error
+assign a;
+Select BOOLEAN pattern a("v", _, _)
+none
+5000
+17 - boolean meaningless query
+
+Select BOOLEAN with 112 = 112
+TRUE
+5000
+18 - boolean meaningless query
+
+Select BOOLEAN with 112 = 11
+FALSE
+5000
+19 - boolean missing declaration
+
+Select BOOLEAN such that Next(s, 2)
+FALSE
+5000
+20 - invalid argument type
+constant c; stmt s;
+Select BOOLEAN such that Next(c, s)
+FALSE
+5000
+21 - boolean (individual clauses contain result but join together no result)
+read a; variable v; procedure pr; print p; assign as, as1;
+Select BOOLEAN such that Modifies(as, v) and Affects(as1, as1) and Follows(as1, p) with v.varName = p.procName and as.stmt# = as1.stmt#
+FALSE
+5000
