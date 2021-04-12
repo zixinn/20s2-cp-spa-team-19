@@ -748,3 +748,253 @@ prog_line n; if ifs;
 Select <n,ifs> such that Affects(n,ifs)
 none
 5000
+151 - Affects(n,a)
+prog_line n; assign a;
+Select <n, a> such that Affects(n,a)
+2 7, 2 8, 5 7, 5 8
+5000
+152 - Affects(n1,n2)
+prog_line n1,n2;
+Select <n1, n2> such that Affects(n1,n2)
+2 7, 2 8, 5 7, 5 8
+5000
+153 - Affects(n,s)
+prog_line n; stmt s;
+Select <n, s> such that Affects(n,s)
+2 7, 2 8, 5 7, 5 8
+5000
+154 - Affects(n, cons) (invalid)
+prog_line n; constant cons;
+Select <n, cons> such that Affects(n, cons)
+none
+5000
+155 - Affects(n, proc) (invalid)
+prog_line n; procedure p;
+Select <n,p> such that Affects(n,p)
+none
+5000
+156 - Affects(n,v) (invalid)
+prog_line n; variable v;
+Select <n,v> such that Affects(n,v)
+none
+5000
+157 - Affects(s,r) (invalid)
+read r; stmt s;
+Select <s, r> such that Affects(s,r)
+none
+5000
+158 - Affects(s,pn) (invalid)
+stmt s; print pn;
+Select <s,pn> such that Affects(s,pn)
+none
+5000
+159 - Affects(s,c) (invalid)
+stmt s; call c;
+Select <s,c> such that Affects(s,c)
+none
+5000
+160 - Affects(s,w) (invalid)
+stmt s; while w;
+Select <s,w> such that Affects(s,w)
+none
+5000
+161 - Affects(s,ifs) (invalid)
+stmt s; if ifs;
+Select <s,ifs> such that Affects(s,ifs)
+none
+5000
+162 - Affects(s,a)
+stmt s; assign a;
+Select <s, a> such that Affects(s,a)
+2 7, 2 8, 5 7, 5 8
+5000
+163 - Affects(s,n)
+stmt s; prog_line n;
+Select <s, n> such that Affects(s,n)
+2 7, 2 8, 5 7, 5 8
+5000
+164 - Affects(s,s)
+stmt s1,s2;
+Select <s1, s2> such that Affects(s1,s2)
+2 7, 2 8, 5 7, 5 8
+5000
+165 - Affects(s, cons) (invalid)
+stmt s; constant cons;
+Select <s, cons> such that Affects(s, cons)
+none
+5000
+166 - Affects(s, proc) (invalid)
+stmt s; procedure p;
+Select <s,p> such that Affects(s,p)
+none
+5000
+167 - Affects(s,v) (invalid)
+stmt s; variable v;
+Select <s,v> such that Affects(s,v)
+none
+5000
+168 - Affects(cons,r) (invalid)
+read r; constant cons;
+Select <cons, r> such that Affects(cons,r)
+none
+5000
+169 - Affects(cons,pn) (invalid)
+constant cons; print pn;
+Select <cons,pn> such that Affects(cons,pn)
+none
+5000
+170 - Affects(cons,c) (invalid)
+constant cons; call c;
+Select <cons,c> such that Affects(cons,c)
+none
+5000
+171 - Affects(cons,w) (invalid)
+constant cons; while w;
+Select <cons,w> such that Affects(cons,w)
+none
+5000
+172 - Affects(cons,ifs) (invalid)
+constant cons; if ifs;
+Select <cons,ifs> such that Affects(cons,ifs)
+none
+5000
+173 - Affects(cons,a) (invalid)
+constant cons; assign a;
+Select <cons, a> such that Affects(cons,a)
+none
+5000
+174 - Affects(cons,n) (invalid)
+constant cons; prog_line n;
+Select <cons, n> such that Affects(cons,n)
+none
+5000
+175 - Affects(cons,s) (invalid)
+constant cons; stmt s;
+Select <cons, s> such that Affects(cons,s)
+none
+5000
+176 - Affects(cons1, cons2) (invalid)
+constant cons1, cons2;
+Select <cons1, cons2> such that Affects(cons1, cons2)
+none
+5000
+177 - Affects(cons, proc) (invalid)
+constant cons; procedure p;
+Select <cons,p> such that Affects(cons,p)
+none
+5000
+178 - Affects(cons,v) (invalid)
+constant cons; variable v;
+Select <cons,v> such that Affects(cons,v)
+none
+5000
+179 - Affects(p,r) (invalid)
+read r; procedure p;
+Select <p, r> such that Affects(p,r)
+none
+5000
+180 - Affects(p,pn) (invalid)
+procedure p; print pn;
+Select <p,pn> such that Affects(p,pn)
+none
+5000
+181 - Affects(p,c) (invalid)
+procedure p; call c;
+Select <p,c> such that Affects(p,c)
+none
+5000
+182 - Affects(p,w) (invalid)
+procedure p; while w;
+Select <p,w> such that Affects(p,w)
+none
+5000
+183 - Affects(p,ifs) (invalid)
+procedure p; if ifs;
+Select <p,ifs> such that Affects(p,ifs)
+none
+5000
+184 - Affects(p,a) (invalid)
+procedure p; assign a;
+Select <p, a> such that Affects(p,a)
+none
+5000
+185 - Affects(p,n) (invalid)
+procedure p; prog_line n;
+Select <p, n> such that Affects(p,n)
+none
+5000
+186 - Affects(p,s) (invalid)
+procedure p; stmt s;
+Select <p, s> such that Affects(p,s)
+none
+5000
+187 - Affects(p, cons) (invalid)
+procedure p; constant cons;
+Select <p, cons> such that Affects(p, cons)
+none
+5000
+188 - Affects(p1, p2) (invalid)
+procedure p1,p2;
+Select <p1,p2> such that Affects(p1,p2)
+none
+5000
+189 - Affects(p,v) (invalid)
+procedure p; variable v;
+Select <p,v> such that Affects(p,v)
+none
+5000
+190 - Affects(v,r) (invalid)
+read r; variable v;
+Select <v, r> such that Affects(v,r)
+none
+5000
+191 - Affects(v,pn) (invalid)
+variable v; print pn;
+Select <v,pn> such that Affects(v,pn)
+none
+5000
+192 - Affects(v,c) (invalid)
+variable v; call c;
+Select <v,c> such that Affects(v,c)
+none
+5000
+193 - Affects(v,w) (invalid)
+variable v; while w;
+Select <v,w> such that Affects(v,w)
+none
+5000
+194 - Affects(v,ifs) (invalid)
+variable v; if ifs;
+Select <v,ifs> such that Affects(v,ifs)
+none
+5000
+195 - Affects(v,a) (invalid)
+variable v; assign a;
+Select <v, a> such that Affects(v,a)
+none
+5000
+196 - Affects(v,n) (invalid)
+variable v; prog_line n;
+Select <v, n> such that Affects(v,n)
+none
+5000
+197 - Affects(v,s) (invalid)
+variable v; stmt s;
+Select <v, s> such that Affects(v,s)
+none
+5000
+198 - Affects(v, cons) (invalid)
+variable v; constant cons;
+Select <v, cons> such that Affects(v, cons)
+none
+5000
+199 - Affects(v, p) (invalid)
+variable v; procedure p;
+Select <v,p> such that Affects(v,p)
+none
+5000
+200 - Affects(v1,v2) (invalid)
+variable v1, v2;
+Select <v1,v2> such that Affects(v1,v2)
+none
+5000
