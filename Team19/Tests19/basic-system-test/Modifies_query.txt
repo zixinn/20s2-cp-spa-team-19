@@ -1,0 +1,1255 @@
+1 - wildcard, wildcard
+stmt s;
+Select s such that Modifies(_, _)
+none
+5000
+2 - wildcard, stmt
+stmt s;
+Select s such that Modifies(_, s)
+none
+5000
+3 - wildcard, read
+read r;
+Select BOOLEAN such that Modifies(_, r)
+FALSE
+5000
+4 - wildcard, print
+print p;
+Select BOOLEAN such that Modifies(_, p)
+FALSE
+5000
+5 - wildcard, call
+call v;
+Select BOOLEAN such that Modifies(_, v)
+FALSE
+5000
+6 - wildcard, while
+while v;
+Select BOOLEAN such that Modifies(_, v)
+FALSE
+5000
+7 - wildcard, if
+if v;
+Select BOOLEAN such that Modifies(_, v)
+FALSE
+5000
+8 - wildcard, assign
+assign v;
+Select BOOLEAN such that Modifies(_, v)
+FALSE
+5000
+9 - wildcard, variable
+variable v;
+Select BOOLEAN such that Modifies(_, v)
+FALSE
+5000
+10 - wildcard, constant
+constant v;
+Select v such that Modifies(_, v)
+none
+5000
+11 - wildcard, prog_line
+prog_line v;
+Select v such that Modifies(_, v)
+none
+5000
+12 - wildcard, procedure
+procedure v;
+Select v such that Modifies(_, v)
+none
+5000
+13 - wildcard, unknown synonym
+constant v;
+Select v such that Modifies(_, v1)
+none
+5000
+14 - wildcard, exact
+constant v;
+Select v such that Modifies(_, "lesion")
+none
+5000
+15 - stmt, wildcard
+stmt s;
+Select s such that Modifies(s, _)
+2,3,4,5,6,7,8,11,12,13,15,16,17,18,20,21,22,23,24,25,26,27
+5000
+16 - stmt, stmt
+stmt s, s1;
+Select s such that Modifies(s, s1)
+none
+5000
+17 - stmt, read
+stmt s; read r;
+Select BOOLEAN such that Modifies(s, r)
+FALSE
+5000
+18 - stmt, print
+stmt s; print p;
+Select BOOLEAN such that Modifies(s, p)
+FALSE
+5000
+19 - stmt, call
+stmt s; call v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+20 - stmt, while
+stmt s;while v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+21 - stmt, if
+stmt s; if v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+22 - stmt, assign
+stmt s; assign v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+23 - stmt, variable
+stmt s; variable v;
+Select BOOLEAN such that Modifies(s, v)
+TRUE
+5000
+24 - stmt, constant
+stmt s; constant v;
+Select v such that Modifies(s, v)
+none
+5000
+25 - stmt, prog_line
+stmt s; prog_line v;
+Select v such that Modifies(s, v)
+none
+5000
+26 - stmt, procedure
+stmt s; procedure v;
+Select v such that Modifies(s, v)
+none
+5000
+27 - stmt, unknown synonym
+stmt s;
+Select s such that Modifies(s, v)
+none
+5000
+28 - stmt, exact
+stmt s; constant v;
+Select s such that Modifies(s, "lesion")
+2,3,5,11,15,17,18
+5000
+29 - stmt, non exist variable
+stmt ssssssss;
+Select ssssssss such that Modifies(ssssssss, "curry")
+none
+5000
+30 - stmt, procname
+stmt s;
+Select s such that Modifies(s, "shikashi")
+none
+5000
+31 - read, wildcard
+read s;
+Select s such that Modifies(s, _)
+13,24,27
+5000
+32 - read, stmt
+read s; stmt s1;
+Select s such that Modifies(s, s1)
+none
+5000
+33 - read, read
+read s; read r;
+Select BOOLEAN such that Modifies(s, r)
+FALSE
+5000
+34 - read, print
+read s; print p;
+Select BOOLEAN such that Modifies(s, p)
+FALSE
+5000
+35 - read, call
+read s; call v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+36 - read, while
+read s;while v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+37 - read, if
+read s; if v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+38 - read, assign
+read s; assign v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+39 - read, variable
+read s; variable v;
+Select <s, v.varName> such that Modifies(s, v)
+13 teacup0, 24 ardent, 27 pardon
+5000
+40 - read, constant
+read s; constant v;
+Select v such that Modifies(s, v)
+none
+5000
+41 - read, prog_line
+read s; prog_line v;
+Select v such that Modifies(s, v)
+none
+5000
+42 - read, procedure
+read s; procedure v;
+Select v such that Modifies(s, v)
+none
+5000
+43 - read, unknown synonym
+read s;
+Select s such that Modifies(s, v)
+none
+5000
+44 - read, exact
+read s; constant v;
+Select s such that Modifies(s, "pardon")
+27
+5000
+45 - read, variable not read but exist
+read ssssssss;
+Select ssssssss such that Modifies(ssssssss, "jessie")
+none
+5000
+46 - print, wildcard
+print s;
+Select s such that Modifies(s, _)
+none
+5000
+47 - print, stmt
+print s; stmt s1;
+Select s such that Modifies(s, s1)
+none
+5000
+48 - print, read
+print s; read r;
+Select BOOLEAN such that Modifies(s, r)
+FALSE
+5000
+49 - print, print
+print s; print p;
+Select BOOLEAN such that Modifies(s, p)
+FALSE
+5000
+50 - print, call
+print s; call v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+51 - print, while
+print s;while v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+52 - print, if
+print s; if v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+53 - print, assign
+print s; assign v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+54 - print, variable
+print s; variable v;
+Select <s, v> such that Modifies(s, v)
+none
+5000
+55 - print, constant
+print s; constant v;
+Select v such that Modifies(s, v)
+none
+5000
+56 - print, progsline
+print s; prog_line v;
+Select v such that Modifies(s, v)
+none
+5000
+57 - print, procedure
+print s; procedure v;
+Select v such that Modifies(s, v)
+none
+5000
+58 - print, exact
+print s; constant v;
+Select s such that Modifies(s, "something")
+none
+5000
+59 - call, wildcard
+call s;
+Select s such that Modifies(s, _)
+11,12,20
+5000
+60 - call, stmt
+call s; stmt s1;
+Select s such that Modifies(s, s1)
+none
+5000
+61 - call, read
+call s; read r;
+Select BOOLEAN such that Modifies(s, r)
+FALSE
+5000
+62 - call, print
+call s; print p;
+Select BOOLEAN such that Modifies(s, p)
+FALSE
+5000
+63 - call, call
+call s; call v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+64 - call, while
+call s;while v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+65 - call, if
+call s; if v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+66 - call, assign
+call s; assign v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+67 - call, variable
+call s; variable v;
+Select v such that Modifies(s, v)
+x, lesion, teacup0, melody, ardent, z, guru, pardon
+5000
+68 - call, constant
+call s; constant v;
+Select v such that Modifies(s, v)
+none
+5000
+69 - call, prog_line
+call s; prog_line v;
+Select v such that Modifies(s, v)
+none
+5000
+70 - call, procedure
+call s; procedure v;
+Select v such that Modifies(s, v)
+none
+5000
+71 - call, unknown synonym
+call s; 
+Select s such that Modifies(s, v)
+none
+5000
+72 - call, exact
+call s; constant v;
+Select s such that Modifies(s, "lesion")
+11
+5000
+73 - call, variable not modified by call but exist
+call s;
+Select s such that Modifies(s, "coeur")
+none
+5000
+74 - while, wildcard
+while s;
+Select s such that Modifies(s, _)
+3,15
+5000
+75 - while, stmt
+while s; stmt s1;
+Select s such that Modifies(s, s1)
+none
+5000
+76 - while, read
+while s; read r;
+Select BOOLEAN such that Modifies(s, r)
+FALSE
+5000
+77 - while, print
+while s; print p;
+Select BOOLEAN such that Modifies(s, p)
+FALSE
+5000
+78 - while, call
+while s; call v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+79 - while, while
+while s;while v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+80 - while, if
+while s; if v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+81 - while, assign
+while s; assign v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+82 - while, variable
+while s; variable v;
+Select v such that Modifies(s, v)
+x, lesion, z, ardent, guru, pardon
+5000
+83 - while, constant
+while s; constant v;
+Select v such that Modifies(s, v)
+none
+5000
+84 - while, prog_line
+while s; prog_line v;
+Select v such that Modifies(s, v)
+none
+5000
+85 - while, procedure
+while s; procedure v;
+Select v such that Modifies(s, v)
+none
+5000
+86 - while, unknown synonym
+while s;
+Select s such that Modifies(s, v)
+none
+5000
+87 - while, exact
+while s; constant v;
+Select s such that Modifies(s, "x")
+3,15
+5000
+88 - if, wildcard
+if s;
+Select s such that Modifies(s, _)
+6,23
+5000
+89 - if, stmt
+if s; stmt s1;
+Select s such that Modifies(s, s1)
+none
+5000
+90 - if, read
+if s; read r;
+Select BOOLEAN such that Modifies(s, r)
+FALSE
+5000
+91 - if, print
+if s; print p;
+Select BOOLEAN such that Modifies(s, p)
+FALSE
+5000
+92 - if, call
+if s; call v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+93 - if, while
+if s;while v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+94 - if, if
+if s; if v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+95 - if, assign
+if s; assign v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+96 - if, variable
+if s; variable v;
+Select v such that Modifies(s, v)
+x,ardent,z,guru,pardon
+5000
+97 - if, constant
+if s; constant v;
+Select v such that Modifies(s, v)
+none
+5000
+98 - if, prog_line
+if s; prog_line v;
+Select v such that Modifies(s, v)
+none
+5000
+99 - if, procedure
+if s; procedure v;
+Select v such that Modifies(s, v)
+none
+5000
+100 - if, unknown synonym
+if s;
+Select s such that Modifies(s, v)
+none
+5000
+101 - if, exact
+if s; constant v;
+Select s such that Modifies(s, "x")
+6
+5000
+102 - assign, wildcard
+assign s;
+Select s such that Modifies(s, _)
+2,4,5,7,8,16,17,18,21,22,25,26
+5000
+103 - assign, stmt
+assign s; stmt s1;
+Select s such that Modifies(s, s1)
+none
+5000
+104 - assign, read
+assign s; read r;
+Select BOOLEAN such that Modifies(s, r)
+FALSE
+5000
+105 - assign, print
+assign s; print p;
+Select BOOLEAN such that Modifies(s, p)
+FALSE
+5000
+106 - assign, call
+assign s; call v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+107 - assign, while
+assign s;while v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+108 - assign, if
+assign s; if v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+109 - assign, assign
+assign s; assign v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+110 - assign, variable
+assign s; variable v;
+Select s such that Modifies(s, v)
+2,4,5,7,8,16,17,18,21,22,25,26
+5000
+111 - assign, constant
+assign s; constant v;
+Select v such that Modifies(s, v)
+none
+5000
+112 - assign, prog_line
+assign s; prog_line v;
+Select v such that Modifies(s, v)
+none
+5000
+113 - assign, procedure
+assign s; procedure v;
+Select v such that Modifies(s, v)
+none
+5000
+114 - assign, unknown synonym
+assign s; 
+Select s such that Modifies(s, v)
+none
+5000
+115 - assign, exact
+assign s; constant v;
+Select s such that Modifies(s, "lesion")
+2,5,17,18
+5000
+116 - variable, wildcard
+variable s;
+Select s such that Modifies(s, _)
+none
+5000
+117 - variable, stmt
+variable s; stmt s1;
+Select s such that Modifies(s, s1)
+none
+5000
+118 - variable, read
+variable s; read r;
+Select BOOLEAN such that Modifies(s, r)
+FALSE
+5000
+119 - variable, print
+variable s; print p;
+Select BOOLEAN such that Modifies(s, p)
+FALSE
+5000
+120 - variable, call
+variable s; call v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+121 - variable, while
+variable s;while v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+122 - variable, if
+variable s; if v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+123 - variable, assign
+variable s; assign v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+124 - variable, variable
+variable s; variable v;
+Select v such that Modifies(s, v)
+none
+5000
+125 - variable, constant
+variable s; constant v;
+Select v such that Modifies(s, v)
+none
+5000
+126 - variable, prog_line
+variable s; prog_line v;
+Select v such that Modifies(s, v)
+none
+5000
+127 - variable, procedure
+variable s; procedure v;
+Select v such that Modifies(s, v)
+none
+5000
+128 - variable, unknown synonym
+variable s; 
+Select s such that Modifies(s, v)
+none
+5000
+129 - variable, exact
+variable s; constant v;
+Select s such that Modifies(s, "duck")
+none
+500
+130 - constant, wildcard
+constant s;
+Select s such that Modifies(s, _)
+none
+5000
+131 - constant, stmt
+constant s; stmt s1;
+Select s such that Modifies(s, s1)
+none
+5000
+132 - constant, read
+constant s; read r;
+Select BOOLEAN such that Modifies(s, r)
+FALSE
+5000
+133 - constant, print
+constant s; print p;
+Select BOOLEAN such that Modifies(s, p)
+FALSE
+5000
+134 - constant, call
+constant s; call v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+135 - constant, while
+constant s;while v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+136 - constant, if
+constant s; if v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+137 - constant, assign
+constant s; assign v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+138 - constant, variable
+constant s; variable v;
+Select v such that Modifies(s, v)
+none
+5000
+139 - constant, constant
+constant s; constant v;
+Select v such that Modifies(s, v)
+none
+5000
+140 - constant, prog_line
+constant s; prog_line v;
+Select v such that Modifies(s, v)
+none
+5000
+141 - constant, procedure
+constant s; procedure v;
+Select v such that Modifies(s, v)
+none
+5000
+142 - constant, unknown synonym
+constant s;
+Select s such that Modifies(s, v)
+none
+5000
+143 - constant, exact
+constant s; constant v;
+Select s such that Modifies(s, "duck")
+none
+500
+144 - prog_line, wildcard
+prog_line s;
+Select s such that Modifies(s, _)
+2,3,4,5,6,7,8,11,12,13,15,16,17,18,20,21,22,23,24,25,26,27
+5000
+145 - prog_line, stmt
+prog_line s; stmt s1;
+Select s such that Modifies(s, s1)
+none
+5000
+146 - prog_line, read
+prog_line s; read r;
+Select BOOLEAN such that Modifies(s, r)
+FALSE
+5000
+147 - prog_line, print
+prog_line s; print p;
+Select BOOLEAN such that Modifies(s, p)
+FALSE
+5000
+148 - prog_line, call
+prog_line s; call v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+150 - prog_line, while
+prog_line s;while v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+151 - prog_line, if
+prog_line s; if v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+152 - prog_line, assign
+prog_line s; assign v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+153 - prog_line, variable
+prog_line s; variable v;
+Select BOOLEAN such that Modifies(s, v)
+TRUE
+5000
+154 - prog_line, constant
+prog_line s; constant v;
+Select v such that Modifies(s, v)
+none
+5000
+155 - prog_line, prog_line
+prog_line s; prog_line v;
+Select v such that Modifies(s, v)
+none
+5000
+156 - prog_line, procedure
+prog_line s; procedure v;
+Select v such that Modifies(s, v)
+none
+5000
+157 - prog_line, unknown synonym
+prog_line s; 
+Select s such that Modifies(s, v)
+none
+5000
+158 - prog_line, exact
+prog_line s; constant v;
+Select s such that Modifies(s, "teacup0")
+11, 13
+5000
+159 - prog_line, non exist variable
+prog_line ssssssss;
+Select ssssssss such that Modifies(ssssssss, "curry")
+none
+5000
+160 - prog_line, procname
+prog_line s;
+Select s such that Modifies(s, "Honeysuckle")
+none
+5000
+161 - procedure, wildcard
+procedure s;
+Select s such that Modifies(s, _)
+Honeysuckle, something, shikashi
+5000
+162 - procedure, stmt
+procedure s; stmt s1;
+Select s such that Modifies(s, s1)
+none
+5000
+163 - procedure, read
+procedure s; read r;
+Select BOOLEAN such that Modifies(s, r)
+FALSE
+5000
+164 - procedure, print
+procedure s; print p;
+Select BOOLEAN such that Modifies(s, p)
+FALSE
+5000
+165 - procedure, call
+procedure s; call v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+166 - procedure, while
+procedure s;while v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+167 - procedure, if
+procedure s; if v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+168 - procedure, assign
+procedure s; assign v;
+Select BOOLEAN such that Modifies(s, v)
+FALSE
+5000
+169 - procedure, variable
+procedure s; variable v;
+Select v such that Modifies(s, v)
+lesion, x, teacup0, ardent, z, guru, pardon, melody
+5000
+170 - procedure, constant
+procedure s; constant v;
+Select v such that Modifies(s, v)
+none
+5000
+171 - procedure, prog_line
+procedure s; prog_line v;
+Select v such that Modifies(s, v)
+none
+5000
+172 - procedure, procedure
+procedure s; procedure v;
+Select v such that Modifies(s, v)
+none
+5000
+173 - procedure, unknown synonym
+procedure s;
+Select s such that Modifies(s, v)
+none
+5000
+174 - procedure, exact
+procedure s; constant v;
+Select s such that Modifies(s, "teacup0")
+Honeysuckle, something
+5000
+175 - exact, wildcard
+procedure p;
+Select p such that Modifies(5, _)
+Honeysuckle, something, shikashi
+5000
+176 - exact, stmt
+stmt s1;
+Select s such that Modifies(16, s1)
+none
+5000
+177 - exact, read
+read r;
+Select BOOLEAN such that Modifies(16, r)
+FALSE
+5000
+178 - exact, print
+print p;
+Select BOOLEAN such that Modifies(22, p)
+FALSE
+5000
+179 - exact, call
+call v;
+Select BOOLEAN such that Modifies(11, v)
+FALSE
+5000
+180 - exact, while
+while v;
+Select BOOLEAN such that Modifies(3, v)
+FALSE
+5000
+181 - exact, if
+if v;
+Select BOOLEAN such that Modifies(6, v)
+FALSE
+5000
+182 - exact, assign
+assign v;
+Select BOOLEAN such that Modifies("Honeysuckle", v)
+FALSE
+5000
+183 - exact, variable
+variable v;
+Select v such that Modifies(18, v)
+lesion
+5000
+184 - exact, constant
+constant v;
+Select v such that Modifies(12, v)
+none
+5000
+185 - exact, prog_line
+prog_line v;
+Select v such that Modifies(22, v)
+none
+5000
+186 - exact, procedure
+procedure v;
+Select v such that Modifies(13, v)
+none
+5000
+187 - exact, unknown synonym
+ 
+Select s such that Modifies(13, v)
+none
+5000
+188 - exact(assign), exact
+
+Select BOOLEAN such that Modifies(13, "teacup0")
+TRUE
+5000
+189 - exact(assign), exact (no result)
+
+Select BOOLEAN such that Modifies(14, "assign")
+FALSE
+5000
+190 - exact(proc), exact
+
+Select BOOLEAN such that Modifies("something", "x")
+TRUE
+5000
+191 - exact(proc), exact (no result)
+stmt s;
+Select s such that Modifies("obj3ct", "duck")
+none
+5000
+192 - exact(proc), variable (no result)
+variable v;
+Select v such that Modifies("procedure", v)
+none
+5000
+193 - exact(proc), variable
+variable v;
+Select v such that Modifies("Honeysuckle", v)
+lesion, x, teacup0, melody, ardent, z, guru, pardon
+5000
+194 - exact(read), exact
+
+Select BOOLEAN such that Modifies(13, "teacup0")
+TRUE
+5000
+195 - exact(read), exact (no result)
+stmt s;
+Select s such that Modifies(24, "duck")
+none
+5000
+196 - exact(read), variable
+variable v;
+Select v such that Modifies(24, v)
+ardent
+5000
+197 - exact(print), exact
+
+Select BOOLEAN such that Modifies(19, "something")
+FALSE
+5000
+198 - exact(print), variable
+variable v;
+Select v such that Modifies(19, v)
+none
+5000
+199 - exact(call), exact
+
+Select BOOLEAN such that Modifies(11, "z")
+TRUE
+5000
+200 - exact(call), exact (no result)
+stmt s;
+Select s such that Modifies(11, "duck")
+none
+5000
+201 - exact(call), variable (no result)
+variable v;
+Select v such that Modifies(515, v)
+none
+5000
+202 - exact(call), variable
+variable v;
+Select v such that Modifies(11, v)
+teacup0, x, lesion, melody, z, ardent, guru, pardon
+5000
+203 - exact(while), exact
+
+Select BOOLEAN such that Modifies(15, "ardent")
+TRUE
+5000
+204 - exact(while), exact (no result)
+
+Select BOOLEAN such that Modifies(15, "bluebell")
+FALSE
+5000
+205 - exact(while), variable
+variable v;
+Select v such that Modifies(15, v)
+x, lesion, z, ardent, guru, pardon
+5000
+206 - exact(if), exact
+
+Select BOOLEAN such that Modifies(23, "ardent")
+TRUE
+5000
+207 - exact(if), exact (no result)
+
+Select BOOLEAN such that Modifies(23, "else")
+FALSE
+5000
+208 - exact(if), variable
+variable v;
+Select v such that Modifies(23, v)
+ardent, z, guru, pardon
+5000
+209 - exact(variable), exact
+
+Select BOOLEAN such that Modifies("progline", "progline")
+FALSE
+5000
+210 - exact(variable), variable
+variable v;
+Select v such that Modifies("progline", v)
+none
+5000
+211 - exact(stmt), integer
+
+Select BOOLEAN such that Modifies(26, 290918238)
+none
+5000
+212 - exact(out of bound), v
+variable v;
+Select v such that Modifies(600, v)
+none
+5000
+213 - ModifiesP (p-syn, v-syn)
+procedure p; variable v;
+Select <p, v> such that Modifies(p, v)
+Honeysuckle teacup0, Honeysuckle x, Honeysuckle lesion, Honeysuckle melody, Honeysuckle ardent, Honeysuckle guru, Honeysuckle pardon, Honeysuckle z, something guru, something teacup0, something lesion, something melody, something ardent, something pardon, something x, something z, shikashi ardent, shikashi pardon, shikashi z, shikashi guru
+5000
+214 - ModifiesP (p-syn, _)
+procedure p; 
+Select p such that Modifies(p, _)
+Honeysuckle, something, shikashi
+5000
+215 - ModifiesP (p-syn, IDENT)
+procedure p; 
+Select p such that Modifies(p, "x")
+Honeysuckle, something
+5000
+216 - ModifiesP (p-syn, IDENT)
+procedure p; 
+Select p such that Modifies(p, "z")
+Honeysuckle, something, shikashi
+5000
+217 - ModifiesP (p-syn, IDENT)
+procedure p; 
+Select p such that Modifies(p, "melody")
+Honeysuckle, something
+5000
+218 - ModifiesP (p-syn, IDENT)
+procedure p;
+Select p such that Modifies(p, "lesion")
+something, Honeysuckle
+5000
+219 - ModifiesP (p-syn, IDENT) - BOOLEAN
+procedure p;
+Select BOOLEAN such that Modifies("Honeysuckle", "lesion")
+TRUE
+5000
+220 - ModifiesP (IDENT, v-syn)
+variable v;
+Select v such that Modifies("Honeysuckle", v)
+teacup0, x, lesion, melody, z, ardent, guru, pardon
+5000
+221 - ModifiesP (IDENT, v-syn)
+variable v;
+Select v such that Modifies("something", v)
+teacup0, x, lesion, melody, z, ardent, guru, pardon
+5000
+222 - ModifiesP (IDENT, v-syn)
+variable v;
+Select v such that Modifies("shikashi", v)
+z, ardent, guru, pardon
+5000
+223 - ModifiesP (IDENT, _)
+procedure p; 
+Select p such that Modifies("shikashi", _)
+Honeysuckle, shikashi, something
+5000
+224 - ModifiesP (IDENT, _)
+procedure p; 
+Select BOOLEAN such that Modifies("shikashi", _)
+TRUE
+5000
+225 - ModifiesP (IDENT, _)
+procedure p; 
+Select p such that Modifies("omega", _)
+none
+5000
+226 - ModifiesP (IDENT, _)
+procedure p; 
+Select BOOLEAN such that Modifies("omega", _)
+FALSE
+5000
+227 - ModifiesP (IDENT, IDENT) - TRUE
+procedure p; 
+Select p such that Modifies("Honeysuckle", "z")
+Honeysuckle, shikashi, something
+5000
+228 - ModifiesP (IDENT, IDENT)
+procedure p; 
+Select BOOLEAN such that Modifies("Honeysuckle", "z")
+TRUE
+5000
+229 - ModifiesP (IDENT, IDENT) - TRUE
+procedure p; 
+Select p such that Modifies("something", "teacup0")
+Honeysuckle, shikashi, something
+5000
+230 - ModifiesP (IDENT, IDENT)
+procedure p; 
+Select BOOLEAN such that Modifies("something", "teacup0")
+TRUE
+5000
+231 - ModifiesP (IDENT, IDENT) - TRUE
+procedure p; 
+Select p such that Modifies("shikashi", "pardon")
+Honeysuckle, shikashi, something
+5000
+232 - ModifiesP (IDENT, IDENT)
+procedure p; 
+Select BOOLEAN such that Modifies("shikashi", "pardon")
+TRUE
+5000
+233 - ModifiesP (IDENT, IDENT) - FALSE
+procedure p; 
+Select p such that Modifies("Honeysuckle", "gossamer")
+none
+5000
+234 - ModifiesP (IDENT, IDENT) - FALSE
+procedure p; 
+Select BOOLEAN such that Modifies("Honeysuckle", "gossamer")
+FALSE
+5000
+235 - ModifiesP (IDENT, IDENT) - FALSE
+procedure p; 
+Select p such that Modifies("something", "y")
+none
+5000
+236 - ModifiesP (IDENT, IDENT) - FALSE
+procedure p; 
+Select BOOLEAN such that Modifies("something", "y")
+FALSE
+5000
+237 - ModifiesP (IDENT, IDENT) - FALSE
+procedure p; 
+Select p such that Modifies("shikashi", "blackberry")
+none
+5000
+238 - ModifiesP (IDENT, IDENT) - FALSE
+procedure p; 
+Select BOOLEAN such that Modifies("shikashi", "blackberry")
+FALSE
+5000
+239 - ModifiesP (IDENT, IDENT) - FALSE
+procedure p;
+Select BOOLEAN such that Modifies("shikashi", "lesion")
+FALSE
+5000
+240 - ModifiesP (_, v-syn) - INVALID
+procedure p; variable v;
+Select v such that Modifies(_, v) 
+none
+5000
+241 - ModifiesP (_, _) - INVALID
+procedure p; variable v;
+Select BOOLEAN such that Modifies(_, v) 
+FALSE
+5000
+242 - ModifiesP (_, _) - INVALID
+procedure p;
+Select p such that Modifies(_, _) 
+none
+5000
+243 - ModifiesP (_, _) - INVALID
+procedure p;
+Select BOOLEAN such that Modifies(_, _) 
+FALSE
+5000
+244 - ModifiesP (_, IDENT) - INVALID
+procedure p;
+Select p such that Modifies(_, "guru") 
+none
+5000
+245 - ModifiesP (_, IDENT) - INVALID
+procedure p;
+Select BOOLEAN such that Modifies(_, "guru") 
+FALSE
+5000
+246 - All call Statement (Modifies)
+variable v; call c;
+Select v such that Modifies(c, v)
+teacup0, x, lesion, melody, z, ardent, guru, pardon
+5000
+247 - All procedures
+procedure p;
+Select p
+Honeysuckle, something, shikashi
+5000
+248 - All procedures (Modifies)
+variable v; procedure p;
+Select v such that Modifies(p, v)
+teacup0, x, lesion, melody, z, ardent, guru, pardon
+5000
+249 - ModifiesS (pl-syn, v-syn)
+prog_line pl; variable v;
+Select <pl, v> such that Modifies(pl, v)
+2 lesion, 4 x, 5 lesion, 7 x, 8 x, 16 x, 17 lesion, 18 lesion, 21 melody, 22 z, 25 z, 26 guru, 12 z, 12 guru, 12 pardon, 27 pardon, 24 ardent, 13 teacup0, 11 z, 11 ardent, 20 z, 20 ardent, 20 guru, 20 pardon, 11 guru, 11 pardon, 11 lesion, 11 melody, 11 teacup0, 11 x, 12 ardent, 15 ardent, 15 guru, 15 pardon, 15 lesion, 3 x, 3 lesion, 6 x, 15 x, 15 z, 23 ardent, 23 z, 23 guru, 23 pardon
+5000
+250 - ModifiesS(stmt#, v-syn)
+variable v;
+Select v such that Modifies(12, v)
+z, ardent, guru, pardon
+5000
+251 - 
+variable v;
+Select v such that Modifies(20, v)
+z, ardent, guru, pardon
+5000
+252 - Procedure something (Modifies)
+variable v;
+Select v such that Modifies(11, v)
+teacup0, x, lesion, melody, z, ardent, guru, pardon
+5000
