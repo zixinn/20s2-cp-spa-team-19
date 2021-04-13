@@ -793,179 +793,427 @@ prog_line s;
 Select s such that Uses(s, "colors")
 none
 5000
+161 - procedure, wildcard
+procedure s;
+Select s such that Uses(s, _)
+something, shikashi, Honeysuckle
+5000
+162 - procedure, stmt
+procedure s; stmt s1;
+Select s such that Uses(s, s1)
+none
+5000
+163 - procedure, read
+procedure s; read r;
+Select BOOLEAN such that Uses(s, r)
+FALSE
+5000
+164 - procedure, print
+procedure s; print p;
+Select BOOLEAN such that Uses(s, p)
+FALSE
+5000
+165 - procedure, call
+procedure s; call v;
+Select BOOLEAN such that Uses(s, v)
+FALSE
+5000
+166 - procedure, while
+procedure s;while v;
+Select BOOLEAN such that Uses(s, v)
+FALSE
+5000
+167 - procedure, if
+procedure s; if v;
+Select BOOLEAN such that Uses(s, v)
+FALSE
+5000
+168 - procedure, assign
+procedure s; assign v;
+Select BOOLEAN such that Uses(s, v)
+FALSE
+5000
+169 - procedure, variable
+procedure s; variable v;
+Select v such that Uses(s, v)
+teacup0, bluebell, melody, maison, x, lesion, something, y, coeur, cerveau, boro, guru, gossamer
+5000
+170 - procedure, constant
+procedure s; constant v;
+Select v such that Uses(s, v)
+none
+5000
+171 - procedure, prog_line
+procedure s; prog_line v;
+Select v such that Uses(s, v)
+none
+5000
+172 - procedure, procedure
+procedure s; procedure v;
+Select v such that Uses(s, v)
+none
+5000
+173 - procedure, unknown synonym
+procedure s;
+Select s such that Uses(s, v)
+none
+5000
+174 - procedure, exact
+procedure s; constant v;
+Select s such that Uses(s, "lesion")
+something, Honeysuckle
+5000
+175 - exact, wildcard
+procedure p;
+Select p such that Uses(4, _)
+Honeysuckle, something, shikashi
+5000
+176 - exact, stmt
+stmt s1;
+Select s such that Uses(16, s1)
+none
+5000
+177 - exact, read
+read r;
+Select BOOLEAN such that Uses(16, r)
+FALSE
+5000
+178 - exact, print
+print p;
+Select BOOLEAN such that Uses(22, p)
+FALSE
+5000
+179 - exact, call
+call v;
+Select BOOLEAN such that Uses(40, v)
+FALSE
+5000
+180 - exact, while
+while v;
+Select BOOLEAN such that Uses(50, v)
+FALSE
+5000
+181 - exact, if
+if v;
+Select BOOLEAN such that Uses(6, v)
+FALSE
+5000
+182 - exact, assign
+assign v;
+Select BOOLEAN such that Uses("colors", v)
+FALSE
+5000
+183 - exact, variable
+variable v;
+Select v such that Uses(6, v)
+gossamer, lesion, x
+5000
+184 - exact, constant
+constant v;
+Select v such that Uses(8, v)
+none
+5000
+185 - exact, prog_line
+prog_line v;
+Select v such that Uses(12, v)
+none
+5000
+186 - exact, procedure
+procedure v;
+Select v such that Uses(11, v)
+none
+5000
+187 - exact, unknown synonym
 
-1 - UsesP (p-syn, v-syn)
+Select s such that Uses(15, v)
+none
+5000
+188 - exact(assign), exact
+
+Select BOOLEAN such that Uses(8, "lesion")
+TRUE
+5000
+189 - exact(assign), exact (no result)
+
+Select BOOLEAN such that Uses(8, "call")
+FALSE
+5000
+190 - exact(proc), exact
+
+Select BOOLEAN such that Uses("Honeysuckle", "coeur")
+TRUE
+5000
+191 - exact(proc), exact (no result)
+stmt s;
+Select s such that Uses("shikashi", "duck")
+none
+5000
+192 - exact(proc), variable
+variable v;
+Select v such that Uses("something", v)
+something, y, teacup0, bluebell, lesion, coeur, cerveau, boro, guru
+5000
+193 - exact(print), exact
+
+Select BOOLEAN such that Uses(14, "something")
+TRUE
+5000
+194 - exact(print), exact (no result)
+stmt s;
+Select s such that Uses(10, "duck")
+none
+5000
+195 - exact(print), variable
+variable v;
+Select v such that Uses(19, v)
+lesion
+5000
+196 - exact(read), exact
+
+Select BOOLEAN such that Uses(20, "lesion")
+FALSE
+5000
+197 - exact(read), variable
+variable v;
+Select v such that Uses(24, v)
+none
+5000
+198 - exact(call), exact
+
+Select BOOLEAN such that Uses(11, "guru")
+TRUE
+5000
+199 - exact(call), exact (no result)
+stmt s;
+Select s such that Uses(3, "duck")
+none
+5000
+200 - exact(call), variable
+variable v;
+Select v such that Uses(12, v)
+boro, guru
+5000
+201 - exact(while), exact
+
+Select BOOLEAN such that Uses(3, "maison")
+TRUE
+5000
+202 - exact(while), exact (no result)
+
+Select BOOLEAN such that Uses(3, "noodle")
+FALSE
+5000
+203 - exact(while), variable
+variable v;
+Select v such that Uses(15, v)
+y, teacup0, bluebell, lesion, boro, guru
+5000
+204 - exact(if), exact
+
+Select BOOLEAN such that Uses(23, "guru")
+TRUE
+5000
+205 - exact(if), exact (no result)
+
+Select BOOLEAN such that Uses(309, "boro")
+FALSE
+5000
+206 - exact(if), variable
+variable v;
+Select v such that Uses(6, v)
+gossamer, lesion, x
+5000
+207 - exact(variable), exact
+
+Select BOOLEAN such that Uses("jessie", "jessie")
+FALSE
+5000
+208 - exact(variable), variable
+variable v;
+Select v such that Uses("jessie", v)
+none
+5000
+209 - exact(stmt), integer
+
+Select BOOLEAN such that Uses(80, 290918238)
+none
+5000
+210 - exact(out of bound), v
+variable v;
+Select v such that Uses(600, v)
+none
+5000
+211 - UsesP (p-syn, v-syn)
 procedure p; variable v;
 Select <p, v> such that Uses(p, v)
 Honeysuckle teacup0, Honeysuckle bluebell, Honeysuckle melody, Honeysuckle maison, Honeysuckle y, Honeysuckle gossamer, Honeysuckle lesion, Honeysuckle coeur, Honeysuckle cerveau, Honeysuckle boro, Honeysuckle guru, Honeysuckle something, Honeysuckle x, something something, something teacup0, something bluebell, something lesion, something coeur, something cerveau, something boro, something guru, something y, shikashi boro, shikashi guru
 5000
-2 - UsesP (p-syn, _)
+212 - UsesP (p-syn, _)
 procedure p;
 Select p such that Uses(p,_) 
 Honeysuckle, something, shikashi
 5000
-3 - UsesP (p-syn, IDENT)
+213 - UsesP (p-syn, IDENT)
 procedure p;
 Select p such that Uses(p, "boro")
 shikashi, something, Honeysuckle
 5000
-4 - UsesP (p-syn, IDENT)
+214 - UsesP (p-syn, IDENT)
 procedure p;
 Select p such that Uses(p, "bluebell")
 something, Honeysuckle
 5000
-5 - UsesP (p-syn, IDENT)
+215 - UsesP (p-syn, IDENT)
 procedure p;
 Select p such that Uses(p, "coeur")
 something, Honeysuckle
 5000
-6 - UsesP (p-syn, IDENT)
+216 - UsesP (p-syn, IDENT)
 procedure p;
 Select p such that Uses(p, "maison")
 Honeysuckle
 5000
-7 - UsesP (p-syn, IDENT)
+217 - UsesP (p-syn, IDENT)
 procedure p;
 Select p such that Uses(p, "guru")
 shikashi, something, Honeysuckle
 5000
-8 - UsesP (IDENT, v-syn) 
+218 - UsesP (IDENT, v-syn) 
 variable v;
 Select v such that Uses("Honeysuckle", v)
 something, y, teacup0, bluebell, lesion, coeur, cerveau, boro, guru, melody, maison, gossamer, x
 5000
-9 - UsesP (IDENT, v-syn) 
+219 - UsesP (IDENT, v-syn) 
 variable v;
 Select v such that Uses("something", v)
 something, y, teacup0, bluebell, coeur, cerveau, boro, guru, lesion
 5000
-10 - UsesP (IDENT, v-syn) 
+220 - UsesP (IDENT, v-syn) 
 variable v;
 Select v such that Uses("shikashi", v)
 boro, guru
 5000
-11 - UsesP (IDENT, _)
+221 - UsesP (IDENT, _)
 procedure p;
 Select p such that Uses("Honeysuckle", _) 
 Honeysuckle, something, shikashi
 5000
-12 - UsesP (IDENT, IDENT)  - TRUE
+222 - UsesP (IDENT, IDENT)  - TRUE
 procedure p;
 Select p such that Uses("Honeysuckle", "x") 
 Honeysuckle, something, shikashi
 5000
-13 - UsesP (IDENT, IDENT)  - TRUE
+223 - UsesP (IDENT, IDENT)  - TRUE
 procedure p;
 Select BOOLEAN such that Uses("Honeysuckle", "x") 
 TRUE
 5000
-14 - UsesP (IDENT, IDENT)  - TRUE
+224 - UsesP (IDENT, IDENT)  - TRUE
 procedure p;
 Select p such that Uses("something", "boro") 
 Honeysuckle, something, shikashi
 5000
-15 - UsesP (IDENT, IDENT)  - TRUE
+225 - UsesP (IDENT, IDENT)  - TRUE
 procedure p;
 Select BOOLEAN such that Uses("something", "boro") 
 TRUE
 5000
-16 - UsesP (IDENT, IDENT)  - TRUE
+226 - UsesP (IDENT, IDENT)  - TRUE
 procedure p;
 Select p such that Uses("shikashi", "boro") 
 Honeysuckle, something, shikashi
 5000
-17 - UsesP (IDENT, IDENT)  - TRUE
+227 - UsesP (IDENT, IDENT)  - TRUE
 procedure p;
 Select BOOLEAN such that Uses("shikashi", "boro") 
 TRUE
 5000
-18 - UsesP (IDENT, IDENT)  - FALSE
+228 - UsesP (IDENT, IDENT)  - FALSE
 procedure p;
 Select p such that Uses("Honeysuckle", "omega") 
 none
 5000
-19 - UsesP (IDENT, IDENT)  - FALSE
+229 - UsesP (IDENT, IDENT)  - FALSE
 procedure p;
 Select BOOLEAN such that Uses("Honeysuckle", "omega") 
 FALSE
 5000
-20 - UsesP (IDENT, IDENT)  - FALSE
+230 - UsesP (IDENT, IDENT)  - FALSE
 procedure p;
 Select p such that Uses("something", "melody") 
 none
 5000
-21 - UsesP (IDENT, IDENT)  - FALSE
+231 - UsesP (IDENT, IDENT)  - FALSE
 procedure p;
 Select BOOLEAN such that Uses("something", "melody") 
 FALSE
 5000
-22 - UsesP (IDENT, IDENT)  - FALSE
+232 - UsesP (IDENT, IDENT)  - FALSE
 procedure p;
 Select p such that Uses("shikashi", "teacup0") 
 none
 5000
-23 - UsesP (IDENT, IDENT)  - FALSE
+233 - UsesP (IDENT, IDENT)  - FALSE
 procedure p;
 Select BOOLEAN such that Uses("shikashi", "teacup0") 
 FALSE
 5000
-24 - UsesP (_, v-syn) - INVALID
+234 - UsesP (_, v-syn) - INVALID
 procedure p; variable v;
 Select v such that Uses(_, v) 
 none
 5000
-25 - UsesP (_, _) - INVALID
+235 - UsesP (_, _) - INVALID
 procedure p; variable v;
 Select BOOLEAN such that Uses(_, v) 
 FALSE
 5000
-26 - UsesP (_, _) - INVALID
+236 - UsesP (_, _) - INVALID
 procedure p;
 Select p such that Uses(_, _) 
 none
 5000
-27 - UsesP (_, _) - INVALID
+237 - UsesP (_, _) - INVALID
 procedure p;
 Select BOOLEAN such that Uses(_, _) 
 FALSE
 5000
-28 - UsesP (_, IDENT) - INVALID
+238 - UsesP (_, IDENT) - INVALID
 procedure p;
 Select p such that Uses(_, "guru") 
 none
 5000
-29 - UsesP (_, IDENT) - INVALID
+239 - UsesP (_, IDENT) - INVALID
 procedure p;
 Select BOOLEAN such that Uses(_, "guru") 
 FALSE
 5000
-
-63 - Multiclause: Procedure Honeysuckle (Uses) Reverse
+240 - Multiclause: Procedure Honeysuckle (Uses) Reverse
 procedure p;
 Select p such that Uses(p, "gossamer") and Uses(p, "x") 
 Honeysuckle
 5000
-64 - Multiclause: Procedure Honeysuckle (Uses) Reverse
+241 - Multiclause: Procedure Honeysuckle (Uses) Reverse
 procedure p;
 Select p such that Uses(p, "gossamer") 
 Honeysuckle
 5000
-65 - Multiclause: Procedure Honeysuckle (Uses) Reverse
+242 - Multiclause: Procedure Honeysuckle (Uses) Reverse
 procedure p;
 Select p such that Uses(p, "x") 
 Honeysuckle
 5000
-66 - Multiclause: Procedure Honeysuckle (Uses) Reverse
+243 - Multiclause: Procedure Honeysuckle (Uses) Reverse
 procedure p;
 Select BOOLEAN such that Uses("Honeysuckle", "gossamer") and Uses("Honeysuckle", "x") 
 TRUE
 5000
-67 - Multiclause: Procedure Honeysuckle (Uses) Reverse
+244 - Multiclause: Procedure Honeysuckle (Uses) Reverse
 procedure p;
 Select BOOLEAN such that Uses("Honeysuckle", "gossamer")
 TRUE
 5000
-68 - Multiclause: Procedure Honeysuckle (Uses) Reverse
+245 - Multiclause: Procedure Honeysuckle (Uses) Reverse
 procedure p;
 Select BOOLEAN such that Uses("Honeysuckle", "x") 
 TRUE
