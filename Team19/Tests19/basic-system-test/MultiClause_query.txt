@@ -98,9 +98,9 @@ assign a; if ifs; while w;
 Select BOOLEAN such that Next(_, _) and Follows*(_, _) and Calls*(_, _) and Parent(_, _) pattern a(_, _) and ifs(_, _, _) and w(_, _) with 234 = 234 and "hello" = "hello"
 TRUE
 5000
-22 - 4 with, all pattern, 5 such that (removing the last w makes it work but why)
-stmt s; assign a; print pr; read re; if ifs; while w; constant cons; call c; variable v; procedure p, p1;
-Select re with p.procName = "Honeysuckle" and c.procName = p1.procName and ifs.stmt# = cons.value and w.stmt# = 15  such that Next(16, _) and Follows*(re, pr) and Modifies(a, _) and Calls(p, p1) and Uses(pr, v) pattern a(_, _) and ifs(_, _, _) and w(_, _) 
+22 - 4 with, all pattern, 5 such that, w2(_,_) instead of w(_,_), since stmt#15 isnt accepted for w(_,_)
+stmt s; assign a; print pr; read re; if ifs; while w, w2; constant cons; call c; variable v; procedure p, p1;
+Select re with p.procName = "Honeysuckle" and c.procName = p1.procName and ifs.stmt# = cons.value and w.stmt# = 15  such that Next(16, _) and Follows*(re, pr) and Modifies(a, _) and Calls(p, p1) and Uses(pr, v) pattern a(_, _) and ifs(_, _, _) and w2(_, _) 
 13
 5000
 23 - multiple groups (2 groups)
