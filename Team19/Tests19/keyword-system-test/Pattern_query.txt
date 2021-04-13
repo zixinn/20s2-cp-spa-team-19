@@ -1,0 +1,440 @@
+1 - if pattern, exist
+if ifs;
+Select ifs pattern ifs("else", _, _)
+59
+5000
+2 - if pattern, exist
+if ifs;
+Select ifs pattern ifs("a", _, _)
+78,85
+5000
+3 - if pattern, no exist
+if ifs;
+Select ifs pattern ifs("blah", _, _)
+none
+5000
+4 - if pattern, exist in program but not in if
+if ifs;
+Select ifs pattern ifs("childe", _, _)
+none
+5000
+5 - if pattern, wildcard
+if ifs;
+Select ifs pattern ifs(_, _, _)
+14,59,64,78,85
+5000
+6 - if pattern, synonym
+if ifs; variable v;
+Select <ifs,v> pattern ifs(v,_,_)
+14 if,14 AND,14 NOT,14 then,59 else,59 Uses,59 procedure,59 program,59 Follows,64 johnlee,64 zhongli,78 a,85 a
+5000
+7 - if pattern, invalid synonym
+if ifs; constant c;
+Select <ifs,c> pattern ifs(c,_,_)
+none
+5000
+8 - if pattern using while pattern
+if ifs;
+Select ifs pattern ifs("call", _)
+none
+5000
+9 - if pattern, invalid
+if ifs;
+Select ifs pattern ifs("a", "if", "if")
+none
+5000
+10 - if pattern, invalid
+if ifs;
+Select ifs pattern ifs(_, _, "if")
+none
+5000
+11 - if pattern, invalid
+if ifs;
+Select ifs pattern ifs("a", "if", _)
+none
+5000
+12 - if pattern, invalid
+if ifs;
+Select ifs pattern ifs("if", _, "if")
+none
+5000
+13 - if pattern, missing quotation
+if ifs;
+Select ifs pattern      ifs(if, _, _)
+none
+5000
+14 - if pattern, missing wildcards
+if ifs;
+Select ifs pattern ifs("a")
+none
+5000
+15 - no overlap with select, if pattern
+while w; if ifs; variable v;
+Select w pattern ifs(v, _, _)
+9,12,25,37,47,62,77
+5000
+16 - invalid varname, if pattern
+if ifs;
+Select BOOLEAN pattern ifs("1", _, _)
+none
+5000
+17 - multiple underscores, if pattern
+if ifs;
+Select BOOLEAN pattern ifs(_, _, _, _)
+none
+5000
+18 - while pattern, exist
+while w;
+Select w pattern w("print", _)
+12,47,62
+5000
+19 - while pattern, exist
+while ifs;
+Select ifs pattern ifs("    while    ", _)
+47,62
+5000
+20 - while pattern, no exist
+while w;
+Select w pattern w("exusiai", _)
+none
+5000
+21 - while pattern, exist in program but not in while
+while w;
+Select w pattern w("keqing", _)
+none
+5000
+22 - while pattern, wildcard
+while w;
+Select w pattern w(_, _)
+9,12,25,37,47,62
+5000
+23 - while pattern, synonym
+while w; variable v;
+Select <w,v> pattern w(v,_)
+9 a,9 b,9 c,12 print,25 read,37 purple,37 eunectes,37 lancet,37 call,37 green,47 print,47 read,47 call,47 while,47 if,47 then,47 else,47 procedure,47 program,47 Uses,47 Follows,62 print,62 call,62 read,62 while,62 if,62 then,62 Next,62 else,62 Affects,62 OR,62 procedure,62 program,62 Uses,62 Follows,62 AND
+5000
+24 - while pattern, invalid synonym
+assign a; while w;
+Select w pattern w(a,_)
+none
+5000
+25 - while pattern, invalid
+while w;
+Select w pattern w("xiangling", _, _)
+none
+5000
+26 - while pattern, invalid
+while w;
+Select w pattern w("a", "w")
+none
+5000
+27 - while pattern, invalid
+while w;
+Select w pattern w(_, "w")
+none
+5000
+28 - while pattern, invalid
+while w;
+Select w pattern w(_, "w")
+none
+5000
+29 - while pattern, missing quotation
+while w;
+Select w pattern      w(a, _)
+none
+5000
+30 - while pattern, missing wildcards
+while w;
+Select w pattern w("a")
+none
+5000
+31 - no overlap with select, while pattern
+if ifs; while w; variable v;
+Select ifs pattern w(v, _)
+14,34,59,64,78,85
+5000
+32 - invalid varname, while pattern
+while w;
+Select BOOLEAN pattern w("*", _)
+none
+5000
+33 - multiple underscores, while pattern
+while w;
+Select BOOLEAN pattern w(_, _, _)
+none
+5000
+34 - two variables in string
+while w;
+Select w pattern w("else then", _)
+none
+5000
+35 - missing declaration
+
+Select BOOLEAN pattern w("green", _)
+none
+5000
+36 - assign pattern (underscore, expression), exact match
+assign a;
+Select a pattern a(_, "(((((407)))))")
+93,120
+5000
+37 - assign pattern (underscore, expression), full match, different brackets
+assign a;
+Select a pattern a(_, "(print + read / call * (while - if * (then + else)) % procedure)")
+95,121
+5000
+38 - assign pattern (underscore, expression), full match, wrong brackets
+assign a;
+Select a pattern a(_, "(303 - call) / (while * if)")
+none
+5000
+39 - assign pattern (underscore, expression), full match, constant on rhs
+assign a;
+Select a pattern a(_, "301")
+17,101
+5000
+40 - assign pattern (underscore, expression), full match, single variable on rhs, boolean
+assign a;
+Select BOOLEAN pattern a(_, "print")
+TRUE
+5000
+41 - assign pattern (variable, expression), exact match
+assign a;
+Select a pattern a("cocogoat", "johnlee")
+50,69,106
+5000
+42 - assign pattern (variable, expression), full match, different brackets
+assign a;
+Select a pattern a(_, "(( (hutao) )    )")
+60,75,111
+5000
+43 - assign pattern (variable, expression), full match, wrong brackets, boolean
+assign a;
+Select BOOLEAN pattern a("xiangling", "(beidou % 305) if * then")
+FALSE
+5000
+44 - assign pattern (variable, expression), full match, constant on rhs
+assign a;
+Select a pattern a("print", "401")
+114
+5000
+45 - assign pattern (variable, expression), full match, single variable on rhs
+assign a;
+Select a pattern a("call", "childe")
+52,86,116
+5000
+46 - assign pattern (synonym, expression), exact match
+assign a; variable v;
+Select a pattern a(v, "404 * (johnlee / childe) + 403 % 405")
+73,117
+5000
+47 - assign pattern (synonym, expression), full match, different brackets, boolean
+assign a; variable v;
+Select BOOLEAN pattern a(v, "(program + (childe) + 407)")
+TRUE
+5000
+48 - assign pattern (synonym, expression), full match, wrong brackets
+assign a; variable v;
+Select a pattern a(v, "program + (childe + 407)")
+none
+5000
+49 - assign pattern (synonym, expression), full match, constant on rhs
+assign a; variable v;
+Select <v, a> pattern a(v, "407")
+else 93,else 120
+5000
+50 - assign pattern (synonym, expression), full match, single variable on rhs
+assign a; variable v;
+Select <a, v> pattern a(v, "hutao")
+75 johnlee,60 johnlee,111 johnlee
+5000
+51 - assign pattern (underscore, expression), partial match
+assign a;
+Select a pattern a(_, _"if * then"_)
+13,113
+5000
+52 - assign pattern (underscore, expression), partial match, single variable, boolean
+assign a;
+Select BOOLEAN pattern a(_, _"beidou"_)
+TRUE
+5000
+53 - assign pattern (underscore, expression), partial match, constant
+assign a;
+Select a pattern a(_, _"305"_)
+13,113
+5000
+54 - assign pattern (underscore, expression), partial match, no match
+assign a;
+Select a pattern a(_, _"assign"_)
+none
+5000
+55 - assign pattern (variable, expression), partial match
+assign a;
+Select a pattern a("Uses", _"print / (read - read - read)"_)
+67,123
+5000
+56 - assign pattern (variable, expression), partial match, single variable
+assign a;
+Select a pattern a("xiao", _"then"_)
+70,107
+5000
+57 - assign pattern (variable, expression), partial match, constant
+assign a;
+Select a pattern a("while", _"404"_)
+73,117
+5000
+58 - assign pattern (variable, expression), partial match, full match
+assign a;
+Select a pattern a("cocogoat", _"(303 - call) / while * if"_)
+84,105
+5000
+59 - assign pattern (variable, expression), partial match, no match
+assign a;
+Select a pattern a("cocogoat", _"exusiai"_)
+none
+5000
+60 - assign pattern (variable, expression), partial match, no match, boolean
+assign a;
+Select BOOLEAN pattern a("cocogoat", _"xiangling - johnlee"_)
+FALSE
+5000
+61 - assign pattern (synonym, expression), partial match
+assign a; variable v;
+Select <v, a> pattern a(v, _"(procedure + procedure - procedure * (Uses - Uses % Uses))"_)
+Uses 123,Uses 67
+5000
+62 - assign pattern (synonym, expression), partial match, full match
+assign a; variable v;
+Select <a, v> pattern a(v, _"Follows * (Uses / program % (procedure + else - Uses / then) * if + (while - cocogoat % call + read) / print)"_)
+74 ninguang,110 ninguang
+5000
+63 - assign pattern (synonym, expression), partial match, single variable
+assign a; variable v;
+Select v pattern a(v, _"program"_)
+program,beidou,Follows,keqing,ninguang
+5000
+64 - assign pattern (synonym, expression), partial match, constant, boolean
+assign a; variable v;
+Select BOOLEAN pattern a(v, _"401"_)
+TRUE
+5000
+65 - assign pattern (synonym, expression), partial match, no match
+assign a; variable v;
+Select a pattern a(v, _"print * Affects"_)
+none
+5000
+66 - assign pattern (underscore, underscore)
+assign a;
+Select a pattern a(_, _)
+13,15,17,18,21,26,27,30,35,40,42,43,45,50,51,52,55,60,63,65,66,67,69,70,72,73,74,75,80,84,86,89,93,95,96,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,126
+5000
+67 - assign pattern (variable, underscore)
+assign a;
+Select a pattern a("xiao", _)
+70,107
+5000
+68 - assign pattern (variable, underscore), no match
+assign a;
+Select a pattern a("childe", _)
+none
+5000
+69 - assign pattern (variable, underscore), boolean
+assign a;
+Select BOOLEAN pattern a("if", _)
+TRUE
+5000
+70 - assign pattern (variable, underscore), no match, boolean
+assign a;
+Select BOOLEAN pattern a("assign", _)
+FALSE
+5000
+71 - assign pattern (synonym, underscore), assign
+assign a; variable v;
+Select a pattern a(v, _)
+13,15,17,18,21,26,27,30,35,40,42,43,45,50,51,52,55,60,63,65,66,67,69,70,72,73,74,75,80,84,86,89,93,95,96,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,126
+5000
+72 - assign pattern (synonym, underscore), variable
+assign a; variable v;
+Select v pattern a(v, _)
+xiangling,johnlee,cocogoat,hashtagprocedure,print,hashtagprint,beidou,hashtagread,read,call,Follows,hashtagcall,keqing,if,Uses,hashtagwhile,while,ninguang,program,hashtagif,else,procedure,then,hashtagelse,hashtagthen,xiao
+5000
+73 - assign pattern (synonym, underscore), tuple
+assign a; variable v;
+Select <a, v> pattern a(v, _)
+13 xiangling,15 johnlee,17 johnlee,18 johnlee,21 hashtagprocedure,26 johnlee,27 print,30 hashtagprint,35 johnlee,40 beidou,42 hashtagread,43 read,45 cocogoat,50 cocogoat,51 Follows,52 call,55 hashtagcall,60 johnlee,63 keqing,65 keqing,66 if,67 Uses,69 cocogoat,70 xiao,72 hashtagwhile,73 while,74 ninguang,75 johnlee,80 program,84 cocogoat,86 call,89 hashtagif,93 else,95 procedure,96 then,99 hashtagthen,100 johnlee,101 johnlee,102 johnlee,103 johnlee,104 cocogoat,105 cocogoat,106 cocogoat,107 xiao,108 keqing,109 keqing,110 ninguang,111 johnlee,112 beidou,113 xiangling,114 print,115 read,116 call,117 while,118 if,119 then,120 else,121 procedure,122 program,123 Uses,124 Follows,126 hashtagelse
+5000
+74 - assign pattern (synonym, underscore), boolean
+assign a; variable v;
+Select BOOLEAN pattern a(v, _)
+TRUE
+5000
+75 - assign pattern, invalid
+assign a;
+Select a pattern a(_, "")
+none
+5000
+76 - assign pattern, invalid
+assign a;
+Select a pattern a(_, " ")
+none
+5000
+77 - assign pattern, invalid
+assign a;
+Select a pattern a(_, _""_)
+none
+5000
+78 - assign pattern, invalid
+assign a;
+Select a pattern a(_, _" "_)
+none
+5000
+79 - assign pattern, invalid
+assign a;
+Select a pattern a(_, _"johnlee / "_)
+none
+5000
+80 - assign pattern, invalid
+assign a;
+Select a pattern a(_, _"*"_)
+none
+5000
+81 - assign pattern, invalid
+assign a;
+Select a pattern a(_, _"- 125"_)
+none
+5000
+82 - assign pattern, invalid
+assign a;
+Select a pattern a(_, _")"_)
+none
+5000
+83 - assign pattern, invalid
+assign a;
+Select a pattern a(_, _"call print"_)
+none
+5000
+84 - assign pattern, invalid
+assign a;
+Select a pattern a(_, _"912 + a != 911"_)
+none
+5000
+85 - assign pattern, invalid
+
+Select a pattern a(_, _)
+none
+5000
+86 - assign pattern, invalid
+assign a;
+Select a pattern a(_)
+none
+5000
+87 - assign pattern, invalid
+assign a;
+Select a pattern a(_, _, _)
+none
+5000
+88 - leading space in variable name
+assign a;
+Select a pattern a(" hashtagif  ", _)
+89
+5000

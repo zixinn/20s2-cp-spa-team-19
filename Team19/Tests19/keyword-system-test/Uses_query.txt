@@ -1,0 +1,280 @@
+1 - Select s, Uses(s, _)
+stmt s;
+Select s such that Uses(s, _)
+1,2,3,6,7,8,9,11,12,13,14,15,16,18,19,21,22,23,24,25,26,27,28,30,31,34,35,36,37,38,39,40,42,43,44,45,46,47,48,50,51,52,55,56,57,59,60,62,63,64,65,66,67,68,69,70,72,73,74,75,76,77,78,79,80,82,83,84,85,86,89,90,91,94,95,99,100,102,103,104,105,106,107,108,109,110,111,112,113,115,116,117,118,121,122,123,124,126
+5000
+2 - Select Boolean, Uses(s, v)
+stmt s; variable v;
+Select <s,v> such that Uses(s, v)
+1 AND,1 Affects,1 Follows,1 NOT,1 Next,1 OR,1 Uses,1 a,1 b,1 beidou,1 c,1 call,1 childe,1 cocogoat,1 else,1 eunectes,1 fatui,1 green,1 hashtagcall,1 hashtagelse,1 hashtagif,1 hashtagprint,1 hashtagprocedure,1 hashtagread,1 hashtagthen,1 hashtagwhile,1 hutao,1 if,1 johnlee,1 keqing,1 klee,1 lancet,1 print,1 procedure,1 program,1 purple,1 read,1 then,1 while,1 xiangling,1 zhongli,2 Follows,2 Uses,2 beidou,2 call,2 childe,2 cocogoat,2 else,2 fatui,2 hashtagelse,2 hutao,2 if,2 johnlee,2 keqing,2 klee,2 print,2 procedure,2 program,2 read,2 then,2 while,2 xiangling,3 AND,3 Affects,3 Follows,3 NOT,3 Next,3 OR,3 Uses,3 a,3 b,3 beidou,3 c,3 call,3 childe,3 cocogoat,3 else,3 eunectes,3 fatui,3 green,3 hashtagcall,3 hashtagelse,3 hashtagif,3 hashtagprint,3 hashtagprocedure,3 hashtagread,3 hashtagthen,3 hashtagwhile,3 hutao,3 if,3 johnlee,3 keqing,3 klee,3 lancet,3 print,3 procedure,3 program,3 purple,3 read,3 then,3 while,3 xiangling,3 zhongli,6 Follows,6 Uses,6 beidou,6 call,6 childe,6 cocogoat,6 else,6 fatui,6 hashtagelse,6 hutao,6 if,6 johnlee,6 keqing,6 klee,6 print,6 procedure,6 program,6 read,6 then,6 while,6 xiangling,7 print,8 AND,8 Affects,8 Follows,8 Next,8 OR,8 Uses,8 beidou,8 call,8 childe,8 cocogoat,8 else,8 fatui,8 hashtagcall,8 hashtagelse,8 hashtagprint,8 hashtagwhile,8 hutao,8 if,8 johnlee,8 keqing,8 klee,8 print,8 procedure,8 program,8 read,8 then,8 while,8 xiangling,8 zhongli,9 AND,9 Affects,9 Follows,9 NOT,9 Next,9 OR,9 Uses,9 a,9 b,9 beidou,9 c,9 call,9 childe,9 cocogoat,9 else,9 eunectes,9 fatui,9 green,9 hashtagcall,9 hashtagelse,9 hashtagif,9 hashtagprint,9 hashtagprocedure,9 hashtagread,9 hashtagthen,9 hashtagwhile,9 hutao,9 if,9 johnlee,9 keqing,9 klee,9 lancet,9 print,9 procedure,9 program,9 purple,9 read,9 then,9 while,9 xiangling,9 zhongli,11 AND,11 Affects,11 Follows,11 Next,11 OR,11 Uses,11 beidou,11 call,11 childe,11 cocogoat,11 else,11 eunectes,11 fatui,11 green,11 hashtagcall,11 hashtagelse,11 hashtagprint,11 hashtagread,11 hashtagwhile,11 hutao,11 if,11 johnlee,11 keqing,11 klee,11 lancet,11 print,11 procedure,11 program,11 purple,11 read,11 then,11 while,11 xiangling,11 zhongli,12 AND,12 Affects,12 Follows,12 NOT,12 Next,12 OR,12 Uses,12 a,12 beidou,12 call,12 childe,12 cocogoat,12 else,12 eunectes,12 fatui,12 green,12 hashtagcall,12 hashtagelse,12 hashtagif,12 hashtagprint,12 hashtagprocedure,12 hashtagread,12 hashtagthen,12 hashtagwhile,12 hutao,12 if,12 johnlee,12 keqing,12 klee,12 lancet,12 print,12 procedure,12 program,12 purple,12 read,12 then,12 while,12 xiangling,12 zhongli,13 beidou,13 if,13 then,14 AND,14 Affects,14 Follows,14 NOT,14 Next,14 OR,14 Uses,14 beidou,14 call,14 childe,14 cocogoat,14 else,14 fatui,14 hashtagelse,14 hashtagprocedure,14 hashtagthen,14 hashtagwhile,14 hutao,14 if,14 johnlee,14 keqing,14 klee,14 print,14 procedure,14 program,14 read,14 then,14 while,14 xiangling,14 zhongli,15 print,16 AND,16 Affects,16 Follows,16 Next,16 OR,16 Uses,16 beidou,16 call,16 childe,16 cocogoat,16 else,16 fatui,16 hashtagelse,16 hashtagwhile,16 hutao,16 if,16 johnlee,16 keqing,16 klee,16 print,16 procedure,16 program,16 read,16 then,16 while,16 xiangling,16 zhongli,18 read,19 AND,19 Affects,19 Follows,19 Next,19 OR,19 Uses,19 beidou,19 call,19 childe,19 cocogoat,19 else,19 fatui,19 hashtagelse,19 hashtagthen,19 hashtagwhile,19 hutao,19 if,19 johnlee,19 keqing,19 klee,19 print,19 procedure,19 program,19 read,19 then,19 while,19 xiangling,19 zhongli,21 hashtagprocedure,22 AND,22 Affects,22 Follows,22 Next,22 OR,22 Uses,22 a,22 beidou,22 call,22 childe,22 cocogoat,22 else,22 eunectes,22 fatui,22 green,22 hashtagcall,22 hashtagelse,22 hashtagif,22 hashtagprint,22 hashtagread,22 hashtagthen,22 hashtagwhile,22 hutao,22 if,22 johnlee,22 keqing,22 klee,22 lancet,22 print,22 procedure,22 program,22 purple,22 read,22 then,22 while,22 xiangling,22 zhongli,23 procedure,24 read,25 beidou,25 hashtagprint,25 program,25 read,26 read,27 beidou,28 program,30 hashtagprint,31 AND,31 Affects,31 Follows,31 Next,31 OR,31 Uses,31 beidou,31 call,31 childe,31 cocogoat,31 else,31 fatui,31 hashtagcall,31 hashtagelse,31 hashtagwhile,31 hutao,31 if,31 johnlee,31 keqing,31 klee,31 print,31 procedure,31 program,31 read,31 then,31 while,31 xiangling,31 zhongli,34 AND,34 Affects,34 Follows,34 Next,34 OR,34 Uses,34 beidou,34 call,34 childe,34 cocogoat,34 else,34 eunectes,34 fatui,34 green,34 hashtagcall,34 hashtagelse,34 hashtagprint,34 hashtagread,34 hashtagwhile,34 hutao,34 if,34 johnlee,34 keqing,34 klee,34 lancet,34 print,34 procedure,34 program,34 purple,34 read,34 then,34 while,34 xiangling,34 zhongli,35 read,36 Uses,37 AND,37 Affects,37 Follows,37 Next,37 OR,37 Uses,37 beidou,37 call,37 childe,37 cocogoat,37 else,37 eunectes,37 fatui,37 green,37 hashtagcall,37 hashtagelse,37 hashtagprint,37 hashtagread,37 hashtagwhile,37 hutao,37 if,37 johnlee,37 keqing,37 klee,37 lancet,37 print,37 procedure,37 program,37 purple,37 read,37 then,37 while,37 xiangling,37 zhongli,38 AND,38 Affects,38 Follows,38 Next,38 OR,38 Uses,38 beidou,38 call,38 childe,38 cocogoat,38 else,38 fatui,38 hashtagcall,38 hashtagelse,38 hashtagprint,38 hashtagwhile,38 hutao,38 if,38 johnlee,38 keqing,38 klee,38 print,38 procedure,38 program,38 read,38 then,38 while,38 xiangling,38 zhongli,39 call,40 program,40 xiangling,42 hashtagread,43 cocogoat,43 johnlee,43 keqing,43 xiangling,44 AND,44 Affects,44 Follows,44 Next,44 OR,44 Uses,44 beidou,44 call,44 childe,44 cocogoat,44 else,44 fatui,44 hashtagelse,44 hashtagwhile,44 hutao,44 if,44 johnlee,44 keqing,44 klee,44 print,44 procedure,44 program,44 read,44 then,44 while,44 xiangling,44 zhongli,45 call,45 while,46 AND,46 Affects,46 Follows,46 Next,46 OR,46 Uses,46 beidou,46 call,46 childe,46 cocogoat,46 else,46 fatui,46 hashtagelse,46 hashtagwhile,46 hutao,46 if,46 johnlee,46 keqing,46 klee,46 print,46 procedure,46 program,46 read,46 then,46 while,46 xiangling,46 zhongli,47 Follows,47 Uses,47 call,47 childe,47 else,47 hashtagcall,47 if,47 johnlee,47 print,47 procedure,47 program,47 read,47 then,47 while,48 if,50 johnlee,51 childe,51 program,52 childe,55 hashtagcall,56 Follows,57 then,59 AND,59 Affects,59 Follows,59 Next,59 OR,59 Uses,59 beidou,59 call,59 childe,59 cocogoat,59 else,59 fatui,59 hashtagelse,59 hashtagwhile,59 hutao,59 if,59 johnlee,59 keqing,59 klee,59 print,59 procedure,59 program,59 read,59 then,59 while,59 xiangling,59 zhongli,60 hutao,62 AND,62 Affects,62 Follows,62 Next,62 OR,62 Uses,62 beidou,62 call,62 childe,62 cocogoat,62 else,62 fatui,62 hashtagelse,62 hashtagwhile,62 hutao,62 if,62 johnlee,62 keqing,62 klee,62 print,62 procedure,62 program,62 read,62 then,62 while,62 xiangling,62 zhongli,63 cocogoat,64 Follows,64 Uses,64 beidou,64 call,64 childe,64 cocogoat,64 else,64 fatui,64 hashtagelse,64 hashtagwhile,64 hutao,64 if,64 johnlee,64 keqing,64 klee,64 print,64 procedure,64 program,64 read,64 then,64 while,64 xiangling,64 zhongli,65 call,65 else,65 if,65 print,65 procedure,65 program,65 read,65 then,65 while,66 childe,66 fatui,66 klee,67 Uses,67 call,67 else,67 if,67 print,67 procedure,67 read,67 then,67 while,68 Follows,68 Uses,68 beidou,68 call,68 childe,68 cocogoat,68 else,68 fatui,68 hashtagelse,68 hutao,68 if,68 johnlee,68 keqing,68 klee,68 print,68 procedure,68 program,68 read,68 then,68 while,68 xiangling,69 johnlee,70 johnlee,70 then,72 hashtagwhile,73 childe,73 johnlee,74 Follows,74 Uses,74 call,74 cocogoat,74 else,74 if,74 print,74 procedure,74 program,74 read,74 then,74 while,75 hutao,76 AND,76 Affects,76 Follows,76 Next,76 OR,76 Uses,76 beidou,76 call,76 childe,76 cocogoat,76 else,76 fatui,76 hashtagcall,76 hashtagelse,76 hashtagprint,76 hashtagwhile,76 hutao,76 if,76 johnlee,76 keqing,76 klee,76 print,76 procedure,76 program,76 read,76 then,76 while,76 xiangling,76 zhongli,77 AND,77 Affects,77 Follows,77 Next,77 OR,77 Uses,77 a,77 beidou,77 call,77 childe,77 cocogoat,77 else,77 eunectes,77 fatui,77 green,77 hashtagcall,77 hashtagelse,77 hashtagif,77 hashtagprint,77 hashtagread,77 hashtagthen,77 hashtagwhile,77 hutao,77 if,77 johnlee,77 keqing,77 klee,77 lancet,77 print,77 procedure,77 program,77 purple,77 read,77 then,77 while,77 xiangling,77 zhongli,78 AND,78 Affects,78 Follows,78 Next,78 OR,78 Uses,78 a,78 beidou,78 call,78 childe,78 cocogoat,78 else,78 eunectes,78 fatui,78 green,78 hashtagcall,78 hashtagelse,78 hashtagprint,78 hashtagread,78 hashtagwhile,78 hutao,78 if,78 johnlee,78 keqing,78 klee,78 lancet,78 print,78 procedure,78 program,78 purple,78 read,78 then,78 while,78 xiangling,78 zhongli,79 AND,79 Affects,79 Follows,79 Next,79 OR,79 Uses,79 beidou,79 call,79 childe,79 cocogoat,79 else,79 eunectes,79 fatui,79 green,79 hashtagcall,79 hashtagelse,79 hashtagprint,79 hashtagread,79 hashtagwhile,79 hutao,79 if,79 johnlee,79 keqing,79 klee,79 lancet,79 print,79 procedure,79 program,79 purple,79 read,79 then,79 while,79 xiangling,79 zhongli,80 program,82 AND,82 Affects,82 Follows,82 Next,82 OR,82 Uses,82 beidou,82 call,82 childe,82 cocogoat,82 else,82 fatui,82 hashtagelse,82 hashtagwhile,82 hutao,82 if,82 johnlee,82 keqing,82 klee,82 print,82 procedure,82 program,82 read,82 then,82 while,82 xiangling,82 zhongli,83 AND,83 Affects,83 Follows,83 Next,83 OR,83 Uses,83 beidou,83 call,83 childe,83 cocogoat,83 else,83 fatui,83 hashtagelse,83 hashtagthen,83 hashtagwhile,83 hutao,83 if,83 johnlee,83 keqing,83 klee,83 print,83 procedure,83 program,83 read,83 then,83 while,83 xiangling,83 zhongli,84 call,84 if,84 while,85 a,85 childe,85 hashtagif,85 while,86 childe,89 hashtagif,90 while,91 else,94 AND,94 Affects,94 Follows,94 Next,94 OR,94 Uses,94 beidou,94 call,94 childe,94 cocogoat,94 else,94 fatui,94 hashtagelse,94 hashtagwhile,94 hutao,94 if,94 johnlee,94 keqing,94 klee,94 print,94 procedure,94 program,94 read,94 then,94 while,94 xiangling,94 zhongli,95 call,95 else,95 if,95 print,95 procedure,95 read,95 then,95 while,99 hashtagthen,100 print,102 read,103 read,104 call,104 while,105 call,105 if,105 while,106 johnlee,107 johnlee,107 then,108 call,108 else,108 if,108 print,108 procedure,108 program,108 read,108 then,108 while,109 cocogoat,110 Follows,110 Uses,110 call,110 cocogoat,110 else,110 if,110 print,110 procedure,110 program,110 read,110 then,110 while,111 hutao,112 program,112 xiangling,113 beidou,113 if,113 then,115 cocogoat,115 johnlee,115 keqing,115 xiangling,116 childe,117 childe,117 johnlee,118 childe,118 fatui,118 klee,121 call,121 else,121 if,121 print,121 procedure,121 read,121 then,121 while,122 program,123 Uses,123 call,123 else,123 if,123 print,123 procedure,123 read,123 then,123 while,124 childe,124 program,126 hashtagelse
+5000
+3 - Select s, true Uses(s, known)
+stmt s;
+Select s such that Uses(s, "print")
+1,2,3,6,7,8,9,11,12,14,15,16,19,22,31,34,37,38,44,46,47,59,62,64,65,67,68,74,76,77,78,79,82,83,94,95,100,108,110,121,123
+5000
+4 - Select s, false Uses(s, known)
+stmt s;
+Select s such that Uses(s, "kaltsit")
+none
+5000
+5 - Select pn, Uses(pn, _)
+print pn;
+Select pn such that Uses(pn, _)
+7,23,24,28,36,39,48,56,57,90,91
+5000
+6 - Select pn, Uses(pn, v)
+print pn; variable v;
+Select <pn, v> such that Uses(pn, v)
+7 print,23 procedure,24 read,28 program,36 Uses,39 call,48 if,56 Follows,57 then,90 while,91 else
+5000
+7 - Select pn, true Uses(pn, known)
+print pn;
+Select pn such that Uses(pn, "print")
+7
+5000
+8 - Select pn, false Uses(pn, known)
+print pn;
+Select pn such that Uses(pn, "eunectes")
+none
+5000
+9 - Select c, Uses(c, _)
+call c;
+Select c such that Uses(c, _)
+1,2,3,6,8,11,16,19,22,31,38,44,46,68,76,79,82,83,94
+5000
+10 - Select c, Uses(c, v)
+call c; variable v;
+Select <c, v> such that Uses(c, v)
+1 AND,1 Affects,1 Follows,1 NOT,1 Next,1 OR,1 Uses,1 a,1 b,1 beidou,1 c,1 call,1 childe,1 cocogoat,1 else,1 eunectes,1 fatui,1 green,1 hashtagcall,1 hashtagelse,1 hashtagif,1 hashtagprint,1 hashtagprocedure,1 hashtagread,1 hashtagthen,1 hashtagwhile,1 hutao,1 if,1 johnlee,1 keqing,1 klee,1 lancet,1 print,1 procedure,1 program,1 purple,1 read,1 then,1 while,1 xiangling,1 zhongli,2 Follows,2 Uses,2 beidou,2 call,2 childe,2 cocogoat,2 else,2 fatui,2 hashtagelse,2 hutao,2 if,2 johnlee,2 keqing,2 klee,2 print,2 procedure,2 program,2 read,2 then,2 while,2 xiangling,3 AND,3 Affects,3 Follows,3 NOT,3 Next,3 OR,3 Uses,3 a,3 b,3 beidou,3 c,3 call,3 childe,3 cocogoat,3 else,3 eunectes,3 fatui,3 green,3 hashtagcall,3 hashtagelse,3 hashtagif,3 hashtagprint,3 hashtagprocedure,3 hashtagread,3 hashtagthen,3 hashtagwhile,3 hutao,3 if,3 johnlee,3 keqing,3 klee,3 lancet,3 print,3 procedure,3 program,3 purple,3 read,3 then,3 while,3 xiangling,3 zhongli,6 Follows,6 Uses,6 beidou,6 call,6 childe,6 cocogoat,6 else,6 fatui,6 hashtagelse,6 hutao,6 if,6 johnlee,6 keqing,6 klee,6 print,6 procedure,6 program,6 read,6 then,6 while,6 xiangling,8 AND,8 Affects,8 Follows,8 Next,8 OR,8 Uses,8 beidou,8 call,8 childe,8 cocogoat,8 else,8 fatui,8 hashtagcall,8 hashtagelse,8 hashtagprint,8 hashtagwhile,8 hutao,8 if,8 johnlee,8 keqing,8 klee,8 print,8 procedure,8 program,8 read,8 then,8 while,8 xiangling,8 zhongli,11 AND,11 Affects,11 Follows,11 Next,11 OR,11 Uses,11 beidou,11 call,11 childe,11 cocogoat,11 else,11 eunectes,11 fatui,11 green,11 hashtagcall,11 hashtagelse,11 hashtagprint,11 hashtagread,11 hashtagwhile,11 hutao,11 if,11 johnlee,11 keqing,11 klee,11 lancet,11 print,11 procedure,11 program,11 purple,11 read,11 then,11 while,11 xiangling,11 zhongli,16 AND,16 Affects,16 Follows,16 Next,16 OR,16 Uses,16 beidou,16 call,16 childe,16 cocogoat,16 else,16 fatui,16 hashtagelse,16 hashtagwhile,16 hutao,16 if,16 johnlee,16 keqing,16 klee,16 print,16 procedure,16 program,16 read,16 then,16 while,16 xiangling,16 zhongli,19 AND,19 Affects,19 Follows,19 Next,19 OR,19 Uses,19 beidou,19 call,19 childe,19 cocogoat,19 else,19 fatui,19 hashtagelse,19 hashtagthen,19 hashtagwhile,19 hutao,19 if,19 johnlee,19 keqing,19 klee,19 print,19 procedure,19 program,19 read,19 then,19 while,19 xiangling,19 zhongli,22 AND,22 Affects,22 Follows,22 Next,22 OR,22 Uses,22 a,22 beidou,22 call,22 childe,22 cocogoat,22 else,22 eunectes,22 fatui,22 green,22 hashtagcall,22 hashtagelse,22 hashtagif,22 hashtagprint,22 hashtagread,22 hashtagthen,22 hashtagwhile,22 hutao,22 if,22 johnlee,22 keqing,22 klee,22 lancet,22 print,22 procedure,22 program,22 purple,22 read,22 then,22 while,22 xiangling,22 zhongli,31 AND,31 Affects,31 Follows,31 Next,31 OR,31 Uses,31 beidou,31 call,31 childe,31 cocogoat,31 else,31 fatui,31 hashtagcall,31 hashtagelse,31 hashtagwhile,31 hutao,31 if,31 johnlee,31 keqing,31 klee,31 print,31 procedure,31 program,31 read,31 then,31 while,31 xiangling,31 zhongli,38 AND,38 Affects,38 Follows,38 Next,38 OR,38 Uses,38 beidou,38 call,38 childe,38 cocogoat,38 else,38 fatui,38 hashtagcall,38 hashtagelse,38 hashtagprint,38 hashtagwhile,38 hutao,38 if,38 johnlee,38 keqing,38 klee,38 print,38 procedure,38 program,38 read,38 then,38 while,38 xiangling,38 zhongli,44 AND,44 Affects,44 Follows,44 Next,44 OR,44 Uses,44 beidou,44 call,44 childe,44 cocogoat,44 else,44 fatui,44 hashtagelse,44 hashtagwhile,44 hutao,44 if,44 johnlee,44 keqing,44 klee,44 print,44 procedure,44 program,44 read,44 then,44 while,44 xiangling,44 zhongli,46 AND,46 Affects,46 Follows,46 Next,46 OR,46 Uses,46 beidou,46 call,46 childe,46 cocogoat,46 else,46 fatui,46 hashtagelse,46 hashtagwhile,46 hutao,46 if,46 johnlee,46 keqing,46 klee,46 print,46 procedure,46 program,46 read,46 then,46 while,46 xiangling,46 zhongli,68 Follows,68 Uses,68 beidou,68 call,68 childe,68 cocogoat,68 else,68 fatui,68 hashtagelse,68 hutao,68 if,68 johnlee,68 keqing,68 klee,68 print,68 procedure,68 program,68 read,68 then,68 while,68 xiangling,76 AND,76 Affects,76 Follows,76 Next,76 OR,76 Uses,76 beidou,76 call,76 childe,76 cocogoat,76 else,76 fatui,76 hashtagcall,76 hashtagelse,76 hashtagprint,76 hashtagwhile,76 hutao,76 if,76 johnlee,76 keqing,76 klee,76 print,76 procedure,76 program,76 read,76 then,76 while,76 xiangling,76 zhongli,79 AND,79 Affects,79 Follows,79 Next,79 OR,79 Uses,79 beidou,79 call,79 childe,79 cocogoat,79 else,79 eunectes,79 fatui,79 green,79 hashtagcall,79 hashtagelse,79 hashtagprint,79 hashtagread,79 hashtagwhile,79 hutao,79 if,79 johnlee,79 keqing,79 klee,79 lancet,79 print,79 procedure,79 program,79 purple,79 read,79 then,79 while,79 xiangling,79 zhongli,82 AND,82 Affects,82 Follows,82 Next,82 OR,82 Uses,82 beidou,82 call,82 childe,82 cocogoat,82 else,82 fatui,82 hashtagelse,82 hashtagwhile,82 hutao,82 if,82 johnlee,82 keqing,82 klee,82 print,82 procedure,82 program,82 read,82 then,82 while,82 xiangling,82 zhongli,83 AND,83 Affects,83 Follows,83 Next,83 OR,83 Uses,83 beidou,83 call,83 childe,83 cocogoat,83 else,83 fatui,83 hashtagelse,83 hashtagthen,83 hashtagwhile,83 hutao,83 if,83 johnlee,83 keqing,83 klee,83 print,83 procedure,83 program,83 read,83 then,83 while,83 xiangling,83 zhongli,94 AND,94 Affects,94 Follows,94 Next,94 OR,94 Uses,94 beidou,94 call,94 childe,94 cocogoat,94 else,94 fatui,94 hashtagelse,94 hashtagwhile,94 hutao,94 if,94 johnlee,94 keqing,94 klee,94 print,94 procedure,94 program,94 read,94 then,94 while,94 xiangling,94 zhongli
+5000
+11 - Select c, true Uses(c, known)
+call c;
+Select c such that Uses(c, "call")
+1,2,3,6,8,11,16,19,22,31,38,44,46,68,76,79,82,83,94
+5000
+12 - Select c, false Uses(c, known)
+call c;
+Select c such that Uses(c, "shaw")
+none
+5000
+13 - Select w, Uses(w, _)
+while w;
+Select w such that Uses(w, _)
+9,12,25,37,47,62,77
+5000
+14 - Select w, Uses(w, v)
+while w; variable v;
+Select <w, v> such that Uses(w, v)
+9 AND,9 Affects,9 Follows,9 NOT,9 Next,9 OR,9 Uses,9 a,9 b,9 beidou,9 c,9 call,9 childe,9 cocogoat,9 else,9 eunectes,9 fatui,9 green,9 hashtagcall,9 hashtagelse,9 hashtagif,9 hashtagprint,9 hashtagprocedure,9 hashtagread,9 hashtagthen,9 hashtagwhile,9 hutao,9 if,9 johnlee,9 keqing,9 klee,9 lancet,9 print,9 procedure,9 program,9 purple,9 read,9 then,9 while,9 xiangling,9 zhongli,12 AND,12 Affects,12 Follows,12 NOT,12 Next,12 OR,12 Uses,12 a,12 beidou,12 call,12 childe,12 cocogoat,12 else,12 eunectes,12 fatui,12 green,12 hashtagcall,12 hashtagelse,12 hashtagif,12 hashtagprint,12 hashtagprocedure,12 hashtagread,12 hashtagthen,12 hashtagwhile,12 hutao,12 if,12 johnlee,12 keqing,12 klee,12 lancet,12 print,12 procedure,12 program,12 purple,12 read,12 then,12 while,12 xiangling,12 zhongli,25 beidou,25 hashtagprint,25 program,25 read,37 AND,37 Affects,37 Follows,37 Next,37 OR,37 Uses,37 beidou,37 call,37 childe,37 cocogoat,37 else,37 eunectes,37 fatui,37 green,37 hashtagcall,37 hashtagelse,37 hashtagprint,37 hashtagread,37 hashtagwhile,37 hutao,37 if,37 johnlee,37 keqing,37 klee,37 lancet,37 print,37 procedure,37 program,37 purple,37 read,37 then,37 while,37 xiangling,37 zhongli,47 Follows,47 Uses,47 call,47 childe,47 else,47 hashtagcall,47 if,47 johnlee,47 print,47 procedure,47 program,47 read,47 then,47 while,62 AND,62 Affects,62 Follows,62 Next,62 OR,62 Uses,62 beidou,62 call,62 childe,62 cocogoat,62 else,62 fatui,62 hashtagelse,62 hashtagwhile,62 hutao,62 if,62 johnlee,62 keqing,62 klee,62 print,62 procedure,62 program,62 read,62 then,62 while,62 xiangling,62 zhongli,77 AND,77 Affects,77 Follows,77 Next,77 OR,77 Uses,77 a,77 beidou,77 call,77 childe,77 cocogoat,77 else,77 eunectes,77 fatui,77 green,77 hashtagcall,77 hashtagelse,77 hashtagif,77 hashtagprint,77 hashtagread,77 hashtagthen,77 hashtagwhile,77 hutao,77 if,77 johnlee,77 keqing,77 klee,77 lancet,77 print,77 procedure,77 program,77 purple,77 read,77 then,77 while,77 xiangling,77 zhongli
+5000
+15 - Select w, true Uses(w, known)
+while w;
+Select w such that Uses(w, "while")
+47,62,77,12,37,9
+5000
+16 - Select w, false Uses(w, known)
+while w;
+Select w such that Uses(w, "nian")
+none
+5000
+17 - Select ifs, Uses(ifs, _)
+if ifs;
+Select ifs such that Uses(ifs, _)
+14,34,59,64,78,85
+5000
+18 - Select ifs, Uses(ifs, v)
+if ifs; variable v;
+Select <ifs, v> such that Uses(ifs, v)
+14 AND,14 Affects,14 Follows,14 NOT,14 Next,14 OR,14 Uses,14 beidou,14 call,14 childe,14 cocogoat,14 else,14 fatui,14 hashtagelse,14 hashtagprocedure,14 hashtagthen,14 hashtagwhile,14 hutao,14 if,14 johnlee,14 keqing,14 klee,14 print,14 procedure,14 program,14 read,14 then,14 while,14 xiangling,14 zhongli,34 AND,34 Affects,34 Follows,34 Next,34 OR,34 Uses,34 beidou,34 call,34 childe,34 cocogoat,34 else,34 eunectes,34 fatui,34 green,34 hashtagcall,34 hashtagelse,34 hashtagprint,34 hashtagread,34 hashtagwhile,34 hutao,34 if,34 johnlee,34 keqing,34 klee,34 lancet,34 print,34 procedure,34 program,34 purple,34 read,34 then,34 while,34 xiangling,34 zhongli,59 AND,59 Affects,59 Follows,59 Next,59 OR,59 Uses,59 beidou,59 call,59 childe,59 cocogoat,59 else,59 fatui,59 hashtagelse,59 hashtagwhile,59 hutao,59 if,59 johnlee,59 keqing,59 klee,59 print,59 procedure,59 program,59 read,59 then,59 while,59 xiangling,59 zhongli,64 Follows,64 Uses,64 beidou,64 call,64 childe,64 cocogoat,64 else,64 fatui,64 hashtagelse,64 hashtagwhile,64 hutao,64 if,64 johnlee,64 keqing,64 klee,64 print,64 procedure,64 program,64 read,64 then,64 while,64 xiangling,64 zhongli,78 AND,78 Affects,78 Follows,78 Next,78 OR,78 Uses,78 a,78 beidou,78 call,78 childe,78 cocogoat,78 else,78 eunectes,78 fatui,78 green,78 hashtagcall,78 hashtagelse,78 hashtagprint,78 hashtagread,78 hashtagwhile,78 hutao,78 if,78 johnlee,78 keqing,78 klee,78 lancet,78 print,78 procedure,78 program,78 purple,78 read,78 then,78 while,78 xiangling,78 zhongli,85 a,85 childe,85 hashtagif,85 while
+5000
+19 - Select ifs, true Uses(ifs, known)
+if ifs;
+Select ifs such that Uses(ifs, "if")
+14,59,64,34,78
+5000
+20 - Select ifs, false Uses(ifs, known)
+if ifs;
+Select ifs such that Uses(ifs, "amiya")
+none
+5000
+21 - Select a, Uses(a, _)
+assign a;
+Select a such that Uses(a, _)
+13,15,18,21,26,27,30,35,40,42,43,45,50,51,52,55,60,63,65,66,67,69,70,72,73,74,75,80,84,86,89,95,99,100,102,103,104,105,106,107,108,109,110,111,112,113,115,116,117,118,121,122,123,124,126
+5000
+22 - Select a, Uses(a, v)
+assign a; variable v;
+Select <a, v> such that Uses(a, v)
+13 beidou,13 if,13 then,15 print,18 read,21 hashtagprocedure,26 read,27 beidou,30 hashtagprint,35 read,40 program,40 xiangling,42 hashtagread,43 cocogoat,43 johnlee,43 keqing,43 xiangling,45 call,45 while,50 johnlee,51 childe,51 program,52 childe,55 hashtagcall,60 hutao,63 cocogoat,65 call,65 else,65 if,65 print,65 procedure,65 program,65 read,65 then,65 while,66 childe,66 fatui,66 klee,67 Uses,67 call,67 else,67 if,67 print,67 procedure,67 read,67 then,67 while,69 johnlee,70 johnlee,70 then,72 hashtagwhile,73 childe,73 johnlee,74 Follows,74 Uses,74 call,74 cocogoat,74 else,74 if,74 print,74 procedure,74 program,74 read,74 then,74 while,75 hutao,80 program,84 call,84 if,84 while,86 childe,89 hashtagif,95 call,95 else,95 if,95 print,95 procedure,95 read,95 then,95 while,99 hashtagthen,100 print,102 read,103 read,104 call,104 while,105 call,105 if,105 while,106 johnlee,107 johnlee,107 then,108 call,108 else,108 if,108 print,108 procedure,108 program,108 read,108 then,108 while,109 cocogoat,110 Follows,110 Uses,110 call,110 cocogoat,110 else,110 if,110 print,110 procedure,110 program,110 read,110 then,110 while,111 hutao,112 program,112 xiangling,113 beidou,113 if,113 then,115 cocogoat,115 johnlee,115 keqing,115 xiangling,116 childe,117 childe,117 johnlee,118 childe,118 fatui,118 klee,121 call,121 else,121 if,121 print,121 procedure,121 read,121 then,121 while,122 program,123 Uses,123 call,123 else,123 if,123 print,123 procedure,123 read,123 then,123 while,124 childe,124 program,126 hashtagelse
+5000
+23 - Select a, true Uses(a, known)
+assign a;
+Select a such that Uses(a, "johnlee")
+43,50,69,70,73,106,107,115,117
+5000
+24 - Select a, false Uses(a, known)
+assign a;
+Select a such that Uses(a, "exusiai")
+none
+5000
+25 - Select n, Uses(n, _)
+prog_line n;
+Select n such that Uses(n, _)
+1,2,3,6,7,8,9,11,12,13,14,15,16,18,19,21,22,23,24,25,26,27,28,30,31,34,35,36,37,38,39,40,42,43,44,45,46,47,48,50,51,52,55,56,57,59,60,62,63,64,65,66,67,68,69,70,72,73,74,75,76,77,78,79,80,82,83,84,85,86,89,90,91,94,95,99,100,102,103,104,105,106,107,108,109,110,111,112,113,115,116,117,118,121,122,123,124,126
+5000
+26 - Select n, Uses(n, v)
+prog_line n; variable v;
+Select <n, v> such that Uses(n, v)
+1 AND,1 Affects,1 Follows,1 NOT,1 Next,1 OR,1 Uses,1 a,1 b,1 beidou,1 c,1 call,1 childe,1 cocogoat,1 else,1 eunectes,1 fatui,1 green,1 hashtagcall,1 hashtagelse,1 hashtagif,1 hashtagprint,1 hashtagprocedure,1 hashtagread,1 hashtagthen,1 hashtagwhile,1 hutao,1 if,1 johnlee,1 keqing,1 klee,1 lancet,1 print,1 procedure,1 program,1 purple,1 read,1 then,1 while,1 xiangling,1 zhongli,2 Follows,2 Uses,2 beidou,2 call,2 childe,2 cocogoat,2 else,2 fatui,2 hashtagelse,2 hutao,2 if,2 johnlee,2 keqing,2 klee,2 print,2 procedure,2 program,2 read,2 then,2 while,2 xiangling,3 AND,3 Affects,3 Follows,3 NOT,3 Next,3 OR,3 Uses,3 a,3 b,3 beidou,3 c,3 call,3 childe,3 cocogoat,3 else,3 eunectes,3 fatui,3 green,3 hashtagcall,3 hashtagelse,3 hashtagif,3 hashtagprint,3 hashtagprocedure,3 hashtagread,3 hashtagthen,3 hashtagwhile,3 hutao,3 if,3 johnlee,3 keqing,3 klee,3 lancet,3 print,3 procedure,3 program,3 purple,3 read,3 then,3 while,3 xiangling,3 zhongli,6 Follows,6 Uses,6 beidou,6 call,6 childe,6 cocogoat,6 else,6 fatui,6 hashtagelse,6 hutao,6 if,6 johnlee,6 keqing,6 klee,6 print,6 procedure,6 program,6 read,6 then,6 while,6 xiangling,7 print,8 AND,8 Affects,8 Follows,8 Next,8 OR,8 Uses,8 beidou,8 call,8 childe,8 cocogoat,8 else,8 fatui,8 hashtagcall,8 hashtagelse,8 hashtagprint,8 hashtagwhile,8 hutao,8 if,8 johnlee,8 keqing,8 klee,8 print,8 procedure,8 program,8 read,8 then,8 while,8 xiangling,8 zhongli,9 AND,9 Affects,9 Follows,9 NOT,9 Next,9 OR,9 Uses,9 a,9 b,9 beidou,9 c,9 call,9 childe,9 cocogoat,9 else,9 eunectes,9 fatui,9 green,9 hashtagcall,9 hashtagelse,9 hashtagif,9 hashtagprint,9 hashtagprocedure,9 hashtagread,9 hashtagthen,9 hashtagwhile,9 hutao,9 if,9 johnlee,9 keqing,9 klee,9 lancet,9 print,9 procedure,9 program,9 purple,9 read,9 then,9 while,9 xiangling,9 zhongli,11 AND,11 Affects,11 Follows,11 Next,11 OR,11 Uses,11 beidou,11 call,11 childe,11 cocogoat,11 else,11 eunectes,11 fatui,11 green,11 hashtagcall,11 hashtagelse,11 hashtagprint,11 hashtagread,11 hashtagwhile,11 hutao,11 if,11 johnlee,11 keqing,11 klee,11 lancet,11 print,11 procedure,11 program,11 purple,11 read,11 then,11 while,11 xiangling,11 zhongli,12 AND,12 Affects,12 Follows,12 NOT,12 Next,12 OR,12 Uses,12 a,12 beidou,12 call,12 childe,12 cocogoat,12 else,12 eunectes,12 fatui,12 green,12 hashtagcall,12 hashtagelse,12 hashtagif,12 hashtagprint,12 hashtagprocedure,12 hashtagread,12 hashtagthen,12 hashtagwhile,12 hutao,12 if,12 johnlee,12 keqing,12 klee,12 lancet,12 print,12 procedure,12 program,12 purple,12 read,12 then,12 while,12 xiangling,12 zhongli,13 beidou,13 if,13 then,14 AND,14 Affects,14 Follows,14 NOT,14 Next,14 OR,14 Uses,14 beidou,14 call,14 childe,14 cocogoat,14 else,14 fatui,14 hashtagelse,14 hashtagprocedure,14 hashtagthen,14 hashtagwhile,14 hutao,14 if,14 johnlee,14 keqing,14 klee,14 print,14 procedure,14 program,14 read,14 then,14 while,14 xiangling,14 zhongli,15 print,16 AND,16 Affects,16 Follows,16 Next,16 OR,16 Uses,16 beidou,16 call,16 childe,16 cocogoat,16 else,16 fatui,16 hashtagelse,16 hashtagwhile,16 hutao,16 if,16 johnlee,16 keqing,16 klee,16 print,16 procedure,16 program,16 read,16 then,16 while,16 xiangling,16 zhongli,18 read,19 AND,19 Affects,19 Follows,19 Next,19 OR,19 Uses,19 beidou,19 call,19 childe,19 cocogoat,19 else,19 fatui,19 hashtagelse,19 hashtagthen,19 hashtagwhile,19 hutao,19 if,19 johnlee,19 keqing,19 klee,19 print,19 procedure,19 program,19 read,19 then,19 while,19 xiangling,19 zhongli,21 hashtagprocedure,22 AND,22 Affects,22 Follows,22 Next,22 OR,22 Uses,22 a,22 beidou,22 call,22 childe,22 cocogoat,22 else,22 eunectes,22 fatui,22 green,22 hashtagcall,22 hashtagelse,22 hashtagif,22 hashtagprint,22 hashtagread,22 hashtagthen,22 hashtagwhile,22 hutao,22 if,22 johnlee,22 keqing,22 klee,22 lancet,22 print,22 procedure,22 program,22 purple,22 read,22 then,22 while,22 xiangling,22 zhongli,23 procedure,24 read,25 beidou,25 hashtagprint,25 program,25 read,26 read,27 beidou,28 program,30 hashtagprint,31 AND,31 Affects,31 Follows,31 Next,31 OR,31 Uses,31 beidou,31 call,31 childe,31 cocogoat,31 else,31 fatui,31 hashtagcall,31 hashtagelse,31 hashtagwhile,31 hutao,31 if,31 johnlee,31 keqing,31 klee,31 print,31 procedure,31 program,31 read,31 then,31 while,31 xiangling,31 zhongli,34 AND,34 Affects,34 Follows,34 Next,34 OR,34 Uses,34 beidou,34 call,34 childe,34 cocogoat,34 else,34 eunectes,34 fatui,34 green,34 hashtagcall,34 hashtagelse,34 hashtagprint,34 hashtagread,34 hashtagwhile,34 hutao,34 if,34 johnlee,34 keqing,34 klee,34 lancet,34 print,34 procedure,34 program,34 purple,34 read,34 then,34 while,34 xiangling,34 zhongli,35 read,36 Uses,37 AND,37 Affects,37 Follows,37 Next,37 OR,37 Uses,37 beidou,37 call,37 childe,37 cocogoat,37 else,37 eunectes,37 fatui,37 green,37 hashtagcall,37 hashtagelse,37 hashtagprint,37 hashtagread,37 hashtagwhile,37 hutao,37 if,37 johnlee,37 keqing,37 klee,37 lancet,37 print,37 procedure,37 program,37 purple,37 read,37 then,37 while,37 xiangling,37 zhongli,38 AND,38 Affects,38 Follows,38 Next,38 OR,38 Uses,38 beidou,38 call,38 childe,38 cocogoat,38 else,38 fatui,38 hashtagcall,38 hashtagelse,38 hashtagprint,38 hashtagwhile,38 hutao,38 if,38 johnlee,38 keqing,38 klee,38 print,38 procedure,38 program,38 read,38 then,38 while,38 xiangling,38 zhongli,39 call,40 program,40 xiangling,42 hashtagread,43 cocogoat,43 johnlee,43 keqing,43 xiangling,44 AND,44 Affects,44 Follows,44 Next,44 OR,44 Uses,44 beidou,44 call,44 childe,44 cocogoat,44 else,44 fatui,44 hashtagelse,44 hashtagwhile,44 hutao,44 if,44 johnlee,44 keqing,44 klee,44 print,44 procedure,44 program,44 read,44 then,44 while,44 xiangling,44 zhongli,45 call,45 while,46 AND,46 Affects,46 Follows,46 Next,46 OR,46 Uses,46 beidou,46 call,46 childe,46 cocogoat,46 else,46 fatui,46 hashtagelse,46 hashtagwhile,46 hutao,46 if,46 johnlee,46 keqing,46 klee,46 print,46 procedure,46 program,46 read,46 then,46 while,46 xiangling,46 zhongli,47 Follows,47 Uses,47 call,47 childe,47 else,47 hashtagcall,47 if,47 johnlee,47 print,47 procedure,47 program,47 read,47 then,47 while,48 if,50 johnlee,51 childe,51 program,52 childe,55 hashtagcall,56 Follows,57 then,59 AND,59 Affects,59 Follows,59 Next,59 OR,59 Uses,59 beidou,59 call,59 childe,59 cocogoat,59 else,59 fatui,59 hashtagelse,59 hashtagwhile,59 hutao,59 if,59 johnlee,59 keqing,59 klee,59 print,59 procedure,59 program,59 read,59 then,59 while,59 xiangling,59 zhongli,60 hutao,62 AND,62 Affects,62 Follows,62 Next,62 OR,62 Uses,62 beidou,62 call,62 childe,62 cocogoat,62 else,62 fatui,62 hashtagelse,62 hashtagwhile,62 hutao,62 if,62 johnlee,62 keqing,62 klee,62 print,62 procedure,62 program,62 read,62 then,62 while,62 xiangling,62 zhongli,63 cocogoat,64 Follows,64 Uses,64 beidou,64 call,64 childe,64 cocogoat,64 else,64 fatui,64 hashtagelse,64 hashtagwhile,64 hutao,64 if,64 johnlee,64 keqing,64 klee,64 print,64 procedure,64 program,64 read,64 then,64 while,64 xiangling,64 zhongli,65 call,65 else,65 if,65 print,65 procedure,65 program,65 read,65 then,65 while,66 childe,66 fatui,66 klee,67 Uses,67 call,67 else,67 if,67 print,67 procedure,67 read,67 then,67 while,68 Follows,68 Uses,68 beidou,68 call,68 childe,68 cocogoat,68 else,68 fatui,68 hashtagelse,68 hutao,68 if,68 johnlee,68 keqing,68 klee,68 print,68 procedure,68 program,68 read,68 then,68 while,68 xiangling,69 johnlee,70 johnlee,70 then,72 hashtagwhile,73 childe,73 johnlee,74 Follows,74 Uses,74 call,74 cocogoat,74 else,74 if,74 print,74 procedure,74 program,74 read,74 then,74 while,75 hutao,76 AND,76 Affects,76 Follows,76 Next,76 OR,76 Uses,76 beidou,76 call,76 childe,76 cocogoat,76 else,76 fatui,76 hashtagcall,76 hashtagelse,76 hashtagprint,76 hashtagwhile,76 hutao,76 if,76 johnlee,76 keqing,76 klee,76 print,76 procedure,76 program,76 read,76 then,76 while,76 xiangling,76 zhongli,77 AND,77 Affects,77 Follows,77 Next,77 OR,77 Uses,77 a,77 beidou,77 call,77 childe,77 cocogoat,77 else,77 eunectes,77 fatui,77 green,77 hashtagcall,77 hashtagelse,77 hashtagif,77 hashtagprint,77 hashtagread,77 hashtagthen,77 hashtagwhile,77 hutao,77 if,77 johnlee,77 keqing,77 klee,77 lancet,77 print,77 procedure,77 program,77 purple,77 read,77 then,77 while,77 xiangling,77 zhongli,78 AND,78 Affects,78 Follows,78 Next,78 OR,78 Uses,78 a,78 beidou,78 call,78 childe,78 cocogoat,78 else,78 eunectes,78 fatui,78 green,78 hashtagcall,78 hashtagelse,78 hashtagprint,78 hashtagread,78 hashtagwhile,78 hutao,78 if,78 johnlee,78 keqing,78 klee,78 lancet,78 print,78 procedure,78 program,78 purple,78 read,78 then,78 while,78 xiangling,78 zhongli,79 AND,79 Affects,79 Follows,79 Next,79 OR,79 Uses,79 beidou,79 call,79 childe,79 cocogoat,79 else,79 eunectes,79 fatui,79 green,79 hashtagcall,79 hashtagelse,79 hashtagprint,79 hashtagread,79 hashtagwhile,79 hutao,79 if,79 johnlee,79 keqing,79 klee,79 lancet,79 print,79 procedure,79 program,79 purple,79 read,79 then,79 while,79 xiangling,79 zhongli,80 program,82 AND,82 Affects,82 Follows,82 Next,82 OR,82 Uses,82 beidou,82 call,82 childe,82 cocogoat,82 else,82 fatui,82 hashtagelse,82 hashtagwhile,82 hutao,82 if,82 johnlee,82 keqing,82 klee,82 print,82 procedure,82 program,82 read,82 then,82 while,82 xiangling,82 zhongli,83 AND,83 Affects,83 Follows,83 Next,83 OR,83 Uses,83 beidou,83 call,83 childe,83 cocogoat,83 else,83 fatui,83 hashtagelse,83 hashtagthen,83 hashtagwhile,83 hutao,83 if,83 johnlee,83 keqing,83 klee,83 print,83 procedure,83 program,83 read,83 then,83 while,83 xiangling,83 zhongli,84 call,84 if,84 while,85 a,85 childe,85 hashtagif,85 while,86 childe,89 hashtagif,90 while,91 else,94 AND,94 Affects,94 Follows,94 Next,94 OR,94 Uses,94 beidou,94 call,94 childe,94 cocogoat,94 else,94 fatui,94 hashtagelse,94 hashtagwhile,94 hutao,94 if,94 johnlee,94 keqing,94 klee,94 print,94 procedure,94 program,94 read,94 then,94 while,94 xiangling,94 zhongli,95 call,95 else,95 if,95 print,95 procedure,95 read,95 then,95 while,99 hashtagthen,100 print,102 read,103 read,104 call,104 while,105 call,105 if,105 while,106 johnlee,107 johnlee,107 then,108 call,108 else,108 if,108 print,108 procedure,108 program,108 read,108 then,108 while,109 cocogoat,110 Follows,110 Uses,110 call,110 cocogoat,110 else,110 if,110 print,110 procedure,110 program,110 read,110 then,110 while,111 hutao,112 program,112 xiangling,113 beidou,113 if,113 then,115 cocogoat,115 johnlee,115 keqing,115 xiangling,116 childe,117 childe,117 johnlee,118 childe,118 fatui,118 klee,121 call,121 else,121 if,121 print,121 procedure,121 read,121 then,121 while,122 program,123 Uses,123 call,123 else,123 if,123 print,123 procedure,123 read,123 then,123 while,124 childe,124 program,126 hashtagelse
+5000
+27 - Select n, true Uses(n, known)
+prog_line n;
+Select n such that Uses(n, "program")
+1,2,3,6,8,9,11,12,14,16,19,22,25,28,31,34,37,38,40,44,46,47,51,59,62,64,65,68,74,76,77,78,79,80,82,83,94,108,110,112,122,124
+5000
+28 - Select n, false Uses(n, known)
+prog_line n;
+Select n such that Uses(n, "platinum")
+none
+5000
+29 - Select p, Uses(p, _)
+procedure p;
+Select p such that Uses(p, _)
+nian,main,program,procedure,print,read,call,while,if,then,else
+5000
+30 - Select p, Uses(p, v)
+procedure p; variable v;
+Select <p, v> such that Uses(p, v)
+call AND,call Affects,call Follows,call Next,call OR,call Uses,call beidou,call call,call childe,call cocogoat,call else,call fatui,call hashtagcall,call hashtagelse,call hashtagwhile,call hutao,call if,call johnlee,call keqing,call klee,call print,call procedure,call program,call read,call then,call while,call xiangling,call zhongli,else Follows,else Uses,else beidou,else call,else childe,else cocogoat,else else,else fatui,else hashtagelse,else hutao,else if,else johnlee,else keqing,else klee,else print,else procedure,else program,else read,else then,else while,else xiangling,if AND,if Affects,if Follows,if Next,if OR,if Uses,if a,if beidou,if call,if childe,if cocogoat,if else,if eunectes,if fatui,if green,if hashtagcall,if hashtagelse,if hashtagif,if hashtagprint,if hashtagread,if hashtagthen,if hashtagwhile,if hutao,if if,if johnlee,if keqing,if klee,if lancet,if print,if procedure,if program,if purple,if read,if then,if while,if xiangling,if zhongli,main AND,main Affects,main Follows,main NOT,main Next,main OR,main Uses,main a,main b,main beidou,main c,main call,main childe,main cocogoat,main else,main eunectes,main fatui,main green,main hashtagcall,main hashtagelse,main hashtagif,main hashtagprint,main hashtagprocedure,main hashtagread,main hashtagthen,main hashtagwhile,main hutao,main if,main johnlee,main keqing,main klee,main lancet,main print,main procedure,main program,main purple,main read,main then,main while,main xiangling,main zhongli,nian AND,nian Affects,nian Follows,nian NOT,nian Next,nian OR,nian Uses,nian a,nian b,nian beidou,nian c,nian call,nian childe,nian cocogoat,nian else,nian eunectes,nian fatui,nian green,nian hashtagcall,nian hashtagelse,nian hashtagif,nian hashtagprint,nian hashtagprocedure,nian hashtagread,nian hashtagthen,nian hashtagwhile,nian hutao,nian if,nian johnlee,nian keqing,nian klee,nian lancet,nian print,nian procedure,nian program,nian purple,nian read,nian then,nian while,nian xiangling,nian zhongli,print AND,print Affects,print Follows,print Next,print OR,print Uses,print beidou,print call,print childe,print cocogoat,print else,print fatui,print hashtagcall,print hashtagelse,print hashtagprint,print hashtagwhile,print hutao,print if,print johnlee,print keqing,print klee,print print,print procedure,print program,print read,print then,print while,print xiangling,print zhongli,procedure AND,procedure Affects,procedure Follows,procedure NOT,procedure Next,procedure OR,procedure Uses,procedure a,procedure b,procedure beidou,procedure c,procedure call,procedure childe,procedure cocogoat,procedure else,procedure eunectes,procedure fatui,procedure green,procedure hashtagcall,procedure hashtagelse,procedure hashtagif,procedure hashtagprint,procedure hashtagprocedure,procedure hashtagread,procedure hashtagthen,procedure hashtagwhile,procedure hutao,procedure if,procedure johnlee,procedure keqing,procedure klee,procedure lancet,procedure print,procedure procedure,procedure program,procedure purple,procedure read,procedure then,procedure while,procedure xiangling,procedure zhongli,program Follows,program Uses,program beidou,program call,program childe,program cocogoat,program else,program fatui,program hashtagelse,program hutao,program if,program johnlee,program keqing,program klee,program print,program procedure,program program,program read,program then,program while,program xiangling,read AND,read Affects,read Follows,read Next,read OR,read Uses,read beidou,read call,read childe,read cocogoat,read else,read eunectes,read fatui,read green,read hashtagcall,read hashtagelse,read hashtagprint,read hashtagread,read hashtagwhile,read hutao,read if,read johnlee,read keqing,read klee,read lancet,read print,read procedure,read program,read purple,read read,read then,read while,read xiangling,read zhongli,then AND,then Affects,then Follows,then Next,then OR,then Uses,then beidou,then call,then childe,then cocogoat,then else,then fatui,then hashtagelse,then hashtagthen,then hashtagwhile,then hutao,then if,then johnlee,then keqing,then klee,then print,then procedure,then program,then read,then then,then while,then xiangling,then zhongli,while AND,while Affects,while Follows,while Next,while OR,while Uses,while beidou,while call,while childe,while cocogoat,while else,while fatui,while hashtagelse,while hashtagwhile,while hutao,while if,while johnlee,while keqing,while klee,while print,while procedure,while program,while read,while then,while while,while xiangling,while zhongli
+5000
+31 - Select p, true Uses(p, known)
+procedure p;
+Select p such that Uses(p, "procedure")
+procedure,main,nian,call,print,read,if,while,then,program,else
+5000
+32 - Select p, false Uses(p, known)
+procedure p;
+Select p such that Uses(p, "bluepoison")
+none
+5000
+33 - Select Boolean, Uses(known-assign, _)
+
+Select BOOLEAN such that Uses(13, _)
+TRUE
+5000
+34 - Select Boolean, Uses(known-assign, v)
+variable v;
+Select v such that Uses(95, v)
+print,read,call,while,if,then,else,procedure
+5000
+35 - Select Boolean, true Uses(known-assign, known)
+
+Select BOOLEAN such that Uses(112, "xiangling")
+TRUE
+5000
+36 - Select Boolean, false Uses(known-assign, known)
+
+Select BOOLEAN such that Uses(51, "johnlee")
+FALSE
+5000
+37 - Select Boolean, Uses(known-print, _)
+
+Select BOOLEAN such that Uses(23, _)
+TRUE
+5000
+38 - Select Boolean, Uses(known-print, v)
+variable v;
+Select v such that Uses(7, v)
+print
+5000
+39 - Select Boolean, true Uses(known-print, known)
+
+Select BOOLEAN such that Uses(36, "Uses")
+TRUE
+5000
+40 - Select Boolean, false Uses(known-print, known)
+
+Select BOOLEAN such that Uses(48, "then")
+FALSE
+5000
+41 - Select Boolean, Uses(known-call, _)
+
+Select BOOLEAN such that Uses(8, _)
+TRUE
+5000
+42 - Select Boolean, Uses(known-call, v)
+variable v;
+Select v such that Uses(94, v)
+then,else,Uses,procedure,program,Follows,hutao,print,read,call,while,if,Next,Affects,OR,AND,cocogoat,johnlee,zhongli,childe,fatui,klee,hashtagwhile,xiangling,beidou,keqing,hashtagelse
+5000
+43 - Select Boolean, true Uses(known-call, known)
+
+Select BOOLEAN such that Uses(1, "beidou")
+TRUE
+5000
+44 - Select Boolean, false Uses(known-call, known)
+
+Select BOOLEAN such that Uses(79, "hashtagprocedure")
+FALSE
+5000
+45 - Select Boolean, Uses(known-if, _)
+
+Select BOOLEAN such that Uses(14, _)
+TRUE
+5000
+46 - Select Boolean, Uses(known-if, v)
+variable v;
+Select v such that Uses(85, v)
+a,childe,hashtagif,while
+5000
+47 - Select Boolean, true Uses(known-if, known)
+
+Select BOOLEAN such that Uses(34, "hashtagwhile")
+TRUE
+5000
+48 - Select Boolean, false Uses(known-if, known)
+
+Select BOOLEAN such that Uses(85, "if")
+FALSE
+5000
+49 - Select Boolean, Uses(known-while, _)
+
+Select BOOLEAN such that Uses(62, _)
+TRUE
+5000
+50 - Select Boolean, Uses(known-while, v)
+variable v;
+Select v such that Uses(47, v)
+print,read,call,while,if,then,else,procedure,program,Uses,Follows,johnlee,childe,hashtagcall
+5000
+51 - Select Boolean, true Uses(known-while, known)
+
+Select BOOLEAN such that Uses(62, "while")
+TRUE
+5000
+52 - Select Boolean, false Uses(known-while, known)
+
+Select BOOLEAN such that Uses(77, "hashtagprocedure")
+FALSE
+5000
+53 - Select Boolean, Uses(known-procedure, _)
+
+Select BOOLEAN such that Uses("nian", _)
+TRUE
+5000
+54 - Select Boolean, Uses(known-procedure, v)
+variable v;
+Select v such that Uses("else", v)
+print,read,call,while,if,johnlee,then,procedure,else,cocogoat,Follows,Uses,program,hutao,xiangling,beidou,keqing,childe,fatui,klee,hashtagelse
+5000
+55 - Select Boolean, true Uses(known-procedure, known)
+
+Select BOOLEAN such that Uses("read", "xiangling")
+TRUE
+5000
+56 - Select Boolean, false Uses(known-procedure, known)
+
+Select BOOLEAN such that Uses("then", "hashtagcall")
+FALSE
+5000
