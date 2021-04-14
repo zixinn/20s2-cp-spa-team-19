@@ -1,0 +1,191 @@
+procedure nian {
+1.     call main;
+}
+
+procedure main {
+2.     call program;
+3.     call procedure;
+}
+
+procedure program {
+4.     read program;
+5.     read nian;
+6.     call else;
+}
+
+procedure procedure {
+7.     print print;
+8.     call print;
+
+9.     while (a + b > c) {
+10.       read print;
+11.       call read;
+12.         while (print != 121) {
+13.             xiangling = beidou + 305 % (if * then);
+14.             if (if + NOT < AND * (then)) then {
+15.                 johnlee = print;
+16.                 call while;
+17.                 johnlee = 301;
+	        } else {
+18.                 johnlee = read + 302;
+19.                 call then;
+
+20. 		    read hashtagprocedure;
+21. 		    hashtagprocedure = hashtagprocedure;
+	        }
+22.             call if;
+23.             print procedure;
+           }
+       }
+}
+
+procedure print {
+24.     print read;
+25.     while (122 > read) {
+26.         johnlee = 302 + read;
+27.         print = beidou;
+28.         print program;
+
+29.         read hashtagprint;
+30.         hashtagprint = hashtagprint;
+        }
+31.     call call;
+32.     read read;
+}
+
+procedure read {
+33.     read call;
+34.     if (912 == 911+1) then {
+35.         johnlee = 302 + read;
+36.         print Uses;
+37.         while ((123 == purple) && (!((eunectes + lancet > 124) || (call <= green)))) {
+38.             call print;
+39.             print call;
+40.             beidou = 304 + xiangling * program;
+
+41.             read hashtagread;
+42.             hashtagread = hashtagread;
+            }
+43.         read = 402 + xiangling - (johnlee + cocogoat) * keqing;
+        } else {
+44.         call while;
+45.         cocogoat = call / while;
+        }
+}
+
+procedure call {
+46.     call while;
+47.     while (((((print + read) % call) >= while * if) && (then - 131 > then)) || ((!(else / 132 > 133)) && ((!(procedure != program)) || (Uses + Follows < 134)))) {
+
+48.         print if;
+49.         read if;
+50.         cocogoat = johnlee;
+51.         Follows = program + childe + 407;
+52.         call = childe;
+53.         read procedure;
+
+54.         read hashtagcall;
+55.         hashtagcall = hashtagcall;
+        }
+56.     print Follows;
+}
+
+procedure while {
+57.     print then;
+58.     read then;
+59.     if ((!(201 <= else)) || (Uses + procedure % program > Follows)) then {
+60.         johnlee = hutao;
+61.         read program;
+        } else {
+62.         while (((((((print + read) % call) >= while * if) && (then - Next != then)) || (!(else / Affects > OR))) && (!(procedure != program))) || (Uses + Follows < AND)) {
+63.             keqing = cocogoat;
+64.             if (johnlee > zhongli) then {
+65.                 keqing = (program % (procedure + else - then) * if + (while - call + read) / print);
+66.                 if = childe + fatui / klee;
+67.                 Uses = print + print + print / (read - read - read) + (call + (call - call) * (while / while + while)) / (if * if * if - (then % then % then) % (else + else - else * else / else % else) + (procedure + procedure - procedure * (Uses - Uses % Uses)));
+68.                 call else;
+                } else {
+69.                 cocogoat = johnlee;
+70.                 xiao = johnlee + then;
+
+71.                 read hashtagwhile;
+72.                 hashtagwhile = hashtagwhile;
+                }
+73.             while = 404 * (johnlee / childe) + 403 % 405;
+            }
+74.         ninguang = Follows * (Uses / program % (procedure + else - Uses / then) * if + (while - cocogoat % call + read) / print);
+        }
+75.     johnlee = hutao;
+
+}
+
+procedure if {
+76.     call print;
+77.     while (125 + 126 / 130 < (127 - 128) * 129 ) {
+78.         if (912 != 911+a) then {
+79.             call read;
+80.             program = program;
+            } else {
+81.             read while;
+82.             call while;
+            }
+83.         call then;
+84.         cocogoat = (303 - call) / while * if;
+85.         if (912+a != 911) then {
+86.             call = childe;
+87.             read Uses;
+
+88.             read hashtagif;
+89.             hashtagif = hashtagif;
+	    } else {
+90.             print while;
+	    }
+        }
+}
+
+procedure then {
+91.     print else;
+92.     read else;
+93.     else = (((((407)))));
+94.     call while;
+95.     procedure = print + read / call * (while - if * (then + else)) % procedure;
+96.     then = (406 / 401);
+97.     read Follows;
+
+98.     read hashtagthen;
+99.     hashtagthen = hashtagthen;
+}
+
+procedure else {
+100.     johnlee = print;
+101.     johnlee = 301;
+102.     johnlee = read + 302;
+103.     johnlee = 302 + read;
+104.     cocogoat = call / while;
+105.     cocogoat = (303 - call) / while * if;
+106.     cocogoat = johnlee;
+107.     xiao = johnlee + then;
+108.     keqing = (program % (procedure + else - then) * if + (while - call + read) / print);
+109.     keqing = cocogoat;
+110.     ninguang = Follows * (Uses / program % (procedure + else - Uses / then) * if + (while - cocogoat % call + read) / print);
+111.     johnlee = hutao;
+112.     beidou = 304 + xiangling * program;
+113.     xiangling = beidou + 305 % (if * then);
+
+
+114.     print = 401;
+115.     read = 402 + xiangling - (johnlee + cocogoat) * keqing;
+116.     call = childe;
+117.     while = 404 * (johnlee / childe) + 403 % 405;
+118.     if = childe + fatui / klee;
+119.     then = (406 / 401);
+120.     else = (((((407)))));
+121.     procedure = print + read / call * (while - if * (then + else)) % procedure;
+122.     program = program;
+123.     Uses = print + print + print / (read - read - read) + (call + (call - call) * (while / while + while)) / (if * if * if - (then % then % then) % (else + else - else * else / else % else) + (procedure + procedure - procedure * (Uses - Uses % Uses)));
+124.    Follows = program + childe + 407;
+
+
+125.     read hashtagelse;
+126.     hashtagelse = hashtagelse;
+}

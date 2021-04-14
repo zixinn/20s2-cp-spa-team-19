@@ -1,0 +1,170 @@
+1 - 2 Calls, 1 Modifies, 1 with
+procedure p,p1,p2;
+Select <p,p1,p2> such that Calls(p,p1) and Calls(p1,p2) and Modifies(p,"print") with "read" = p2.procName
+main procedure read,procedure if read
+5000
+2 - 1 Affects*,1 Next*,1 Uses,1 with,1 pattern
+stmt s; while w; assign a; procedure p; variable v;
+Select <s,p> such that Affects*(s,_) and Next*(s,w) and Uses(w,v) with v.varName = p.procName pattern a(v,_)
+35 call,35 read,35 print,35 if,35 else,35 while,35 then,35 procedure,35 program,69 call,69 read,69 print,69 if,69 else,69 while,69 then,69 procedure,69 program,66 call,66 read,66 print,66 if,66 else,66 while,66 then,66 procedure,66 program,73 call,73 read,73 print,73 if,73 else,73 while,73 then,73 procedure,73 program
+5000
+3 - 1 Affects,2 Next
+assign a1,a2,a3; read r; if ifs;
+Select <a1, a2> such that Affects(a1,a2) and Next(a3,r) and Next(r,ifs)
+none
+5000
+4 - 1 Follows*,1 Modifies,1 pattern,1 Next
+assign a; prog_line n; variable v;
+Select a such that Follows*(a,n) pattern a("cocogoat",_) such that Modifies(n,v) and Next(a,n)
+50,69,84,104,105,106
+5000
+5 - 3 Next*
+read r1,r2; stmt s; prog_line n;
+Select <r1,r2> such that Next*(r1,r2) and Next*(r1,s) and Next*(r1,n)
+4 5,53 54,87 88,97 98,10 10,10 20,20 10,20 20,29 29,29 32,33 41,41 41,49 49,49 53,49 54,53 49,53 53,54 49,54 53,54 54,58 61,58 71,71 71,81 81,81 87,81 88,87 81,87 87,88 81,88 87,88 88,92 97,92 98
+5000
+6 - 1 Calls*,2 with
+procedure p1,p2,p3; call c;
+Select <c.procName,p1> such that Calls*(p1,p2) with p3.procName = "nian" and 11 = c.stmt#
+read call,read if,read main,read nian,read print,read procedure,read program,read read,read then,read while
+5000
+7 - 3 Next*,1 Follows,3 Parent,1 Uses
+prog_line n,n1,n2; call c; while w;
+Select <n,n1> such that Next*(_,_) and Next*(c,16) and Follows(_,c) and Parent(w,c) and Uses(w,"print") and Parent(n,n1) and Parent(n1,n2) and Next*(n,n1)
+9 12,12 14,34 37,59 62,62 64,77 78,77 85
+5000
+8 - 1 Next*,1 Affects,1 Next,1 with, 1 pattern
+prog_line n; constant c; read r; if ifs; variable v;
+Select BOOLEAN such that Next*(_,_) and Affects(_,_) and Next(n,_) with c.value = r.stmt# pattern ifs(v,_,_)
+TRUE
+5000
+9 - 3 Affects*
+prog_line n; stmt s;
+Select <s,n> such that Affects*(s,_) and Affects*(112,121) and Affects*(s,n)
+35 43,69 63,69 74,66 67,73 74,73 65,73 67,103 106,103 107,103 109,103 110,103 115,103 121,103 123,106 109,106 110,106 115,106 121,106 123,112 113,112 115,112 121,112 123,113 115,113 121,113 123,111 115,111 117,111 121,111 123,109 115,109 121,109 123,114 121,114 123,115 121,115 123,116 121,116 123,117 121,117 123,118 121,118 123,119 121,119 123,120 121,120 123,121 123,122 124
+5000
+10 - 3 with
+prog_line n; constant c; stmt s;
+Select c with c.value = n and n = s.stmt# and 1 = s.stmt#
+1
+5000
+11 - 1 Parent*,3 Parent
+stmt s; prog_line n,n1; while w; if if;
+Select n such that Parent*(if,w) and Parent(s,n) and Parent(w,n) and Parent(n,n1)
+64
+5000
+12 - 3 Uses
+variable v; print pn; assign a;
+Select <pn,v> such that Uses("main",v) and Uses(pn,v) and Uses(a,v)
+7 print,23 procedure,24 read,28 program,36 Uses,39 call,48 if,56 Follows,57 then,90 while,91 else
+5000
+13 - 5 Modifies,2 with
+variable v,v1; procedure p;
+Select <p,v1> such that Modifies("else",v) and Modifies("then",v1) and Modifies("read",v) and Modifies("print",v1) and Modifies(p,v) with v1.varName = v.varName and p.procName = "call" 
+call Follows,call Uses,call beidou,call call,call cocogoat,call else,call hashtagelse,call if,call johnlee,call keqing,call ninguang,call print,call procedure,call program,call read,call then,call while,call xiangling,call xiao
+5000
+14 - 3 Modifies
+stmt s;
+Select s such that Modifies(s,"xiangling") and Modifies(s,"beidou") and Modifies(s,"else")
+68,1,11,12,14,16,19,2,22,3,31,34,37,38,44,46,59,6,62,64,76,77,78,79,8,82,83,9,94
+5000
+15 - 3 Calls
+procedure p,p1,p2,p3,p4;
+Select p4 such that Calls(p,p1) and Calls(p1,p2) and Calls(p2,p3) and Calls(p3,p4)
+while,else,then,read,print,call
+5000
+16 - 4 Calls
+procedure p,p1,p2,p3,p4,p5;
+Select p5 such that Calls(p,p1) and Calls(p1,p2) and Calls(p2,p3) and Calls(p3,p4) and Calls(p4,p5)
+print,call,else,while
+5000
+17 - 5 Calls
+procedure p,p1,p2,p3,p4,p5,p6;
+Select p6 such that Calls(p,p1) and Calls(p1,p2) and Calls(p2,p3) and Calls(p3,p4) and Calls(p4,p5) and Calls(p5,p6)
+call,else,while
+5000
+18 - 6 Calls
+procedure p,p1,p2,p3,p4,p5,p6,p7;
+Select p7 such that Calls(p,p1) and Calls(p1,p2) and Calls(p2,p3) and Calls(p3,p4) and Calls(p4,p5) and Calls(p5,p6) and Calls(p6,p7)
+else,while
+5000
+19 - 1 Affects*,1 Calls*,1 Uses
+stmt s; variable v; assign a;
+Select BOOLEAN such that Affects*(s,a) and Calls*(s,"call") and Uses(s,v)
+FALSE
+5000
+20 - 1 Uses,1 Modifies
+assign a; variable v;
+Select v such that Uses(a,v) and Modifies(a,v)
+hashtagprocedure,hashtagprint,hashtagread,hashtagcall,Uses,hashtagwhile,program,hashtagif,procedure,hashtagthen,hashtagelse
+5000
+21 - 1 Parent,2 Parent
+while w; if ifs;
+Select <w,ifs> such that Parent*(w,_) and Parent(w,_) and Parent(w,ifs)
+12 14,62 64,77 78,77 85
+5000
+22 - 1 Next*,1 Next,1 with,2 pattern
+if ifs; stmt s; assign a; variable v,v1; while w;
+Select w such that Next*(ifs,s) and Next(s,w) with v.varName = "then" pattern w(v1,_) and a("Uses",_"print"_)
+12,37,62,9
+5000 
+23 - 1 Follows,1 Affects*,1 Next,3 with
+assign a1,a2; read r;
+Select <a1, a2> such that Follows(a1,a2) and Affects*(_,a1) and Next(a1,a2) with 2 = 2 and "Uses" = r.varName and r.stmt# = 87
+65 66,106 107,107 108,109 110,110 111,113 114,115 116,117 118,121 122,123 124
+5000
+24 - 1 Parent*,2 Follows*,1 pattern,1 with
+stmt s,s1; assign a; read r;
+Select <s,s1,s,a,s,r> such that Parent*(37,s) pattern a(_,"304 +  xiangling * program   ") with s.stmt# = a.stmt# such that Follows*(s,s1) and Follows*(s,r)
+40 41 40 40 40 41,40 42 40 40 40 41
+5000
+25 - 1 Modifies,1 Uses,1 Next,1 with
+stmt s,s1; variable v; call c;
+Select <s,v> such that Modifies(s, v) and Uses(s,v) and Next(s1,s) with c.stmt# = 82
+3 Follows,3 Uses,3 beidou,3 call,3 cocogoat,3 else,3 hashtagcall,3 hashtagelse,3 hashtagif,3 hashtagprint,3 hashtagprocedure,3 hashtagread,3 hashtagthen,3 hashtagwhile,3 if,3 johnlee,3 keqing,3 print,3 procedure,3 program,3 read,3 then,3 while,3 xiangling,6 Follows,6 Uses,6 beidou,6 call,6 cocogoat,6 else,6 hashtagelse,6 if,6 johnlee,6 keqing,6 print,6 procedure,6 program,6 read,6 then,6 while,6 xiangling,8 Follows,8 Uses,8 beidou,8 call,8 cocogoat,8 else,8 hashtagcall,8 hashtagelse,8 hashtagprint,8 hashtagwhile,8 if,8 johnlee,8 keqing,8 print,8 procedure,8 program,8 read,8 then,8 while,8 xiangling,9 Follows,9 Uses,9 beidou,9 call,9 cocogoat,9 else,9 hashtagcall,9 hashtagelse,9 hashtagif,9 hashtagprint,9 hashtagprocedure,9 hashtagread,9 hashtagthen,9 hashtagwhile,9 if,9 johnlee,9 keqing,9 print,9 procedure,9 program,9 read,9 then,9 while,9 xiangling,11 Follows,11 Uses,11 beidou,11 call,11 cocogoat,11 else,11 hashtagcall,11 hashtagelse,11 hashtagprint,11 hashtagread,11 hashtagwhile,11 if,11 johnlee,11 keqing,11 print,11 procedure,11 program,11 read,11 then,11 while,11 xiangling,12 Follows,12 Uses,12 beidou,12 call,12 cocogoat,12 else,12 hashtagcall,12 hashtagelse,12 hashtagif,12 hashtagprint,12 hashtagprocedure,12 hashtagread,12 hashtagthen,12 hashtagwhile,12 if,12 johnlee,12 keqing,12 print,12 procedure,12 program,12 read,12 then,12 while,12 xiangling,14 Follows,14 Uses,14 beidou,14 call,14 cocogoat,14 else,14 hashtagelse,14 hashtagprocedure,14 hashtagthen,14 hashtagwhile,14 if,14 johnlee,14 keqing,14 print,14 procedure,14 program,14 read,14 then,14 while,14 xiangling,16 Follows,16 Uses,16 beidou,16 call,16 cocogoat,16 else,16 hashtagelse,16 hashtagwhile,16 if,16 johnlee,16 keqing,16 print,16 procedure,16 program,16 read,16 then,16 while,16 xiangling,19 Follows,19 Uses,19 beidou,19 call,19 cocogoat,19 else,19 hashtagelse,19 hashtagthen,19 hashtagwhile,19 if,19 johnlee,19 keqing,19 print,19 procedure,19 program,19 read,19 then,19 while,19 xiangling,21 hashtagprocedure,22 Follows,22 Uses,22 beidou,22 call,22 cocogoat,22 else,22 hashtagcall,22 hashtagelse,22 hashtagif,22 hashtagprint,22 hashtagread,22 hashtagthen,22 hashtagwhile,22 if,22 johnlee,22 keqing,22 print,22 procedure,22 program,22 read,22 then,22 while,22 xiangling,25 hashtagprint,30 hashtagprint,31 Follows,31 Uses,31 beidou,31 call,31 cocogoat,31 else,31 hashtagcall,31 hashtagelse,31 hashtagwhile,31 if,31 johnlee,31 keqing,31 print,31 procedure,31 program,31 read,31 then,31 while,31 xiangling,34 Follows,34 Uses,34 beidou,34 call,34 cocogoat,34 else,34 hashtagcall,34 hashtagelse,34 hashtagprint,34 hashtagread,34 hashtagwhile,34 if,34 johnlee,34 keqing,34 print,34 procedure,34 program,34 read,34 then,34 while,34 xiangling,37 Follows,37 Uses,37 beidou,37 call,37 cocogoat,37 else,37 hashtagcall,37 hashtagelse,37 hashtagprint,37 hashtagread,37 hashtagwhile,37 if,37 johnlee,37 keqing,37 print,37 procedure,37 program,37 read,37 then,37 while,37 xiangling,38 Follows,38 Uses,38 beidou,38 call,38 cocogoat,38 else,38 hashtagcall,38 hashtagelse,38 hashtagprint,38 hashtagwhile,38 if,38 johnlee,38 keqing,38 print,38 procedure,38 program,38 read,38 then,38 while,38 xiangling,42 hashtagread,44 Follows,44 Uses,44 beidou,44 call,44 cocogoat,44 else,44 hashtagelse,44 hashtagwhile,44 if,44 johnlee,44 keqing,44 print,44 procedure,44 program,44 read,44 then,44 while,44 xiangling,47 Follows,47 call,47 hashtagcall,47 if,47 procedure,55 hashtagcall,59 Follows,59 Uses,59 beidou,59 call,59 cocogoat,59 else,59 hashtagelse,59 hashtagwhile,59 if,59 johnlee,59 keqing,59 print,59 procedure,59 program,59 read,59 then,59 while,59 xiangling,62 Follows,62 Uses,62 beidou,62 call,62 cocogoat,62 else,62 hashtagelse,62 hashtagwhile,62 if,62 johnlee,62 keqing,62 print,62 procedure,62 program,62 read,62 then,62 while,62 xiangling,64 Follows,64 Uses,64 beidou,64 call,64 cocogoat,64 else,64 hashtagelse,64 hashtagwhile,64 if,64 johnlee,64 keqing,64 print,64 procedure,64 program,64 read,64 then,64 while,64 xiangling,67 Uses,68 Follows,68 Uses,68 beidou,68 call,68 cocogoat,68 else,68 hashtagelse,68 if,68 johnlee,68 keqing,68 print,68 procedure,68 program,68 read,68 then,68 while,68 xiangling,72 hashtagwhile,77 Follows,77 Uses,77 beidou,77 call,77 cocogoat,77 else,77 hashtagcall,77 hashtagelse,77 hashtagif,77 hashtagprint,77 hashtagread,77 hashtagthen,77 hashtagwhile,77 if,77 johnlee,77 keqing,77 print,77 procedure,77 program,77 read,77 then,77 while,77 xiangling,78 Follows,78 Uses,78 beidou,78 call,78 cocogoat,78 else,78 hashtagcall,78 hashtagelse,78 hashtagprint,78 hashtagread,78 hashtagwhile,78 if,78 johnlee,78 keqing,78 print,78 procedure,78 program,78 read,78 then,78 while,78 xiangling,79 Follows,79 Uses,79 beidou,79 call,79 cocogoat,79 else,79 hashtagcall,79 hashtagelse,79 hashtagprint,79 hashtagread,79 hashtagwhile,79 if,79 johnlee,79 keqing,79 print,79 procedure,79 program,79 read,79 then,79 while,79 xiangling,80 program,82 Follows,82 Uses,82 beidou,82 call,82 cocogoat,82 else,82 hashtagelse,82 hashtagwhile,82 if,82 johnlee,82 keqing,82 print,82 procedure,82 program,82 read,82 then,82 while,82 xiangling,83 Follows,83 Uses,83 beidou,83 call,83 cocogoat,83 else,83 hashtagelse,83 hashtagthen,83 hashtagwhile,83 if,83 johnlee,83 keqing,83 print,83 procedure,83 program,83 read,83 then,83 while,83 xiangling,85 hashtagif,89 hashtagif,94 Follows,94 Uses,94 beidou,94 call,94 cocogoat,94 else,94 hashtagelse,94 hashtagwhile,94 if,94 johnlee,94 keqing,94 print,94 procedure,94 program,94 read,94 then,94 while,94 xiangling,95 procedure,99 hashtagthen,121 procedure,122 program,123 Uses,126 hashtagelse
+5000
+26 - 5 with
+procedure p; variable v; read read; constant c; print pn;
+Select <p,v,read,c,pn> with p.procName = "else" and v.varName = "else" and 54 = read.stmt# and 201 = c.value and pn.varName = v.varName
+else else 54 201 91
+5000
+27 - 2 pattern,2 with
+if ifs; variable v; procedure p; while w;
+Select <ifs,w,v,p> pattern ifs(v,_,_) and w(v,_) with v.varName = p.procName with 59 = ifs.stmt#
+59 47 else else,59 47 procedure procedure,59 47 program program,59 62 else else,59 62 procedure procedure,59 62 program program
+5000
+28 - 1 Next*,1 Call*.1 with
+read r; call c; procedure p,p1;
+Select <r,c> such that Next*(r,c) and Calls*(p,p1) with p1.procName = c.procName
+5 6,10 11,81 82,10 16,10 19,10 22,20 11,20 16,20 19,20 22,29 31,33 38,33 44,4 6,41 38,58 68,71 68,81 79,81 83,87 79,87 82,87 83,88 79,88 82,88 83,92 94
+5000
+29 - 1 Next,1 Parent,2 Uses
+prog_line n; if ifs; stmt s; variable v;
+Select <n,ifs> such that Next(n,ifs) and Parent(n,ifs) and Uses(79, "hashtagprocedure") and Uses(s, v)
+none
+5000
+30 - 1 Calls,1 Parent,1 Affects,1 Follows
+if ifs; assign a; prog_line n1,n2;
+Select BOOLEAN such that Calls(_,_) and Parent(ifs,a) and Affects(_,_) and Follows(n1,n2)
+TRUE
+5000
+31 - 2 Affects,1 Affects*,1 Modifies,2 with
+prog_line n,n1; assign a; variable v; read r; print pn;
+Select <n,v> such that Affects(69,63) and Affects(_,n) and Affects*(a,n1) and Modifies(a, v) with a.stmt# = n and r.varName = pn.varName
+106 cocogoat,109 keqing,113 xiangling,115 read,117 while,121 procedure
+5000
+32 - 2 pattern,1 Follows
+assign a,a1; prog_line n;
+Select <a,n> pattern a("call", "childe") and a1(_, _"if * then"_) such that Follows(a1,n)
+52 14,52 114,86 14,86 114,116 14,116 114
+5000
+33 - 3 Follows
+print pn; prog_line n; while w; stmt s;
+Select <pn, n> such that Follows(pn,n) and Follows(pn,w) and Follows(pn,s)
+24 25,36 37
+5000
+34 - 3 Calls*
+procedure p;
+Select p such that Calls*(p,_) and Calls*("read",p) and Calls*(p,"else")
+print,call,while
+5000

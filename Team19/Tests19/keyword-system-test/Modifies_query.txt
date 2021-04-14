@@ -1,0 +1,280 @@
+1 - Select s, Modifies(s, _)
+stmt s;
+Select s such that Modifies(s, _)
+1,2,3,4,5,6,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,25,26,27,29,30,31,32,33,34,35,37,38,40,41,42,43,44,45,46,47,49,50,51,52,53,54,55,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126
+5000
+2 - Select Boolean, Modifies(s, v)
+stmt s; variable v;
+Select <s,v> such that Modifies(s, v)
+1 Follows,1 Uses,1 beidou,1 call,1 cocogoat,1 else,1 hashtagcall,1 hashtagelse,1 hashtagif,1 hashtagprint,1 hashtagprocedure,1 hashtagread,1 hashtagthen,1 hashtagwhile,1 if,1 johnlee,1 keqing,1 nian,1 ninguang,1 print,1 procedure,1 program,1 read,1 then,1 while,1 xiangling,1 xiao,2 Follows,2 Uses,2 beidou,2 call,2 cocogoat,2 else,2 hashtagelse,2 if,2 johnlee,2 keqing,2 nian,2 ninguang,2 print,2 procedure,2 program,2 read,2 then,2 while,2 xiangling,2 xiao,3 Follows,3 Uses,3 beidou,3 call,3 cocogoat,3 else,3 hashtagcall,3 hashtagelse,3 hashtagif,3 hashtagprint,3 hashtagprocedure,3 hashtagread,3 hashtagthen,3 hashtagwhile,3 if,3 johnlee,3 keqing,3 ninguang,3 print,3 procedure,3 program,3 read,3 then,3 while,3 xiangling,3 xiao,4 program,5 nian,6 Follows,6 Uses,6 beidou,6 call,6 cocogoat,6 else,6 hashtagelse,6 if,6 johnlee,6 keqing,6 ninguang,6 print,6 procedure,6 program,6 read,6 then,6 while,6 xiangling,6 xiao,8 Follows,8 Uses,8 beidou,8 call,8 cocogoat,8 else,8 hashtagcall,8 hashtagelse,8 hashtagprint,8 hashtagwhile,8 if,8 johnlee,8 keqing,8 ninguang,8 print,8 procedure,8 program,8 read,8 then,8 while,8 xiangling,8 xiao,9 Follows,9 Uses,9 beidou,9 call,9 cocogoat,9 else,9 hashtagcall,9 hashtagelse,9 hashtagif,9 hashtagprint,9 hashtagprocedure,9 hashtagread,9 hashtagthen,9 hashtagwhile,9 if,9 johnlee,9 keqing,9 ninguang,9 print,9 procedure,9 program,9 read,9 then,9 while,9 xiangling,9 xiao,10 print,11 Follows,11 Uses,11 beidou,11 call,11 cocogoat,11 else,11 hashtagcall,11 hashtagelse,11 hashtagprint,11 hashtagread,11 hashtagwhile,11 if,11 johnlee,11 keqing,11 ninguang,11 print,11 procedure,11 program,11 read,11 then,11 while,11 xiangling,11 xiao,12 Follows,12 Uses,12 beidou,12 call,12 cocogoat,12 else,12 hashtagcall,12 hashtagelse,12 hashtagif,12 hashtagprint,12 hashtagprocedure,12 hashtagread,12 hashtagthen,12 hashtagwhile,12 if,12 johnlee,12 keqing,12 ninguang,12 print,12 procedure,12 program,12 read,12 then,12 while,12 xiangling,12 xiao,13 xiangling,14 Follows,14 Uses,14 beidou,14 call,14 cocogoat,14 else,14 hashtagelse,14 hashtagprocedure,14 hashtagthen,14 hashtagwhile,14 if,14 johnlee,14 keqing,14 ninguang,14 print,14 procedure,14 program,14 read,14 then,14 while,14 xiangling,14 xiao,15 johnlee,16 Follows,16 Uses,16 beidou,16 call,16 cocogoat,16 else,16 hashtagelse,16 hashtagwhile,16 if,16 johnlee,16 keqing,16 ninguang,16 print,16 procedure,16 program,16 read,16 then,16 while,16 xiangling,16 xiao,17 johnlee,18 johnlee,19 Follows,19 Uses,19 beidou,19 call,19 cocogoat,19 else,19 hashtagelse,19 hashtagthen,19 hashtagwhile,19 if,19 johnlee,19 keqing,19 ninguang,19 print,19 procedure,19 program,19 read,19 then,19 while,19 xiangling,19 xiao,20 hashtagprocedure,21 hashtagprocedure,22 Follows,22 Uses,22 beidou,22 call,22 cocogoat,22 else,22 hashtagcall,22 hashtagelse,22 hashtagif,22 hashtagprint,22 hashtagread,22 hashtagthen,22 hashtagwhile,22 if,22 johnlee,22 keqing,22 ninguang,22 print,22 procedure,22 program,22 read,22 then,22 while,22 xiangling,22 xiao,25 hashtagprint,25 johnlee,25 print,26 johnlee,27 print,29 hashtagprint,30 hashtagprint,31 Follows,31 Uses,31 beidou,31 call,31 cocogoat,31 else,31 hashtagcall,31 hashtagelse,31 hashtagwhile,31 if,31 johnlee,31 keqing,31 ninguang,31 print,31 procedure,31 program,31 read,31 then,31 while,31 xiangling,31 xiao,32 read,33 call,34 Follows,34 Uses,34 beidou,34 call,34 cocogoat,34 else,34 hashtagcall,34 hashtagelse,34 hashtagprint,34 hashtagread,34 hashtagwhile,34 if,34 johnlee,34 keqing,34 ninguang,34 print,34 procedure,34 program,34 read,34 then,34 while,34 xiangling,34 xiao,35 johnlee,37 Follows,37 Uses,37 beidou,37 call,37 cocogoat,37 else,37 hashtagcall,37 hashtagelse,37 hashtagprint,37 hashtagread,37 hashtagwhile,37 if,37 johnlee,37 keqing,37 ninguang,37 print,37 procedure,37 program,37 read,37 then,37 while,37 xiangling,37 xiao,38 Follows,38 Uses,38 beidou,38 call,38 cocogoat,38 else,38 hashtagcall,38 hashtagelse,38 hashtagprint,38 hashtagwhile,38 if,38 johnlee,38 keqing,38 ninguang,38 print,38 procedure,38 program,38 read,38 then,38 while,38 xiangling,38 xiao,40 beidou,41 hashtagread,42 hashtagread,43 read,44 Follows,44 Uses,44 beidou,44 call,44 cocogoat,44 else,44 hashtagelse,44 hashtagwhile,44 if,44 johnlee,44 keqing,44 ninguang,44 print,44 procedure,44 program,44 read,44 then,44 while,44 xiangling,44 xiao,45 cocogoat,46 Follows,46 Uses,46 beidou,46 call,46 cocogoat,46 else,46 hashtagelse,46 hashtagwhile,46 if,46 johnlee,46 keqing,46 ninguang,46 print,46 procedure,46 program,46 read,46 then,46 while,46 xiangling,46 xiao,47 Follows,47 call,47 cocogoat,47 hashtagcall,47 if,47 procedure,49 if,50 cocogoat,51 Follows,52 call,53 procedure,54 hashtagcall,55 hashtagcall,58 then,59 Follows,59 Uses,59 beidou,59 call,59 cocogoat,59 else,59 hashtagelse,59 hashtagwhile,59 if,59 johnlee,59 keqing,59 ninguang,59 print,59 procedure,59 program,59 read,59 then,59 while,59 xiangling,59 xiao,60 johnlee,61 program,62 Follows,62 Uses,62 beidou,62 call,62 cocogoat,62 else,62 hashtagelse,62 hashtagwhile,62 if,62 johnlee,62 keqing,62 ninguang,62 print,62 procedure,62 program,62 read,62 then,62 while,62 xiangling,62 xiao,63 keqing,64 Follows,64 Uses,64 beidou,64 call,64 cocogoat,64 else,64 hashtagelse,64 hashtagwhile,64 if,64 johnlee,64 keqing,64 ninguang,64 print,64 procedure,64 program,64 read,64 then,64 while,64 xiangling,64 xiao,65 keqing,66 if,67 Uses,68 Follows,68 Uses,68 beidou,68 call,68 cocogoat,68 else,68 hashtagelse,68 if,68 johnlee,68 keqing,68 ninguang,68 print,68 procedure,68 program,68 read,68 then,68 while,68 xiangling,68 xiao,69 cocogoat,70 xiao,71 hashtagwhile,72 hashtagwhile,73 while,74 ninguang,75 johnlee,76 Follows,76 Uses,76 beidou,76 call,76 cocogoat,76 else,76 hashtagcall,76 hashtagelse,76 hashtagprint,76 hashtagwhile,76 if,76 johnlee,76 keqing,76 ninguang,76 print,76 procedure,76 program,76 read,76 then,76 while,76 xiangling,76 xiao,77 Follows,77 Uses,77 beidou,77 call,77 cocogoat,77 else,77 hashtagcall,77 hashtagelse,77 hashtagif,77 hashtagprint,77 hashtagread,77 hashtagthen,77 hashtagwhile,77 if,77 johnlee,77 keqing,77 ninguang,77 print,77 procedure,77 program,77 read,77 then,77 while,77 xiangling,77 xiao,78 Follows,78 Uses,78 beidou,78 call,78 cocogoat,78 else,78 hashtagcall,78 hashtagelse,78 hashtagprint,78 hashtagread,78 hashtagwhile,78 if,78 johnlee,78 keqing,78 ninguang,78 print,78 procedure,78 program,78 read,78 then,78 while,78 xiangling,78 xiao,79 Follows,79 Uses,79 beidou,79 call,79 cocogoat,79 else,79 hashtagcall,79 hashtagelse,79 hashtagprint,79 hashtagread,79 hashtagwhile,79 if,79 johnlee,79 keqing,79 ninguang,79 print,79 procedure,79 program,79 read,79 then,79 while,79 xiangling,79 xiao,80 program,81 while,82 Follows,82 Uses,82 beidou,82 call,82 cocogoat,82 else,82 hashtagelse,82 hashtagwhile,82 if,82 johnlee,82 keqing,82 ninguang,82 print,82 procedure,82 program,82 read,82 then,82 while,82 xiangling,82 xiao,83 Follows,83 Uses,83 beidou,83 call,83 cocogoat,83 else,83 hashtagelse,83 hashtagthen,83 hashtagwhile,83 if,83 johnlee,83 keqing,83 ninguang,83 print,83 procedure,83 program,83 read,83 then,83 while,83 xiangling,83 xiao,84 cocogoat,85 Uses,85 call,85 hashtagif,86 call,87 Uses,88 hashtagif,89 hashtagif,92 else,93 else,94 Follows,94 Uses,94 beidou,94 call,94 cocogoat,94 else,94 hashtagelse,94 hashtagwhile,94 if,94 johnlee,94 keqing,94 ninguang,94 print,94 procedure,94 program,94 read,94 then,94 while,94 xiangling,94 xiao,95 procedure,96 then,97 Follows,98 hashtagthen,99 hashtagthen,100 johnlee,101 johnlee,102 johnlee,103 johnlee,104 cocogoat,105 cocogoat,106 cocogoat,107 xiao,108 keqing,109 keqing,110 ninguang,111 johnlee,112 beidou,113 xiangling,114 print,115 read,116 call,117 while,118 if,119 then,120 else,121 procedure,122 program,123 Uses,124 Follows,125 hashtagelse,126 hashtagelse
+5000
+3 - Select s, true Modifies(s, known)
+stmt s;
+Select s such that Modifies(s, "print")
+1,2,3,6,8,9,10,11,12,14,16,19,22,25,27,31,34,37,38,44,46,59,62,64,68,76,77,78,79,82,83,94,114
+5000
+4 - Select s, false Modifies(s, known)
+stmt s;
+Select s such that Modifies(s, "kaltsit")
+none
+5000
+5 - Select r, Modifies(r, _)
+read r;
+Select r such that Modifies(r, _)
+4,5,10,20,29,32,33,41,49,53,54,58,61,71,81,87,88,92,97,98,125
+5000
+6 - Select r, Modifies(r, v)
+read r; variable v;
+Select <r, v> such that Modifies(r, v)
+4 program,5 nian,10 print,20 hashtagprocedure,29 hashtagprint,32 read,33 call,41 hashtagread,49 if,53 procedure,54 hashtagcall,58 then,61 program,71 hashtagwhile,81 while,87 Uses,88 hashtagif,92 else,97 Follows,98 hashtagthen,125 hashtagelse
+5000
+7 - Select r, true Modifies(r, known)
+read r;
+Select r such that Modifies(r, "read")
+32
+5000
+8 - Select r, false Modifies(r, known)
+read r;
+Select r such that Modifies(r, "eunectes")
+none
+5000
+9 - Select c, Modifies(c, _)
+call c;
+Select c such that Modifies(c, _)
+1,2,3,6,8,11,16,19,22,31,38,44,46,68,76,79,82,83,94
+5000
+10 - Select c, Modifies(c, v)
+call c; variable v;
+Select <c, v> such that Modifies(c, v)
+1 Follows,1 Uses,1 beidou,1 call,1 cocogoat,1 else,1 hashtagcall,1 hashtagelse,1 hashtagif,1 hashtagprint,1 hashtagprocedure,1 hashtagread,1 hashtagthen,1 hashtagwhile,1 if,1 johnlee,1 keqing,1 nian,1 ninguang,1 print,1 procedure,1 program,1 read,1 then,1 while,1 xiangling,1 xiao,2 Follows,2 Uses,2 beidou,2 call,2 cocogoat,2 else,2 hashtagelse,2 if,2 johnlee,2 keqing,2 nian,2 ninguang,2 print,2 procedure,2 program,2 read,2 then,2 while,2 xiangling,2 xiao,3 Follows,3 Uses,3 beidou,3 call,3 cocogoat,3 else,3 hashtagcall,3 hashtagelse,3 hashtagif,3 hashtagprint,3 hashtagprocedure,3 hashtagread,3 hashtagthen,3 hashtagwhile,3 if,3 johnlee,3 keqing,3 ninguang,3 print,3 procedure,3 program,3 read,3 then,3 while,3 xiangling,3 xiao,6 Follows,6 Uses,6 beidou,6 call,6 cocogoat,6 else,6 hashtagelse,6 if,6 johnlee,6 keqing,6 ninguang,6 print,6 procedure,6 program,6 read,6 then,6 while,6 xiangling,6 xiao,8 Follows,8 Uses,8 beidou,8 call,8 cocogoat,8 else,8 hashtagcall,8 hashtagelse,8 hashtagprint,8 hashtagwhile,8 if,8 johnlee,8 keqing,8 ninguang,8 print,8 procedure,8 program,8 read,8 then,8 while,8 xiangling,8 xiao,11 Follows,11 Uses,11 beidou,11 call,11 cocogoat,11 else,11 hashtagcall,11 hashtagelse,11 hashtagprint,11 hashtagread,11 hashtagwhile,11 if,11 johnlee,11 keqing,11 ninguang,11 print,11 procedure,11 program,11 read,11 then,11 while,11 xiangling,11 xiao,16 Follows,16 Uses,16 beidou,16 call,16 cocogoat,16 else,16 hashtagelse,16 hashtagwhile,16 if,16 johnlee,16 keqing,16 ninguang,16 print,16 procedure,16 program,16 read,16 then,16 while,16 xiangling,16 xiao,19 Follows,19 Uses,19 beidou,19 call,19 cocogoat,19 else,19 hashtagelse,19 hashtagthen,19 hashtagwhile,19 if,19 johnlee,19 keqing,19 ninguang,19 print,19 procedure,19 program,19 read,19 then,19 while,19 xiangling,19 xiao,22 Follows,22 Uses,22 beidou,22 call,22 cocogoat,22 else,22 hashtagcall,22 hashtagelse,22 hashtagif,22 hashtagprint,22 hashtagread,22 hashtagthen,22 hashtagwhile,22 if,22 johnlee,22 keqing,22 ninguang,22 print,22 procedure,22 program,22 read,22 then,22 while,22 xiangling,22 xiao,31 Follows,31 Uses,31 beidou,31 call,31 cocogoat,31 else,31 hashtagcall,31 hashtagelse,31 hashtagwhile,31 if,31 johnlee,31 keqing,31 ninguang,31 print,31 procedure,31 program,31 read,31 then,31 while,31 xiangling,31 xiao,38 Follows,38 Uses,38 beidou,38 call,38 cocogoat,38 else,38 hashtagcall,38 hashtagelse,38 hashtagprint,38 hashtagwhile,38 if,38 johnlee,38 keqing,38 ninguang,38 print,38 procedure,38 program,38 read,38 then,38 while,38 xiangling,38 xiao,44 Follows,44 Uses,44 beidou,44 call,44 cocogoat,44 else,44 hashtagelse,44 hashtagwhile,44 if,44 johnlee,44 keqing,44 ninguang,44 print,44 procedure,44 program,44 read,44 then,44 while,44 xiangling,44 xiao,46 Follows,46 Uses,46 beidou,46 call,46 cocogoat,46 else,46 hashtagelse,46 hashtagwhile,46 if,46 johnlee,46 keqing,46 ninguang,46 print,46 procedure,46 program,46 read,46 then,46 while,46 xiangling,46 xiao,68 Follows,68 Uses,68 beidou,68 call,68 cocogoat,68 else,68 hashtagelse,68 if,68 johnlee,68 keqing,68 ninguang,68 print,68 procedure,68 program,68 read,68 then,68 while,68 xiangling,68 xiao,76 Follows,76 Uses,76 beidou,76 call,76 cocogoat,76 else,76 hashtagcall,76 hashtagelse,76 hashtagprint,76 hashtagwhile,76 if,76 johnlee,76 keqing,76 ninguang,76 print,76 procedure,76 program,76 read,76 then,76 while,76 xiangling,76 xiao,79 Follows,79 Uses,79 beidou,79 call,79 cocogoat,79 else,79 hashtagcall,79 hashtagelse,79 hashtagprint,79 hashtagread,79 hashtagwhile,79 if,79 johnlee,79 keqing,79 ninguang,79 print,79 procedure,79 program,79 read,79 then,79 while,79 xiangling,79 xiao,82 Follows,82 Uses,82 beidou,82 call,82 cocogoat,82 else,82 hashtagelse,82 hashtagwhile,82 if,82 johnlee,82 keqing,82 ninguang,82 print,82 procedure,82 program,82 read,82 then,82 while,82 xiangling,82 xiao,83 Follows,83 Uses,83 beidou,83 call,83 cocogoat,83 else,83 hashtagelse,83 hashtagthen,83 hashtagwhile,83 if,83 johnlee,83 keqing,83 ninguang,83 print,83 procedure,83 program,83 read,83 then,83 while,83 xiangling,83 xiao,94 Follows,94 Uses,94 beidou,94 call,94 cocogoat,94 else,94 hashtagelse,94 hashtagwhile,94 if,94 johnlee,94 keqing,94 ninguang,94 print,94 procedure,94 program,94 read,94 then,94 while,94 xiangling,94 xiao
+5000
+11 - Select c, true Modifies(c, known)
+call c;
+Select c such that Modifies(c, "call")
+1,2,3,6,8,11,16,19,22,31,38,44,46,68,76,79,82,83,94
+5000
+12 - Select c, false Modifies(c, known)
+call c;
+Select c such that Modifies(c, "shaw")
+none
+5000
+13 - Select w, Modifies(w, _)
+while w;
+Select w such that Modifies(w, _)
+9,12,25,37,47,62,77
+5000
+14 - Select w, Modifies(w, v)
+while w; variable v;
+Select <w, v> such that Modifies(w, v)
+9 Follows,9 Uses,9 beidou,9 call,9 cocogoat,9 else,9 hashtagcall,9 hashtagelse,9 hashtagif,9 hashtagprint,9 hashtagprocedure,9 hashtagread,9 hashtagthen,9 hashtagwhile,9 if,9 johnlee,9 keqing,9 ninguang,9 print,9 procedure,9 program,9 read,9 then,9 while,9 xiangling,9 xiao,12 Follows,12 Uses,12 beidou,12 call,12 cocogoat,12 else,12 hashtagcall,12 hashtagelse,12 hashtagif,12 hashtagprint,12 hashtagprocedure,12 hashtagread,12 hashtagthen,12 hashtagwhile,12 if,12 johnlee,12 keqing,12 ninguang,12 print,12 procedure,12 program,12 read,12 then,12 while,12 xiangling,12 xiao,25 hashtagprint,25 johnlee,25 print,37 Follows,37 Uses,37 beidou,37 call,37 cocogoat,37 else,37 hashtagcall,37 hashtagelse,37 hashtagprint,37 hashtagread,37 hashtagwhile,37 if,37 johnlee,37 keqing,37 ninguang,37 print,37 procedure,37 program,37 read,37 then,37 while,37 xiangling,37 xiao,47 Follows,47 call,47 cocogoat,47 hashtagcall,47 if,47 procedure,62 Follows,62 Uses,62 beidou,62 call,62 cocogoat,62 else,62 hashtagelse,62 hashtagwhile,62 if,62 johnlee,62 keqing,62 ninguang,62 print,62 procedure,62 program,62 read,62 then,62 while,62 xiangling,62 xiao,77 Follows,77 Uses,77 beidou,77 call,77 cocogoat,77 else,77 hashtagcall,77 hashtagelse,77 hashtagif,77 hashtagprint,77 hashtagread,77 hashtagthen,77 hashtagwhile,77 if,77 johnlee,77 keqing,77 ninguang,77 print,77 procedure,77 program,77 read,77 then,77 while,77 xiangling,77 xiao
+5000
+15 - Select w, true Modifies(w, known)
+while w;
+Select w such that Modifies(w, "while")
+9,12,37,62,77
+5000
+16 - Select w, false Modifies(w, known)
+while w;
+Select w such that Modifies(w, "nian")
+none
+5000
+17 - Select ifs, Modifies(ifs, _)
+if ifs;
+Select ifs such that Modifies(ifs, _)
+14,34,59,64,78,85
+5000
+18 - Select ifs, Modifies(ifs, v)
+if ifs; variable v;
+Select <ifs, v> such that Modifies(ifs, v)
+14 Follows,14 Uses,14 beidou,14 call,14 cocogoat,14 else,14 hashtagelse,14 hashtagprocedure,14 hashtagthen,14 hashtagwhile,14 if,14 johnlee,14 keqing,14 ninguang,14 print,14 procedure,14 program,14 read,14 then,14 while,14 xiangling,14 xiao,34 Follows,34 Uses,34 beidou,34 call,34 cocogoat,34 else,34 hashtagcall,34 hashtagelse,34 hashtagprint,34 hashtagread,34 hashtagwhile,34 if,34 johnlee,34 keqing,34 ninguang,34 print,34 procedure,34 program,34 read,34 then,34 while,34 xiangling,34 xiao,59 Follows,59 Uses,59 beidou,59 call,59 cocogoat,59 else,59 hashtagelse,59 hashtagwhile,59 if,59 johnlee,59 keqing,59 ninguang,59 print,59 procedure,59 program,59 read,59 then,59 while,59 xiangling,59 xiao,64 Follows,64 Uses,64 beidou,64 call,64 cocogoat,64 else,64 hashtagelse,64 hashtagwhile,64 if,64 johnlee,64 keqing,64 ninguang,64 print,64 procedure,64 program,64 read,64 then,64 while,64 xiangling,64 xiao,78 Follows,78 Uses,78 beidou,78 call,78 cocogoat,78 else,78 hashtagcall,78 hashtagelse,78 hashtagprint,78 hashtagread,78 hashtagwhile,78 if,78 johnlee,78 keqing,78 ninguang,78 print,78 procedure,78 program,78 read,78 then,78 while,78 xiangling,78 xiao,85 Uses,85 call,85 hashtagif
+5000
+19 - Select ifs, true Modifies(ifs, known)
+if ifs;
+Select ifs such that Modifies(ifs, "if")
+59,64,14,34,78
+5000
+20 - Select ifs, false Modifies(ifs, known)
+if ifs;
+Select ifs such that Modifies(ifs, "amiya")
+none
+5000
+21 - Select a, Modifies(a, _)
+assign a;
+Select a such that Modifies(a, _)
+13,15,17,18,21,26,27,30,35,40,42,43,45,50,51,52,55,60,63,65,66,67,69,70,72,73,74,75,80,84,86,89,93,95,96,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,126
+5000
+22 - Select a, Modifies(a, v)
+assign a; variable v;
+Select <a, v> such that Modifies(a, v)
+13 xiangling,15 johnlee,17 johnlee,18 johnlee,21 hashtagprocedure,26 johnlee,27 print,30 hashtagprint,35 johnlee,40 beidou,42 hashtagread,43 read,45 cocogoat,50 cocogoat,51 Follows,52 call,55 hashtagcall,60 johnlee,63 keqing,65 keqing,66 if,67 Uses,69 cocogoat,70 xiao,72 hashtagwhile,73 while,74 ninguang,75 johnlee,80 program,84 cocogoat,86 call,89 hashtagif,93 else,95 procedure,96 then,99 hashtagthen,100 johnlee,101 johnlee,102 johnlee,103 johnlee,104 cocogoat,105 cocogoat,106 cocogoat,107 xiao,108 keqing,109 keqing,110 ninguang,111 johnlee,112 beidou,113 xiangling,114 print,115 read,116 call,117 while,118 if,119 then,120 else,121 procedure,122 program,123 Uses,124 Follows,126 hashtagelse
+5000
+23 - Select a, true Modifies(a, known)
+assign a;
+Select a such that Modifies(a, "johnlee")
+15,17,18,26,35,60,75,100,101,102,103,111
+5000
+24 - Select a, false Modifies(a, known)
+assign a;
+Select a such that Modifies(a, "exusiai")
+none
+5000
+25 - Select n, Modifies(n, _)
+prog_line n;
+Select n such that Modifies(n, _)
+1,2,3,4,5,6,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,25,26,27,29,30,31,32,33,34,35,37,38,40,41,42,43,44,45,46,47,49,50,51,52,53,54,55,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126
+5000
+26 - Select n, Modifies(n, v)
+prog_line n; variable v;
+Select <n, v> such that Modifies(n, v)
+1 Follows,1 Uses,1 beidou,1 call,1 cocogoat,1 else,1 hashtagcall,1 hashtagelse,1 hashtagif,1 hashtagprint,1 hashtagprocedure,1 hashtagread,1 hashtagthen,1 hashtagwhile,1 if,1 johnlee,1 keqing,1 nian,1 ninguang,1 print,1 procedure,1 program,1 read,1 then,1 while,1 xiangling,1 xiao,2 Follows,2 Uses,2 beidou,2 call,2 cocogoat,2 else,2 hashtagelse,2 if,2 johnlee,2 keqing,2 nian,2 ninguang,2 print,2 procedure,2 program,2 read,2 then,2 while,2 xiangling,2 xiao,3 Follows,3 Uses,3 beidou,3 call,3 cocogoat,3 else,3 hashtagcall,3 hashtagelse,3 hashtagif,3 hashtagprint,3 hashtagprocedure,3 hashtagread,3 hashtagthen,3 hashtagwhile,3 if,3 johnlee,3 keqing,3 ninguang,3 print,3 procedure,3 program,3 read,3 then,3 while,3 xiangling,3 xiao,4 program,5 nian,6 Follows,6 Uses,6 beidou,6 call,6 cocogoat,6 else,6 hashtagelse,6 if,6 johnlee,6 keqing,6 ninguang,6 print,6 procedure,6 program,6 read,6 then,6 while,6 xiangling,6 xiao,8 Follows,8 Uses,8 beidou,8 call,8 cocogoat,8 else,8 hashtagcall,8 hashtagelse,8 hashtagprint,8 hashtagwhile,8 if,8 johnlee,8 keqing,8 ninguang,8 print,8 procedure,8 program,8 read,8 then,8 while,8 xiangling,8 xiao,9 Follows,9 Uses,9 beidou,9 call,9 cocogoat,9 else,9 hashtagcall,9 hashtagelse,9 hashtagif,9 hashtagprint,9 hashtagprocedure,9 hashtagread,9 hashtagthen,9 hashtagwhile,9 if,9 johnlee,9 keqing,9 ninguang,9 print,9 procedure,9 program,9 read,9 then,9 while,9 xiangling,9 xiao,10 print,11 Follows,11 Uses,11 beidou,11 call,11 cocogoat,11 else,11 hashtagcall,11 hashtagelse,11 hashtagprint,11 hashtagread,11 hashtagwhile,11 if,11 johnlee,11 keqing,11 ninguang,11 print,11 procedure,11 program,11 read,11 then,11 while,11 xiangling,11 xiao,12 Follows,12 Uses,12 beidou,12 call,12 cocogoat,12 else,12 hashtagcall,12 hashtagelse,12 hashtagif,12 hashtagprint,12 hashtagprocedure,12 hashtagread,12 hashtagthen,12 hashtagwhile,12 if,12 johnlee,12 keqing,12 ninguang,12 print,12 procedure,12 program,12 read,12 then,12 while,12 xiangling,12 xiao,13 xiangling,14 Follows,14 Uses,14 beidou,14 call,14 cocogoat,14 else,14 hashtagelse,14 hashtagprocedure,14 hashtagthen,14 hashtagwhile,14 if,14 johnlee,14 keqing,14 ninguang,14 print,14 procedure,14 program,14 read,14 then,14 while,14 xiangling,14 xiao,15 johnlee,16 Follows,16 Uses,16 beidou,16 call,16 cocogoat,16 else,16 hashtagelse,16 hashtagwhile,16 if,16 johnlee,16 keqing,16 ninguang,16 print,16 procedure,16 program,16 read,16 then,16 while,16 xiangling,16 xiao,17 johnlee,18 johnlee,19 Follows,19 Uses,19 beidou,19 call,19 cocogoat,19 else,19 hashtagelse,19 hashtagthen,19 hashtagwhile,19 if,19 johnlee,19 keqing,19 ninguang,19 print,19 procedure,19 program,19 read,19 then,19 while,19 xiangling,19 xiao,20 hashtagprocedure,21 hashtagprocedure,22 Follows,22 Uses,22 beidou,22 call,22 cocogoat,22 else,22 hashtagcall,22 hashtagelse,22 hashtagif,22 hashtagprint,22 hashtagread,22 hashtagthen,22 hashtagwhile,22 if,22 johnlee,22 keqing,22 ninguang,22 print,22 procedure,22 program,22 read,22 then,22 while,22 xiangling,22 xiao,25 hashtagprint,25 johnlee,25 print,26 johnlee,27 print,29 hashtagprint,30 hashtagprint,31 Follows,31 Uses,31 beidou,31 call,31 cocogoat,31 else,31 hashtagcall,31 hashtagelse,31 hashtagwhile,31 if,31 johnlee,31 keqing,31 ninguang,31 print,31 procedure,31 program,31 read,31 then,31 while,31 xiangling,31 xiao,32 read,33 call,34 Follows,34 Uses,34 beidou,34 call,34 cocogoat,34 else,34 hashtagcall,34 hashtagelse,34 hashtagprint,34 hashtagread,34 hashtagwhile,34 if,34 johnlee,34 keqing,34 ninguang,34 print,34 procedure,34 program,34 read,34 then,34 while,34 xiangling,34 xiao,35 johnlee,37 Follows,37 Uses,37 beidou,37 call,37 cocogoat,37 else,37 hashtagcall,37 hashtagelse,37 hashtagprint,37 hashtagread,37 hashtagwhile,37 if,37 johnlee,37 keqing,37 ninguang,37 print,37 procedure,37 program,37 read,37 then,37 while,37 xiangling,37 xiao,38 Follows,38 Uses,38 beidou,38 call,38 cocogoat,38 else,38 hashtagcall,38 hashtagelse,38 hashtagprint,38 hashtagwhile,38 if,38 johnlee,38 keqing,38 ninguang,38 print,38 procedure,38 program,38 read,38 then,38 while,38 xiangling,38 xiao,40 beidou,41 hashtagread,42 hashtagread,43 read,44 Follows,44 Uses,44 beidou,44 call,44 cocogoat,44 else,44 hashtagelse,44 hashtagwhile,44 if,44 johnlee,44 keqing,44 ninguang,44 print,44 procedure,44 program,44 read,44 then,44 while,44 xiangling,44 xiao,45 cocogoat,46 Follows,46 Uses,46 beidou,46 call,46 cocogoat,46 else,46 hashtagelse,46 hashtagwhile,46 if,46 johnlee,46 keqing,46 ninguang,46 print,46 procedure,46 program,46 read,46 then,46 while,46 xiangling,46 xiao,47 Follows,47 call,47 cocogoat,47 hashtagcall,47 if,47 procedure,49 if,50 cocogoat,51 Follows,52 call,53 procedure,54 hashtagcall,55 hashtagcall,58 then,59 Follows,59 Uses,59 beidou,59 call,59 cocogoat,59 else,59 hashtagelse,59 hashtagwhile,59 if,59 johnlee,59 keqing,59 ninguang,59 print,59 procedure,59 program,59 read,59 then,59 while,59 xiangling,59 xiao,60 johnlee,61 program,62 Follows,62 Uses,62 beidou,62 call,62 cocogoat,62 else,62 hashtagelse,62 hashtagwhile,62 if,62 johnlee,62 keqing,62 ninguang,62 print,62 procedure,62 program,62 read,62 then,62 while,62 xiangling,62 xiao,63 keqing,64 Follows,64 Uses,64 beidou,64 call,64 cocogoat,64 else,64 hashtagelse,64 hashtagwhile,64 if,64 johnlee,64 keqing,64 ninguang,64 print,64 procedure,64 program,64 read,64 then,64 while,64 xiangling,64 xiao,65 keqing,66 if,67 Uses,68 Follows,68 Uses,68 beidou,68 call,68 cocogoat,68 else,68 hashtagelse,68 if,68 johnlee,68 keqing,68 ninguang,68 print,68 procedure,68 program,68 read,68 then,68 while,68 xiangling,68 xiao,69 cocogoat,70 xiao,71 hashtagwhile,72 hashtagwhile,73 while,74 ninguang,75 johnlee,76 Follows,76 Uses,76 beidou,76 call,76 cocogoat,76 else,76 hashtagcall,76 hashtagelse,76 hashtagprint,76 hashtagwhile,76 if,76 johnlee,76 keqing,76 ninguang,76 print,76 procedure,76 program,76 read,76 then,76 while,76 xiangling,76 xiao,77 Follows,77 Uses,77 beidou,77 call,77 cocogoat,77 else,77 hashtagcall,77 hashtagelse,77 hashtagif,77 hashtagprint,77 hashtagread,77 hashtagthen,77 hashtagwhile,77 if,77 johnlee,77 keqing,77 ninguang,77 print,77 procedure,77 program,77 read,77 then,77 while,77 xiangling,77 xiao,78 Follows,78 Uses,78 beidou,78 call,78 cocogoat,78 else,78 hashtagcall,78 hashtagelse,78 hashtagprint,78 hashtagread,78 hashtagwhile,78 if,78 johnlee,78 keqing,78 ninguang,78 print,78 procedure,78 program,78 read,78 then,78 while,78 xiangling,78 xiao,79 Follows,79 Uses,79 beidou,79 call,79 cocogoat,79 else,79 hashtagcall,79 hashtagelse,79 hashtagprint,79 hashtagread,79 hashtagwhile,79 if,79 johnlee,79 keqing,79 ninguang,79 print,79 procedure,79 program,79 read,79 then,79 while,79 xiangling,79 xiao,80 program,81 while,82 Follows,82 Uses,82 beidou,82 call,82 cocogoat,82 else,82 hashtagelse,82 hashtagwhile,82 if,82 johnlee,82 keqing,82 ninguang,82 print,82 procedure,82 program,82 read,82 then,82 while,82 xiangling,82 xiao,83 Follows,83 Uses,83 beidou,83 call,83 cocogoat,83 else,83 hashtagelse,83 hashtagthen,83 hashtagwhile,83 if,83 johnlee,83 keqing,83 ninguang,83 print,83 procedure,83 program,83 read,83 then,83 while,83 xiangling,83 xiao,84 cocogoat,85 Uses,85 call,85 hashtagif,86 call,87 Uses,88 hashtagif,89 hashtagif,92 else,93 else,94 Follows,94 Uses,94 beidou,94 call,94 cocogoat,94 else,94 hashtagelse,94 hashtagwhile,94 if,94 johnlee,94 keqing,94 ninguang,94 print,94 procedure,94 program,94 read,94 then,94 while,94 xiangling,94 xiao,95 procedure,96 then,97 Follows,98 hashtagthen,99 hashtagthen,100 johnlee,101 johnlee,102 johnlee,103 johnlee,104 cocogoat,105 cocogoat,106 cocogoat,107 xiao,108 keqing,109 keqing,110 ninguang,111 johnlee,112 beidou,113 xiangling,114 print,115 read,116 call,117 while,118 if,119 then,120 else,121 procedure,122 program,123 Uses,124 Follows,125 hashtagelse,126 hashtagelse
+5000
+27 - Select n, true Modifies(n, known)
+prog_line n;
+Select n such that Modifies(n, "program")
+1,2,3,4,6,8,9,11,12,14,16,19,22,31,34,37,38,44,46,59,61,62,64,68,76,77,78,79,80,82,83,94,122
+5000
+28 - Select n, false Modifies(n, known)
+prog_line n;
+Select n such that Modifies(n, "platinum")
+none
+5000
+29 - Select p, Modifies(p, _)
+procedure p;
+Select p such that Modifies(p, _)
+nian,main,program,procedure,print,read,call,while,if,then,else
+5000
+30 - Select p, Modifies(p, v)
+procedure p; variable v;
+Select <p, v> such that Modifies(p, v)
+call Follows,call Uses,call beidou,call call,call cocogoat,call else,call hashtagcall,call hashtagelse,call hashtagwhile,call if,call johnlee,call keqing,call ninguang,call print,call procedure,call program,call read,call then,call while,call xiangling,call xiao,else Follows,else Uses,else beidou,else call,else cocogoat,else else,else hashtagelse,else if,else johnlee,else keqing,else ninguang,else print,else procedure,else program,else read,else then,else while,else xiangling,else xiao,if Follows,if Uses,if beidou,if call,if cocogoat,if else,if hashtagcall,if hashtagelse,if hashtagif,if hashtagprint,if hashtagread,if hashtagthen,if hashtagwhile,if if,if johnlee,if keqing,if ninguang,if print,if procedure,if program,if read,if then,if while,if xiangling,if xiao,main Follows,main Uses,main beidou,main call,main cocogoat,main else,main hashtagcall,main hashtagelse,main hashtagif,main hashtagprint,main hashtagprocedure,main hashtagread,main hashtagthen,main hashtagwhile,main if,main johnlee,main keqing,main nian,main ninguang,main print,main procedure,main program,main read,main then,main while,main xiangling,main xiao,nian Follows,nian Uses,nian beidou,nian call,nian cocogoat,nian else,nian hashtagcall,nian hashtagelse,nian hashtagif,nian hashtagprint,nian hashtagprocedure,nian hashtagread,nian hashtagthen,nian hashtagwhile,nian if,nian johnlee,nian keqing,nian nian,nian ninguang,nian print,nian procedure,nian program,nian read,nian then,nian while,nian xiangling,nian xiao,print Follows,print Uses,print beidou,print call,print cocogoat,print else,print hashtagcall,print hashtagelse,print hashtagprint,print hashtagwhile,print if,print johnlee,print keqing,print ninguang,print print,print procedure,print program,print read,print then,print while,print xiangling,print xiao,procedure Follows,procedure Uses,procedure beidou,procedure call,procedure cocogoat,procedure else,procedure hashtagcall,procedure hashtagelse,procedure hashtagif,procedure hashtagprint,procedure hashtagprocedure,procedure hashtagread,procedure hashtagthen,procedure hashtagwhile,procedure if,procedure johnlee,procedure keqing,procedure ninguang,procedure print,procedure procedure,procedure program,procedure read,procedure then,procedure while,procedure xiangling,procedure xiao,program Follows,program Uses,program beidou,program call,program cocogoat,program else,program hashtagelse,program if,program johnlee,program keqing,program nian,program ninguang,program print,program procedure,program program,program read,program then,program while,program xiangling,program xiao,read Follows,read Uses,read beidou,read call,read cocogoat,read else,read hashtagcall,read hashtagelse,read hashtagprint,read hashtagread,read hashtagwhile,read if,read johnlee,read keqing,read ninguang,read print,read procedure,read program,read read,read then,read while,read xiangling,read xiao,then Follows,then Uses,then beidou,then call,then cocogoat,then else,then hashtagelse,then hashtagthen,then hashtagwhile,then if,then johnlee,then keqing,then ninguang,then print,then procedure,then program,then read,then then,then while,then xiangling,then xiao,while Follows,while Uses,while beidou,while call,while cocogoat,while else,while hashtagelse,while hashtagwhile,while if,while johnlee,while keqing,while ninguang,while print,while procedure,while program,while read,while then,while while,while xiangling,while xiao
+5000
+31 - Select p, true Modifies(p, known)
+procedure p;
+Select p such that Modifies(p, "hashtagthen")
+nian,main,procedure,if,then
+5000
+32 - Select p, false Modifies(p, known)
+procedure p;
+Select p such that Modifies(p, "bluepoison")
+none
+5000
+33 - Select Boolean, Modifies(known-assign, _)
+
+Select BOOLEAN such that Modifies(13, _)
+TRUE
+5000
+34 - Select Boolean, Modifies(known-assign, v)
+variable v;
+Select v such that Modifies(27, v)
+print
+5000
+35 - Select Boolean, true Modifies(known-assign, known)
+
+Select BOOLEAN such that Modifies(112, "beidou")
+TRUE
+5000
+36 - Select Boolean, false Modifies(known-assign, known)
+
+Select BOOLEAN such that Modifies(67, "uses")
+FALSE
+5000
+37 - Select Boolean, Modifies(known-read, _)
+
+Select BOOLEAN such that Modifies(49, _)
+TRUE
+5000
+38 - Select Boolean, Modifies(known-read, v)
+variable v;
+Select v such that Modifies(32, v)
+read
+5000
+39 - Select Boolean, true Modifies(known-read, known)
+
+Select BOOLEAN such that Modifies(87, "Uses")
+TRUE
+5000
+40 - Select Boolean, false Modifies(known-read, known)
+
+Select BOOLEAN such that Modifies(87, "uses")
+FALSE
+5000
+41 - Select Boolean, Modifies(known-call, _)
+
+Select BOOLEAN such that Modifies(8, _)
+TRUE
+5000
+42 - Select Boolean, Modifies(known-call, v)
+variable v;
+Select v such that Modifies(94, v)
+then,johnlee,keqing,if,Uses,cocogoat,xiao,hashtagwhile,while,ninguang,beidou,xiangling,print,read,call,else,procedure,program,Follows,hashtagelse
+5000
+43 - Select Boolean, true Modifies(known-call, known)
+
+Select BOOLEAN such that Modifies(1, "beidou")
+TRUE
+5000
+44 - Select Boolean, false Modifies(known-call, known)
+
+Select BOOLEAN such that Modifies(79, "hashtagprocedure")
+FALSE
+5000
+45 - Select Boolean, Modifies(known-if, _)
+
+Select BOOLEAN such that Modifies(14, _)
+TRUE
+5000
+46 - Select Boolean, Modifies(known-if, v)
+variable v;
+Select v such that Modifies(85, v)
+call,Uses,hashtagif
+5000
+47 - Select Boolean, true Modifies(known-if, known)
+
+Select BOOLEAN such that Modifies(34, "hashtagprint")
+TRUE
+5000
+48 - Select Boolean, false Modifies(known-if, known)
+
+Select BOOLEAN such that Modifies(85, "cAll")
+FALSE
+5000
+49 - Select Boolean, Modifies(known-while, _)
+
+Select BOOLEAN such that Modifies(62, _)
+TRUE
+5000
+50 - Select Boolean, Modifies(known-while, v)
+variable v;
+Select v such that Modifies(47, v)
+if,cocogoat,Follows,call,procedure,hashtagcall
+5000
+51 - Select Boolean, true Modifies(known-while, known)
+
+Select BOOLEAN such that Modifies(62, "while")
+TRUE
+5000
+52 - Select Boolean, false Modifies(known-while, known)
+
+Select BOOLEAN such that Modifies(77, "hashtagprocedure")
+FALSE
+5000
+53 - Select Boolean, Modifies(known-procedure, _)
+
+Select BOOLEAN such that Modifies("program", _)
+TRUE
+5000
+54 - Select Boolean, Modifies(known-procedure, v)
+variable v;
+Select v such that Modifies("else", v)
+print,read,call,while,if,johnlee,then,procedure,else,cocogoat,Follows,program,xiangling,beidou,keqing,hashtagelse,Uses,ninguang,xiao
+5000
+55 - Select Boolean, true Modifies(known-procedure, known)
+
+Select BOOLEAN such that Modifies("read", "hashtagread")
+TRUE
+5000
+56 - Select Boolean, false Modifies(known-procedure, known)
+
+Select BOOLEAN such that Modifies("then", "hashtagcall")
+FALSE
+5000
