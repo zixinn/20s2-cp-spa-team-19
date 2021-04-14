@@ -783,4 +783,23 @@ assign a;
 Select a with "lesion" = a.varName 
 none
 5000
-
+127 - Call with stmt# with clause
+call c;
+Select c with c.stmt# = 11
+11
+5000
+128 - Call with stmt# with clause, no such call
+call c;
+Select c with c.stmt# = 17
+none
+5000
+129 - Call with stmt# with clause, and
+stmt s; call c;
+Select s with s.stmt# = 11 and c.procName = "something"
+11
+5000
+130 - Call with stmt# with clause, and
+stmt s; call c;
+Select s with s.stmt# = 18 and c.procName = "something"
+18
+5000

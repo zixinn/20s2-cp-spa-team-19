@@ -1218,199 +1218,20 @@ procedure p;
 Select BOOLEAN such that Uses("Honeysuckle", "x") 
 TRUE
 5000
-
-
-
-
-115 - Calls(IDENT, p-syn) and Calls(IDENT, p-syn)
-procedure p;
-Select p such that Calls("Honeysuckle", p) and Calls("something", p)
-shikashi
-5000
-116 - Calls(IDENT, p-syn) and Calls(p-syn, IDENT)
-procedure p;
-Select p such that Calls("Honeysuckle", p) and Calls(p, "shikashi")
-something
-5000
-117 - Calls(p-syn, IDENT) and Calls(p-syn, IDENT)
-procedure p;
-Select p such that Calls(p, "shikashi") and Calls(p, "something")
-Honeysuckle
-5000
-118 - Calls(p-syn, IDENT) and Calls(IDENT, p-syn)
-procedure p;
-Select p such that Calls(p, "shikashi") and Calls("Honeysuckle", p)
-something
-5000
-119 - Calls(IDENT, p-syn) and Calls(p-syn, p-syn)
-procedure p1, p2;
-Select <p1, p2> such that Calls("Honeysuckle", p1) and Calls(p1, p2)
-something shikashi
-5000
-120 - Calls(p-syn, IDENT) and Calls(p-syn, p-syn)
-procedure p1, p2;
-Select <p1, p2> such that Calls(p1, "shikashi") and Calls(p1, p2)
-Honeysuckle something, Honeysuckle shikashi, something shikashi
-5000
-121 - Calls(p-syn, p-syn) and Calls(IDENT, p-syn)
-procedure p1, p2;
-Select <p1, p2> such that Calls(p1, p2) and Calls("Honeysuckle", p1)
-something shikashi
-5000
-122 - Calls(p-syn, p-syn) and Calls(p-syn, IDENT)
-procedure p1, p2;
-Select <p1, p2> such that Calls(p1, p2) and Calls(p1, "shikashi") 
-Honeysuckle something, Honeysuckle shikashi, something shikashi
-5000
-123 - Calls(p-syn, p-syn) and Calls(p-syn, p-syn)
-procedure p, q, r;
-Select q such that Calls(p, q) and Calls(q, r)
-something
-5000
-124 - Calls(p-syn, p-syn) with p.procName
-procedure p, q;
-Select p such that Calls(p, q) with p.procName = "Honeysuckle"
-Honeysuckle
-5000
-125 - Calls(p-syn, p-syn) with p.procName
-procedure p, q;
-Select p such that Calls(p, q) with "Honeysuckle" = p.procName
-Honeysuckle
-5000
-126 - Call with select procName
-procedure p, q;
-Select p.procName such that Calls(p, q)
-Honeysuckle, something
-5000
-127 - Call with stmt# with clause
-call c;
-Select c with c.stmt# = 11
-11
-5000
-128 - Call with stmt# with clause, no such call
-call c;
-Select c with c.stmt# = 17
-none
-5000
-129 - Call with stmt# with clause, and
-stmt s; call c;
-Select s with s.stmt# = 11 and c.procName = "something"
-11
-5000
-130 - Call with stmt# with clause, and
-stmt s; call c;
-Select s with s.stmt# = 18 and c.procName = "something"
-18
-5000
-131 - Call with stmt# with clause, such that, and
-procedure p, q, r;
-Select q such that Calls(p, q) and Calls(q, r) with q.procName = "shikashi"
-none
-5000
-132 - Call with stmt# with clause, such that, and
-procedure p, q, r;
-Select q such that Calls(p, q) and Calls(q, r) with q.procName = "something"
-something
-5000
-133 - Select tuple for Call with such that, and
-procedure p, q, r;
-Select <p,r> such that Calls(p, q) and Calls(q, r)
-Honeysuckle shikashi
-5000
-134 - Select tuple for Call with procName with clause, such that, and
-procedure p, q, r;
-Select <p,q,r> such that Calls(p, q) and Calls(q, r) with q.procName = "something"
-Honeysuckle something shikashi
-5000
-135 - While statement that contains a call statement
-while w; call c;
-Select w pattern w(_, _) such that Parent(w, c)
-none
-5000
-136 - Call() Modifies()
-call c; procedure p, p1, p2; read r; stmt s, s1, s2; assign a, a1; while w; if ifs; variable v;
-Select <v> such that Calls(p, p1) and Modifies(p1, v)
-lesion, melody, ardent, guru, pardon, z, teacup0, x
-5000
-137 - Call() Modifies()
-call c; procedure p, p1, p2; read r; stmt s, s1, s2; assign a, a1; while w; if ifs; variable v;
-Select <v> such that  Modifies(p, v) and Calls(p, p1) 
-lesion, x, teacup0, melody, ardent, guru, z, pardon
-5000
-138 - Call() UsesP()
-call c; procedure p, p1, p2; read r; stmt s, s1, s2; assign a, a1; while w; if ifs; variable v;
-Select <v> such that  Uses(p1, v) and Calls(p, p1) 
-something, y, teacup0, bluebell, lesion, coeur, cerveau, boro, guru
-5000
-139 - Call() UsesP()
-call c; procedure p, p1, p2; read r; stmt s, s1, s2; assign a, a1; while w; if ifs; variable v;
-Select <v> such that  Calls(p, p1) and Uses(p, v) 
-something, y, teacup0, bluebell, lesion, coeur, cerveau, boro, guru, gossamer, maison, melody, x
-5000
-140 - Calls*() Modifies()
-call c; procedure p, p1, p2; read r; stmt s, s1, s2; assign a, a1; while w; if ifs; variable v;
-Select <v> such that Calls*(p, p1) and Modifies(p1, v)
-lesion, melody, ardent, guru, pardon, z, teacup0, x
-5000
-141 - Calls*() Modifies()
-call c; procedure p, p1, p2; read r; stmt s, s1, s2; assign a, a1; while w; if ifs; variable v;
-Select <v> such that  Modifies(p, v) and Calls*(p, p1) 
-lesion, x, teacup0, melody, ardent, guru, z, pardon
-5000
-142 - Calls*() UsesP()
-call c; procedure p, p1, p2; read r; stmt s, s1, s2; assign a, a1; while w; if ifs; variable v;
-Select <v> such that  Uses(p1, v) and Calls*(p, p1) 
-something, y, teacup0, bluebell, lesion, coeur, cerveau, boro, guru
-5000
-143 - Calls*() UsesP()
-call c; procedure p, p1, p2; read r; stmt s, s1, s2; assign a, a1; while w; if ifs; variable v;
-Select <v> such that  Calls*(p, p1) and Uses(p, v) 
-something, y, teacup0, bluebell, lesion, coeur, cerveau, boro, guru, gossamer, maison, melody, x
-5000
-144 - Call Statement (Modifies) Uses(stmt#, v-syn) Modifies(stmt#, v-syn)
-variable v;
-Select v such that Modifies(11, v)
-teacup0, x, lesion, melody, z, ardent, guru, pardon
-5000
 145 - Call Statement (Uses)
 variable v;
 Select v such that Uses(11, v)
 something, y, teacup0, bluebell, lesion, coeur, cerveau, boro, guru
-5000
-146 - Call Statement (Modifies)
-variable v;
-Select v such that Modifies(12, v)
-z, ardent, guru, pardon
 5000
 147 - Call Statement (Uses)
 variable v;
 Select v such that Uses(12, v)
 boro, guru
 5000
-148 - Select all call statements
-call c;
-Select c
-11, 12, 20
-5000
 149 - All call Statement (Uses)
 variable v; call c;
 Select v such that Uses(c, v)
 something, y, teacup0, bluebell, lesion, coeur, cerveau, boro, guru
-5000
-150 - All call Statement (Modifies)
-variable v; call c;
-Select v such that Modifies(c, v)
-teacup0, x, lesion, melody, z, ardent, guru, pardon
-5000
-151 - All procedures
-procedure p;
-Select p
-Honeysuckle, something, shikashi
-5000
-152 - All procedures (Modifies)
-variable v; procedure p;
-Select v such that Modifies(p, v)
-teacup0, x, lesion, melody, z, ardent, guru, pardon
 5000
 153 - All procedures (Uses)
 variable v; procedure p; 
@@ -1441,26 +1262,6 @@ Select pl such that Uses(pl, "x")
 prog_line pl;
 Select pl such that Uses(pl, "bluebell")
 2, 11, 15, 18
-5000
-159 - ModifiesS (pl-syn, v-syn)
-prog_line pl; variable v;
-Select <pl, v> such that Modifies(pl, v)
-2 lesion, 4 x, 5 lesion, 7 x, 8 x, 16 x, 17 lesion, 18 lesion, 21 melody, 22 z, 25 z, 26 guru, 12 z, 12 guru, 12 pardon, 27 pardon, 24 ardent, 13 teacup0, 11 z, 11 ardent, 20 z, 20 ardent, 20 guru, 20 pardon, 11 guru, 11 pardon, 11 lesion, 11 melody, 11 teacup0, 11 x, 12 ardent, 15 ardent, 15 guru, 15 pardon, 15 lesion, 3 x, 3 lesion, 6 x, 15 x, 15 z, 23 ardent, 23 z, 23 guru, 23 pardon
-5000
-160 - ModifiesS(stmt#, v-syn)
-variable v;
-Select v such that Modifies(12, v)
-z, ardent, guru, pardon
-5000
-161 - 
-variable v;
-Select v such that Modifies(20, v)
-z, ardent, guru, pardon
-5000
-162 - Procedure something (Modifies)
-variable v;
-Select v such that Modifies(11, v)
-teacup0, x, lesion, melody, z, ardent, guru, pardon
 5000
 163 - Procedure shikashi (Uses) UsesS(stmt#, v-syn)
 variable v;
