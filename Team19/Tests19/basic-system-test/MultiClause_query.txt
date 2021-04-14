@@ -1,0 +1,266 @@
+1 - no synonym in clauses
+constant c;
+Select c such that Next(1,2) and Modifies(18, "lesion") such that Calls("something", "shikashi") with 1 = 1
+1,2,5,8,23,56,258080
+5000
+2 - no common synonym in clauses (3 clauses)
+assign a, aa; variable v; procedure p, p1;
+Select <a, aa, v, p, p1> such that Next*(a, 7) pattern aa(v, _"lesion*2"_) such that Calls(p, "something")
+2 7 x Honeysuckle Honeysuckle, 2 8 x Honeysuckle Honeysuckle, 2 7 x Honeysuckle something, 2 8 x Honeysuckle something, 2 7 x Honeysuckle shikashi, 2 8 x Honeysuckle shikashi, 4 7 x Honeysuckle Honeysuckle, 4 8 x Honeysuckle Honeysuckle, 4 7 x Honeysuckle something, 4 8 x Honeysuckle something, 4 7 x Honeysuckle shikashi, 4 8 x Honeysuckle shikashi, 5 7 x Honeysuckle Honeysuckle, 5 8 x Honeysuckle Honeysuckle, 5 7 x Honeysuckle something, 5 8 x Honeysuckle something, 5 7 x Honeysuckle shikashi, 5 8 x Honeysuckle shikashi
+5000
+3 - no common synonym in clauses (4 clauses)
+constant c; procedure p; variable v; stmt s, s1; while w; if ifs;
+Select v.varName such that Uses(p, v) and Next(s, s1) with c.value = ifs.stmt# with 54321 = 54321
+teacup0, lesion, bluebell, melody, maison, gossamer, x, something, coeur, cerveau, boro, guru, y
+5000
+4 - no common synonym in clauses (5 clauses)
+assign a, a1, a2; if ifs; while w; variable v, v1; stmt s, s1;
+Select v such that Next(a, ifs) pattern w(v, _) with s.stmt# = 6 and a1.stmt# = s1.stmt# pattern a2(v1, _"lesion*2"_)
+melody, maison
+5000
+5 - 1 common synonym in clauses (2 clauses)
+if ifs; call c; assign a;
+Select c.procName such that Next*(a, a) pattern a("x", _)
+shikashi, something
+5000
+6 - 1 common synonym in clauses (3 clauses)
+assign a; if ifs;
+Select a.stmt# pattern a("lesion", _) such that Next*(a, 15) and Parent(6, 7)
+17, 18
+5000
+7 - 1 common synonym in clauses (4 clauses)
+prog_line s; while w; variable v; assign a;
+Select <s, w> such that Parent*(w, _) pattern w("melody", _) and w(v, _) with w.stmt# = s
+3 3
+5000
+8 - 1 common synonym in clauses (5 clauses)
+assign a; if ifs; variable v, v1; stmt s;
+Select a such that Uses(a, v) pattern a("x", _) with a.stmt# = s.stmt# and v1.varName = "lesion" such that Next(ifs, a)
+7, 8
+5000
+9 - 2 common synonym in clauses (3 clauses)
+variable v, v1; assign a;
+Select <a, v, v1> such that Uses(a, v) pattern a(v, _) with v.varName = v1.varName
+26 guru guru
+5000
+10 - 2 common synonym in clauses (4 clauses)
+if ifs; while w; variable v; call c;
+Select BOOLEAN pattern ifs(v, _, _) and w(v,_) such that Next(ifs, w) and Modifies(c, v)
+FALSE
+5000
+11 - 2 common synonym in clauses (5 clauses)
+constant c; prog_line pl; while w; variable v; call ca;
+Select c.value with c.value = pl such that Next*(pl, w) pattern w(v, _) such that Parent*(w, pl) with ca.stmt# = pl
+none
+5000
+12 - chains
+while w; assign a; if ifs; variable v;
+Select w such that Parent*(w, a) and Next*(a, ifs) pattern ifs(v, _, _) with v.varName = "lesion"
+3
+5000
+13 - chains
+assign a, a1; while w; variable v, v2; call call; stmt s; prog_line pl;
+Select <a, v, call, v2> pattern a(v, "((23   + 1)/bluebell      /5)") and a1(v, _) such that Uses(a1, v2) and Modifies(call, v2) with call.stmt# = pl and pl = pl
+18 lesion 11 teacup0, 2 lesion 11 teacup0
+5000
+14 - chains
+while w, w1, w2, w3, w4, w5; assign a; variable v, v2;
+Select w.stmt# such that Parent*(w, w1) and Next(w1, w2) and Parent(w2, w3) pattern w3(v, _) and w4(v, _) with w4.stmt# = w5.stmt# such that Uses(w5, v2) pattern a(v2, _)
+none
+5000
+15 - Query 12 dont chain (test timing)
+while w; assign a; if ifs; variable v;
+Select w pattern ifs(v, _, _) such that Parent*(w, a) with v.varName = "gossamer" such that Next*(a, ifs)
+3
+5000
+16 - Query 13 dont chain (test timing)
+assign a, a1; while w; variable v, v2; call call; stmt s; prog_line pl;
+Select <a, v, call, v2> pattern a(v, "((23   + 1)/bluebell      /5)") such that Uses(a1, v2) with call.stmt# = pl pattern a1(v, _) such that Modifies(call, v2) with pl = pl
+18 lesion 11 teacup0, 2 lesion 11 teacup0
+5000
+18 - cycles
+print p; while w;
+Select <p, w> such that Next*(p, p) and Parent(w, p)
+19 15
+5000
+19 - cycles
+variable v, v1; assign a; call call; procedure pr;
+Select v pattern a(v, _) such that Modifies(pr, v) with pr.procName = call.procName such that Next*(a, call)
+lesion, x
+5000
+20 - wildcards
+assign a; if ifs; while w;
+Select BOOLEAN such that Next(_, _) and Modifies(_, _) and Uses(_, _) and Follows*(_, _) and Calls*(_, _) and Parent(_, _) pattern a(_, _) and ifs(_, _, _) and w(_, _) with 234 = 234 and "hello" = "hello"
+FALSE
+5000
+21 - wildcards
+assign a; if ifs; while w;
+Select BOOLEAN such that Next(_, _) and Follows*(_, _) and Calls*(_, _) and Parent(_, _) pattern a(_, _) and ifs(_, _, _) and w(_, _) with 234 = 234 and "hello" = "hello"
+TRUE
+5000
+22 - 4 with, all pattern, 5 such that, w2(_,_) instead of w(_,_), since stmt#15 isnt accepted for w(_,_)
+stmt s; assign a; print pr; read re; if ifs; while w, w2; constant cons; call c; variable v; procedure p, p1;
+Select re with p.procName = "Honeysuckle" and c.procName = p1.procName and ifs.stmt# = cons.value and w.stmt# = 15  such that Next(16, _) and Follows*(re, pr) and Modifies(a, _) and Calls(p, p1) and Uses(pr, v) pattern a(_, _) and ifs(_, _, _) and w2(_, _) 
+13
+5000
+23 - multiple groups (2 groups)
+assign a; variable v; stmt s; read r; while w; call c;
+Select <a, c> pattern a(v, _"5"_) with a.stmt# = s.stmt# such that Modifies(s, v) such that Next*(c, c) and Parent(w, c)
+18 20, 2 20
+5000
+24 - multiple groups (2 groups)
+assign a, aa; variable v, v1; procedure p; prog_line pl; constant c; while w; call ca; if ifs;
+Select <a, pl> such that Next*(a, 4) pattern aa(v, "2+8") such that Calls(p, "shikashi") with c.value = pl such that Next*(aa, pl) pattern a(v1, _) such that Follows*(aa, pl) with ifs.stmt# = pl
+2 23, 4 23, 5 23
+5000
+25 - multiple groups (3 groups)
+if ifs; variable v, v1, v2; read r; call c; constant constant; print print; assign a;
+Select <ifs, constant, v2> pattern ifs(v, _ , _ ) such that Next(ifs, r) and Uses(c, v1) with ifs.stmt# = constant.value and print.varName = c.procName such that Uses(a, v2)
+23 23 bluebell, 23 23 cerveau, 23 23 coeur, 23 23 guru, 23 23 lesion, 23 23 teacup0, 23 23 y 
+5000
+26 - multiple groups (4 groups)
+while w, w1, w2; assign a, a1; if ifs, ifs1; variable v, v1; print p; constant constant; call c; stmt s;
+Select <w, p, v1, c> such that Parent*(w, a) and Next*(a, ifs) pattern ifs(v, _, _) with v.varName = "lesion" such that Next*(a, a) and Parent(w1, a) such that Modifies(a, "x") pattern w2(v1, _) and a1(v1, _) with constant.value = s.stmt# such that Follows*(s,c)
+3 1 melody 11, 3 1 melody 12, 3 10 melody 11, 3 10 melody 12, 3 14 melody 12, 3 19 melody 11, 3 9 melody 12, 3 14 melody 11, 3 19 melody 12, 3 9 melody 11
+5000
+27 - multiple groups (one empty result)
+if ifs; variable v, v1; while w; call c;
+Select w pattern ifs(v, _, _) and w(v,_) such that Next(ifs, w) and Modifies(c, v1)
+none
+5000
+28 - invalid (syntax)
+if ifs; variable v, v1; while w; call c;
+Select BOOLEAN pattern ifs(v, _, _) and w(v,_) and Next(ifs, w) and Modifies(c, v1)
+none
+5000
+29 - invalid (syntax)
+read r; print p; variable v;
+Select BOOLEAN such that Modifies(r, v) and Uses(p, v) abc pattern a(v, _)
+none
+5000
+30 - invalid (semantic)
+procedure p; stmt s; print print; assign a; read read;
+Select BOOLEAN such that Next*(read, print) with read.varName = print.varName such that Parent*(p, s) 
+FALSE
+5000
+31 - Calls(IDENT, p-syn) and Calls(IDENT, p-syn)
+procedure p;
+Select p such that Calls("Honeysuckle", p) and Calls("something", p)
+shikashi
+5000
+32 - Calls(IDENT, p-syn) and Calls(p-syn, IDENT)
+procedure p;
+Select p such that Calls("Honeysuckle", p) and Calls(p, "shikashi")
+something
+5000
+33 - Calls(p-syn, IDENT) and Calls(p-syn, IDENT)
+procedure p;
+Select p such that Calls(p, "shikashi") and Calls(p, "something")
+Honeysuckle
+5000
+34 - Calls(p-syn, IDENT) and Calls(IDENT, p-syn)
+procedure p;
+Select p such that Calls(p, "shikashi") and Calls("Honeysuckle", p)
+something
+5000
+35 - Calls(IDENT, p-syn) and Calls(p-syn, p-syn)
+procedure p1, p2;
+Select <p1, p2> such that Calls("Honeysuckle", p1) and Calls(p1, p2)
+something shikashi
+5000
+36 - Calls(p-syn, IDENT) and Calls(p-syn, p-syn)
+procedure p1, p2;
+Select <p1, p2> such that Calls(p1, "shikashi") and Calls(p1, p2)
+Honeysuckle something, Honeysuckle shikashi, something shikashi
+5000
+37 - Calls(p-syn, p-syn) and Calls(IDENT, p-syn)
+procedure p1, p2;
+Select <p1, p2> such that Calls(p1, p2) and Calls("Honeysuckle", p1)
+something shikashi
+5000
+38 - Calls(p-syn, p-syn) and Calls(p-syn, IDENT)
+procedure p1, p2;
+Select <p1, p2> such that Calls(p1, p2) and Calls(p1, "shikashi") 
+Honeysuckle something, Honeysuckle shikashi, something shikashi
+5000
+39 - Calls(p-syn, p-syn) and Calls(p-syn, p-syn)
+procedure p, q, r;
+Select q such that Calls(p, q) and Calls(q, r)
+something
+5000
+40 - Calls(p-syn, p-syn) with p.procName
+procedure p, q;
+Select p such that Calls(p, q) with p.procName = "Honeysuckle"
+Honeysuckle
+5000
+41 - Calls(p-syn, p-syn) with p.procName
+procedure p, q;
+Select p such that Calls(p, q) with "Honeysuckle" = p.procName
+Honeysuckle
+5000
+42 - Call with stmt# with clause, such that, and
+procedure p, q, r;
+Select q such that Calls(p, q) and Calls(q, r) with q.procName = "shikashi"
+none
+5000
+43 - Call with stmt# with clause, such that, and
+procedure p, q, r;
+Select q such that Calls(p, q) and Calls(q, r) with q.procName = "something"
+something
+5000
+44 - Select tuple for Call with such that, and
+procedure p, q, r;
+Select <p,r> such that Calls(p, q) and Calls(q, r)
+Honeysuckle shikashi
+5000
+45 - Select tuple for Call with procName with clause, such that, and
+procedure p, q, r;
+Select <p,q,r> such that Calls(p, q) and Calls(q, r) with q.procName = "something"
+Honeysuckle something shikashi
+5000
+46 - While statement that contains a call statement
+while w; call c;
+Select w pattern w(_, _) such that Parent(w, c)
+none
+5000
+47 - Call() Modifies()
+call c; procedure p, p1, p2; read r; stmt s, s1, s2; assign a, a1; while w; if ifs; variable v;
+Select <v> such that Calls(p, p1) and Modifies(p1, v)
+lesion, melody, ardent, guru, pardon, z, teacup0, x
+5000
+48 - Call() Modifies()
+call c; procedure p, p1, p2; read r; stmt s, s1, s2; assign a, a1; while w; if ifs; variable v;
+Select <v> such that  Modifies(p, v) and Calls(p, p1) 
+lesion, x, teacup0, melody, ardent, guru, z, pardon
+5000
+49 - Call() UsesP()
+call c; procedure p, p1, p2; read r; stmt s, s1, s2; assign a, a1; while w; if ifs; variable v;
+Select <v> such that  Uses(p1, v) and Calls(p, p1) 
+something, y, teacup0, bluebell, lesion, coeur, cerveau, boro, guru
+5000
+50 - Call() UsesP()
+call c; procedure p, p1, p2; read r; stmt s, s1, s2; assign a, a1; while w; if ifs; variable v;
+Select <v> such that  Calls(p, p1) and Uses(p, v) 
+something, y, teacup0, bluebell, lesion, coeur, cerveau, boro, guru, gossamer, maison, melody, x
+5000
+51 - Calls*() Modifies()
+call c; procedure p, p1, p2; read r; stmt s, s1, s2; assign a, a1; while w; if ifs; variable v;
+Select <v> such that Calls*(p, p1) and Modifies(p1, v)
+lesion, melody, ardent, guru, pardon, z, teacup0, x
+5000
+52 - Calls*() Modifies()
+call c; procedure p, p1, p2; read r; stmt s, s1, s2; assign a, a1; while w; if ifs; variable v;
+Select <v> such that  Modifies(p, v) and Calls*(p, p1) 
+lesion, x, teacup0, melody, ardent, guru, z, pardon
+5000
+53 - Calls*() UsesP()
+call c; procedure p, p1, p2; read r; stmt s, s1, s2; assign a, a1; while w; if ifs; variable v;
+Select <v> such that  Uses(p1, v) and Calls*(p, p1) 
+something, y, teacup0, bluebell, lesion, coeur, cerveau, boro, guru
+5000
+54 - Calls*() UsesP()
+call c; procedure p, p1, p2; read r; stmt s, s1, s2; assign a, a1; while w; if ifs; variable v;
+Select <v> such that  Calls*(p, p1) and Uses(p, v) 
+something, y, teacup0, bluebell, lesion, coeur, cerveau, boro, guru, gossamer, maison, melody, x
+5000
+

@@ -1,0 +1,1286 @@
+1 - wildcard, wildcard
+stmt s;
+Select s such that Uses(_, _)
+none
+5000
+2 - wildcard, stmt
+stmt s;
+Select s such that Uses(_, s)
+none
+5000
+3 - wildcard, read
+read r;
+Select BOOLEAN such that Uses(_, r)
+FALSE
+5000
+4 - wildcard, print
+print p;
+Select BOOLEAN such that Uses(_, p)
+FALSE
+5000
+5 - wildcard, call
+call v;
+Select BOOLEAN such that Uses(_, v)
+FALSE
+5000
+6 - wildcard, while
+while v;
+Select BOOLEAN such that Uses(_, v)
+FALSE
+5000
+7 - wildcard, if
+if v;
+Select BOOLEAN such that Uses(_, v)
+FALSE
+5000
+8 - wildcard, assign
+assign v;
+Select BOOLEAN such that Uses(_, v)
+FALSE
+5000
+9 - wildcard, variable
+variable v;
+Select BOOLEAN such that Uses(_, v)
+FALSE
+5000
+10 - wildcard, constant
+constant v;
+Select v such that Uses(_, v)
+none
+5000
+11 - wildcard, prog_line
+prog_line v;
+Select v such that Uses(_, v)
+none
+5000
+12 - wildcard, procedure
+procedure v;
+Select v such that Uses(_, v)
+none
+5000
+13 - wildcard, unknown synonym
+constant v;
+Select v such that Uses(_, v1)
+none
+5000
+14 - wildcard, exact
+constant v;
+Select v such that Uses(_, "lesion")
+none
+5000
+15 - stmt, wildcard
+stmt s;
+Select s such that Uses(s, _)
+1,2,3,4,5,6,7,8,9,10,11,12,14,15,16,17,18,19,20,21,23,26
+5000
+16 - stmt, stmt
+stmt s, s1;
+Select s such that Uses(s, s1)
+none
+5000
+17 - stmt, read
+stmt s; read r;
+Select BOOLEAN such that Uses(s, r)
+FALSE
+5000
+18 - stmt, print
+stmt s; print p;
+Select BOOLEAN such that Uses(s, p)
+FALSE
+5000
+19 - stmt, call
+stmt s; call v;
+Select BOOLEAN such that Uses(s, v)
+FALSE
+5000
+20 - stmt, while
+stmt s;while v;
+Select BOOLEAN such that Uses(s, v)
+FALSE
+5000
+21 - stmt, if
+stmt s; if v;
+Select BOOLEAN such that Uses(s, v)
+FALSE
+5000
+22 - stmt, assign
+stmt s; assign v;
+Select BOOLEAN such that Uses(s, v)
+FALSE
+5000
+23 - stmt, variable
+stmt s; variable v;
+Select BOOLEAN such that Uses(s, v)
+TRUE
+5000
+24 - stmt, constant
+stmt s; constant v;
+Select v such that Uses(s, v)
+none
+5000
+25 - stmt, prog_line
+stmt s; prog_line v;
+Select v such that Uses(s, v)
+none
+5000
+26 - stmt, procedure
+stmt s; procedure v;
+Select v such that Uses(s, v)
+none
+5000
+27 - stmt, unknown synonym
+stmt s;
+Select s such that Uses(s, v)
+none
+5000
+28 - stmt, exact
+stmt s; constant v;
+Select s such that Uses(s, "lesion")
+6,7,8,10,11,15,19
+5000
+29 - stmt, non exist variable
+stmt ssssssss;
+Select ssssssss such that Uses(ssssssss, "curry")
+none
+5000
+30 - stmt, procname
+stmt s;
+Select s such that Uses(s, "Honeysuckle")
+none
+5000
+31 - read, wildcard
+read s;
+Select s such that Uses(s, _)
+none
+5000
+32 - read, stmt
+read s; stmt s1;
+Select s such that Uses(s, s1)
+none
+5000
+33 - read, read
+read s; read r;
+Select BOOLEAN such that Uses(s, r)
+FALSE
+5000
+34 - read, print
+read s; print p;
+Select BOOLEAN such that Uses(s, p)
+FALSE
+5000
+35 - read, call
+read s; call v;
+Select BOOLEAN such that Uses(s, v)
+FALSE
+5000
+36 - read, while
+read s;while v;
+Select BOOLEAN such that Uses(s, v)
+FALSE
+5000
+37 - read, if
+read s; if v;
+Select BOOLEAN such that Uses(s, v)
+FALSE
+5000
+38 - read, assign
+read s; assign v;
+Select BOOLEAN such that Uses(s, v)
+FALSE
+5000
+39 - read, variable
+read s; variable v;
+Select <s, v.varName> such that Uses(s, v)
+none
+5000
+40 - read, constant
+read s; constant v;
+Select v such that Uses(s, v)
+none
+5000
+41 - read, prog_line
+read s; prog_line v;
+Select v such that Uses(s, v)
+none
+5000
+42 - read, procedure
+read s; procedure v;
+Select v such that Uses(s, v)
+none
+5000
+43 - read, unknown synonym
+read s;
+Select s such that Uses(s, v)
+none
+5000
+44 - read, exact
+read s; constant v;
+Select s such that Uses(s, "green1")
+none
+5000
+45 - print, wildcard
+print s;
+Select s such that Uses(s, _)
+1,9,10,14,19
+5000
+46 - print, stmt
+print s; stmt s1;
+Select s such that Uses(s, s1)
+none
+5000
+47 - print, read
+print s; read r;
+Select BOOLEAN such that Uses(s, r)
+FALSE
+5000
+48 - print, print
+print s; print p;
+Select BOOLEAN such that Uses(s, p)
+FALSE
+5000
+49 - print, call
+print s; call v;
+Select BOOLEAN such that Uses(s, v)
+FALSE
+5000
+50 - print, while
+print s;while v;
+Select BOOLEAN such that Uses(s, v)
+FALSE
+5000
+51 - print, if
+print s; if v;
+Select BOOLEAN such that Uses(s, v)
+FALSE
+5000
+52 - print, assign
+print s; assign v;
+Select BOOLEAN such that Uses(s, v)
+FALSE
+5000
+53 - print, variable
+print s; variable v;
+Select <s, v> such that Uses(s, v)
+1 teacup0,9 x,10 lesion, 19 lesion,14 something
+5000
+54 - print, constant
+print s; constant v;
+Select v such that Uses(s, v)
+none
+5000
+55 - print, progsline
+print s; prog_line v;
+Select v such that Uses(s, v)
+none
+5000
+56 - print, procedure
+print s; procedure v;
+Select v such that Uses(s, v)
+none
+5000
+57 - print, exact
+print s; constant v;
+Select s such that Uses(s, "something")
+14
+5000
+58 - print, variable not printed but exist
+print s;
+Select s such that Uses(s, "red1")
+none
+5000
+59 - call, wildcard
+call s;
+Select s such that Uses(s, _)
+11,12,20
+5000
+60 - call, stmt
+call s; stmt s1;
+Select s such that Uses(s, s1)
+none
+5000
+61 - call, read
+call s; read r;
+Select BOOLEAN such that Uses(s, r)
+FALSE
+5000
+62 - call, print
+call s; print p;
+Select BOOLEAN such that Uses(s, p)
+FALSE
+5000
+63 - call, call
+call s; call v;
+Select BOOLEAN such that Uses(s, v)
+FALSE
+5000
+64 - call, while
+call s;while v;
+Select BOOLEAN such that Uses(s, v)
+FALSE
+5000
+65 - call, if
+call s; if v;
+Select BOOLEAN such that Uses(s, v)
+FALSE
+5000
+66 - call, assign
+call s; assign v;
+Select BOOLEAN such that Uses(s, v)
+FALSE
+5000
+67 - call, variable
+call s; variable v;
+Select v such that Uses(s, v)
+boro, guru, bluebell, lesion, coeur, cerveau, y, teacup0, something
+5000
+68 - call, constant
+call s; constant v;
+Select v such that Uses(s, v)
+none
+5000
+69 - call, prog_line
+call s; prog_line v;
+Select v such that Uses(s, v)
+none
+5000
+70 - call, procedure
+call s; procedure v;
+Select v such that Uses(s, v)
+none
+5000
+71 - call, unknown synonym
+call s;
+Select s such that Uses(s, v)
+none
+5000
+72 - call, exact
+call s; constant v;
+Select s such that Uses(s, "bluebell")
+11
+5000
+73 - call, variable not modified by call but exist
+call s;
+Select s such that Uses(s, "x")
+none
+5000
+74 - while, wildcard
+while s;
+Select s such that Uses(s, _)
+3,15
+5000
+75 - while, stmt
+while s; stmt s1;
+Select s such that Uses(s, s1)
+none
+5000
+76 - while, read
+while s; read r;
+Select BOOLEAN such that Uses(s, r)
+FALSE
+5000
+77 - while, print
+while s; print p;
+Select BOOLEAN such that Uses(s, p)
+FALSE
+5000
+78 - while, call
+while s; call v;
+Select BOOLEAN such that Uses(s, v)
+FALSE
+5000
+79 - while, while
+while s;while v;
+Select BOOLEAN such that Uses(s, v)
+FALSE
+5000
+80 - while, if
+while s; if v;
+Select BOOLEAN such that Uses(s, v)
+FALSE
+5000
+81 - while, assign
+while s; assign v;
+Select BOOLEAN such that Uses(s, v)
+FALSE
+5000
+82 - while, variable
+while s; variable v;
+Select v such that Uses(s, v)
+y, teacup0, bluebell, lesion, guru, melody, boro, maison
+5000
+83 - while, constant
+while s; constant v;
+Select v such that Uses(s, v)
+none
+5000
+84 - while, prog_line
+while s; prog_line v;
+Select v such that Uses(s, v)
+none
+5000
+85 - while, procedure
+while s; procedure v;
+Select v such that Uses(s, v)
+none
+5000
+86 - while, unknown synonym
+while s;
+Select s such that Uses(s, v)
+none
+5000
+87 - while, exact
+while s; constant v;
+Select s such that Uses(s, "boro")
+15
+5000
+88 - if, wildcard
+if s;
+Select s such that Uses(s, _)
+6,23
+5000
+89 - if, stmt
+if s; stmt s1;
+Select s such that Uses(s, s1)
+none
+5000
+90 - if, read
+if s; read r;
+Select BOOLEAN such that Uses(s, r)
+FALSE
+5000
+91 - if, print
+if s; print p;
+Select BOOLEAN such that Uses(s, p)
+FALSE
+5000
+92 - if, call
+if s; call v;
+Select BOOLEAN such that Uses(s, v)
+FALSE
+5000
+93 - if, while
+if s;while v;
+Select BOOLEAN such that Uses(s, v)
+FALSE
+5000
+94 - if, if
+if s; if v;
+Select BOOLEAN such that Uses(s, v)
+FALSE
+5000
+95 - if, assign
+if s; assign v;
+Select BOOLEAN such that Uses(s, v)
+FALSE
+5000
+96 - if, variable
+if s; variable v;
+Select v such that Uses(s, v)
+boro, guru, lesion, x, gossamer
+5000
+97 - if, constant
+if s; constant v;
+Select v such that Uses(s, v)
+none
+5000
+98 - if, prog_line
+if s; prog_line v;
+Select v such that Uses(s, v)
+none
+5000
+99 - if, procedure
+if s; procedure v;
+Select v such that Uses(s, v)
+none
+5000
+100 - if, unknown synonym
+if s; 
+Select s such that Uses(s, v)
+none
+5000
+101 - if, exact
+if s; constant v;
+Select s such that Uses(s, "guru")
+23
+5000
+102 - assign, wildcard
+assign s;
+Select s such that Uses(s, _)
+2,4,5,7,8,16,17,18,21,26
+5000
+103 - assign, stmt
+assign s; stmt s1;
+Select s such that Uses(s, s1)
+none
+5000
+104 - assign, read
+assign s; read r;
+Select BOOLEAN such that Uses(s, r)
+FALSE
+5000
+105 - assign, print
+assign s; print p;
+Select BOOLEAN such that Uses(s, p)
+FALSE
+5000
+106 - assign, call
+assign s; call v;
+Select BOOLEAN such that Uses(s, v)
+FALSE
+5000
+107 - assign, while
+assign s;while v;
+Select BOOLEAN such that Uses(s, v)
+FALSE
+5000
+108 - assign, if
+assign s; if v;
+Select BOOLEAN such that Uses(s, v)
+FALSE
+5000
+109 - assign, assign
+assign s; assign v;
+Select BOOLEAN such that Uses(s, v)
+FALSE
+5000
+110 - assign, variable
+assign s; variable v;
+Select s such that Uses(s, v)
+2,4,5,7,8,16,17,18,21,26
+5000
+111 - assign, constant
+assign s; constant v;
+Select v such that Uses(s, v)
+none
+5000
+112 - assign, prog_line
+assign s; prog_line v;
+Select v such that Uses(s, v)
+none
+5000
+113 - assign, procedure
+assign s; procedure v;
+Select v such that Uses(s, v)
+none
+5000
+114 - assign, unknown synonym
+assign s;
+Select s such that Uses(s, v)
+none
+5000
+115 - assign, exact
+assign s; constant v;
+Select s such that Uses(s, "lesion")
+7,8
+5000
+116 - variable, wildcard
+variable s;
+Select s such that Uses(s, _)
+none
+5000
+117 - variable, stmt
+variable s; stmt s1;
+Select s such that Uses(s, s1)
+none
+5000
+118 - variable, read
+variable s; read r;
+Select BOOLEAN such that Uses(s, r)
+FALSE
+5000
+119 - variable, print
+variable s; print p;
+Select BOOLEAN such that Uses(s, p)
+FALSE
+5000
+120 - variable, call
+variable s; call v;
+Select BOOLEAN such that Uses(s, v)
+FALSE
+5000
+121 - variable, while
+variable s;while v;
+Select BOOLEAN such that Uses(s, v)
+FALSE
+5000
+122 - variable, if
+variable s; if v;
+Select BOOLEAN such that Uses(s, v)
+FALSE
+5000
+123 - variable, assign
+variable s; assign v;
+Select BOOLEAN such that Uses(s, v)
+FALSE
+5000
+124 - variable, variable
+variable s; variable v;
+Select v such that Uses(s, v)
+none
+5000
+125 - variable, constant
+variable s; constant v;
+Select v such that Uses(s, v)
+none
+5000
+126 - variable, prog_line
+variable s; prog_line v;
+Select v such that Uses(s, v)
+none
+5000
+127 - variable, procedure
+variable s; procedure v;
+Select v such that Uses(s, v)
+none
+5000
+128 - variable, unknown synonym
+variable s;
+Select s such that Uses(s, v)
+none
+5000
+129 - variable, exact
+variable s; constant v;
+Select s such that Uses(s, "ardent")
+none
+500
+130 - constant, wildcard
+constant s;
+Select s such that Uses(s, _)
+none
+5000
+131 - constant, stmt
+constant s; stmt s1;
+Select s such that Uses(s, s1)
+none
+5000
+132 - constant, read
+constant s; read r;
+Select BOOLEAN such that Uses(s, r)
+FALSE
+5000
+133 - constant, print
+constant s; print p;
+Select BOOLEAN such that Uses(s, p)
+FALSE
+5000
+134 - constant, call
+constant s; call v;
+Select BOOLEAN such that Uses(s, v)
+FALSE
+5000
+135 - constant, while
+constant s;while v;
+Select BOOLEAN such that Uses(s, v)
+FALSE
+5000
+136 - constant, if
+constant s; if v;
+Select BOOLEAN such that Uses(s, v)
+FALSE
+5000
+137 - constant, assign
+constant s; assign v;
+Select BOOLEAN such that Uses(s, v)
+FALSE
+5000
+138 - constant, variable
+constant s; variable v;
+Select v such that Uses(s, v)
+none
+5000
+139 - constant, constant
+constant s; constant v;
+Select v such that Uses(s, v)
+none
+5000
+140 - constant, prog_line
+constant s; prog_line v;
+Select v such that Uses(s, v)
+none
+5000
+141 - constant, procedure
+constant s; procedure v;
+Select v such that Uses(s, v)
+none
+5000
+142 - constant, unknown synonym
+constant s;
+Select s such that Uses(s, v)
+none
+5000
+143 - constant, exact
+constant s; constant v;
+Select s such that Uses(s, "duck")
+none
+500
+144 - prog_line, wildcard
+prog_line s;
+Select s such that Uses(s, _)
+1,2,3,4,5,6,7,8,9,10,11,12,14,15,16,17,18,19,20,21,23,26
+5000
+145 - prog_line, stmt
+prog_line s; stmt s1;
+Select s such that Uses(s, s1)
+none
+5000
+146 - prog_line, read
+prog_line s; read r;
+Select BOOLEAN such that Uses(s, r)
+FALSE
+5000
+147 - prog_line, print
+prog_line s; print p;
+Select BOOLEAN such that Uses(s, p)
+FALSE
+5000
+148 - prog_line, call
+prog_line s; call v;
+Select BOOLEAN such that Uses(s, v)
+FALSE
+5000
+150 - prog_line, while
+prog_line s;while v;
+Select BOOLEAN such that Uses(s, v)
+FALSE
+5000
+151 - prog_line, if
+prog_line s; if v;
+Select BOOLEAN such that Uses(s, v)
+FALSE
+5000
+152 - prog_line, assign
+prog_line s; assign v;
+Select BOOLEAN such that Uses(s, v)
+FALSE
+5000
+153 - prog_line, variable
+prog_line s; variable v;
+Select BOOLEAN such that Uses(s, v)
+TRUE
+5000
+154 - prog_line, constant
+prog_line s; constant v;
+Select v such that Uses(s, v)
+none
+5000
+155 - prog_line, prog_line
+prog_line s; prog_line v;
+Select v such that Uses(s, v)
+none
+5000
+156 - prog_line, procedure
+prog_line s; procedure v;
+Select v such that Uses(s, v)
+none
+5000
+157 - prog_line, unknown synonym
+prog_line s;
+Select s such that Uses(s, v)
+none
+5000
+158 - prog_line, exact
+prog_line s; constant v;
+Select s such that Uses(s, "boro")
+23,20,15,12,11
+5000
+159 - prog_line, non exist variable
+prog_line ssssssss;
+Select ssssssss such that Uses(ssssssss, "curry")
+none
+5000
+160 - stmt, procname
+prog_line s;
+Select s such that Uses(s, "colors")
+none
+5000
+161 - procedure, wildcard
+procedure s;
+Select s such that Uses(s, _)
+something, shikashi, Honeysuckle
+5000
+162 - procedure, stmt
+procedure s; stmt s1;
+Select s such that Uses(s, s1)
+none
+5000
+163 - procedure, read
+procedure s; read r;
+Select BOOLEAN such that Uses(s, r)
+FALSE
+5000
+164 - procedure, print
+procedure s; print p;
+Select BOOLEAN such that Uses(s, p)
+FALSE
+5000
+165 - procedure, call
+procedure s; call v;
+Select BOOLEAN such that Uses(s, v)
+FALSE
+5000
+166 - procedure, while
+procedure s;while v;
+Select BOOLEAN such that Uses(s, v)
+FALSE
+5000
+167 - procedure, if
+procedure s; if v;
+Select BOOLEAN such that Uses(s, v)
+FALSE
+5000
+168 - procedure, assign
+procedure s; assign v;
+Select BOOLEAN such that Uses(s, v)
+FALSE
+5000
+169 - procedure, variable
+procedure s; variable v;
+Select v such that Uses(s, v)
+teacup0, bluebell, melody, maison, x, lesion, something, y, coeur, cerveau, boro, guru, gossamer
+5000
+170 - procedure, constant
+procedure s; constant v;
+Select v such that Uses(s, v)
+none
+5000
+171 - procedure, prog_line
+procedure s; prog_line v;
+Select v such that Uses(s, v)
+none
+5000
+172 - procedure, procedure
+procedure s; procedure v;
+Select v such that Uses(s, v)
+none
+5000
+173 - procedure, unknown synonym
+procedure s;
+Select s such that Uses(s, v)
+none
+5000
+174 - procedure, exact
+procedure s; constant v;
+Select s such that Uses(s, "lesion")
+something, Honeysuckle
+5000
+175 - exact, wildcard
+procedure p;
+Select p such that Uses(4, _)
+Honeysuckle, something, shikashi
+5000
+176 - exact, stmt
+stmt s1;
+Select s such that Uses(16, s1)
+none
+5000
+177 - exact, read
+read r;
+Select BOOLEAN such that Uses(16, r)
+FALSE
+5000
+178 - exact, print
+print p;
+Select BOOLEAN such that Uses(22, p)
+FALSE
+5000
+179 - exact, call
+call v;
+Select BOOLEAN such that Uses(40, v)
+FALSE
+5000
+180 - exact, while
+while v;
+Select BOOLEAN such that Uses(50, v)
+FALSE
+5000
+181 - exact, if
+if v;
+Select BOOLEAN such that Uses(6, v)
+FALSE
+5000
+182 - exact, assign
+assign v;
+Select BOOLEAN such that Uses("colors", v)
+FALSE
+5000
+183 - exact, variable
+variable v;
+Select v such that Uses(6, v)
+gossamer, lesion, x
+5000
+184 - exact, constant
+constant v;
+Select v such that Uses(8, v)
+none
+5000
+185 - exact, prog_line
+prog_line v;
+Select v such that Uses(12, v)
+none
+5000
+186 - exact, procedure
+procedure v;
+Select v such that Uses(11, v)
+none
+5000
+187 - exact, unknown synonym
+
+Select s such that Uses(15, v)
+none
+5000
+188 - exact(assign), exact
+
+Select BOOLEAN such that Uses(8, "lesion")
+TRUE
+5000
+189 - exact(assign), exact (no result)
+
+Select BOOLEAN such that Uses(8, "call")
+FALSE
+5000
+190 - exact(proc), exact
+
+Select BOOLEAN such that Uses("Honeysuckle", "coeur")
+TRUE
+5000
+191 - exact(proc), exact (no result)
+stmt s;
+Select s such that Uses("shikashi", "duck")
+none
+5000
+192 - exact(proc), variable
+variable v;
+Select v such that Uses("something", v)
+something, y, teacup0, bluebell, lesion, coeur, cerveau, boro, guru
+5000
+193 - exact(print), exact
+
+Select BOOLEAN such that Uses(14, "something")
+TRUE
+5000
+194 - exact(print), exact (no result)
+stmt s;
+Select s such that Uses(10, "duck")
+none
+5000
+195 - exact(print), variable
+variable v;
+Select v such that Uses(19, v)
+lesion
+5000
+196 - exact(read), exact
+
+Select BOOLEAN such that Uses(20, "lesion")
+FALSE
+5000
+197 - exact(read), variable
+variable v;
+Select v such that Uses(24, v)
+none
+5000
+198 - exact(call), exact
+
+Select BOOLEAN such that Uses(11, "guru")
+TRUE
+5000
+199 - exact(call), exact (no result)
+stmt s;
+Select s such that Uses(3, "duck")
+none
+5000
+200 - exact(call), variable
+variable v;
+Select v such that Uses(12, v)
+boro, guru
+5000
+201 - exact(while), exact
+
+Select BOOLEAN such that Uses(3, "maison")
+TRUE
+5000
+202 - exact(while), exact (no result)
+
+Select BOOLEAN such that Uses(3, "noodle")
+FALSE
+5000
+203 - exact(while), variable
+variable v;
+Select v such that Uses(15, v)
+y, teacup0, bluebell, lesion, boro, guru
+5000
+204 - exact(if), exact
+
+Select BOOLEAN such that Uses(23, "guru")
+TRUE
+5000
+205 - exact(if), exact (no result)
+
+Select BOOLEAN such that Uses(309, "boro")
+FALSE
+5000
+206 - exact(if), variable
+variable v;
+Select v such that Uses(6, v)
+gossamer, lesion, x
+5000
+207 - exact(variable), exact
+
+Select BOOLEAN such that Uses("jessie", "jessie")
+FALSE
+5000
+208 - exact(variable), variable
+variable v;
+Select v such that Uses("jessie", v)
+none
+5000
+209 - exact(stmt), integer
+
+Select BOOLEAN such that Uses(80, 290918238)
+none
+5000
+210 - exact(out of bound), v
+variable v;
+Select v such that Uses(600, v)
+none
+5000
+211 - UsesP (p-syn, v-syn)
+procedure p; variable v;
+Select <p, v> such that Uses(p, v)
+Honeysuckle teacup0, Honeysuckle bluebell, Honeysuckle melody, Honeysuckle maison, Honeysuckle y, Honeysuckle gossamer, Honeysuckle lesion, Honeysuckle coeur, Honeysuckle cerveau, Honeysuckle boro, Honeysuckle guru, Honeysuckle something, Honeysuckle x, something something, something teacup0, something bluebell, something lesion, something coeur, something cerveau, something boro, something guru, something y, shikashi boro, shikashi guru
+5000
+212 - UsesP (p-syn, _)
+procedure p;
+Select p such that Uses(p,_) 
+Honeysuckle, something, shikashi
+5000
+213 - UsesP (p-syn, IDENT)
+procedure p;
+Select p such that Uses(p, "boro")
+shikashi, something, Honeysuckle
+5000
+214 - UsesP (p-syn, IDENT)
+procedure p;
+Select p such that Uses(p, "bluebell")
+something, Honeysuckle
+5000
+215 - UsesP (p-syn, IDENT)
+procedure p;
+Select p such that Uses(p, "coeur")
+something, Honeysuckle
+5000
+216 - UsesP (p-syn, IDENT)
+procedure p;
+Select p such that Uses(p, "maison")
+Honeysuckle
+5000
+217 - UsesP (p-syn, IDENT)
+procedure p;
+Select p such that Uses(p, "guru")
+shikashi, something, Honeysuckle
+5000
+218 - UsesP (IDENT, v-syn) 
+variable v;
+Select v such that Uses("Honeysuckle", v)
+something, y, teacup0, bluebell, lesion, coeur, cerveau, boro, guru, melody, maison, gossamer, x
+5000
+219 - UsesP (IDENT, v-syn) 
+variable v;
+Select v such that Uses("something", v)
+something, y, teacup0, bluebell, coeur, cerveau, boro, guru, lesion
+5000
+220 - UsesP (IDENT, v-syn) 
+variable v;
+Select v such that Uses("shikashi", v)
+boro, guru
+5000
+221 - UsesP (IDENT, _)
+procedure p;
+Select p such that Uses("Honeysuckle", _) 
+Honeysuckle, something, shikashi
+5000
+222 - UsesP (IDENT, IDENT)  - TRUE
+procedure p;
+Select p such that Uses("Honeysuckle", "x") 
+Honeysuckle, something, shikashi
+5000
+223 - UsesP (IDENT, IDENT)  - TRUE
+procedure p;
+Select BOOLEAN such that Uses("Honeysuckle", "x") 
+TRUE
+5000
+224 - UsesP (IDENT, IDENT)  - TRUE
+procedure p;
+Select p such that Uses("something", "boro") 
+Honeysuckle, something, shikashi
+5000
+225 - UsesP (IDENT, IDENT)  - TRUE
+procedure p;
+Select BOOLEAN such that Uses("something", "boro") 
+TRUE
+5000
+226 - UsesP (IDENT, IDENT)  - TRUE
+procedure p;
+Select p such that Uses("shikashi", "boro") 
+Honeysuckle, something, shikashi
+5000
+227 - UsesP (IDENT, IDENT)  - TRUE
+procedure p;
+Select BOOLEAN such that Uses("shikashi", "boro") 
+TRUE
+5000
+228 - UsesP (IDENT, IDENT)  - FALSE
+procedure p;
+Select p such that Uses("Honeysuckle", "omega") 
+none
+5000
+229 - UsesP (IDENT, IDENT)  - FALSE
+procedure p;
+Select BOOLEAN such that Uses("Honeysuckle", "omega") 
+FALSE
+5000
+230 - UsesP (IDENT, IDENT)  - FALSE
+procedure p;
+Select p such that Uses("something", "melody") 
+none
+5000
+231 - UsesP (IDENT, IDENT)  - FALSE
+procedure p;
+Select BOOLEAN such that Uses("something", "melody") 
+FALSE
+5000
+232 - UsesP (IDENT, IDENT)  - FALSE
+procedure p;
+Select p such that Uses("shikashi", "teacup0") 
+none
+5000
+233 - UsesP (IDENT, IDENT)  - FALSE
+procedure p;
+Select BOOLEAN such that Uses("shikashi", "teacup0") 
+FALSE
+5000
+234 - UsesP (_, v-syn) - INVALID
+procedure p; variable v;
+Select v such that Uses(_, v) 
+none
+5000
+235 - UsesP (_, _) - INVALID
+procedure p; variable v;
+Select BOOLEAN such that Uses(_, v) 
+FALSE
+5000
+236 - UsesP (_, _) - INVALID
+procedure p;
+Select p such that Uses(_, _) 
+none
+5000
+237 - UsesP (_, _) - INVALID
+procedure p;
+Select BOOLEAN such that Uses(_, _) 
+FALSE
+5000
+238 - UsesP (_, IDENT) - INVALID
+procedure p;
+Select p such that Uses(_, "guru") 
+none
+5000
+239 - UsesP (_, IDENT) - INVALID
+procedure p;
+Select BOOLEAN such that Uses(_, "guru") 
+FALSE
+5000
+240 - Multiclause: Procedure Honeysuckle (Uses) Reverse
+procedure p;
+Select p such that Uses(p, "gossamer") and Uses(p, "x") 
+Honeysuckle
+5000
+241 - Multiclause: Procedure Honeysuckle (Uses) Reverse
+procedure p;
+Select p such that Uses(p, "gossamer") 
+Honeysuckle
+5000
+242 - Multiclause: Procedure Honeysuckle (Uses) Reverse
+procedure p;
+Select p such that Uses(p, "x") 
+Honeysuckle
+5000
+243 - Multiclause: Procedure Honeysuckle (Uses) Reverse
+procedure p;
+Select BOOLEAN such that Uses("Honeysuckle", "gossamer") and Uses("Honeysuckle", "x") 
+TRUE
+5000
+244 - Multiclause: Procedure Honeysuckle (Uses) Reverse
+procedure p;
+Select BOOLEAN such that Uses("Honeysuckle", "gossamer")
+TRUE
+5000
+245 - Multiclause: Procedure Honeysuckle (Uses) Reverse
+procedure p;
+Select BOOLEAN such that Uses("Honeysuckle", "x") 
+TRUE
+5000
+246 - Call Statement (Uses)
+variable v;
+Select v such that Uses(11, v)
+something, y, teacup0, bluebell, lesion, coeur, cerveau, boro, guru
+5000
+247 - Call Statement (Uses)
+variable v;
+Select v such that Uses(12, v)
+boro, guru
+5000
+248 - All call Statement (Uses)
+variable v; call c;
+Select v such that Uses(c, v)
+something, y, teacup0, bluebell, lesion, coeur, cerveau, boro, guru
+5000
+249 - All procedures (Uses)
+variable v; procedure p; 
+Select v such that Uses(p, v)
+something, y, teacup0, bluebell, lesion, coeur, cerveau, boro, guru, melody, maison, gossamer, x
+5000
+250 - UsesS (pl-syn, v-syn) PL
+prog_line pl; variable v;
+Select <pl, v> such that Uses(pl, v)
+1 teacup0, 2 bluebell, 3 melody, 3 maison, 3 y, 3 teacup0, 4 y, 5 teacup0, 6 gossamer, 6 lesion, 6 x, 7 lesion, 8 lesion, 9 x, 10 lesion, 11 something, 11 teacup0, 11 y, 11 bluebell, 11 lesion, 11 coeur, 11 cerveau, 11 boro, 11 guru, 12 boro, 12 guru, 14 something, 15 y, 15 boro, 15 guru, 15 teacup0, 15 bluebell, 15 lesion, 16 y, 17 teacup0, 18 bluebell, 19 lesion, 20 boro, 20 guru, 21 coeur, 21 cerveau, 23 boro, 23 guru, 26 guru
+5000
+251 - UsesS (pl-syn, _)
+prog_line pl;
+Select pl such that Uses(pl, _)
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20, 21, 23, 26
+5000
+252 - UsesS (pl-syn, IDENT)
+prog_line pl;
+Select pl such that Uses(pl, "maison")
+3
+5000
+253 - UsesS (pl-syn, IDENT) NOTE: other combinatins tested in iter1
+prog_line pl;
+Select pl such that Uses(pl, "x")
+6, 9
+5000
+254 - UsesS (pl-syn, IDENT)
+prog_line pl;
+Select pl such that Uses(pl, "bluebell")
+2, 11, 15, 18
+5000
+255 - Procedure shikashi (Uses) UsesS(stmt#, v-syn)
+variable v;
+Select v such that Uses(12, v)
+boro, guru
+5000
+256 - Procedure shikashi (Uses) Container
+variable v;
+Select v such that Uses(15, v)
+boro, guru, bluebell, lesion, teacup0, y
+5000
+257 - Procedure shikashi (Uses)
+variable v;
+Select v such that Uses(20, v)
+boro, guru
+5000
+258 - Procedure something (Uses) ??
+variable v;
+Select v such that Uses(11, v)
+something, y, teacup0, bluebell, lesion, coeur, cerveau, boro, guru
+5000
+
