@@ -97,7 +97,7 @@ procedure while {
 60.         johnlee = hutao;
 61.         read program;
         } else {
-62.         while (((((((print + read) % call) >= while * if) && (then - Next != then)) || ((!(else / Affects > OR)))) && (!((procedure != program)))) || (Uses + Follows < AND)) {
+62.         while (((((((print + read) % call) >= while * if) && (then - Next != then)) || (!(else / Affects > OR))) && (!(procedure != program))) || (Uses + Follows < AND)) {
 63.             keqing = cocogoat;
 64.             if (johnlee > zhongli) then {
 65.                 keqing = (program % (procedure + else - then) * if + (while - call + read) / print);
