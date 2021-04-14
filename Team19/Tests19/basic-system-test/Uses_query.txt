@@ -1218,67 +1218,67 @@ procedure p;
 Select BOOLEAN such that Uses("Honeysuckle", "x") 
 TRUE
 5000
-145 - Call Statement (Uses)
+246 - Call Statement (Uses)
 variable v;
 Select v such that Uses(11, v)
 something, y, teacup0, bluebell, lesion, coeur, cerveau, boro, guru
 5000
-147 - Call Statement (Uses)
+247 - Call Statement (Uses)
 variable v;
 Select v such that Uses(12, v)
 boro, guru
 5000
-149 - All call Statement (Uses)
+248 - All call Statement (Uses)
 variable v; call c;
 Select v such that Uses(c, v)
 something, y, teacup0, bluebell, lesion, coeur, cerveau, boro, guru
 5000
-153 - All procedures (Uses)
+249 - All procedures (Uses)
 variable v; procedure p; 
 Select v such that Uses(p, v)
 something, y, teacup0, bluebell, lesion, coeur, cerveau, boro, guru, melody, maison, gossamer, x
 5000
-154 - UsesS (pl-syn, v-syn) PL
+250 - UsesS (pl-syn, v-syn) PL
 prog_line pl; variable v;
 Select <pl, v> such that Uses(pl, v)
 1 teacup0, 2 bluebell, 3 melody, 3 maison, 3 y, 3 teacup0, 4 y, 5 teacup0, 6 gossamer, 6 lesion, 6 x, 7 lesion, 8 lesion, 9 x, 10 lesion, 11 something, 11 teacup0, 11 y, 11 bluebell, 11 lesion, 11 coeur, 11 cerveau, 11 boro, 11 guru, 12 boro, 12 guru, 14 something, 15 y, 15 boro, 15 guru, 15 teacup0, 15 bluebell, 15 lesion, 16 y, 17 teacup0, 18 bluebell, 19 lesion, 20 boro, 20 guru, 21 coeur, 21 cerveau, 23 boro, 23 guru, 26 guru
 5000
-155 - UsesS (pl-syn, _)
+251 - UsesS (pl-syn, _)
 prog_line pl;
 Select pl such that Uses(pl, _)
 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20, 21, 23, 26
 5000
-156 - UsesS (pl-syn, IDENT)
+252 - UsesS (pl-syn, IDENT)
 prog_line pl;
 Select pl such that Uses(pl, "maison")
 3
 5000
-157 - UsesS (pl-syn, IDENT) NOTE: other combinatins tested in iter1
+253 - UsesS (pl-syn, IDENT) NOTE: other combinatins tested in iter1
 prog_line pl;
 Select pl such that Uses(pl, "x")
 6, 9
 5000
-158 - UsesS (pl-syn, IDENT)
+254 - UsesS (pl-syn, IDENT)
 prog_line pl;
 Select pl such that Uses(pl, "bluebell")
 2, 11, 15, 18
 5000
-163 - Procedure shikashi (Uses) UsesS(stmt#, v-syn)
+255 - Procedure shikashi (Uses) UsesS(stmt#, v-syn)
 variable v;
 Select v such that Uses(12, v)
 boro, guru
 5000
-164 - Procedure shikashi (Uses) Container
+256 - Procedure shikashi (Uses) Container
 variable v;
 Select v such that Uses(15, v)
 boro, guru, bluebell, lesion, teacup0, y
 5000
-165 - Procedure shikashi (Uses)
+257 - Procedure shikashi (Uses)
 variable v;
 Select v such that Uses(20, v)
 boro, guru
 5000
-166 - Procedure something (Uses) ??
+258 - Procedure something (Uses) ??
 variable v;
 Select v such that Uses(11, v)
 something, y, teacup0, bluebell, lesion, coeur, cerveau, boro, guru

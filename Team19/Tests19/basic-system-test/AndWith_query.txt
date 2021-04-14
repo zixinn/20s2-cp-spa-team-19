@@ -248,557 +248,557 @@ variable var;
 Select var with "bluebell" = var.varName
 bluebell
 5000
-17 - variable.varName
+51 - variable.varName
 variable var;
 Select var with var.varName = "melody"
 melody
 5000
-18 - variable.varName
+52 - variable.varName
 variable var;
 Select var with var.varName = "maison"
 maison
 5000
-19 - variable.varName, line 14
+53 - variable.varName, line 14
 variable var;
 Select var with var.varName = "something"
 something
 5000
-20 - variable.varName
+54 - variable.varName
 variable var;
 Select var with var.varName = "x"
 x
 5000
-21 - variable.varName
+55 - variable.varName
 variable var;
 Select var with var.varName = "y"
 y
 5000
-22 - variable.varName
+56 - variable.varName
 variable var;
 Select var with var.varName = "z"
 z
 5000
-23 - variable.varName
+57 - variable.varName
 variable var;
 Select var with var.varName = "boro"
 boro
 5000
-24 - variable.varName
+58 - variable.varName
 variable var;
 Select var with var.varName = "ardent"
 ardent
 5000
-25 - variable.varName
+59 - variable.varName
 variable var;
 Select var with var.varName = "guru"
 guru
 5000
-26 - variable.varName
+60 - variable.varName
 variable var;
 Select var with var.varName = "pardon"
 pardon
 5000
-27 - variable.varName
+61 - variable.varName
 variable var;
 Select var with var.varName = "melody"
 melody
 5000
-28 - variable.varName
+62 - variable.varName
 variable var;
 Select var with var.varName = "coeur"
 coeur
 5000
-29 - variable.varName
+63 - variable.varName
 variable var;
 Select var with var.varName = "cerveau"
 cerveau
 5000
-30 - variable.varName
+64 - variable.varName
 variable var;
 Select var with var.varName = "something"
 something
 5000
-31 - variable.varName
+65 - variable.varName
 variable var;
 Select var with var.varName = "shikashi"
 none
 5000
-32 - variable.varName
+66 - variable.varName
 variable var;
 Select var with var.varName = "Honeysuckle"
 none
 5000
-33 - variable.varName
+67 - variable.varName
 variable var;
 Select var with var.varName = "goss"
 none
 5000
-34 - variable.varName
+68 - variable.varName
 variable var;
 Select var with "melody" = var.varName
 melody
 5000
-35 - variable.varName
+69 - variable.varName
 variable var;
 Select var with "maison" = var.varName
 maison
 5000
-36 - variable.varName, line 14
+70 - variable.varName, line 14
 variable var;
 Select var with "something" = var.varName
 something
 5000
-37 - variable.varName
+71 - variable.varName
 variable var;
 Select var with "x" = var.varName
 x
 5000
-38 - variable.varName
+72 - variable.varName
 variable var;
 Select var with "y" = var.varName
 y
 5000
-39 - variable.varName
+73 - variable.varName
 variable var;
 Select var with "z" = var.varName
 z
 5000
-40 - variable.varName
+74 - variable.varName
 variable var;
 Select var with "boro" = var.varName
 boro
 5000
-41 - variable.varName
+75 - variable.varName
 variable var;
 Select var with "ardent" = var.varName
 ardent
 5000
-42 - variable.varName
+76 - variable.varName
 variable var;
 Select var with "guru" = var.varName
 guru
 5000
-43 - variable.varName
+77 - variable.varName
 variable var;
 Select var with "pardon" = var.varName
 pardon
 5000
-44 - variable.varName
+78 - variable.varName
 variable var;
 Select var with "melody" = var.varName
 melody
 5000
-45 - variable.varName
+79 - variable.varName
 variable var;
 Select var with "coeur" = var.varName
 coeur
 5000
-46 - variable.varName
+80 - variable.varName
 variable var;
 Select var with "cerveau" = var.varName
 cerveau
 5000
-47 - variable.varName
+81 - variable.varName
 variable var;
 Select var with "something" = var.varName
 something
 5000
-48 - variable.varName
+82 - variable.varName
 variable var;
 Select var with "shikashi" = var.varName
 none
 5000
-49 - variable.varName
+83 - variable.varName
 variable var;
 Select var with "Honeysuckle" = var.varName
 none
 5000
-50 - variable.varName
+84 - variable.varName
 variable var;
 Select var with "goss" = var.varName
 none
 5000
-51 - read.varName
+85 - read.varName
 read r;
 Select r with r.varName = "teacup0"
 13
 5000
-52 - read.varName
+86 - read.varName
 read r;
 Select r with "teacup0" = r.varName
 13
 5000
-53 - read.varName
+87 - read.varName
 read r;
 Select r with "tea" = r.varName
 none
 5000
-54 - read.varName
+88 - read.varName
 read r;
 Select r with r.varName = "tea"
 none
 5000
-55 - read.varName
+89 - read.varName
 read r;
 Select r with r.varName = "teacup0"
 13
 5000
-56 - read.varName
+90 - read.varName
 read r;
 Select r with "teacup0" = r.varName
 13
 5000
-57 - read.varName
+91 - read.varName
 read r;
 Select r with r.varName = "ardent"
 24
 5000
-58 - read.varName
+92 - read.varName
 read r;
 Select r with "ardent" = r.varName
 24
 5000
-59 - read.varName
+93 - read.varName
 read r;
 Select r with r.varName = "pardon"
 27
 5000
-60 - read.varName
+94 - read.varName
 read r;
 Select r with "pardon" = r.varName
 27
 5000
-61 - read.varName invalid substring
+95 - read.varName invalid substring
 read r;
 Select r with r.varName = "tea"
 none
 5000
-62 - read.varName invalid substring
+96 - read.varName invalid substring
 read r;
 Select r with "tea" = r.varName
 none
 5000
-63 - read.varName invalid nonexistent
+97 - read.varName invalid nonexistent
 read r;
 Select r with r.varName = "something"
 none
 5000
-64 - read.varName invalid nonexistent
+98 - read.varName invalid nonexistent
 read r;
 Select r with "something" = r.varName
 none
 5000
-65 - read.procName
+99 - read.procName
 read r;
 Select r with r.procName = "teacup0"
 none
 5000
-66 - read.procName
+100 - read.procName
 read r;
 Select r with "teacup0" = r.procName
 none
 5000
-67 
+101 
 constant const; stmt s;
 Select s with const.value = 1 such that Uses(s,const)
 none
 5000
-68
+102
 constant const; stmt s;
 Select s such that Uses(s,const) with const.value = 1
 none
 5000
-69
+103
 constant const;
 Select const with const.value = 1
 1
 5000
-70
+104
 constant const;
 Select const with 1 = const.value
 1
 5000
-71
+105
 assign a;
 Select BOOLEAN with 42 = 42
 TRUE
 5000
-72
+106
 assign a;
 Select BOOLEAN with 42 = 43
 FALSE
 5000
-73
+107
 assign a, a1;
 Select a1 with a.stmt# = 7
 2,4,5,7,8,16,17,18,21,22,25,26
 5000
-74
+108
 assign a, a1;
 Select a1 with 7 = a.stmt#
 2,4,5,7,8,16,17,18,21,22,25,26
 5000
-75
+109
 procedure p1, p2, p3;
 Select p1 such that Calls*(p1,p2) and Calls*(p2,p3)
 Honeysuckle
 5000
-76
+110
 procedure p1, p2, p3;
 Select p1 such that Calls*(p2,p3) and Calls*(p1,p2)
 Honeysuckle
 5000
-77 stmt cannot be used like this only prog_line
+111 stmt cannot be used like this only prog_line
 stmt s1, s2;
 Select s1 such that Next*(s1,s2) with s2 = 18
 none
 5000
-78 stmt cannot be used like this only prog_line
+112 stmt cannot be used like this only prog_line
 stmt s1, s2;
 Select s1 with s2 = 18 such that Next*(s1,s2)
 none
 5000
-79 stmt cannot be used like this only prog_line
+113 stmt cannot be used like this only prog_line
 stmt s1, s2;
 Select s1 such that Next*(s1,s2) with 18 = s2
 none
 5000
-80 stmt cannot be used like this only prog_line
+114 stmt cannot be used like this only prog_line
 stmt s1, s2;
 Select s1 with 18 = s2 such that Next*(s1,s2)
 none
 5000
-81
+115
 stmt s1; prog_line n;
 Select s1 such that Next*(s1,n) with n = 18
 13,14,15,16,17,18,19,20
 5000
-82
+116
 stmt s1; prog_line n;
 Select s1 with n = 18 such that Next*(s1,n) 
 13,14,15,16,17,18,19,20
 5000
-83
+117
 stmt s1; prog_line n;
 Select s1 such that Next*(s1,n) with 18 = n
 13,14,15,16,17,18,19,20
 5000
-84
+118
 stmt s1; prog_line n;
 Select s1 with 18 = n such that Next*(s1,n) 
 13,14,15,16,17,18,19,20
 5000
-85 - Q28, stmt doesnt have procName or varName
+119 - Q28, stmt doesnt have procName or varName
 stmt s1, s2;
 Select <s1, s2> with s1.procName = s2.varName
 none
 5000
-86 - Q28, stmt doesnt have procName or varName
+120 - Q28, stmt doesnt have procName or varName
 stmt s1, s2;
 Select <s1, s2> with s2.varName = s1.procName
 none
 5000
-87 - Q28
+121 - Q28
 stmt s; procedure p; variable v;
 Select p with p.procName = v.varName
 something
 5000
-88 - Q28
+122 - Q28
 stmt s; procedure p; variable v;
 Select p with v.varName = p.procName
 something
 5000
-89 - Q28
+123 - Q28
 call c; print pn;
 Select <c, pn> with c.procName = pn.varName
 11 14
 5000
-90 - Q28
+124 - Q28
 call c; print pn;
 Select <c, pn> with pn.varName = c.procName
 11 14
 5000
-91
+125
 print pn; read r;
 Select <pn, r> with pn.varName = r.varName
 1 13
 5000
-92
+126
 print pn; read r;
 Select <pn, r> with r.varName = pn.varName
 1 13
 5000
-93 - Q29
+127 - Q29
 prog_line n; stmt s;
 Select s.stmt# such that Follows* (s, n) with n=10
 1,2,3,6
 5000
-94 - Q29
+128 - Q29
 prog_line n; stmt s;
 Select s.stmt# with n = 10 such that Follows* (s, n)
 1,2,3,6
 5000
-95 - Q29
+129 - Q29
 prog_line n; stmt s;
 Select s.stmt# such that Follows* (s, n) with 10 = n
 1,2,3,6
 5000
-96 - Q29
+130 - Q29
 prog_line n; stmt s;
 Select s.stmt# with 10 = n such that Follows* (s, n)
 1,2,3,6
 5000
-97 - Q27
+131 - Q27
 stmt s; constant c;
 Select s with s.stmt# = c.value
 1,2,5,8,23
 5000
-98 - Q27
+132 - Q27
 stmt s; constant c;
 Select s with c.value = s.stmt#
 1,2,5,8,23
 5000
-99 Modifies
+133 Modifies
 stmt s1, s2; 
 Select s1 such that Modifies(s1,"guru")
 11, 12, 15, 20, 23, 26
 5000
-100 Modifies
+134 Modifies
 procedure proc;
 Select proc such that Modifies(proc,"guru")
 Honeysuckle, something, shikashi
 5000
-101 Modifies* doesnt exist
+135 Modifies* doesnt exist
 stmt s1, s2; 
 Select s1 such that Modifies*(s1,"guru")
 none
 5000
-102 - Q31
+136 - Q31
 assign a; while w; prog_line n;
 Select a such that Parent*(w, a) and Next*(2, n) pattern a("x", _) with a.stmt# = n
 4
 5000
-103 - Q31
+137 - Q31
 assign a; while w; prog_line n;
 Select a such that Parent*(w, a) and Next*(2, n) pattern a("x", _) with n = a.stmt#
 4
 5000
-104 - Q31
+138 - Q31
 assign a; while w; prog_line n;
 Select a such that Next*(2, n) and Parent*(w, a) with a.stmt# = n pattern a("x", _)
 4
 5000
-105 - Q31
+139 - Q31
 assign a; while w; prog_line n;
 Select a pattern a("x", _) such that Next*(2, n) and Parent*(w, a) with a.stmt# = n 
 4
 5000
-106 - Q31
+140 - Q31
 assign a; while w; prog_line n;
 Select a such that Next*(2, n) and Parent*(w, a) with n = a.stmt# pattern a("x", _)
 4
 5000
-107 - Q31
+141 - Q31
 assign a; while w; prog_line n;
 Select a pattern a("x", _) such that Next*(2, n) and Parent*(w, a) with n = a.stmt# 
 4
 5000
-108 - Q31
+142 - Q31
 assign a; while w; prog_line n;
 Select a pattern a("x", _) such that Next*(2, n) with n = a.stmt# such that Parent*(w, a)
 4
 5000
-109 - Q31
+143 - Q31
 assign a; while w; prog_line n;
 Select a such that Next*(2, n) and Parent*(w, a) with a.stmt# = n pattern a("x", _) and w("melody",_)
 4
 5000
-110 - Q31
+144 - Q31
 assign a; while w; prog_line n;
 Select a such that Next*(2, n) and Parent*(w, a) with a.stmt# = n pattern a("x", _) and w("melody",_) and w("maison", _) with 3 = w.stmt#
 4
 5000
-111 - Q31
+145 - Q31
 assign a; while w; prog_line n;
 Select a such that Next*(2, n) such that Parent*(w, a) with a.stmt# = n pattern a("x", _) pattern w("melody",_) pattern w("maison", _) with 3 = w.stmt# and w.stmt# = 3
 4
 5000
-112
+146
 variable v1, v2;
 Select <v1, v2> with v1.varName = v2.varName
 ardent ardent,bluebell bluebell,boro boro,cerveau cerveau,coeur coeur,gossamer gossamer,guru guru,lesion lesion,maison maison,melody melody,pardon pardon,something something,teacup0 teacup0,x x,y y,z z
 5000
-113
+147
 while w; variable v1;
 Select <w, v1> such that Uses(w, v1) pattern w(v1,_)
 3 maison, 3 melody
 5000
-114
+148
 procedure proc; assign a, a2; variable v1, v2, v3, v4; while w;
 Select <proc, a, w, v1, v2> such that Modifies(proc, v1) and Modifies(a, v1) and Uses(w, v1) pattern w(v1,_) such that Modifies(w, v2) and Modifies(a2, v2) and Uses(a2, v3) with v3.varName = "teacup0"
 Honeysuckle 21 3 melody lesion, something 21 3 melody lesion
 5000
-115
+149
 procedure proc; assign a, a2; variable v1, v2, v3, v4; while w;
 Select <proc, a, w, v1, v2> such that Modifies(proc, v1) and Modifies(a, v1) with "teacup0" = v3.varName such that Uses(w, v1) and Uses(a2, v3) pattern w(v1,_) such that Modifies(w, v2) and Modifies(a2, v2)
 Honeysuckle 21 3 melody lesion, something 21 3 melody lesion
 5000
-116
+150
 procedure proc; assign a, a2; variable v1, v2, v3, v4; while w;
 Select <proc, a, w, v1, v2> such that Modifies(a, v1) and Modifies(proc, v1) with "teacup0" = v3.varName such that Uses(w, v1) and Uses(a2, v3) pattern w(v1,_) such that Modifies(w, v2) and Modifies(a2, v2)
 Honeysuckle 21 3 melody lesion, something 21 3 melody lesion
 5000
-117
+151
 procedure proc; assign a, a2; variable v1, v2, v3, v4; while w;
 Select <proc, a, w, v1, v2> such that Modifies(a, v1) and Modifies(proc, v1) with "teacup0" = v3.varName such that Uses(w, v1) and Uses(a2, v3) pattern w(v1,_) such that Modifies(a2, v2) and Modifies(w, v2)
 Honeysuckle 21 3 melody lesion, something 21 3 melody lesion
 5000
-118
+152
 procedure proc; assign a, a2; variable v1, v2, v3, v4; while w;
 Select <proc, a, w, v1, v2> with "teacup0" = v3.varName such that Uses(w, v1) and Uses(a2, v3) pattern w(v1,_) such that Modifies(a2, v2) and Modifies(w, v2) and Modifies(a, v1) and Modifies(proc, v1) 
 Honeysuckle 21 3 melody lesion, something 21 3 melody lesion
 5000
-119
+153
 procedure proc; assign a, a2; variable v1, v2, v3, v4; while w;
 Select <proc, a, w, v1, v2> with "teacup0" = v3.varName such that Uses(w, v1) and Uses(a2, v3) and Modifies(a2, v2) and Modifies(w, v2) and Modifies(a, v1) and Modifies(proc, v1) pattern w(v1,_) 
 Honeysuckle 21 3 melody lesion, something 21 3 melody lesion
 5000
-120
+154
 stmt s1, s2, s3, s5, s7, s11, s13, s17, s19, s23, s27;
 Select <s1, s2, s3, s5, s7, s11, s13, s17, s19, s23, s27> with s1.stmt# = 1 and s2.stmt# = 2 and s3.stmt# = 3 and s5.stmt# = 5 and s7.stmt# = 7 and s11.stmt# = 11 and s13.stmt# = 13 and s17.stmt# = 17 and s19.stmt# = 19 and s23.stmt# = 23 and s27.stmt# = 27
 1 2 3 5 7 11 13 17 19 23 27
 5000
-121
+155
 print p1; assign a2, a21; while w3, w15; if i6; call c11; read r13, r27;
 Select <p1, a2, w3, i6, c11, r13, w15, a21, r27> with "teacup0" = p1.varName and a2.stmt# = 2 and 3 = w3.stmt# and 6 = i6.stmt# and "something" = c11.procName and r13.varName = "teacup0" and w15.stmt# = 15 and 21 = a21.stmt# and r27.stmt# = 27
 1 2 3 6 11 13 15 21 27
 5000
-122 - assign.varName is invalid
+156 - assign.varName is invalid
 assign a;
 Select a with a.varName = "lesion"
 none
 5000
-123 - assign.varName is invalid
+157 - assign.varName is invalid
 assign a;
 Select a with "lesion" = a.varName 
 none
 5000
-127 - Call with stmt# with clause
+158 - Call with stmt# with clause
 call c;
 Select c with c.stmt# = 11
 11
 5000
-128 - Call with stmt# with clause, no such call
+159 - Call with stmt# with clause, no such call
 call c;
 Select c with c.stmt# = 17
 none
 5000
-129 - Call with stmt# with clause, and
+160 - Call with stmt# with clause, and
 stmt s; call c;
 Select s with s.stmt# = 11 and c.procName = "something"
 11
 5000
-130 - Call with stmt# with clause, and
+161 - Call with stmt# with clause, and
 stmt s; call c;
 Select s with s.stmt# = 18 and c.procName = "something"
 18

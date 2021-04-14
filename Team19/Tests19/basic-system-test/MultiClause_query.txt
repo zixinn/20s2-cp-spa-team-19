@@ -198,67 +198,67 @@ procedure p, q;
 Select p such that Calls(p, q) with "Honeysuckle" = p.procName
 Honeysuckle
 5000
-131 - Call with stmt# with clause, such that, and
+42 - Call with stmt# with clause, such that, and
 procedure p, q, r;
 Select q such that Calls(p, q) and Calls(q, r) with q.procName = "shikashi"
 none
 5000
-132 - Call with stmt# with clause, such that, and
+43 - Call with stmt# with clause, such that, and
 procedure p, q, r;
 Select q such that Calls(p, q) and Calls(q, r) with q.procName = "something"
 something
 5000
-133 - Select tuple for Call with such that, and
+44 - Select tuple for Call with such that, and
 procedure p, q, r;
 Select <p,r> such that Calls(p, q) and Calls(q, r)
 Honeysuckle shikashi
 5000
-134 - Select tuple for Call with procName with clause, such that, and
+45 - Select tuple for Call with procName with clause, such that, and
 procedure p, q, r;
 Select <p,q,r> such that Calls(p, q) and Calls(q, r) with q.procName = "something"
 Honeysuckle something shikashi
 5000
-135 - While statement that contains a call statement
+46 - While statement that contains a call statement
 while w; call c;
 Select w pattern w(_, _) such that Parent(w, c)
 none
 5000
-136 - Call() Modifies()
+47 - Call() Modifies()
 call c; procedure p, p1, p2; read r; stmt s, s1, s2; assign a, a1; while w; if ifs; variable v;
 Select <v> such that Calls(p, p1) and Modifies(p1, v)
 lesion, melody, ardent, guru, pardon, z, teacup0, x
 5000
-137 - Call() Modifies()
+48 - Call() Modifies()
 call c; procedure p, p1, p2; read r; stmt s, s1, s2; assign a, a1; while w; if ifs; variable v;
 Select <v> such that  Modifies(p, v) and Calls(p, p1) 
 lesion, x, teacup0, melody, ardent, guru, z, pardon
 5000
-138 - Call() UsesP()
+49 - Call() UsesP()
 call c; procedure p, p1, p2; read r; stmt s, s1, s2; assign a, a1; while w; if ifs; variable v;
 Select <v> such that  Uses(p1, v) and Calls(p, p1) 
 something, y, teacup0, bluebell, lesion, coeur, cerveau, boro, guru
 5000
-139 - Call() UsesP()
+50 - Call() UsesP()
 call c; procedure p, p1, p2; read r; stmt s, s1, s2; assign a, a1; while w; if ifs; variable v;
 Select <v> such that  Calls(p, p1) and Uses(p, v) 
 something, y, teacup0, bluebell, lesion, coeur, cerveau, boro, guru, gossamer, maison, melody, x
 5000
-140 - Calls*() Modifies()
+51 - Calls*() Modifies()
 call c; procedure p, p1, p2; read r; stmt s, s1, s2; assign a, a1; while w; if ifs; variable v;
 Select <v> such that Calls*(p, p1) and Modifies(p1, v)
 lesion, melody, ardent, guru, pardon, z, teacup0, x
 5000
-141 - Calls*() Modifies()
+52 - Calls*() Modifies()
 call c; procedure p, p1, p2; read r; stmt s, s1, s2; assign a, a1; while w; if ifs; variable v;
 Select <v> such that  Modifies(p, v) and Calls*(p, p1) 
 lesion, x, teacup0, melody, ardent, guru, z, pardon
 5000
-142 - Calls*() UsesP()
+53 - Calls*() UsesP()
 call c; procedure p, p1, p2; read r; stmt s, s1, s2; assign a, a1; while w; if ifs; variable v;
 Select <v> such that  Uses(p1, v) and Calls*(p, p1) 
 something, y, teacup0, bluebell, lesion, coeur, cerveau, boro, guru
 5000
-143 - Calls*() UsesP()
+54 - Calls*() UsesP()
 call c; procedure p, p1, p2; read r; stmt s, s1, s2; assign a, a1; while w; if ifs; variable v;
 Select <v> such that  Calls*(p, p1) and Uses(p, v) 
 something, y, teacup0, bluebell, lesion, coeur, cerveau, boro, guru, gossamer, maison, melody, x
