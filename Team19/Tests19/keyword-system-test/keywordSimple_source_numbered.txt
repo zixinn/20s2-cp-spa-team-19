@@ -75,7 +75,7 @@ procedure read {
 
 procedure call {
 46.     call while;
-47.     while ((((((print + read) % call) >= while * if) && (then - 131 > then)) || ((!(else / 132 > 133)) && ((!((procedure != program))) || (Uses + Follows < 134))))) {
+47.     while (((((print + read) % call) >= while * if) && (then - 131 > then)) || ((!(else / 132 > 133)) && ((!(procedure != program)) || (Uses + Follows < 134)))) {
 
 48.         print if;
 49.         read if;

@@ -76,7 +76,7 @@ procedure read {
 
 procedure call {
     call while;
-    while ((((((print + read) % call) >= while * if) && (then - 131 > then)) || ((!(else / 132 > 133)) && ((!((procedure != program))) || (Uses + Follows < 134))))) {
+    while (((((print + read) % call) >= while * if) && (then - 131 > then)) || ((!(else / 132 > 133)) && ((!(procedure != program)) || (Uses + Follows < 134)))) {
 
         print if;
         read if;
@@ -98,7 +98,7 @@ procedure while {
         johnlee = hutao;
         read program;
     } else {
-        while (((((((print + read) % call) >= while * if) && (then - Next != then)) || ((!(else / Affects > OR)))) && (!((procedure != program)))) || (Uses + Follows < AND)) {
+        while (((((((print + read) % call) >= while * if) && (then - Next != then)) || (!(else / Affects > OR))) && (!(procedure != program))) || (Uses + Follows < AND)) {
             keqing = cocogoat;
             if (johnlee > zhongli) then {
                 keqing = (program % (procedure + else - then) * if + (while - call + read) / print);
