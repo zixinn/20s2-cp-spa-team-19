@@ -31,3 +31,7 @@ Instructions:
     iii. keyword-system-test/runAll.bat
     iv.  stress-system-test/runAll.bat
 6) These generate .xml test output files for viewing the results categorized by type of queries
+
+Extensions Tests:
+5) The following test in /Tests19 specically tests for extension related relations
+    v.   Tests19/test_extensions/extensions-system-test/runAll.bat
