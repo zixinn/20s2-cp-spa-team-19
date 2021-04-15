@@ -15,6 +15,8 @@ Release
 Instructions:
 1) In Visual Studio, go to File->Open->Folder->(navigate to the folder with CMakeLists.txt)
 2) Build the project in x86-Release mode
+    i.  At the top of VS there is a dropdown list, select "x86-Release"
+    ii. At Top Toolbar of VS -> Build -> BuildAll (Ctrl + Shift + B)
 3) Autotester executable will be located in '../Team19/Code19/build_win/x86-Release/src/autotester'
 4) After navigating to that folder, you can run Autotester with:
   ./autotester ..\..\..\..\..\Tests19\BasicSimple_source.txt ..\..\..\..\..\Tests19\BasicSimple_queries.txt ..\..\..\..\..\Tests19\out.xml
