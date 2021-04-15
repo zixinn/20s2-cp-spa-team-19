@@ -1,6 +1,4 @@
 [SYSTEM TESTING - EXTENSIONS]
-AutoTester can be run manually with this command:
-  ./autotester ..\..\..\..\..\Tests19\BasicSimple_source.txt ..\..\..\..\..\Tests19\BasicSimple_queries.txt ..\..\..\..\..\Tests19\out.xml
 
 1) System tests for the extensions can be found in extensions-system-test
 2) To run the tests, run
