@@ -1042,3 +1042,38 @@ void setupQp3() {
     PKB::affectsBip->setRunAffectsBip(true);
     PKB::populatePKB();
 }
+
+TEST_CASE("QueryEvaluator evaluate query with bip") {
+    setupQp3();
+
+    QueryPreprocessor qp = QueryPreprocessor();
+    QueryEvaluator qe = QueryEvaluator();
+
+    STRING query1 = "stmt s; Select s such that NextBip(1, s)";
+    Query q1 = qp.process(query1);
+    list<STRING> list1 = qe.evaluate(q1);
+    unordered_set<STRING> actual1(begin(list1), end(list1));
+    unordered_set<STRING> expected1 = { "4" };
+    REQUIRE(actual1 == expected1);
+
+    STRING query2 = "prog_line n; Select n such that NextBip*(n, n)";
+    Query q2 = qp.process(query2);
+    list<STRING> list2 = qe.evaluate(q2);
+    unordered_set<STRING> actual2(begin(list2), end(list2));
+    unordered_set<STRING> expected2 = { "4", "5", "6", "7" };
+    REQUIRE(actual2 == expected2);
+
+    STRING query3 = "assign a; Select a such that AffectsBip(a, 5)";
+    Query q3 = qp.process(query3);
+    list<STRING> list3 = qe.evaluate(q3);
+    unordered_set<STRING> actual3(begin(list3), end(list3));
+    unordered_set<STRING> expected3 = { "6" };
+    REQUIRE(actual3 == expected3);
+
+    STRING query4 = "Select BOOLEAN such that AffectsBip*(7, 4)";
+    Query q4 = qp.process(query4);
+    list<STRING> list4 = qe.evaluate(q4);
+    unordered_set<STRING> actual4(begin(list4), end(list4));
+    unordered_set<STRING> expected4 = { "FALSE" };
+    REQUIRE(actual4 == expected4);
+}
