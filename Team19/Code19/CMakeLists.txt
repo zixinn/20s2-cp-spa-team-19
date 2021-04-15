@@ -43,3 +43,8 @@ add_subdirectory(src/spa)
 add_subdirectory(src/autotester)
 add_subdirectory(src/unit_testing)
 add_subdirectory(src/integration_testing)
+
+add_subdirectory(extensions/spa)
+add_subdirectory(extensions/autotester)
+add_subdirectory(extensions/unit_testing)
+add_subdirectory(extensions/integration_testing)
