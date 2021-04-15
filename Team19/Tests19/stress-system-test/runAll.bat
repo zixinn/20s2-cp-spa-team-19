@@ -21,7 +21,7 @@ if exist ..\..\Code19\build_win\x86-Release\src\autotester\autotester.exe (
 	..\..\Code19\build_win\x86-Release\src\autotester\autotester.exe fullSimple_source.txt FollowsStar_query.txt FollowsStar_out.xml
 	..\..\Code19\build_win\x86-Release\src\autotester\autotester.exe fullSimple_source.txt Parent_query.txt Parent_out.xml
 	..\..\Code19\build_win\x86-Release\src\autotester\autotester.exe fullSimple_source.txt ParentStar_query.txt ParentStar_out.xml
-	..\..\Code19\build_win\x86-Releasesrc\autotester\autotester.exe fullSimple_source.txt NoClause_query.txt NoClause_out.xml
+	..\..\Code19\build_win\x86-Release\src\autotester\autotester.exe fullSimple_source.txt NoClause_query.txt NoClause_out.xml
 ) else (
 	set /p id=Enter path to your autotester:
 	%id% fullSimple_source.txt Boolean_query.txt Boolean_out.xml
