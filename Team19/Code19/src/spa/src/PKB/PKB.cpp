@@ -58,7 +58,7 @@ bool PKB::populatePKB() {
     next->populateNextStar();
     bool success = calls->processCalls();
     affects->populateAffectsAndAffectsStar();
-    nextBip->populateNextBipAndNextBipStar();
-    affectsBip->populateAffectsBipAndAffectsBipStar();
+//    nextBip->populateNextBipAndNextBipStar();
+//    affectsBip->populateAffectsBipAndAffectsBipStar();
     return success;
 }
